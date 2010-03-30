@@ -36,5 +36,7 @@ public class App {
 	 */
 	public static void main(String[] args) {
 		System.out.println("Hallo Welt");
+		System.out.print("Checkout hat funktioniert. Jetzt probieren wir mal ein commit.");
+		System.out.println("Ein commit wird immer dann gemacht, wenn man sich sicher ist, dass die aktuelle Version lauffähig ist. Im Repository dürfen nur lauffähige Versionen liegen. Ohne Syntax- oder Semantikfehler. Okay. Semantikfehler können immer mal auftreten ;)");
 	}
 }
