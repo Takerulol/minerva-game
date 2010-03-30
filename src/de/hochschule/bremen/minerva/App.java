@@ -1,5 +1,4 @@
 /*
- * 
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
@@ -21,8 +20,8 @@
  *
  * Contact:
  *     Christian Bollmann: cbollmann@stud.hs-bremen.de
- * 	   Carina Strempel:    cstrempel@stud.hs-bremen.de
- * 	   André König: 	   akoenig@stud.hs-bremen.de
+ *     Carina Strempel: cstrempel@stud.hs-bremen.de
+ *     André König: akoenig@stud.hs-bremen.de
  * 
  * Web:
  *     http://minerva.idira.de
