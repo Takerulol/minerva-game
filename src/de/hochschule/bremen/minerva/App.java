@@ -36,8 +36,5 @@ public class App {
 	 */
 	public static void main(String[] args) {
 		System.out.println("Hallo Welt");
-		System.out.println("André hat das Projekt erfolgreich ausgecheckt :D");
-		System.out.println("Checkout hat funktioniert. Jetzt machen wir mal ein Commit.");
 	}
-
 }
