@@ -36,5 +36,7 @@ public class App {
 	 */
 	public static void main(String[] args) {
 		System.out.println("Hallo Welt");
+		System.out.println("Checkout hat funktioniert. Jetzt committen wir diese Datei mal. Wir haben ja etwas geändert :D");
+		System.out.println("Commit findet immer dann statt, wenn man sich sicher ist, dass die aktuelle Version auch lauffähig ist. Im Repository liegen immer nur lauffähige Versionen! :)");
 	}
 }
