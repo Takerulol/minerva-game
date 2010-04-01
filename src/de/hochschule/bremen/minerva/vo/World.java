@@ -45,7 +45,7 @@ public class World {
 	 * DOCME hallo
 	 */
 	public World() {
-		
+		System.out.println("Hallo Welt");
 	}
 	
 	/**
