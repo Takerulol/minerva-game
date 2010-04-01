@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id$
+ * $Id: World.java 6 2010-03-30 08:13:52Z andre.koenig@gmail.com $
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,35 +29,6 @@
  */
 package de.hochschule.bremen.minerva.vo;
 
-import java.util.Vector;
+public class Continent {
 
-/**
- * Eine kurze Beschreibung für die JavaDoc-Generierung
- * 
- * @author akoenig
- */
-
-public class World {
-	
-	private Vector<Continent> continents = null;
-
-	public World() {
-		
-	}
-	
-	/**
-	 * DOCME
-	 * @return
-	 */
-	public Vector<Continent> getContinents() {
-		return this.continents;
-	}
-
-	/**
-	 * 
-	 * @param continents
-	 */
-	public void setContinents(Vector<Continent> continents) {
-		this.continents = continents;
-	}
 }
