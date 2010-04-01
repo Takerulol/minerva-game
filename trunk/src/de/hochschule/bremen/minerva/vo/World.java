@@ -45,8 +45,7 @@ public class World {
 	 * DOCME hallo
 	 */
 	public World() {
-		System.out.println("Hallo Welt");
-		System.out.println("Hallo Welt2");
+		
 	}
 	
 	/**
@@ -54,7 +53,7 @@ public class World {
 	 * @return
 	 */
 	public Vector<Continent> getContinents() {
-		return this.continents;
+			return this.continents;
 	}
 
 	/**
