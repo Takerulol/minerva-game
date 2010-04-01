@@ -41,6 +41,9 @@ public class World {
 	
 	private Vector<Continent> continents = null;
 
+	/**
+	 * DOCME
+	 */
 	public World() {
 		
 	}
