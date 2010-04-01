@@ -62,6 +62,5 @@ public class World {
 	 */
 	public void setContinents(Vector<Continent> continents) {
 		this.continents = continents;
-		System.out.print("Hallo Welt");
 	}
 }
