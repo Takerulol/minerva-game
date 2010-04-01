@@ -46,6 +46,7 @@ public class World {
 	 */
 	public World() {
 		System.out.println("Hallo Welt");
+		System.out.println("Hallo Welt2");
 	}
 	
 	/**
