@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <world>
+	<meta>
+		<author>Carina Strempel, Christian Bollmann, André König</author>
+		<description>Hier würde ein Beschreibungstext stehen.</description>
+		<version>1.0 beta</version>
+	</meta>
+
 	<continents>
 		<continent id="0" name="Europa" />
 		<continent id="1" name="Asien" />
