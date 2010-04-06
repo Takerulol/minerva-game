@@ -29,12 +29,20 @@
  */
 package de.hochschule.bremen.minerva;
 
+import de.hochschule.bremen.minerva.exceptions.WorldNotValidException;
+import de.hochschule.bremen.minerva.util.*;
+
 public class App {
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		System.out.println("Hallo Welt");
+		
+		try {
+			new WorldImporter("C:/Dokumente und Einstellungen/akoenig/Desktop/hallo.world").exec();
+		} catch (WorldNotValidException e) {
+			System.out.println("Beim Importieren der Welt ist ein Fehler aufgetreten: "+e.getMessage());
+		}
 	}
 }

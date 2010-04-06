@@ -27,7 +27,7 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.util;
+package de.hochschule.bremen.minerva.exceptions;
 
 public class WorldNotValidException extends Exception {
 	

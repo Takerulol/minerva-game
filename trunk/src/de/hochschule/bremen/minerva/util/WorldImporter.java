@@ -41,6 +41,9 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import de.hochschule.bremen.minerva.exceptions.WorldNotValidException;
+import de.hochschule.bremen.minerva.vo.World;
+
 public class WorldImporter {
 
 	private File source = null;
@@ -50,23 +53,41 @@ public class WorldImporter {
 	private final String worldXmlFileName = "world.xml";
 
 	/**
+	 * Constructor with file source.
 	 * 
-	 * @param source
+	 * @param source - The new world file to import.
 	 */
 	public WorldImporter(File source) {
 		this.source = source;
 	}
 
 	/**
+	 * Constructor with file source as string.
 	 * 
-	 * @param source
+	 * @param source - The absolute path to the new world file.
 	 */
 	public WorldImporter(String source) {
 		this.source = new File(source);
 	}
 
 	/**
-	 * DOCME
+	 * The import process.
+	 * A 'new world file' is a zipped folder with the
+	 * following files:
+	 * 
+	 * <ul>
+	 * 	<li>world.xml - The world description file.
+	 * 		Contains country and continent definition.</li>
+	 *  <li>map.png - The map for the user interface.</li>
+	 *  <li>DOCME</li>
+	 * </ul>
+	 * 
+	 * So this method will unzip this folder an parse the 'world.xml'
+	 * to create a new world value object which we will write to the
+	 * database.
+	 * 
+	 * @throws WorldNotValidException - If the 'new world' file is not
+	 *                                  valid or if it does not exist etc.
 	 */
 	public void exec() throws WorldNotValidException {
 		List<File> files = null;
@@ -87,13 +108,22 @@ public class WorldImporter {
 		}
 
 		// Parse the xml file. Create the value objects.
-		this.parse(this.determineWorldXml(files));
+		/*World world = this.parseFromWorldXml(this.determineWorldXml(files));
+		world.save();
+		
+		if (world == null) {
+			throw new WorldNotValidException("The 'world.xml' is not valid. Please fix the data structure and try again.");
+		}*/
 		
 		// TODO: Write the entries into the database.
 		// TODO: Move png files to directories
 	}
 
 	/**
+	 * Unzip the 'new world' file and return a file list.
+	 * 
+	 * @return A file list that consists of all files in the
+	 *         'new world' file
 	 * 
 	 * @throws FileNotFoundException
 	 * @throws IOException
@@ -135,17 +165,13 @@ public class WorldImporter {
 	}
 	
 	/**
-	 * DOCME
-	 * @param worldXml
-	 */
-	private void parse(File worldXml) {
-		
-	}
-	
-	/**
-	 * DOCME
-	 * @param files
-	 * @return
+	 * Check if the given file list contains all
+	 * file that are defined in "this.sourceContent"
+	 * 
+	 * @param files A file list.
+	 * 
+	 * @return String with the missing file (name).
+	 * 
 	 */
 	private String isFormatValid(List<File> files) {
 		for (String neededFile : this.sourceContent) {
@@ -167,8 +193,18 @@ public class WorldImporter {
 	}
 
 	/**
-	 * DOCME
+	 * 
 	 * @return
+	 */
+	private World parseFromWorldXml() {
+		
+		return null;
+	}
+	
+	/**
+	 * Determines the 'world.xml' from a given file list.
+	 * 
+	 * @return The 'world.xml' file object.
 	 */
 	private File determineWorldXml(List<File> files) {
 		for (File file : files) {
@@ -180,14 +216,18 @@ public class WorldImporter {
 	}
 	
 	/**
-	 * DOCME!
+	 * Sets the (zipped) new world file.
+	 * 
+	 * @param source - The new world file.
 	 */
 	public void setSource(File source) {
 		this.source = source;
 	}
 
 	/**
-	 * DOCME
+	 * Returns the (zipped) new world file.
+	 * 
+	 * @return The new world file object.
 	 */
 	public File getSource() {
 		return this.source;
