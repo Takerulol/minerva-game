@@ -30,7 +30,7 @@
 package de.hochschule.bremen.minerva;
 
 import de.hochschule.bremen.minerva.exceptions.WorldImportException;
-import de.hochschule.bremen.minerva.util.*;
+import de.hochschule.bremen.minerva.persistence.*;
 
 public class App {
 
