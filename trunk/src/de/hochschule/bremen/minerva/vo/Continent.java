@@ -31,4 +31,46 @@ package de.hochschule.bremen.minerva.vo;
 
 public class Continent {
 
+	private int id = 0;
+	private String name = "";
+
+	/**
+	 * DOCME
+	 * @param id
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/**
+	 * DOCME
+	 * @return
+	 */
+	public int getId() {
+		return this.id;
+	}
+
+	/**
+	 * DOCME
+	 * @param name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * DOCME
+	 * @return
+	 */
+	public String getName() {
+		return this.name;
+	}
+
+	/**
+	 * DOCME
+	 * @return
+	 */
+	public String toString() {
+		return "";
+	}
 }
