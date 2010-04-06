@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id: WorldImporter.java 37 2010-04-06 18:10:07Z andre.koenig $
+ * $Id$
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,14 +27,20 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.service;
+package de.hochschule.bremen.minerva.persistence.db;
 
-public interface Crudable {
+import de.hochschule.bremen.minerva.persistence.PersistenceHandler;
+import de.hochschule.bremen.minerva.persistence.Serializable;
+import de.hochschule.bremen.minerva.vo.*;
+
+public class DatabasePersistenceHandler implements PersistenceHandler {
 	
-	public Object read();
-
-	public void save();
+	@Override
+	public Serializable createHandler(Class type) {
+		if (type == World.class) {
+			return new WorldHandler();
+		}
+		return null;
+	}
 	
-	public void delete();
-
 }

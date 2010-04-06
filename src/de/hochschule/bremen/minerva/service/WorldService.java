@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id: WorldImporter.java 37 2010-04-06 18:10:07Z andre.koenig $
+ * $Id$
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,23 +29,34 @@
  */
 package de.hochschule.bremen.minerva.service;
 
-import java.util.List;
-
+import de.hochschule.bremen.minerva.persistence.Serializable;
 import de.hochschule.bremen.minerva.vo.World;
 
-public class WorldService implements Crudable {
+public class WorldService extends AbstractService {
 
-	public World read() {
-		return null;
+	private static WorldService instance = null;
+	private Serializable storageHandler = this.storage.createHandler(World.class);
+
+	private WorldService() {}
+	
+	/**
+	 * DOCME
+	 *  
+	 * @return
+	 */
+	public static WorldService getInstance() {
+		if (WorldService.instance == null) {
+			WorldService.instance = new WorldService();
+		}
+		return WorldService.instance;
 	}
 
-	public void save() {
-		
+	/**
+	 * DOCME
+	 * @return
+	 */
+	public World load() {
+		System.out.println("WorldService::load");
+		return (World)storageHandler.read();
 	}
-
-	public void delete() {
-		
-	}
-
-	public List<World> listAll() {return null;}
 }

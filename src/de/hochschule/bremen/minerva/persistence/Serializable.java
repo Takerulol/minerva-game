@@ -27,25 +27,14 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva;
+package de.hochschule.bremen.minerva.persistence;
 
-import de.hochschule.bremen.minerva.exceptions.WorldImportException;
-import de.hochschule.bremen.minerva.service.WorldService;
-import de.hochschule.bremen.minerva.util.*;
+public interface Serializable {
 
-public class App {
+	public void delete();
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		
-		/*try {
-			new WorldImporter("C:/Dokumente und Einstellungen/akoenig/Desktop/hallo.world").exec();
-		} catch (WorldImportException e) {
-			System.out.println("Beim Importieren der Welt ist ein Fehler aufgetreten: "+e.getMessage());
-		}*/
-		
-		WorldService.getInstance().load();
-	}
+	public void save();
+	
+	public Object read();
+	
 }

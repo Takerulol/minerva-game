@@ -27,25 +27,34 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva;
+package de.hochschule.bremen.minerva.persistence.db;
 
-import de.hochschule.bremen.minerva.exceptions.WorldImportException;
-import de.hochschule.bremen.minerva.service.WorldService;
-import de.hochschule.bremen.minerva.util.*;
+import de.hochschule.bremen.minerva.vo.World;
+import de.hochschule.bremen.minerva.persistence.Serializable;
 
-public class App {
+public class WorldHandler implements Serializable {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		
-		/*try {
-			new WorldImporter("C:/Dokumente und Einstellungen/akoenig/Desktop/hallo.world").exec();
-		} catch (WorldImportException e) {
-			System.out.println("Beim Importieren der Welt ist ein Fehler aufgetreten: "+e.getMessage());
-		}*/
-		
-		WorldService.getInstance().load();
+	private static String[] sql = {
+		// SQL-Statements
+	};
+	
+	@Override
+	public World read() {
+		// TODO Auto-generated method stub
+		System.out.println("WorldHandler::read()");
+		System.out.println("WorldHandler::read() - From Database The first entry.");
+		return null;
 	}
+	
+	@Override
+	public void delete() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+	}
+
 }
