@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import de.hochschule.bremen.minerva.exceptions.WorldNotValidException;
+import de.hochschule.bremen.minerva.exceptions.WorldImportException;
 import de.hochschule.bremen.minerva.vo.World;
 
 public class WorldImporter {
@@ -86,25 +86,25 @@ public class WorldImporter {
 	 * to create a new world value object which we will write to the
 	 * database.
 	 * 
-	 * @throws WorldNotValidException - If the 'new world' file is not
+	 * @throws WorldImportException - If the 'new world' file is not
 	 *                                  valid or if it does not exist etc.
 	 */
-	public void exec() throws WorldNotValidException {
+	public void exec() throws WorldImportException {
 		List<File> files = null;
 	
 		// Unzip the files ...
 		try {
 			files = unzip();
 		} catch (FileNotFoundException e) {
-			throw new WorldNotValidException("The world file '"+this.source+"' does not exist.");
+			throw new WorldImportException("The world file '"+this.source+"' does not exist.");
 		} catch (IOException e) {
-			throw new WorldNotValidException("An error occured while reading the world file: '"+this.source+"'. Please try again.");
+			throw new WorldImportException("An error occured while reading the world file: '"+this.source+"'. Please try again.");
 		}
 
 		// Check if the file structure is valid ...
 		String missingFile = this.isFormatValid(files);
 		if (missingFile != null) {
-			throw new WorldNotValidException("Missing file '"+ missingFile +"' in whe world file: '"+this.source+"'");
+			throw new WorldImportException("Missing file '"+ missingFile +"' in whe world file: '"+this.source+"'");
 		}
 
 		// Parse the xml file. Create the value objects.
