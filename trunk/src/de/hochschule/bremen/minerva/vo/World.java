@@ -39,28 +39,135 @@ import java.util.Vector;
 
 public class World {
 	
-	private Vector<Continent> continents = null;
+	private int id = 0;
+	private String token = "";
+	private String name = "";
+	private String description = "";
+	private String author = "";
+	private String version = "";
+
+	private Vector<Country> countries = null;
+	
+	/**
+	 * Sets the world id.
+	 * 
+	 * @param id - Integer value (see persistence).
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/**
+	 * Returns the id.
+	 * 
+	 * @return
+	 */
+	public int getId() {
+		return this.id;
+	}
 
 	/**
 	 * DOCME
+	 * @param token
 	 */
-	public World() {
-		
+	public void setToken(String token) {
+		this.token = token;
 	}
-	
+
 	/**
 	 * DOCME
 	 * @return
 	 */
-	public Vector<Continent> getContinents() {
-			return this.continents;
+	public String getToken() {
+		return this.token;
 	}
 
 	/**
-	 * 
-	 * @param continents
+	 * DOCME
+	 * @param name
 	 */
-	public void setContinents(Vector<Continent> continents) {
-		this.continents = continents;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * DOCME
+	 * @return
+	 */
+	public String getName() {
+		return this.name;
+	}
+
+	/**
+	 * DOCME
+	 * @param description
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	/**
+	 * DOCME
+	 * @return
+	 */
+	public String getDescription() {
+		return this.description;
+	}
+
+	/**
+	 * DOCME
+	 * @param author
+	 */
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	/**
+	 * DOCME
+	 * @return
+	 */
+	public String getAuthor() {
+		return this.author;
+	}
+
+	/**
+	 * DOCME
+	 * @param version
+	 */
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	/**
+	 * DOCME
+	 * @return
+	 */
+	public String getVersion() {
+		return this.version;
+	}
+
+	/**
+	 * DOCME
+	 * @param countries
+	 */
+	public void setCountries(Vector<Country> countries) {
+		this.countries = countries;
+	}
+
+	/**
+	 * DOCME
+	 * @return
+	 */
+	public Vector<Country> getCountries() {
+		return this.countries;
+	}
+
+	/**
+	 * DOCME
+	 */
+	public String toString() {
+		// Viel Spass Carina ;)
+		
+		return "";
 	}
 }
