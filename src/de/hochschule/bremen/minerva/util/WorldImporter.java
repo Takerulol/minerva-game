@@ -27,7 +27,7 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.persistence;
+package de.hochschule.bremen.minerva.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
