@@ -32,6 +32,11 @@ package de.hochschule.bremen.minerva.util;
 public class WorldNotValidException extends Exception {
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * DOCME!
 	 */
 	public WorldNotValidException() {
