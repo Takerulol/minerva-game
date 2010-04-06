@@ -29,6 +29,103 @@
  */
 package de.hochschule.bremen.minerva.vo;
 
+import java.awt.Color;
+
 public class Country {
 
+	private int id;
+	private String token;
+	private String name;
+	private Color color = null;
+	private Continent continent = null;
+
+	//private int world = 0;
+
+	/**
+	 * DOCME
+	 * @param id
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/**
+	 * DOCME
+	 * @return
+	 */
+	public int getId() {
+		return this.id;
+	}
+
+	/**
+	 * DOCME
+	 * @param token
+	 */
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	/**
+	 * DOCME
+	 * @return
+	 */
+	public String getToken() {
+		return this.token;
+	}
+
+	/**
+	 * DOCME
+	 * @param name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * DOCME
+	 * @return
+	 */
+	public String getName() {
+		return this.name;
+	}
+
+	/**
+	 * DOCME
+	 * @param color
+	 */
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+	/**
+	 * DOCME
+	 * @return
+	 */
+	public Color getColor() {
+		return this.color;
+	}
+
+	/**
+	 * DOCME
+	 * @param continent
+	 */
+	public void setContinent(Continent continent) {
+		this.continent = continent;
+	}
+
+	/**
+	 * DOCME
+	 * @return
+	 */
+	public Continent getContinent() {
+		return this.continent;
+	}
+
+	/**
+	 * DOCME
+	 * @return
+	 */
+	public String toString() {
+		return "";
+	}
 }
