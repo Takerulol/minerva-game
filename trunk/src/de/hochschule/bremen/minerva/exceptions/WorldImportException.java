@@ -29,7 +29,7 @@
  */
 package de.hochschule.bremen.minerva.exceptions;
 
-public class WorldNotValidException extends Exception {
+public class WorldImportException extends Exception {
 	
 	/**
 	 * 
@@ -39,7 +39,7 @@ public class WorldNotValidException extends Exception {
 	/**
 	 * DOCME!
 	 */
-	public WorldNotValidException() {
+	public WorldImportException() {
 		super();
 	}
 
@@ -47,7 +47,7 @@ public class WorldNotValidException extends Exception {
 	 * DOCME!
 	 * @param message
 	 */
-	public WorldNotValidException(String message) {
+	public WorldImportException(String message) {
 		super(message);
 	}
 }
