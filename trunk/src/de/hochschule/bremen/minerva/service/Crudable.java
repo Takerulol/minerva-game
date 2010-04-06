@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id$
+ * $Id: WorldImporter.java 37 2010-04-06 18:10:07Z andre.koenig $
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,22 +27,14 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva;
+package de.hochschule.bremen.minerva.service;
 
-import de.hochschule.bremen.minerva.exceptions.WorldImportException;
-import de.hochschule.bremen.minerva.util.*;
+public interface Crudable {
+	
+	public Object read();
 
-public class App {
+	public void save();
+	
+	public void delete();
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		
-		try {
-			new WorldImporter("C:/Dokumente und Einstellungen/akoenig/Desktop/hallo.world").exec();
-		} catch (WorldImportException e) {
-			System.out.println("Beim Importieren der Welt ist ein Fehler aufgetreten: "+e.getMessage());
-		}
-	}
 }
