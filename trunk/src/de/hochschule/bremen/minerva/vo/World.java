@@ -1,5 +1,5 @@
 /*
- * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
+ * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, AndrÃ© KÃ¶nig
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
  * $Id$
@@ -21,7 +21,7 @@
  * Contact:
  *     Christian Bollmann: cbollmann@stud.hs-bremen.de
  *     Carina Strempel: cstrempel@stud.hs-bremen.de
- *     André König: akoenig@stud.hs-bremen.de
+ *     AndrÃ© KÃ¶nig: akoenig@stud.hs-bremen.de
  * 
  * Web:
  *     http://minerva.idira.de
@@ -32,7 +32,7 @@ package de.hochschule.bremen.minerva.vo;
 import java.util.Vector;
 
 /**
- * Eine kurze Beschreibung für die JavaDoc-Generierung
+ * DOCME
  * 
  * @author akoenig
  */
@@ -42,7 +42,7 @@ public class World {
 	private Vector<Continent> continents = null;
 
 	/**
-	 * DOCME hallo
+	 * DOCME
 	 */
 	public World() {
 		
