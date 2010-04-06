@@ -30,6 +30,7 @@
 package de.hochschule.bremen.minerva.vo;
 
 import java.awt.Color;
+import java.util.List;
 
 public class Country {
 
@@ -38,6 +39,7 @@ public class Country {
 	private String name;
 	private Color color = null;
 	private Continent continent = null;
+	private List<Country> neighbours = null;
 
 	//private int world = 0;
 
@@ -119,6 +121,22 @@ public class Country {
 	 */
 	public Continent getContinent() {
 		return this.continent;
+	}
+
+	/**
+	 * DOCME
+	 * @param neighbours
+	 */
+	public void setNeighbours(List<Country> neighbours) {
+		this.neighbours = neighbours;
+	}
+
+	/**
+	 * DOCME
+	 * @return
+	 */
+	public List<Country> getNeighbours() {
+		return this.neighbours;
 	}
 
 	/**
