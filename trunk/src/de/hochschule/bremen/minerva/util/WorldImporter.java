@@ -199,7 +199,6 @@ public class WorldImporter {
 	private World parseFromWorldXml() {
 		World world = new World();
 		
-		
 		return null;
 	}
 	
