@@ -27,15 +27,20 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.persistence;
+package de.hochschule.bremen.minerva.persistence.db;
 
-/**
- * DOCME
- * @author akoenig
- *
- */
-public interface PersistenceHandler {
+import de.hochschule.bremen.minerva.vo.*;
+import de.hochschule.bremen.minerva.persistence.Persistence;
+import de.hochschule.bremen.minerva.persistence.Crudable;
+
+public class DatabasePersistence implements Persistence {
 	
-	public Crudable createHandler(Class<?> type);
-
+	@Override
+	public Crudable createHandler(Class type) {
+		if (type == World.class) {
+			return new WorldHandler();
+		}
+		return null;
+	}
+	
 }
