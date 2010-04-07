@@ -29,20 +29,33 @@
  */
 package de.hochschule.bremen.minerva.service;
 
-import de.hochschule.bremen.minerva.persistence.Serializable;
+import de.hochschule.bremen.minerva.persistence.Crudable;
 import de.hochschule.bremen.minerva.vo.World;
 
+/**
+ * DOCME
+ * @author akoenig
+ *
+ */
 public class WorldService extends AbstractService {
 
 	private static WorldService instance = null;
-	private Serializable storageHandler = this.storage.createHandler(World.class);
 
+	private Crudable storageHandler = this.storage.createHandler(World.class);
+
+	/**
+	 * Singleton pattern. It is not possible
+	 * to create a WorldService in the common way.
+	 * So this constructor is private.
+	 * 
+	 */
 	private WorldService() {}
 	
 	/**
-	 * DOCME
-	 *  
-	 * @return
+	 * Singleton pattern.
+	 * Static method that controls the object creation.
+	 * 
+	 * @return DOCME
 	 */
 	public static WorldService getInstance() {
 		if (WorldService.instance == null) {
@@ -53,6 +66,7 @@ public class WorldService extends AbstractService {
 
 	/**
 	 * DOCME
+	 * 
 	 * @return
 	 */
 	public World load() {
