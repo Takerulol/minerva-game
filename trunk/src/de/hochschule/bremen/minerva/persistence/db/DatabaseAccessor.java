@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id$
+ * $Id: WorldHandler.java 44 2010-04-07 10:20:55Z andre.koenig $
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,29 +29,6 @@
  */
 package de.hochschule.bremen.minerva.persistence.db;
 
-import de.hochschule.bremen.minerva.vo.World;
-import de.hochschule.bremen.minerva.persistence.Crudable;
-
-public class WorldHandler extends DatabaseAccessor implements Crudable {
-
-	private static String[] sql = {
-		// SQL-Statements
-	};
+public class DatabaseAccessor {
 	
-	@Override
-	public World read() {
-		
-		return null;
-	}
-	
-	@Override
-	public void delete() {
-		
-	}
-
-	@Override
-	public void save() {
-
-	}
-
 }
