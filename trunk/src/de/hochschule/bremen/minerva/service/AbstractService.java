@@ -29,12 +29,13 @@
  */
 package de.hochschule.bremen.minerva.service;
 
-import de.hochschule.bremen.minerva.persistence.PersistenceHandler;
-import de.hochschule.bremen.minerva.persistence.db.DatabasePersistenceHandler;
+import de.hochschule.bremen.minerva.persistence.Persistence;
+import de.hochschule.bremen.minerva.persistence.db.DatabasePersistence;
 
 public abstract class AbstractService {
 
-	// SerializationManager
-	protected static PersistenceHandler storage = new DatabasePersistenceHandler(); 
+	// PersistenceHandler - We use a database for persistence.
+	// If a switch to a file based storage, change it here.
+	protected static Persistence storage = new DatabasePersistence(); 
 
 }
