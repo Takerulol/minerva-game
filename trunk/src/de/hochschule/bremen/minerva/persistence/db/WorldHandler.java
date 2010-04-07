@@ -34,14 +34,15 @@ import de.hochschule.bremen.minerva.persistence.Crudable;
 
 public class WorldHandler extends DatabaseAccessor implements Crudable {
 
-	private static String[] sql = {
-		// SQL-Statements
+	private static String[][] sql = {
+		{"selectById", "select id, token, name, description, author, version from world where id = ?"}
 	};
 	
 	@Override
 	public World read() {
-		
-		return null;
+		Object results = this.select("");
+
+		return (World)results;
 	}
 	
 	@Override

@@ -29,6 +29,21 @@
  */
 package de.hochschule.bremen.minerva.persistence.db;
 
+import java.sql.Connection;
+
 public class DatabaseAccessor {
 	
+	protected static Connection connection = null;
+
+	private void connect() {}
+
+	private void disconnect() {}
+
+	protected Object select(String sql) {return null;}
+
+	protected void update(String sql) {}
+
+	protected void delete(String sql) {}
+
+	protected void insert(String sql) {}	
 }

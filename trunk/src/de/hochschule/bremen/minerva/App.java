@@ -29,9 +29,10 @@
  */
 package de.hochschule.bremen.minerva;
 
-import de.hochschule.bremen.minerva.exceptions.WorldImportException;
+//import de.hochschule.bremen.minerva.exceptions.WorldImportException;
 import de.hochschule.bremen.minerva.service.WorldService;
-import de.hochschule.bremen.minerva.util.*;
+//import de.hochschule.bremen.minerva.util.*;
+import de.hochschule.bremen.minerva.vo.World;
 
 public class App {
 
@@ -46,6 +47,7 @@ public class App {
 			System.out.println("Beim Importieren der Welt ist ein Fehler aufgetreten: "+e.getMessage());
 		}*/
 		
-		WorldService.getInstance().load();
+		World myWorld = WorldService.getInstance().load();
+		System.out.println(myWorld.toString());
 	}
 }
