@@ -30,9 +30,9 @@
 package de.hochschule.bremen.minerva.persistence.db;
 
 import de.hochschule.bremen.minerva.vo.World;
-import de.hochschule.bremen.minerva.persistence.Serializable;
+import de.hochschule.bremen.minerva.persistence.Crudable;
 
-public class WorldHandler implements Serializable {
+public class WorldHandler implements Crudable {
 
 	private static String[] sql = {
 		// SQL-Statements
@@ -40,21 +40,20 @@ public class WorldHandler implements Serializable {
 	
 	@Override
 	public World read() {
-		// TODO Auto-generated method stub
 		System.out.println("WorldHandler::read()");
 		System.out.println("WorldHandler::read() - From Database The first entry.");
+		
 		return null;
 	}
 	
 	@Override
 	public void delete() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
+
 	}
 
 }

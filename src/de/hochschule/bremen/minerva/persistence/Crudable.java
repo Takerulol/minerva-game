@@ -29,7 +29,13 @@
  */
 package de.hochschule.bremen.minerva.persistence;
 
-public interface Serializable {
+/**
+ * Each persistence handler needs the basic "crud operations".
+ * 
+ * @author akoenig
+ *
+ */
+public interface Crudable {
 
 	public void delete();
 

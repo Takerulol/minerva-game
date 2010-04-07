@@ -29,8 +29,13 @@
  */
 package de.hochschule.bremen.minerva.persistence;
 
+/**
+ * DOCME
+ * @author akoenig
+ *
+ */
 public interface PersistenceHandler {
 	
-	public Serializable createHandler(Class type);
+	public Crudable createHandler(Class<?> type);
 
 }

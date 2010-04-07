@@ -29,14 +29,14 @@
  */
 package de.hochschule.bremen.minerva.persistence.db;
 
-import de.hochschule.bremen.minerva.persistence.PersistenceHandler;
-import de.hochschule.bremen.minerva.persistence.Serializable;
 import de.hochschule.bremen.minerva.vo.*;
+import de.hochschule.bremen.minerva.persistence.PersistenceHandler;
+import de.hochschule.bremen.minerva.persistence.Crudable;
 
 public class DatabasePersistenceHandler implements PersistenceHandler {
 	
 	@Override
-	public Serializable createHandler(Class type) {
+	public Crudable createHandler(Class type) {
 		if (type == World.class) {
 			return new WorldHandler();
 		}
