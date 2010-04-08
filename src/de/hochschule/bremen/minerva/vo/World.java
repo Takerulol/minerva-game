@@ -27,15 +27,10 @@
  *     http://minerva.idira.de
  * 
  */
+
 package de.hochschule.bremen.minerva.vo;
 
 import java.util.Vector;
-
-/**
- * DOCME
- * 
- * @author akoenig
- */
 
 public class World {
 	
@@ -67,7 +62,8 @@ public class World {
 	}
 
 	/**
-	 * DOCME
+	 * Sets the world token.
+	 * 
 	 * @param token
 	 */
 	public void setToken(String token) {
@@ -75,7 +71,8 @@ public class World {
 	}
 
 	/**
-	 * DOCME
+	 * Returns the token.
+	 * 
 	 * @return
 	 */
 	public String getToken() {
@@ -83,7 +80,8 @@ public class World {
 	}
 
 	/**
-	 * DOCME
+	 * Sets the world name.
+	 * 
 	 * @param name
 	 */
 	public void setName(String name) {
@@ -91,7 +89,8 @@ public class World {
 	}
 
 	/**
-	 * DOCME
+	 * Returns the name.
+	 * 
 	 * @return
 	 */
 	public String getName() {
@@ -99,7 +98,8 @@ public class World {
 	}
 
 	/**
-	 * DOCME
+	 * Sets the world description.
+	 * 
 	 * @param description
 	 */
 	public void setDescription(String description) {
@@ -107,7 +107,8 @@ public class World {
 	}
 
 	/**
-	 * DOCME
+	 * Returns the description.
+	 * 
 	 * @return
 	 */
 	public String getDescription() {
@@ -115,7 +116,8 @@ public class World {
 	}
 
 	/**
-	 * DOCME
+	 * Sets the world author.
+	 * 
 	 * @param author
 	 */
 	public void setAuthor(String author) {
@@ -123,7 +125,8 @@ public class World {
 	}
 
 	/**
-	 * DOCME
+	 * Returns the author.
+	 * 
 	 * @return
 	 */
 	public String getAuthor() {
@@ -131,7 +134,8 @@ public class World {
 	}
 
 	/**
-	 * DOCME
+	 * Sets the world version.
+	 * 
 	 * @param version
 	 */
 	public void setVersion(String version) {
@@ -139,7 +143,8 @@ public class World {
 	}
 
 	/**
-	 * DOCME
+	 * Returns the version.
+	 * 
 	 * @return
 	 */
 	public String getVersion() {
@@ -147,7 +152,8 @@ public class World {
 	}
 
 	/**
-	 * DOCME
+	 * Sets the world countries.
+	 * 
 	 * @param countries
 	 */
 	public void setCountries(Vector<Country> countries) {
@@ -155,19 +161,23 @@ public class World {
 	}
 
 	/**
-	 * DOCME
+	 * Returns the countries.
+	 * 
 	 * @return
 	 */
 	public Vector<Country> getCountries() {
 		return this.countries;
 	}
 
+	
 	/**
-	 * DOCME
+	 * Made out of all attributes one string.
+	 * 
+	 * @return
 	 */
 	public String toString() {
-		// Viel Spass Carina ;)
-		
-		return "";
+		return getClass().getName() + "[id=" + id + ",token=" +token + ",name=" + name + ",description=" + description + ",author=" + author + ",version=" + version + ",countries=" + countries +"]";
 	}
+	
+	
 }
