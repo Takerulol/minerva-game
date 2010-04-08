@@ -44,7 +44,8 @@ public class Country {
 	//private int world = 0;
 
 	/**
-	 * DOCME
+	 * Sets the country id.
+	 * 
 	 * @param id
 	 */
 	public void setId(int id) {
@@ -52,7 +53,8 @@ public class Country {
 	}
 
 	/**
-	 * DOCME
+	 * Returns the id.
+	 * 
 	 * @return
 	 */
 	public int getId() {
@@ -60,7 +62,8 @@ public class Country {
 	}
 
 	/**
-	 * DOCME
+	 * Sets the country token.
+	 * 
 	 * @param token
 	 */
 	public void setToken(String token) {
@@ -68,7 +71,8 @@ public class Country {
 	}
 
 	/**
-	 * DOCME
+	 * Returns the token.
+	 * 
 	 * @return
 	 */
 	public String getToken() {
