@@ -35,7 +35,8 @@ public class Continent {
 	private String name = "";
 
 	/**
-	 * DOCME
+	 * Sets the continent id.
+	 * 
 	 * @param id
 	 */
 	public void setId(int id) {
@@ -43,7 +44,8 @@ public class Continent {
 	}
 
 	/**
-	 * DOCME
+	 * Returns the id.
+	 * 
 	 * @return
 	 */
 	public int getId() {
@@ -51,7 +53,8 @@ public class Continent {
 	}
 
 	/**
-	 * DOCME
+	 * Sets the continent name.
+	 * 
 	 * @param name
 	 */
 	public void setName(String name) {
@@ -59,7 +62,8 @@ public class Continent {
 	}
 
 	/**
-	 * DOCME
+	 * Returns the name.
+	 * 
 	 * @return
 	 */
 	public String getName() {
@@ -67,10 +71,13 @@ public class Continent {
 	}
 
 	/**
-	 * DOCME
+	 * Made out of all attributes one string
+	 * 
 	 * @return
 	 */
 	public String toString() {
-		return "";
+		return getClass().getName() + "[id=" + id + ",name=" + name + "]";
 	}
+	
+
 }
