@@ -80,7 +80,8 @@ public class Country {
 	}
 
 	/**
-	 * DOCME
+	 * Sets the country name.
+	 * 
 	 * @param name
 	 */
 	public void setName(String name) {
@@ -88,7 +89,8 @@ public class Country {
 	}
 
 	/**
-	 * DOCME
+	 * Returns the name.
+	 * 
 	 * @return
 	 */
 	public String getName() {
@@ -96,7 +98,8 @@ public class Country {
 	}
 
 	/**
-	 * DOCME
+	 * Sets the country color.
+	 * 
 	 * @param color
 	 */
 	public void setColor(Color color) {
@@ -104,7 +107,7 @@ public class Country {
 	}
 
 	/**
-	 * DOCME
+	 * Returns the color.
 	 * @return
 	 */
 	public Color getColor() {
@@ -112,7 +115,8 @@ public class Country {
 	}
 
 	/**
-	 * DOCME
+	 * Sets the country continent.
+	 * 
 	 * @param continent
 	 */
 	public void setContinent(Continent continent) {
@@ -120,7 +124,8 @@ public class Country {
 	}
 
 	/**
-	 * DOCME
+	 * Returns the continent.
+	 * 
 	 * @return
 	 */
 	public Continent getContinent() {
@@ -128,7 +133,8 @@ public class Country {
 	}
 
 	/**
-	 * DOCME
+	 * Sets the country neighbours.
+	 * 
 	 * @param neighbours
 	 */
 	public void setNeighbours(List<Country> neighbours) {
@@ -136,7 +142,7 @@ public class Country {
 	}
 
 	/**
-	 * DOCME
+	 * Returns the neighbours.
 	 * @return
 	 */
 	public List<Country> getNeighbours() {
@@ -144,10 +150,13 @@ public class Country {
 	}
 
 	/**
-	 * DOCME
+	 * Made out of all attributes one string.
+	 * 
 	 * @return
 	 */
 	public String toString() {
-		return "";
+		return getClass().getName() + "[id=" + id + ",token=" +token + ",name=" + name + ",color=" + color + ",continent=" + continent + ",neighbours=" + neighbours + "]";
 	}
+	
+	
 }
