@@ -49,6 +49,5 @@ public class App {
 		
 		World myWorld = WorldService.getInstance().load();
 		System.out.println(myWorld.toString());
-		System.out.println("TestCommit");
 	}
 }
