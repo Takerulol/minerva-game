@@ -30,20 +30,184 @@
 package de.hochschule.bremen.minerva.persistence.db;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+
+import de.hochschule.bremen.minerva.exceptions.NoDataChangedException;
+
+/*
+ * TODO:
+ * 	- sinnlose test-texte entfernen
+ *  - mainklasse entfernen
+ *  - vll so verschachteln, dass nur ein objekt erzeugt werden kann
+ *  - select, update, insert, delete verbessern
+ */
+
 
 public class DatabaseAccessor {
 	
 	protected static Connection connection = null;
+	protected static Statement statement = null;
+	protected static ResultSet resultSet = null;
+	
+	private static String ip = "localhost";
+	private static String folder = "/test";
+	private static String driver = "org.apache.derby.jdbc.ClientDriver";
+	
+	private DatabaseAccessor() {}
+	
+	/*
+	public static void main (String[] args) {
+		DatabaseAccessor test = new DatabaseAccessor();
+		
+		try {
+			test.connect();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			System.out.println("Konnte nicht connecten.");
+		} finally {
+			test.disconnect();
+			System.out.println("fertig.");
+		}
+	}
+	*/
+	
+	public static void main (String[] args) {
+		DatabaseAccessor test = new DatabaseAccessor();
+		try {
+			test.connect();
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		} finally {
+			test.disconnect();
+		}
 
-	private void connect() {}
+	}
+	
+	
+	/**
+	 * DOCME
+	 * 
+	 * @throws Exception
+	 */
+	private void connect() throws Exception {
+		try {
+			Class.forName(driver).newInstance();
+			connection = DriverManager.getConnection("jdbc:derby://"+ip+folder+";create=true");
+		} catch (Exception e) {
+			throw e;
+		}
+		System.out.println("alles paletti1");
+	}
 
-	private void disconnect() {}
+	/**
+	 * DOCME
+	 * 
+	 */
+	private void disconnect() {
+		try {
+			if (resultSet != null) {
+				resultSet.close();
+			}
+			if (statement != null) {
+				statement.close();
+			}
+			if (connection != null) {
+				connection.close();
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		System.out.println("alles paletti2");
+	}
 
-	protected Object select(String sql) {return null;}
+	/**
+	 * DOCME
+	 * 
+	 * @param sql
+	 * @return
+	 * @throws Exception
+	 */
+	protected ResultSet select(String sql) throws Exception {
+		/*
+		 * Handling with resultSets:
+		 * while (resultSet.next()) {
+		 *	String user = resultSet.getString("name");
+		 *	String number = resultSet.getString("number");
+		 *	System.out.println("User: " + user);
+		 *	System.out.println("ID: " + number);
+		 * }
+		 */
+		
+		try {
+			PreparedStatement statement = connection.prepareStatement(sql);
+			resultSet = statement.executeQuery();
+			return resultSet;
+		} catch (Exception e) {
+			throw e;
+		}	
+	}
 
-	protected void update(String sql) {}
+	/**
+	 * DOCME
+	 * 
+	 * @param sql
+	 * @throws Exception
+	 */
+	protected void update(String sql) throws Exception {
+		try {
+			PreparedStatement statement = connection.prepareStatement(sql);
+			//resultSet = statement.executeQuery();
+			statement.executeUpdate();
+		} catch (Exception e) {
+			throw e;
+		}	
+	}
 
-	protected void delete(String sql) {}
+	/**
+	 * DOCME
+	 * 
+	 * @param sql
+	 * @throws Exception
+	 */
+	protected void delete(String sql) throws Exception {
+		try {
+			PreparedStatement statement = connection.prepareStatement(sql);
+			//resultSet = statement.executeQuery();
+			statement.executeUpdate();
+		} catch (Exception e) {
+			throw e;
+		}	
+	}
 
-	protected void insert(String sql) {}	
+	/**
+	 * DOCME
+	 * 
+	 * @param sql
+	 * @throws Exception
+	 */
+	protected void insert(String sql) throws Exception {
+		try {
+			PreparedStatement statement = connection.prepareStatement(sql);
+			//resultSet = statement.executeQuery();
+			statement.executeUpdate();
+		} catch (Exception e) {
+			throw e;
+		}	
+	}
+
+	public static void setIp(String ip) {
+		DatabaseAccessor.ip = ip;
+	}
+	public static String getIp() {
+		return ip;
+	}
+	public static void setFolder(String folder) {
+		DatabaseAccessor.folder = "/"+folder;
+	}
+	public static String getFolder() {
+		return folder;
+	}	
 }
