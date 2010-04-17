@@ -33,7 +33,6 @@ package de.hochschule.bremen.minerva;
 import java.util.List;
 
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
-import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
 import de.hochschule.bremen.minerva.persistence.service.WorldService;
 //import de.hochschule.bremen.minerva.util.*;
 import de.hochschule.bremen.minerva.vo.World;
