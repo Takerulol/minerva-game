@@ -29,7 +29,10 @@
  */
 package de.hochschule.bremen.minerva.persistence.service;
 
+import java.util.List;
+
 import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
 import de.hochschule.bremen.minerva.vo.World;
 
 /**
@@ -41,7 +44,7 @@ public class WorldService extends AbstractService {
 
 	private static WorldService instance = null;
 
-	private Crudable storageHandler = this.storage.createHandler(World.class);
+	private Crudable storageHandler = WorldService.storage.createHandler(World.class);
 
 	/**
 	 * Singleton pattern. It is not possible
@@ -69,8 +72,22 @@ public class WorldService extends AbstractService {
 	 * 
 	 * @return
 	 */
-	public World load() {
-		System.out.println("WorldService::load");
-		return (World)storageHandler.read();
+	public List<World> loadAll() {
+		List<World> worlds = (List<World>)storageHandler.readAll();
+		return worlds;
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public World load(int id) throws WorldNotFoundException {
+		try {
+			return (World)storageHandler.read(id);
+		} catch (Exception e) {
+			throw new WorldNotFoundException(e.getMessage());
+		}
 	}
 }
