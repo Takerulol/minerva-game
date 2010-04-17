@@ -65,5 +65,6 @@ public class Die{
 	public static void main(String[] args){
 		dies();
 		getNumber();	
-	}	
+	}
+
 }
