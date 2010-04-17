@@ -74,6 +74,7 @@ public class WorldService extends AbstractService {
 	 * @return
 	 * @throws PersistenceIOException 
 	 */
+	@SuppressWarnings("unchecked")
 	public List<World> loadAll() throws PersistenceIOException {
 		List<World> worlds = (List<World>)storageHandler.readAll();
 		return worlds;

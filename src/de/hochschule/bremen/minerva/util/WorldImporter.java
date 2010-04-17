@@ -134,7 +134,7 @@ public class WorldImporter {
 		final int BUFFER = 2048;
 
         ZipFile zipFile = new ZipFile(this.source);
-        Enumeration e = zipFile.entries();
+        Enumeration<?> e = zipFile.entries();
 
         File outputDir = new File(this.source.getAbsolutePath().replace(".", "-"));
         outputDir.mkdir();
@@ -196,10 +196,10 @@ public class WorldImporter {
 	 * 
 	 * @return
 	 */
-	private World parseFromWorldXml() {
+	public World parseFromWorldXml() {
 		World world = new World();
 		
-		return null;
+		return world;
 	}
 	
 	/**
@@ -207,6 +207,7 @@ public class WorldImporter {
 	 * 
 	 * @return The 'world.xml' file object.
 	 */
+	@SuppressWarnings("unused")
 	private File determineWorldXml(List<File> files) {
 		for (File file : files) {
 			if (file.getName().contains(this.worldXmlFileName)) {
@@ -232,5 +233,9 @@ public class WorldImporter {
 	 */
 	public File getSource() {
 		return this.source;
+	}
+
+	public String[] getXmlContent() {
+		return xmlContent;
 	}
 }

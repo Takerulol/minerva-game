@@ -31,7 +31,6 @@ package de.hochschule.bremen.minerva.persistence;
 
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.vo.AbstractValueObject;
-import de.hochschule.bremen.minerva.vo.World;
 
 /**
  * Each persistence handler needs the basic "crud operations".
