@@ -35,7 +35,7 @@ import de.hochschule.bremen.minerva.persistence.db.DatabasePersistence;
 public abstract class AbstractService {
 
 	// PersistenceHandler - We use a database for persistence.
-	// If a switch to a file based storage, change it here.
+	// If we want to switch to a file based storage - here is the place.
 	protected static Persistence storage = new DatabasePersistence(); 
 
 }
