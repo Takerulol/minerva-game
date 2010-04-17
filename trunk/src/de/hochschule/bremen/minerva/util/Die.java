@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id: WorldImporter.java 43 2010-04-06 21:35:03Z andre.koenig $
+ * $Id$
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,18 +32,13 @@ package de.hochschule.bremen.minerva.util;
 
 public class Die{
 
-	private static int number;
-
-	/**
-	 * DOCME
-	 */
-	public Die(){}
+	private int number = 0;
 
 	/**
 	 *  Calculate number.
 	 */
-	public static void dies(){
-		number=(int)(Math.random()*6+1);
+	public void dice() {
+		this.number = (int)(Math.random()*6+1);
 	}
 
 	/**
@@ -52,19 +47,7 @@ public class Die{
 	 * 
 	 * @return
 	 */
-	public static int getNumber(){
+	public int getNumber(){
 		return number;
 	}
-
-	/**
-	 * 
-	 * DOCME
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args){
-		dies();
-		getNumber();	
-	}
-
 }
