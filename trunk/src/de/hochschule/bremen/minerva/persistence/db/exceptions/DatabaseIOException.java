@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id$
+ * $Id: WorldHandler.java 44 2010-04-07 10:20:55Z andre.koenig $
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,17 +29,17 @@
  */
 package de.hochschule.bremen.minerva.persistence.db.exceptions;
 
-public class DatabaseConnectionException extends Exception {
+public class DatabaseIOException extends Exception {
+	
+	/**
+	 * DOCME
+	 */
+	private static final long serialVersionUID = -5849231964218540565L;
 
 	/**
-	 * 
+	 * DOCME
 	 */
-	private static final long serialVersionUID = -7538188076728398157L;
-
-	/**
-	 * DOCME 
-	 */
-	public DatabaseConnectionException() {
+	public DatabaseIOException() {
 		super();
 	}
 
@@ -47,7 +47,7 @@ public class DatabaseConnectionException extends Exception {
 	 * DOCME
 	 * @param message
 	 */
-	public DatabaseConnectionException(String message) {
+	public DatabaseIOException(String message) {
 		super(message);
 	}
 }
