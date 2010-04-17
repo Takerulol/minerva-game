@@ -129,7 +129,7 @@ public class DatabaseAccessor {
 			statement.execute(sql);
 			return statement.getResultSet();
 		} catch (SQLException e) {
-			throw new DatabaseIOException("Error while selecting data from the database: "+e.getErrorCode());
+			throw new DatabaseIOException("Error while selecting data from the database: "+e.getMessage() + " - "+e.getErrorCode());
 		}
 	}
 	
