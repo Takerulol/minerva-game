@@ -29,6 +29,10 @@
  */
 package de.hochschule.bremen.minerva.persistence;
 
+import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.vo.AbstractValueObject;
+import de.hochschule.bremen.minerva.vo.World;
+
 /**
  * Each persistence handler needs the basic "crud operations".
  * 
@@ -37,11 +41,11 @@ package de.hochschule.bremen.minerva.persistence;
  */
 public interface Crudable {
 
-	public void delete();
+	public Object read(int id) throws PersistenceIOException;
 
-	public void save();
-	
-	public Object readAll();
-	
-	public Object read(int id) throws Exception;
+	public Object readAll() throws PersistenceIOException;
+
+	public void remove(AbstractValueObject candidate) throws PersistenceIOException;;
+
+	public void save(AbstractValueObject registrable) throws PersistenceIOException;
 }

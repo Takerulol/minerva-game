@@ -29,7 +29,7 @@
  */
 package de.hochschule.bremen.minerva.vo;
 
-public class Continent {
+public class Continent extends AbstractValueObject {
 
 	private int id = 0;
 	private String name = "";

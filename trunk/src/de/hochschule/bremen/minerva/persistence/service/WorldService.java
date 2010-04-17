@@ -32,6 +32,7 @@ package de.hochschule.bremen.minerva.persistence.service;
 import java.util.List;
 
 import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
 import de.hochschule.bremen.minerva.vo.World;
 
@@ -71,8 +72,9 @@ public class WorldService extends AbstractService {
 	 * DOCME
 	 * 
 	 * @return
+	 * @throws PersistenceIOException 
 	 */
-	public List<World> loadAll() {
+	public List<World> loadAll() throws PersistenceIOException {
 		List<World> worlds = (List<World>)storageHandler.readAll();
 		return worlds;
 	}
@@ -89,5 +91,22 @@ public class WorldService extends AbstractService {
 		} catch (Exception e) {
 			throw new WorldNotFoundException(e.getMessage());
 		}
+	}
+
+	@Override
+	public void save(Object candidate) throws PersistenceIOException {
+		World registrableWorld = (World)candidate;
+		storageHandler.save(registrableWorld);
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	@Override
+	public void delete(Object candidate) throws PersistenceIOException {
+		World deletableWorld = (World)candidate;
+		
+		storageHandler.remove(deletableWorld);
 	}
 }
