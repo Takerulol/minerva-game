@@ -30,7 +30,7 @@
 
 package de.hochschule.bremen.minerva.util;
 
-public class Die{
+public class Die {
 
 	private int number = 0;
 
@@ -38,7 +38,7 @@ public class Die{
 	 *  Calculate number.
 	 */
 	public void dice() {
-		this.number = (int)(Math.random()*6+1);
+		this.number = (int)((Math.random() * 6) + 1);
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class Die{
 	 * 
 	 * @return
 	 */
-	public int getNumber(){
+	public int getNumber() {
 		return number;
 	}
 }
