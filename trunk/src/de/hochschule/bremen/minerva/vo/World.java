@@ -176,7 +176,7 @@ public class World {
 	 * @return
 	 */
 	public String toString() {
-		return getClass().getName() + "[id=" + id + ",token=" +token + ",name=" + name + ",description=" + description + ",author=" + author + ",version=" + version + ",countries=" + countries +"]";
+		return getClass().getName() + ": [id=" + id + ", token=" +token + ", name=" + name + ", description=" + description + ", author=" + author + ", version=" + version + ", countries=" + countries +"]";
 	}
 	
 	

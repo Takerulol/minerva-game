@@ -30,7 +30,10 @@
 package de.hochschule.bremen.minerva;
 
 //import de.hochschule.bremen.minerva.exceptions.WorldImportException;
-import de.hochschule.bremen.minerva.service.WorldService;
+import java.util.List;
+
+import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
+import de.hochschule.bremen.minerva.persistence.service.WorldService;
 //import de.hochschule.bremen.minerva.util.*;
 import de.hochschule.bremen.minerva.vo.World;
 
@@ -40,14 +43,18 @@ public class App {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+
+		List<World> worlds = WorldService.getInstance().loadAll();
+		for (World world : worlds) {
+			System.out.println(world.toString());
+		}
 		
-		/*try {
-			new WorldImporter("C:/Dokumente und Einstellungen/akoenig/Desktop/hallo.world").exec();
-		} catch (WorldImportException e) {
-			System.out.println("Beim Importieren der Welt ist ein Fehler aufgetreten: "+e.getMessage());
-		}*/
-		
-		World myWorld = WorldService.getInstance().load();
-		System.out.println(myWorld.toString());
+		try {
+			World myWorld = WorldService.getInstance().load(2);			
+			System.out.println(myWorld.toString());
+		} catch (WorldNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

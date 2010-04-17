@@ -41,6 +41,7 @@ public interface Crudable {
 
 	public void save();
 	
-	public Object read();
+	public Object readAll();
 	
+	public Object read(int id) throws Exception;
 }

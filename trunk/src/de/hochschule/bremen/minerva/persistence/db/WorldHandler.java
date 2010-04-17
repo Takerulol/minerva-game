@@ -29,22 +29,84 @@
  */
 package de.hochschule.bremen.minerva.persistence.db;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import de.hochschule.bremen.minerva.vo.World;
 import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
+import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
 
 public class WorldHandler extends DatabaseAccessor implements Crudable {
 
-	private static String[][] sql = {
-		{"selectById", "select id, token, name, description, author, version from world where id = ?"}
-	};
+	private final static HashMap<String, String> sql = new HashMap<String, String>();
 	
-	@Override
-	public World read() {
-		Object results = this.select("");
-
-		return (World)results;
+	static {
+		sql.put("selectById", "select id, token, name, description, author, version from world where id = ?");
+		sql.put("selectAll", "select id, token, name, description, author, version from world");
 	}
-	
+
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	@Override
+	public List<World> readAll() {
+		List<World> worlds = new ArrayList<World>();
+
+		try {
+			ResultSet record = this.select(sql.get("selectAll"));
+
+			while (record.next()) {
+				worlds.add(this.recordToWorldObject(record));
+			}
+
+			record.close();
+		} catch (DatabaseIOException e) {
+			// TODO: Implement own Exception class
+			System.out.println("Fehler: "+e.getMessage());
+			//throw new PersistenceIOException();
+		} catch (SQLException e) {
+			// TODO: Implement own Exception class
+			System.out.println("Fehler: "+e.getMessage());
+		}
+
+		return worlds;
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @throws WorldNotFoundException 
+	 * 
+	 */
+	public World read(int id) throws WorldNotFoundException { //throws WorldNotFoundException {
+		World world = null;
+		Object[] params = {id};
+		
+		try {
+			ResultSet record = this.select(sql.get("selectById"), params);
+			if (record.next()) {
+				world = this.recordToWorldObject(record);
+				record.close();
+			} else {
+				throw new WorldNotFoundException("Found no world with id: '"+id+"'.");
+			}
+
+		} catch (DatabaseIOException e) {
+			
+		} catch (SQLException e) {
+			// TODO: Implement own Exception class
+			System.out.println("Fehler: "+e.getMessage());
+		}
+
+		return world;
+	}
+
 	@Override
 	public void delete() {
 		
@@ -55,4 +117,23 @@ public class WorldHandler extends DatabaseAccessor implements Crudable {
 
 	}
 
+	/**
+	 * DOCME
+	 * 
+	 * @param current
+	 * @return
+	 * @throws SQLException
+	 */
+	private World recordToWorldObject(ResultSet current) throws SQLException {
+		World world = new World();
+
+		world.setId(current.getInt(1));
+		world.setToken(current.getString(2).trim());
+		world.setName(current.getString(3).trim());
+		world.setDescription(current.getString(4).trim());
+		world.setAuthor(current.getString(5).trim());
+		world.setVersion(current.getString(6).trim());
+
+		return world;
+	}
 }
