@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id: Crudable.java 44 2010-04-07 10:20:55Z andre.koenig $
+ * $Id$
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,19 +29,19 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
-public class WorldNotFoundException extends PersistenceIOException {
+public class WorldExistsException extends PersistenceIOException {
+
+	/**
+	 * DOCME
+	 *  
+	 */
+	private static final long serialVersionUID = 8365171814386246346L;
 
 	/**
 	 * DOCME
 	 * 
 	 */
-	private static final long serialVersionUID = 1512130570169982223L;
-
-	/**
-	 * DOCME
-	 * 
-	 */
-	public WorldNotFoundException() {
+	public WorldExistsException() {
 		super();
 	}
 
@@ -49,7 +49,7 @@ public class WorldNotFoundException extends PersistenceIOException {
 	 * DOCME
 	 * @param message
 	 */
-	public WorldNotFoundException(String message) {
+	public WorldExistsException(String message) {
 		super(message);
 	}
 }

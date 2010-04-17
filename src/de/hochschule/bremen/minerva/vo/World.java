@@ -32,7 +32,7 @@ package de.hochschule.bremen.minerva.vo;
 
 import java.util.Vector;
 
-public class World {
+public class World extends AbstractValueObject {
 	
 	private int id = 0;
 	private String token = "";

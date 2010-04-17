@@ -32,6 +32,7 @@ package de.hochschule.bremen.minerva;
 //import de.hochschule.bremen.minerva.exceptions.WorldImportException;
 import java.util.List;
 
+import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
 import de.hochschule.bremen.minerva.persistence.service.WorldService;
 //import de.hochschule.bremen.minerva.util.*;
@@ -44,16 +45,31 @@ public class App {
 	 */
 	public static void main(String[] args) {
 
-		List<World> worlds = WorldService.getInstance().loadAll();
-		for (World world : worlds) {
-			System.out.println(world.toString());
-		}
-		
 		try {
-			World myWorld = WorldService.getInstance().load(2);			
-			System.out.println(myWorld.toString());
-		} catch (WorldNotFoundException e) {
-			// TODO Auto-generated catch block
+			List<World> worlds = WorldService.getInstance().loadAll();
+			for (World world : worlds) {
+				System.out.println(world.toString());
+			}
+
+			World myWorld = WorldService.getInstance().load(2);
+			
+			//WorldService.getInstance().delete(myWorld);
+
+			/*World w = new World();
+			w.setAuthor("Andre");
+			w.setDescription("Ein kleiner Text.");
+			w.setName("Eine Welt");
+			w.setToken("w1");
+			w.setVersion("1.0.1");
+
+			WorldService.getInstance().save(w);
+			myWorld.setToken("earth");
+			WorldService.getInstance().save(myWorld);*/
+			myWorld.setToken("usa");
+
+			WorldService.getInstance().save(myWorld);
+			
+		} catch (PersistenceIOException e) {
 			e.printStackTrace();
 		}
 	}

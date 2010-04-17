@@ -29,13 +29,45 @@
  */
 package de.hochschule.bremen.minerva.persistence.service;
 
+import java.util.List;
+
 import de.hochschule.bremen.minerva.persistence.Persistence;
 import de.hochschule.bremen.minerva.persistence.db.DatabasePersistence;
+import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.persistence.file.FilebasedPersistence;
+import de.hochschule.bremen.minerva.vo.AbstractValueObject;
 
 public abstract class AbstractService {
 
 	// PersistenceHandler - We use a database for persistence.
 	// If we want to switch to a file based storage - here is the place.
 	protected static Persistence storage = new DatabasePersistence(); 
+	
+	// DOCME!!!
+	abstract public List<?> loadAll() throws PersistenceIOException;
 
+	// DOCME!!!
+	abstract public AbstractValueObject load(int id) throws PersistenceIOException;
+
+	// DOCME!!!
+	abstract public void save(Object candidate) throws PersistenceIOException;
+
+	// DOCME!!!
+	abstract public void delete(Object candidate) throws PersistenceIOException;
+
+	/**
+	 * Possibility to switch the persistence engine.
+	 * We determine the current persistence engine and
+	 * switch to file based or database storage.
+	 * 
+	 * CAUTION: To avoid data loss use this method chary!
+	 *
+	 */
+	public static void switchPersistenceEngine() {
+		if (storage instanceof DatabasePersistence) {
+			storage = new FilebasedPersistence();
+		} else {
+			storage = new DatabasePersistence();
+		}
+	}
 }

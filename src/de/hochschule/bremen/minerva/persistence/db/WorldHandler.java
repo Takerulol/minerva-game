@@ -35,27 +35,35 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import de.hochschule.bremen.minerva.vo.AbstractValueObject;
 import de.hochschule.bremen.minerva.vo.World;
 import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.persistence.exceptions.WorldExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
+import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateRecordException;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
 
 public class WorldHandler extends DatabaseAccessor implements Crudable {
 
 	private final static HashMap<String, String> sql = new HashMap<String, String>();
-	
+
 	static {
 		sql.put("selectById", "select id, token, name, description, author, version from world where id = ?");
-		sql.put("selectAll", "select id, token, name, description, author, version from world");
+		sql.put("selectAll", "select id, token, name, description, author, version from world order by name");
+		sql.put("insert", "insert into world (token, name, description, author, version) values (?, ?, ?, ?, ?)");
+		sql.put("delete", "delete from world where id = ?");
 	}
 
 
 	/**
-	 * DOCME
+	 * Loads all worlds from the database and return a
+	 * list with world value objects.
 	 * 
+	 * @see de.hochschule.bremen.minerva.vo.World
 	 */
 	@Override
-	public List<World> readAll() {
+	public List<World> readAll() throws PersistenceIOException {
 		List<World> worlds = new ArrayList<World>();
 
 		try {
@@ -67,12 +75,10 @@ public class WorldHandler extends DatabaseAccessor implements Crudable {
 
 			record.close();
 		} catch (DatabaseIOException e) {
-			// TODO: Implement own Exception class
-			System.out.println("Fehler: "+e.getMessage());
-			//throw new PersistenceIOException();
+			throw new PersistenceIOException(e.getMessage());
 		} catch (SQLException e) {
-			// TODO: Implement own Exception class
-			System.out.println("Fehler: "+e.getMessage());
+			throw new PersistenceIOException("Error occurred while recieving a world list from the database: "
+											 +e.getMessage()+" - "+e.getErrorCode());
 		}
 
 		return worlds;
@@ -80,11 +86,10 @@ public class WorldHandler extends DatabaseAccessor implements Crudable {
 
 	/**
 	 * DOCME
-	 * 
-	 * @throws WorldNotFoundException 
+	 * @throws PersistenceIOException 
 	 * 
 	 */
-	public World read(int id) throws WorldNotFoundException { //throws WorldNotFoundException {
+	public World read(int id) throws PersistenceIOException { //throws WorldNotFoundException {
 		World world = null;
 		Object[] params = {id};
 		
@@ -98,23 +103,49 @@ public class WorldHandler extends DatabaseAccessor implements Crudable {
 			}
 
 		} catch (DatabaseIOException e) {
-			
+			throw new PersistenceIOException(e.getMessage());
 		} catch (SQLException e) {
-			// TODO: Implement own Exception class
-			System.out.println("Fehler: "+e.getMessage());
+			throw new PersistenceIOException("Error occurred while reading the world (id="
+											 +id+") from the database.");
 		}
 
 		return world;
 	}
 
 	@Override
-	public void delete() {
-		
+	public void save(AbstractValueObject registrable) throws PersistenceIOException {
+		World registrableWorld = (World)registrable;
+		Object[] params = {
+			registrableWorld.getToken(),
+			registrableWorld.getName(),
+			registrableWorld.getDescription(),
+			registrableWorld.getAuthor(),
+			registrableWorld.getVersion()
+		};
+
+		try {
+			this.insert(sql.get("insert"), params);
+		} catch (DatabaseIOException e) {
+			try {
+				this.update(sql.get("update"), params);
+			} catch (DatabaseDuplicateRecordException exe) {
+				throw new WorldExistsException("Unable to serialize the world. There is already a similar one.");
+			} catch (DatabaseIOException ex) {
+				throw new PersistenceIOException("Unable to serialize the world object: "+ex.getMessage());
+			}
+		}
 	}
 
 	@Override
-	public void save() {
+	public void remove(AbstractValueObject candidate) throws PersistenceIOException {
+		World deletableWorld = (World)candidate;
+		Object[] params = {deletableWorld.getId()};
 
+		try {
+			this.delete(sql.get("delete"), params);
+		} catch (DatabaseIOException e) {
+			throw new PersistenceIOException(e.getMessage());
+		}
 	}
 
 	/**

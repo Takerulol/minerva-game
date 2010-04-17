@@ -29,6 +29,6 @@
  */
 package de.hochschule.bremen.minerva.vo;
 
-public class Army {
+public class Army extends AbstractValueObject {
 
 }

@@ -29,6 +29,6 @@
  */
 package de.hochschule.bremen.minerva.vo;
 
-public class Player {
+public class Player extends AbstractValueObject {
 
 }
