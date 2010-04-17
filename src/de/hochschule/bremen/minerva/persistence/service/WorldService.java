@@ -27,15 +27,50 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.service;
+package de.hochschule.bremen.minerva.persistence.service;
 
-import de.hochschule.bremen.minerva.persistence.Persistence;
-import de.hochschule.bremen.minerva.persistence.db.DatabasePersistence;
+import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.vo.World;
 
-public abstract class AbstractService {
+/**
+ * DOCME
+ * @author akoenig
+ *
+ */
+public class WorldService extends AbstractService {
 
-	// PersistenceHandler - We use a database for persistence.
-	// If a switch to a file based storage, change it here.
-	protected static Persistence storage = new DatabasePersistence(); 
+	private static WorldService instance = null;
 
+	private Crudable storageHandler = this.storage.createHandler(World.class);
+
+	/**
+	 * Singleton pattern. It is not possible
+	 * to create a WorldService in the common way.
+	 * So this constructor is private.
+	 * 
+	 */
+	private WorldService() {}
+	
+	/**
+	 * Singleton pattern.
+	 * Static method that controls the object creation.
+	 * 
+	 * @return DOCME
+	 */
+	public static WorldService getInstance() {
+		if (WorldService.instance == null) {
+			WorldService.instance = new WorldService();
+		}
+		return WorldService.instance;
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @return
+	 */
+	public World load() {
+		System.out.println("WorldService::load");
+		return (World)storageHandler.read();
+	}
 }
