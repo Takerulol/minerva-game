@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id: WorldHandler.java 44 2010-04-07 10:20:55Z andre.koenig $
+ * $Id$
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -181,5 +181,29 @@ public class DatabaseAccessor {
 	 */
 	protected void insert(String sql) throws DatabaseIOException {
 	
+	}
+
+	/**
+	 * TODO: Move the statements to static array.
+	 * Just for testing purposes.
+	 */
+	private void createDatabaseModel() {
+		try {
+			Statement statement = DatabaseAccessor.connection.createStatement();
+
+			// Create the "world" table
+			statement.execute("CREATE TABLE world (id INT NOT NULL GENERATED ALWAYS AS IDENTITY,token CHAR(5) NOT NULL,name CHAR(64) UNIQUE NOT NULL,description VARCHAR(1024) NOT NULL,author VARCHAR(256) NOT NULL,version CHAR(10) NOT NULL,PRIMARY KEY (id))");
+			PreparedStatement preparedStatement = DatabaseAccessor.connection.prepareStatement("insert into world (token, name, description, author, version) values (?, ?, ?, ?, ?)");
+			preparedStatement.setString(1, "usa");
+			preparedStatement.setString(2, "United States");
+			preparedStatement.setString(3, "Eine winzige Beschreibung");
+			preparedStatement.setString(4, "Andre Koenig");
+			preparedStatement.setString(5, "1.0 beta");
+			preparedStatement.execute();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
