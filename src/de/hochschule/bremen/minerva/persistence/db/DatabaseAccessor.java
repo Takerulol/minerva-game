@@ -80,7 +80,7 @@ public class DatabaseAccessor {
 	 * DOCME
 	 * 
 	 */
-	private void disconnect() throws DatabaseConnectionException {
+	public void disconnect() throws DatabaseConnectionException {
 		try {
 			if (DatabaseAccessor.connection != null) {
 				DatabaseAccessor.connection.close();
@@ -101,7 +101,7 @@ public class DatabaseAccessor {
 		statement.clearParameters();
 		for (int i = 0; i < params.length; i++) {
 			Object param = params[i];
-			Class paramType = param.getClass();
+			Class<? extends Object> paramType = param.getClass();
 
 			if (paramType == java.lang.String.class) {
 				statement.setString(i+1, (String)param);
@@ -181,31 +181,5 @@ public class DatabaseAccessor {
 	 */
 	protected void insert(String sql) throws DatabaseIOException {
 	
-	}
-
-	/**
-	 * TODO: Move the statements to static array.
-	 * Just for testing purposes.
-	 */
-	private void createDatabaseModel() {
-		try {
-			Statement statement = DatabaseAccessor.connection.createStatement();
-
-			// Create the "world" table
-			statement.execute("CREATE TABLE world (id INT NOT NULL GENERATED ALWAYS AS IDENTITY,token CHAR(5) NOT NULL,name CHAR(64) UNIQUE NOT NULL,description VARCHAR(1024) NOT NULL,author VARCHAR(256) NOT NULL,version CHAR(10) NOT NULL,PRIMARY KEY (id))");
-			PreparedStatement preparedStatement = DatabaseAccessor.connection.prepareStatement("insert into world (token, name, description, author, version) values (?, ?, ?, ?, ?)");
-			preparedStatement.setString(1, "usa");
-			preparedStatement.setString(2, "United States");
-			preparedStatement.setString(3, "Eine winzige Beschreibung");
-			preparedStatement.setString(4, "Andre Koenig");
-			preparedStatement.setString(5, "1.0 beta");
-			preparedStatement.execute();
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		
 	}
 }
