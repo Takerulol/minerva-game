@@ -27,8 +27,43 @@
  *     http://minerva.idira.de
  * 
  */
+
 package de.hochschule.bremen.minerva.util;
 
-public class Die {
+public class Die{
 
+	private static int number;
+
+	/**
+	 * DOCME
+	 */
+	public Die(){}
+
+	/**
+	 *  Calculate number.
+	 */
+	public static void dies(){
+		number=(int)(Math.random()*6+1);
+	}
+
+	/**
+	 * 
+	 * Return number.
+	 * 
+	 * @return
+	 */
+	public static int getNumber(){
+		return number;
+	}
+
+	/**
+	 * 
+	 * DOCME
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args){
+		dies();
+		getNumber();	
+	}	
 }
