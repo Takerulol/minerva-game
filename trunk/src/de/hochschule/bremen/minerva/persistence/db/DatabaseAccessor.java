@@ -207,7 +207,7 @@ public class DatabaseAccessor {
 	 * TODO: Move the statements to static array.
 	 * Just for testing purposes.
 	 */
-	private void createDatabaseModel() {
+	public void createDatabaseModel() {
 		try {
 			Statement statement = DatabaseAccessor.connection.createStatement();
 

@@ -36,7 +36,7 @@ import de.hochschule.bremen.minerva.persistence.Crudable;
 public class DatabasePersistence implements Persistence {
 	
 	@Override
-	public Crudable createHandler(Class type) {
+	public Crudable createHandler(Class<?> type) {
 		if (type == World.class) {
 			return new WorldHandler();
 		}
