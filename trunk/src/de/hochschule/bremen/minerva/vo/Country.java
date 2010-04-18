@@ -40,8 +40,7 @@ public class Country extends AbstractValueObject {
 	private Color color = null;
 	private Continent continent = null;
 	private List<Country> neighbours = null;
-
-	//private int world = 0;
+	private int worldId = 0;
 
 	/**
 	 * Sets the country id.
@@ -150,6 +149,24 @@ public class Country extends AbstractValueObject {
 	}
 
 	/**
+	 * Sets the world id.
+	 * 
+	 * @param worldId
+	 */
+	public void setWorldId(int worldId) {
+		this.worldId = worldId;
+	}
+
+	/**
+	 * Returns the world id
+	 * 
+	 * @return
+	 */
+	public int getWorldId() {
+		return worldId;
+	}
+
+	/**
 	 * Made out of all attributes one string.
 	 * 
 	 * @return
@@ -157,6 +174,4 @@ public class Country extends AbstractValueObject {
 	public String toString() {
 		return getClass().getName() + "[id=" + id + ",token=" +token + ",name=" + name + ",color=" + color + ",continent=" + continent + ",neighbours=" + neighbours + "]";
 	}
-	
-	
 }

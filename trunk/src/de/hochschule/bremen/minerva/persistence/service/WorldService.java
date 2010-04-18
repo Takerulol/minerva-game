@@ -29,7 +29,7 @@
  */
 package de.hochschule.bremen.minerva.persistence.service;
 
-import java.util.List;
+import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Crudable;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
@@ -75,8 +75,8 @@ public class WorldService extends PersistenceService {
 	 * @throws PersistenceIOException 
 	 */
 	@SuppressWarnings("unchecked")
-	public List<World> loadAll() throws PersistenceIOException {
-		List<World> worlds = (List<World>)storageHandler.readAll();
+	public Vector<World> loadAll() throws PersistenceIOException {
+		Vector<World> worlds = (Vector<World>)storageHandler.readAll();
 		return worlds;
 	}
 

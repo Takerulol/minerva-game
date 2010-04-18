@@ -29,27 +29,29 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
-public class WorldNotFoundException extends PersistenceIOException {
+public class CountryNotFoundException extends PersistenceIOException {
+
+	/**
+	 * DOCME
+	 *  
+	 */
+	private static final long serialVersionUID = -413264982056999150L;
 
 	/**
 	 * DOCME
 	 * 
+	 * @param message
 	 */
-	private static final long serialVersionUID = 1512130570169982223L;
-
-	/**
-	 * DOCME
-	 * 
-	 */
-	public WorldNotFoundException() {
+	public CountryNotFoundException() {
 		super();
 	}
 
 	/**
 	 * DOCME
+	 * 
 	 * @param message
 	 */
-	public WorldNotFoundException(String message) {
+	public CountryNotFoundException(String message) {
 		super(message);
 	}
 }
