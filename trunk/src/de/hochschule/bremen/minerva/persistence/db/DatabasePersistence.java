@@ -32,17 +32,24 @@ package de.hochschule.bremen.minerva.persistence.db;
 import de.hochschule.bremen.minerva.vo.*;
 import de.hochschule.bremen.minerva.persistence.Persistence;
 import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.db.handler.ContinentHandler;
 import de.hochschule.bremen.minerva.persistence.db.handler.CountryHandler;
 import de.hochschule.bremen.minerva.persistence.db.handler.WorldHandler;
 
 public class DatabasePersistence implements Persistence {
-	
+
+	/**
+	 * DOCME
+	 * 
+	 */
 	@Override
 	public Crudable createHandler(Class<?> type) {
 		if (type == World.class) {
 			return new WorldHandler();
 		} else if (type == Country.class) {
 			return new CountryHandler();
+		} else if (type == Continent.class) {
+			return new ContinentHandler();
 		}
 		return null;
 	}

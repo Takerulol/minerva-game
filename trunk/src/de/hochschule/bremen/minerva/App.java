@@ -29,10 +29,10 @@
  */
 package de.hochschule.bremen.minerva;
 
-import java.awt.Color;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.persistence.service.ContinentService;
 import de.hochschule.bremen.minerva.persistence.service.CountryService;
 import de.hochschule.bremen.minerva.persistence.service.WorldService;
 import de.hochschule.bremen.minerva.vo.Country;
@@ -47,32 +47,19 @@ public class App {
 
 		try {
 			Vector<World> worlds = WorldService.getInstance().loadAll();
-			World myWorld = null;
 
 			for (World world : worlds) {
-				System.out.println(world.toString());
-				if (world.getId() == 1) {
-					myWorld = world;
+				Vector<Country> countries = CountryService.getInstance().loadAll(world);
+				world.setCountries(countries);
+				
+				for (Country country : countries) {
+					country.setContinent(ContinentService.getInstance().load(country.getContinent().getId()));
 				}
+				
+				System.out.println(world.toString());
 			}
 
-			Vector<Country> countries = CountryService.getInstance().loadAll(myWorld);			
-			
-			for (Country country : countries) {
-				System.out.println(country.toString());
-			}
 
-			Country oneCountry = CountryService.getInstance().load(1);
-			System.out.println("Das geladene Land lautet: ");
-			System.out.println(oneCountry.toString());
-			
-			oneCountry.setColor(Color.BLACK);
-			oneCountry.setName("Afghanistan");
-			
-			CountryService.getInstance().save(oneCountry);
-			
-			oneCountry = CountryService.getInstance().load(1);
-			System.out.println(oneCountry.toString());
 		} catch (PersistenceIOException e) {
 			e.printStackTrace();
 		}
