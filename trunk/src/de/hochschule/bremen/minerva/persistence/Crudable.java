@@ -88,7 +88,7 @@ public interface Crudable {
 	 * @param candidate
 	 * @throws PersistenceIOException
 	 */
-	public void remove(ValueObject candidate) throws PersistenceIOException;;
+	public void remove(ValueObject<? extends ValueObject> candidate) throws PersistenceIOException;
 
 	/**
 	 * Save combines the "CRUD" operations: create and update
