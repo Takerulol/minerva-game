@@ -64,7 +64,7 @@ public class WorldHandler extends AbstractDatabaseHandler implements Crudable {
 	 * @throws PersistenceIOException 
 	 * 
 	 */
-	public World read(int id) throws PersistenceIOException { //throws WorldNotFoundException {
+	public World read(int id) throws PersistenceIOException {
 		World world = null;
 		Object[] params = {id};
 		
