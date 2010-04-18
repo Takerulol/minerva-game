@@ -31,4 +31,63 @@ package de.hochschule.bremen.minerva.vo;
 
 public class Player extends ValueObject {
 
+	private int id = 0;
+	private String username = "";
+	private String last_name = "";
+	private String first_name = "";
+	private String email = "";
+	private String last_login = "";
+	
+	/*
+	 *  TODO:
+	 *  - add getter/setter documentation.
+	 * 
+	 */
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setLast_name(String last_name) {
+		this.last_name = last_name;
+	}
+	public String getLast_name() {
+		return last_name;
+	}
+	public void setFirst_name(String first_name) {
+		this.first_name = first_name;
+	}
+	public String getFirst_name() {
+		return first_name;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setLast_login(String last_login) {
+		this.last_login = last_login;
+	}
+	public String getLast_login() {
+		return last_login;
+	}
+
+	/**
+	 * Made out of all attributes one string
+	 * 
+	 * @return
+	 */
+	public String toString() {
+		return getClass().getName() + "[id=" + id + ",username=" + username + ",last_name=" + last_name + ",first_name=" + first_name + ",email=" + email + ",last_login=" + last_login + "]";
+	}
+	
 }
