@@ -31,9 +31,8 @@ package de.hochschule.bremen.minerva.persistence.db.handler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Vector;
 
 import de.hochschule.bremen.minerva.vo.AbstractValueObject;
 import de.hochschule.bremen.minerva.vo.World;
@@ -41,11 +40,10 @@ import de.hochschule.bremen.minerva.persistence.Crudable;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
-import de.hochschule.bremen.minerva.persistence.db.DatabaseAccessor;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateRecordException;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
 
-public class WorldHandler extends DatabaseAccessor implements Crudable {
+public class WorldHandler extends AbstractDatabaseHandler implements Crudable {
 
 	private final static HashMap<String, String> sql = new HashMap<String, String>();
 
@@ -53,6 +51,7 @@ public class WorldHandler extends DatabaseAccessor implements Crudable {
 		sql.put("selectById", "select id, token, name, description, author, version from world where id = ?");
 		sql.put("selectAll", "select id, token, name, description, author, version from world order by name");
 		sql.put("insert", "insert into world (token, name, description, author, version) values (?, ?, ?, ?, ?)");
+		sql.put("update", "update world set token = ?, name = ?, description = ?, author = ?, version = ? where id = ?");
 		sql.put("delete", "delete from world where id = ?");
 	}
 
@@ -64,21 +63,21 @@ public class WorldHandler extends DatabaseAccessor implements Crudable {
 	 * @see de.hochschule.bremen.minerva.vo.World
 	 */
 	@Override
-	public List<World> readAll() throws PersistenceIOException {
-		List<World> worlds = new ArrayList<World>();
+	public Vector<World> readAll() throws PersistenceIOException {
+		Vector<World> worlds = new Vector<World>();
 
 		try {
 			ResultSet record = this.select(sql.get("selectAll"));
 
 			while (record.next()) {
-				worlds.add(this.recordToWorldObject(record));
+				worlds.add(this.resultSetToObject(record));
 			}
 
 			record.close();
 		} catch (DatabaseIOException e) {
 			throw new PersistenceIOException(e.getMessage());
 		} catch (SQLException e) {
-			throw new PersistenceIOException("Error occurred while recieving a world list from the database: "
+			throw new PersistenceIOException("Error occurred while receiving a world list from the database: "
 											 +e.getMessage()+" - "+e.getErrorCode());
 		}
 
@@ -97,7 +96,7 @@ public class WorldHandler extends DatabaseAccessor implements Crudable {
 		try {
 			ResultSet record = this.select(sql.get("selectById"), params);
 			if (record.next()) {
-				world = this.recordToWorldObject(record);
+				world = this.resultSetToObject(record);
 				record.close();
 			} else {
 				throw new WorldNotFoundException("Found no world with id: '"+id+"'.");
@@ -116,18 +115,27 @@ public class WorldHandler extends DatabaseAccessor implements Crudable {
 	@Override
 	public void save(AbstractValueObject registrable) throws PersistenceIOException {
 		World registrableWorld = (World)registrable;
-		Object[] params = {
-			registrableWorld.getToken(),
-			registrableWorld.getName(),
-			registrableWorld.getDescription(),
-			registrableWorld.getAuthor(),
-			registrableWorld.getVersion()
-		};
 
 		try {
+			Object[] params = {
+				registrableWorld.getToken(),
+				registrableWorld.getName(),
+				registrableWorld.getDescription(),
+				registrableWorld.getAuthor(),
+				registrableWorld.getVersion()
+			};
+
 			this.insert(sql.get("insert"), params);
 		} catch (DatabaseIOException e) {
 			try {
+				Object[] params = {
+					registrableWorld.getToken(),
+					registrableWorld.getName(),
+					registrableWorld.getDescription(),
+					registrableWorld.getAuthor(),
+					registrableWorld.getVersion(),
+					registrableWorld.getId()
+				};
 				this.update(sql.get("update"), params);
 			} catch (DatabaseDuplicateRecordException exe) {
 				throw new WorldExistsException("Unable to serialize the world. There is already a similar one.");
@@ -156,7 +164,7 @@ public class WorldHandler extends DatabaseAccessor implements Crudable {
 	 * @return
 	 * @throws SQLException
 	 */
-	private World recordToWorldObject(ResultSet current) throws SQLException {
+	protected World resultSetToObject(ResultSet current) throws SQLException {
 		World world = new World();
 
 		world.setId(current.getInt(1));
