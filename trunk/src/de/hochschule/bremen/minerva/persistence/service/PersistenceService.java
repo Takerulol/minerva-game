@@ -37,7 +37,7 @@ import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOExceptio
 import de.hochschule.bremen.minerva.persistence.file.FilebasedPersistence;
 import de.hochschule.bremen.minerva.vo.AbstractValueObject;
 
-public abstract class AbstractService {
+public abstract class PersistenceService {
 
 	// PersistenceHandler - We use a database for persistence.
 	// If we want to switch to a file based storage - here is the place.
