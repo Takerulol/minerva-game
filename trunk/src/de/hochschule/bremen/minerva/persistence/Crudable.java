@@ -29,22 +29,70 @@
  */
 package de.hochschule.bremen.minerva.persistence;
 
+import java.util.Vector;
+
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
-import de.hochschule.bremen.minerva.vo.AbstractValueObject;
+import de.hochschule.bremen.minerva.vo.ValueObject;
 
 /**
- * Each persistence handler needs the basic "crud operations".
+ * Each persistence handler needs the basic "CRUD" operations.
+ * CRUD is:
+ * 
+ * "In computer programming, Create, Read, Update and Delete (CRUD)
+ * are the four basic functions of persistent storage.[1] Sometimes
+ * CRUD is expanded with the words retrieve instead of read or destroy
+ * instead of delete. It is also sometimes used to describe user interface
+ * conventions that facilitate viewing, searching, and changing information;
+ * often using computer-based forms and reports."
  * 
  * @author akoenig
  *
  */
 public interface Crudable {
 
-	public Object read(int id) throws PersistenceIOException;
+	/**
+	 * DOCME
+	 * 
+	 * @param id
+	 * @return
+	 * @throws PersistenceIOException
+	 */
+	public ValueObject read(int id) throws PersistenceIOException;
 
-	public Object readAll() throws PersistenceIOException;
+	/**
+	 * DOCME
+	 * 
+	 * @return
+	 * @throws PersistenceIOException
+	 */
+	public Vector<? extends ValueObject> readAll() throws PersistenceIOException;
 
-	public void remove(AbstractValueObject candidate) throws PersistenceIOException;;
+	/**
+	 * Note: The reference parameter is optional. We use it if
+	 * we have to read data by a given referenced value object
+	 * (for example: read all countries by the referenced world).
+	 * This is because Java does not support optional parameters. In some
+	 * cases, like this one, this restriction is not very dressy.
+	 *  
+	 * @param reference
+	 * @return
+	 * @throws PersistenceIOException
+	 */
+	public Vector<? extends ValueObject> readAll(ValueObject reference) throws PersistenceIOException;
 
-	public void save(AbstractValueObject registrable) throws PersistenceIOException;
+	/**
+	 * DOCME
+	 * 
+	 * @param candidate
+	 * @throws PersistenceIOException
+	 */
+	public void remove(ValueObject candidate) throws PersistenceIOException;;
+
+	/**
+	 * Save combines the "CRUD" operations: create and update
+	 * 
+	 * @param registrable
+	 * @throws PersistenceIOException
+	 */
+	public void save(ValueObject registrable) throws PersistenceIOException;
 }
