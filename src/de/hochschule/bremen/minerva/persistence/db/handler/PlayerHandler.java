@@ -143,10 +143,10 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Crudable {
 			Object[] params = {
 				registrablePlayer.getUsername(),
 				registrablePlayer.getPassword(),
-				registrablePlayer.getLast_name(),
-				registrablePlayer.getFirst_name(),
+				registrablePlayer.getLastName(),
+				registrablePlayer.getFirstName(),
 				registrablePlayer.getEmail(),
-				registrablePlayer.getLast_login()
+				registrablePlayer.getLastLogin()
 			};
 
 			this.insert(sql.get("insert"), params);
@@ -155,10 +155,10 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Crudable {
 				Object[] params = {
 						registrablePlayer.getUsername(),
 						registrablePlayer.getPassword(),
-						registrablePlayer.getLast_name(),
-						registrablePlayer.getFirst_name(),
+						registrablePlayer.getLastName(),
+						registrablePlayer.getFirstName(),
 						registrablePlayer.getEmail(),
-						registrablePlayer.getLast_login()
+						registrablePlayer.getLastLogin()
 				};
 
 				this.update(sql.get("update"), params);
@@ -188,10 +188,10 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Crudable {
 		player.setId(current.getInt(1));
 		player.setUsername(current.getString(2));
 		player.setPassword(current.getString(3));
-		player.setLast_name(current.getString(4));
-		player.setFirst_name(current.getString(5));
+		player.setLastName(current.getString(4));
+		player.setFirstName(current.getString(5));
 		player.setEmail(current.getString(6));
-		player.setLast_login(current.getString(7));
+		player.setLastLogin(current.getString(7));
 		
 		return player;
 	}

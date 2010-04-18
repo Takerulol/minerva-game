@@ -32,60 +32,129 @@ package de.hochschule.bremen.minerva.vo;
 public class Player extends ValueObject {
 
 	private int id = 0;
-	private String username = "";
-	private String password = "";
-	private String last_name = "";
-	private String first_name = "";
-	private String email = "";
-	private String last_login = "";
+	private String username = null;
+	private String password = null;
+	private String lastName = null;
+	private String firstName = null;
+	private String email = null;
+	private String lastLogin = null;
 	
 	/*
 	 *  TODO:
 	 *  - add getter/setter documentation.
 	 * 
 	 */
-	
+
+	/**
+	 * DOCME
+	 * 
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
 	public int getId() {
 		return id;
 	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
 	public String getUsername() {
 		return username;
 	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
 	public String getPassword() {
 		return password;
 	}
-	public void setLast_name(String last_name) {
-		this.last_name = last_name;
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
-	public String getLast_name() {
-		return last_name;
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	public String getLastName() {
+		return lastName;
 	}
-	public void setFirst_name(String first_name) {
-		this.first_name = first_name;
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
-	public String getFirst_name() {
-		return first_name;
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	public String getFirstName() {
+		return firstName;
 	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
 	public String getEmail() {
 		return email;
 	}
-	public void setLast_login(String last_login) {
-		this.last_login = last_login;
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	public void setLastLogin(String lastLogin) {
+		this.lastLogin = lastLogin;
 	}
-	public String getLast_login() {
-		return last_login;
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	public String getLastLogin() {
+		return lastLogin;
 	}
 
 	/**
@@ -94,9 +163,6 @@ public class Player extends ValueObject {
 	 * @return
 	 */
 	public String toString() {
-		return getClass().getName() + "[id=" + id + ",username=" + username + ",last_name=" + last_name + ",first_name=" + first_name + ",email=" + email + ",last_login=" + last_login + "]";
+		return getClass().getName() + "[id=" + id + ",username=" + username + ",last_name=" + lastName + ",first_name=" + firstName + ",email=" + email + ",last_login=" + lastLogin + "]";
 	}
-
-
-	
 }
