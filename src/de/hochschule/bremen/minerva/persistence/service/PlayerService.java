@@ -6,7 +6,6 @@ import java.util.Vector;
 import de.hochschule.bremen.minerva.persistence.Crudable;
 import de.hochschule.bremen.minerva.persistence.exceptions.CountryNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
-import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
@@ -58,6 +57,7 @@ public class PlayerService extends PersistenceService {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<Player> loadAll() throws PersistenceIOException {
 		
 		Vector<Player> players = (Vector)storageHandler.readAll();
