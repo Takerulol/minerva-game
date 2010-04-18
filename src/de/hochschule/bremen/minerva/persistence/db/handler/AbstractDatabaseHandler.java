@@ -154,6 +154,8 @@ public abstract class AbstractDatabaseHandler {
 	 * @throws Exception
 	 */
 	protected void update(String sql, Object[] params) throws DatabaseIOException {
+		this.connect();
+
 		try {
 			PreparedStatement statement = this.createPreparedStatement(sql, params);
 			statement.execute();
@@ -175,6 +177,8 @@ public abstract class AbstractDatabaseHandler {
 	 * @throws Exception
 	 */
 	protected void delete(String sql, Object[] params) throws DatabaseIOException {
+		this.connect();
+
 		try {
 			PreparedStatement statement = this.createPreparedStatement(sql, params);
 			statement.execute();
@@ -190,6 +194,8 @@ public abstract class AbstractDatabaseHandler {
 	 * @throws Exception
 	 */
 	protected void insert(String sql, Object[] params) throws DatabaseIOException {
+		this.connect();
+
 		try {
 			PreparedStatement statement = this.createPreparedStatement(sql, params);
 			statement.execute();
