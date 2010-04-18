@@ -41,7 +41,7 @@ import de.hochschule.bremen.minerva.vo.World;
  * @author akoenig
  *
  */
-public class WorldService extends AbstractService {
+public class WorldService extends PersistenceService {
 
 	private static WorldService instance = null;
 
