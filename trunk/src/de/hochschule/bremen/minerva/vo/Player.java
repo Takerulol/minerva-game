@@ -33,6 +33,7 @@ public class Player extends ValueObject {
 
 	private int id = 0;
 	private String username = "";
+	private String password = "";
 	private String last_name = "";
 	private String first_name = "";
 	private String email = "";
@@ -55,6 +56,12 @@ public class Player extends ValueObject {
 	}
 	public String getUsername() {
 		return username;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getPassword() {
+		return password;
 	}
 	public void setLast_name(String last_name) {
 		this.last_name = last_name;
@@ -89,5 +96,7 @@ public class Player extends ValueObject {
 	public String toString() {
 		return getClass().getName() + "[id=" + id + ",username=" + username + ",last_name=" + last_name + ",first_name=" + first_name + ",email=" + email + ",last_login=" + last_login + "]";
 	}
+
+
 	
 }
