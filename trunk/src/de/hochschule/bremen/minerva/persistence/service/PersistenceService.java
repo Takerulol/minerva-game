@@ -35,7 +35,7 @@ import de.hochschule.bremen.minerva.persistence.Persistence;
 import de.hochschule.bremen.minerva.persistence.db.DatabasePersistence;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.persistence.file.FilebasedPersistence;
-import de.hochschule.bremen.minerva.vo.AbstractValueObject;
+import de.hochschule.bremen.minerva.vo.ValueObject;
 
 public abstract class PersistenceService {
 
@@ -47,7 +47,7 @@ public abstract class PersistenceService {
 	abstract public List<?> loadAll() throws PersistenceIOException;
 
 	// DOCME!!!
-	abstract public AbstractValueObject load(int id) throws PersistenceIOException;
+	abstract public ValueObject load(int id) throws PersistenceIOException;
 
 	// DOCME!!!
 	abstract public void save(Object candidate) throws PersistenceIOException;

@@ -29,12 +29,13 @@
  */
 package de.hochschule.bremen.minerva;
 
-//import de.hochschule.bremen.minerva.exceptions.WorldImportException;
-import java.util.List;
+import java.awt.Color;
+import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.persistence.service.CountryService;
 import de.hochschule.bremen.minerva.persistence.service.WorldService;
-//import de.hochschule.bremen.minerva.util.*;
+import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.World;
 
 public class App {
@@ -45,29 +46,33 @@ public class App {
 	public static void main(String[] args) {
 
 		try {
-			List<World> worlds = WorldService.getInstance().loadAll();
+			Vector<World> worlds = WorldService.getInstance().loadAll();
+			World myWorld = null;
+
 			for (World world : worlds) {
 				System.out.println(world.toString());
+				if (world.getId() == 1) {
+					myWorld = world;
+				}
 			}
 
-			World myWorld = WorldService.getInstance().load(2);
+			Vector<Country> countries = CountryService.getInstance().loadAll(myWorld);			
 			
-			//WorldService.getInstance().delete(myWorld);
+			for (Country country : countries) {
+				System.out.println(country.toString());
+			}
 
-			/*World w = new World();
-			w.setAuthor("Andre");
-			w.setDescription("Ein kleiner Text.");
-			w.setName("Eine Welt");
-			w.setToken("w1");
-			w.setVersion("1.0.1");
-
-			WorldService.getInstance().save(w);
-			myWorld.setToken("earth");
-			WorldService.getInstance().save(myWorld);*/
-			myWorld.setToken("usa");
-
-			WorldService.getInstance().save(myWorld);
+			Country oneCountry = CountryService.getInstance().load(1);
+			System.out.println("Das geladene Land lautet: ");
+			System.out.println(oneCountry.toString());
 			
+			oneCountry.setColor(Color.BLACK);
+			oneCountry.setName("Afghanistan");
+			
+			CountryService.getInstance().save(oneCountry);
+			
+			oneCountry = CountryService.getInstance().load(1);
+			System.out.println(oneCountry.toString());
 		} catch (PersistenceIOException e) {
 			e.printStackTrace();
 		}

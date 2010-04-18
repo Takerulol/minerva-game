@@ -34,7 +34,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
 
-import de.hochschule.bremen.minerva.vo.AbstractValueObject;
+import de.hochschule.bremen.minerva.vo.ValueObject;
 import de.hochschule.bremen.minerva.vo.World;
 import de.hochschule.bremen.minerva.persistence.Crudable;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
@@ -43,6 +43,10 @@ import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundExceptio
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateRecordException;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
 
+/**
+ * DOCME
+ * 
+ */
 public class WorldHandler extends AbstractDatabaseHandler implements Crudable {
 
 	private final static HashMap<String, String> sql = new HashMap<String, String>();
@@ -53,35 +57,6 @@ public class WorldHandler extends AbstractDatabaseHandler implements Crudable {
 		sql.put("insert", "insert into world (token, name, description, author, version) values (?, ?, ?, ?, ?)");
 		sql.put("update", "update world set token = ?, name = ?, description = ?, author = ?, version = ? where id = ?");
 		sql.put("delete", "delete from world where id = ?");
-	}
-
-
-	/**
-	 * Loads all worlds from the database and return a
-	 * list with world value objects.
-	 * 
-	 * @see de.hochschule.bremen.minerva.vo.World
-	 */
-	@Override
-	public Vector<World> readAll() throws PersistenceIOException {
-		Vector<World> worlds = new Vector<World>();
-
-		try {
-			ResultSet record = this.select(sql.get("selectAll"));
-
-			while (record.next()) {
-				worlds.add(this.resultSetToObject(record));
-			}
-
-			record.close();
-		} catch (DatabaseIOException e) {
-			throw new PersistenceIOException(e.getMessage());
-		} catch (SQLException e) {
-			throw new PersistenceIOException("Error occurred while receiving a world list from the database: "
-											 +e.getMessage()+" - "+e.getErrorCode());
-		}
-
-		return worlds;
 	}
 
 	/**
@@ -112,8 +87,37 @@ public class WorldHandler extends AbstractDatabaseHandler implements Crudable {
 		return world;
 	}
 
+	/**
+	 * Loads all worlds from the database and return a
+	 * list with world value objects.
+	 * 
+	 * @see de.hochschule.bremen.minerva.vo.World
+	 * 
+	 */
 	@Override
-	public void save(AbstractValueObject registrable) throws PersistenceIOException {
+	public Vector<World> readAll() throws PersistenceIOException {
+		Vector<World> worlds = new Vector<World>();
+
+		try {
+			ResultSet record = this.select(sql.get("selectAll"));
+
+			while (record.next()) {
+				worlds.add(this.resultSetToObject(record));
+			}
+
+			record.close();
+		} catch (DatabaseIOException e) {
+			throw new PersistenceIOException(e.getMessage());
+		} catch (SQLException e) {
+			throw new PersistenceIOException("Error occurred while receiving a world list from the database: "
+											 +e.getMessage()+" - "+e.getErrorCode());
+		}
+
+		return worlds;
+	}
+
+	@Override
+	public void save(ValueObject registrable) throws PersistenceIOException {
 		World registrableWorld = (World)registrable;
 
 		try {
@@ -146,7 +150,7 @@ public class WorldHandler extends AbstractDatabaseHandler implements Crudable {
 	}
 
 	@Override
-	public void remove(AbstractValueObject candidate) throws PersistenceIOException {
+	public void remove(ValueObject candidate) throws PersistenceIOException {
 		World deletableWorld = (World)candidate;
 		Object[] params = {deletableWorld.getId()};
 
@@ -175,5 +179,16 @@ public class WorldHandler extends AbstractDatabaseHandler implements Crudable {
 		world.setVersion(current.getString(6).trim());
 
 		return world;
+	}
+
+	/**
+	 * TODO: This method is not necessary. Please check the interface
+	 * design to avoid such unused methods.
+	 *  
+	 */
+	@Override
+	public Vector<? extends ValueObject> readAll(ValueObject referencedCountry) throws PersistenceIOException {		
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
