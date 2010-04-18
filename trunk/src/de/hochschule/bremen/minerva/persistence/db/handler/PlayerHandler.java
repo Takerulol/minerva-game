@@ -51,7 +51,7 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Crudable {
 	static {
 		sql.put("selectByUsername", "select id, username, password, last_name, first_name, email, last_login from player where username = ?");
 		sql.put("selectById", "select id, username, password, last_name, first_name, email, last_login from player where id = ?");
-		sql.put("selectAll", "select id, username, password, last_name, first_name, email, last_login from player");
+		sql.put("selectAll", "select id, username, password, last_name, first_name, email, last_login from player order by username");
 		sql.put("insert", "insert into player (username, password, last_name, first_name, email, last_login) values (?, ?, ?, ?, ?, ?)");
 		sql.put("update", "update player set username = ?, password = ?, last_name = ?, first_name = ?, email = ?, last_login = ? where username = ?");
 		sql.put("delete", "delete from player where username = ?");
