@@ -29,6 +29,6 @@
  */
 package de.hochschule.bremen.minerva.vo;
 
-public abstract class AbstractValueObject {
+public abstract class ValueObject {
 
 }

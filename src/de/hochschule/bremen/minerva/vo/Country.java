@@ -32,7 +32,7 @@ package de.hochschule.bremen.minerva.vo;
 import java.awt.Color;
 import java.util.List;
 
-public class Country extends AbstractValueObject {
+public class Country extends ValueObject {
 
 	private int id;
 	private String token;
