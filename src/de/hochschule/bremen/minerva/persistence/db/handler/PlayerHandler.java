@@ -37,6 +37,7 @@ import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Crudable;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
 public class PlayerHandler extends AbstractDatabaseHandler implements Crudable {
@@ -44,7 +45,7 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Crudable {
 	private final static HashMap<String, String> sql = new HashMap<String, String>();
 
 	static {
-		sql.put("selectById", "select id, username, password, last_name, first_name, email, last_login from player where username = ?");
+		sql.put("selectByUsername", "select id, username, password, last_name, first_name, email, last_login from player where username = ?");
 		sql.put("insert", "insert into player (username, password, last_name, first_name, email, last_login) values (?, ?, ?, ?, ?, ?)");
 		sql.put("update", "update player set username = ?, password = ?, last_name = ?, first_name = ?, email = ?, last_login = ? where username = ?");
 		sql.put("delete", "delete from player where username = ?");
@@ -54,8 +55,18 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Crudable {
 	
 	@Override
 	protected ValueObject resultSetToObject(ResultSet current) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		Player player = new Player();
+		
+		player.setId(current.getInt(1));
+		player.setUsername(current.getString(2));
+		player.setLast_name(current.getString(4));
+		player.setFirst_name(current.getString(5));
+		player.setEmail(current.getString(6));
+		player.setLast_login(current.getString(7));
+		
+		
+		
+		return player;
 	}
 
 	@Override
