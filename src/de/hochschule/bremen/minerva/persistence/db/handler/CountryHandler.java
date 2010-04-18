@@ -29,7 +29,6 @@
  */
 package de.hochschule.bremen.minerva.persistence.db.handler;
 
-import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -44,8 +43,16 @@ import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOExceptio
 import de.hochschule.bremen.minerva.persistence.exceptions.CountryExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.CountryNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
-import de.hochschule.bremen.minerva.vo.AbstractValueObject;
+import de.hochschule.bremen.minerva.vo.ValueObject;
 
+/**
+ * TODO: Issue 4: Exception-Meldungen auslagern (http://code.google.com/p/minerva-game/issues/detail?id=4)
+ */
+
+/**
+ * DOCME
+ * 
+ */
 public class CountryHandler extends AbstractDatabaseHandler implements Crudable {
 
 	private final static HashMap<String, String> sql = new HashMap<String, String>();
@@ -59,7 +66,11 @@ public class CountryHandler extends AbstractDatabaseHandler implements Crudable 
 	}
 
 	/**
-	 * DOCME
+	 * Reads ONE country with the given id from the database.
+	 * 
+	 * @param id - The country id
+	 * @throws CountryNotFoundException, PersistenceIOException
+	 * 
 	 */
 	@Override
 	public Country read(int id) throws PersistenceIOException {
@@ -72,22 +83,32 @@ public class CountryHandler extends AbstractDatabaseHandler implements Crudable 
 				country = this.resultSetToObject(record);
 				record.close();
 			} else {
-				throw new CountryNotFoundException("Found no country with id: '"+id+"'.");
+				throw new CountryNotFoundException("Found no country with id: '"
+												   +id+"'.");
 			}
 
 		} catch (DatabaseIOException e) {
 			throw new PersistenceIOException(e.getMessage());
 		} catch (SQLException e) {
-			throw new PersistenceIOException("Error occurred while reading the country (id="
-											 +id+") from the database.");
+			throw new PersistenceIOException("Error occurred while reading "
+					                       + "the country (id=" +id+") "
+					                       + "from the database.");
 		}
 
 		return country;
 	}
 
 	/**
-	 * Loads all countries from the database. There is no given world.
-	 * So we load the first world via WorldHandler. Well, the default world ;)
+	 * Reads all countries from the database.
+	 * We also read the first world from the database and use
+	 * this as reference for selecting the countries. Well, the
+	 * first world is our default world ;)
+	 * 
+	 * This is a wrapper class for the private method:
+	 * readAll(int byWorldId).
+	 * 
+	 * @return A collection with the selected countries.
+	 * @throws PersistenceIOException
 	 * 
 	 */
 	@Override
@@ -95,32 +116,39 @@ public class CountryHandler extends AbstractDatabaseHandler implements Crudable 
 		WorldHandler handler = new WorldHandler();
 		Vector<World> worlds = handler.readAll();
 
-		return this.readAll(worlds.firstElement());
+		return this.readAll(worlds.firstElement().getId());
 	}
 
 	/**
-	 * DOCME
+	 * Reads all countries by an given world value object
 	 * 
-	 * @param byWorld
-	 * @return
-	 * @throws PersistenceIOException 
+	 * This is a wrapper class for the private method:
+	 * readAll(int byWorldId).
+	 * 
+	 * @param byWorld - The world value object.
+	 * @return A collection with the selected countries.
+	 * @throws PersistenceIOException
+	 *  
 	 */
-	public Vector<Country> readAll(World byWorld) throws PersistenceIOException {
-		return this.readAll(byWorld.getId());
+	public Vector<Country> readAll(ValueObject byWorld) throws PersistenceIOException {
+		World paramWorld = (World)byWorld;
+		return this.readAll(paramWorld.getId());
 	}
 
 	/**
-	 * DOCME
+	 * Reads all countries from the database which linked
+	 * to the given world.
 	 * 
-	 * @param byWorldId
-	 * @return
+	 * @param byWorldId - A int with the world id.
+	 * @return A collection with the selected countries.
 	 * @throws PersistenceIOException 
 	 */
-	public Vector<Country> readAll(int byWorldId) throws PersistenceIOException {
+	private Vector<Country> readAll(int byWorldId) throws PersistenceIOException {
 		Vector<Country> countries = new Vector<Country>();
 
 		try {
-			ResultSet record = this.select(sql.get("selectAllByWorldId"));
+			Object[] params = {byWorldId};
+			ResultSet record = this.select(sql.get("selectAllByWorldId"), params);
 
 			while (record.next()) {
 				countries.add(this.resultSetToObject(record));
@@ -130,8 +158,11 @@ public class CountryHandler extends AbstractDatabaseHandler implements Crudable 
 		} catch (DatabaseIOException e) {
 			throw new PersistenceIOException(e.getMessage());
 		} catch (SQLException e) {
-			throw new PersistenceIOException("Error occurred while receiving a country list from the database (world id = "
-											 +byWorldId+"): "+e.getMessage()+" - "+e.getErrorCode());
+			throw new PersistenceIOException("Error occurred while "
+											+"receiving a country list "
+											+"from the database (world id = "
+											 +byWorldId+"): "+e.getMessage()
+											 +" - "+e.getErrorCode());
 		}
 
 		return countries;
@@ -142,7 +173,7 @@ public class CountryHandler extends AbstractDatabaseHandler implements Crudable 
 	 * 
 	 */
 	@Override
-	public void remove(AbstractValueObject candidate) throws PersistenceIOException {
+	public void remove(ValueObject candidate) throws PersistenceIOException {
 		Country deletableCountry = (Country)candidate;
 		Object[] params = {deletableCountry.getId()};
 
@@ -158,7 +189,7 @@ public class CountryHandler extends AbstractDatabaseHandler implements Crudable 
 	 * 
 	 */
 	@Override
-	public void save(AbstractValueObject registrable) throws PersistenceIOException {
+	public void save(ValueObject registrable) throws PersistenceIOException {
 		Country registrableCountry = (Country)registrable;
 
 		try {
@@ -184,9 +215,13 @@ public class CountryHandler extends AbstractDatabaseHandler implements Crudable 
 
 				this.update(sql.get("update"), params);
 			} catch (DatabaseDuplicateRecordException exe) {
-				throw new CountryExistsException("Unable to serialize the country. There is already a similar one.");
+				throw new CountryExistsException("Unable to serialize the "
+												+"country. There is already "
+												+"a similar one.");
 			} catch (DatabaseIOException ex) {
-				throw new PersistenceIOException("Unable to serialize the country object: "+ex.getMessage());
+				throw new PersistenceIOException("Unable to serialize the "
+												+"country object: "
+												+ex.getMessage());
 			}
 		}
 	}
@@ -201,7 +236,9 @@ public class CountryHandler extends AbstractDatabaseHandler implements Crudable 
 		country.setId(current.getInt(1));
 		country.setToken(current.getString(2));
 		country.setName(current.getString(3));
-		country.setColor(Color.decode(current.getString(4)));
+
+		// TODO:  Issue 5: Datenbankzugriff: Problem mit dem Hexcode für die Farben ()
+		// country.setColor(Color.decode(current.getString(4)));
 		
 		// Note that we only save the continent id.
 		// Please verify that you will load the continent

@@ -35,6 +35,7 @@ import de.hochschule.bremen.minerva.persistence.Crudable;
 import de.hochschule.bremen.minerva.persistence.exceptions.CountryNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.vo.Country;
+import de.hochschule.bremen.minerva.vo.World;
 
 /**
  * DOCME
@@ -76,7 +77,20 @@ public class CountryService extends PersistenceService {
 	 */
 	@SuppressWarnings("unchecked")
 	public Vector<Country> loadAll() throws PersistenceIOException {
-		Vector<Country> countries = (Vector<Country>)storageHandler.readAll();
+		Vector<Country> countries = (Vector)storageHandler.readAll();
+		return countries;
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param byWorldId
+	 * @return
+	 * @throws PersistenceIOException
+	 */
+	@SuppressWarnings("unchecked")
+	public Vector<Country> loadAll(World byWorld) throws PersistenceIOException {
+		Vector<Country> countries = (Vector)storageHandler.readAll(byWorld);
 		return countries;
 	}
 
