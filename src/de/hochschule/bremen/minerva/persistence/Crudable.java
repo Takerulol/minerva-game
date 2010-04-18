@@ -73,7 +73,9 @@ public interface Crudable {
 	 * (for example: read all countries by the referenced world).
 	 * This is because Java does not support optional parameters. In some
 	 * cases, like this one, this restriction is not very dressy.
-	 *  
+	 * 
+	 * TODO: Issue 6: "Crudable" Interfacedesign anpassen (http://code.google.com/p/minerva-game/issues/detail?id=6)
+	 * 
 	 * @param reference
 	 * @return
 	 * @throws PersistenceIOException
