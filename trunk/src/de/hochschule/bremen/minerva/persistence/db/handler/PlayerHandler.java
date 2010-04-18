@@ -36,6 +36,10 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateRecordException;
+import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
+import de.hochschule.bremen.minerva.persistence.exceptions.CountryExistsException;
+import de.hochschule.bremen.minerva.persistence.exceptions.CountryNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.ValueObject;
@@ -46,59 +50,158 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Crudable {
 
 	static {
 		sql.put("selectByUsername", "select id, username, password, last_name, first_name, email, last_login from player where username = ?");
+		sql.put("selectById", "select id, username, password, last_name, first_name, email, last_login from player where id = ?");
+		sql.put("selectAll", "select id, username, password, last_name, first_name, email, last_login from player");
 		sql.put("insert", "insert into player (username, password, last_name, first_name, email, last_login) values (?, ?, ?, ?, ?, ?)");
 		sql.put("update", "update player set username = ?, password = ?, last_name = ?, first_name = ?, email = ?, last_login = ? where username = ?");
 		sql.put("delete", "delete from player where username = ?");
 	}
 
-	
-	
+
+	/**
+	 * 
+	 * @param username
+	 * @return
+	 * @throws PersistenceIOException
+	 */
 	@Override
-	protected ValueObject resultSetToObject(ResultSet current) throws SQLException {
-		Player player = new Player();
+	public Player read(int id) throws PersistenceIOException {
+		Player player = null;
+		Object[] params = {id};
 		
-		player.setId(current.getInt(1));
-		player.setUsername(current.getString(2));
-		player.setLast_name(current.getString(4));
-		player.setFirst_name(current.getString(5));
-		player.setEmail(current.getString(6));
-		player.setLast_login(current.getString(7));
-		
-		
+		try {
+			ResultSet record = this.select(sql.get("selectById"), params);
+			if (record.next()) {
+				player = this.resultSetToObject(record);
+				record.close();
+			} else {
+				throw new CountryNotFoundException("Found no player with username: '"
+												   +id+"'.");
+			}
+
+		} catch (DatabaseIOException e) {
+			throw new PersistenceIOException(e.getMessage());
+		} catch (SQLException e) {
+			throw new PersistenceIOException("Error occurred while reading "
+					                       + "the player (username=" +id+") "
+					                       + "from the database.");
+		}
 		
 		return player;
 	}
 
+	/**
+	 * DOCME
+	 * 
+	 * @return
+	 * @throws PersistenceIOException
+	 */
 	@Override
-	public ValueObject read(int id) throws PersistenceIOException {
-		// TODO Auto-generated method stub
-		return null;
+	public Vector<Player> readAll() throws PersistenceIOException {
+		Vector<Player> players = new Vector<Player>();
+
+		try {
+			ResultSet record = this.select(sql.get("selectAll"));
+
+			while (record.next()) {
+				players.add(this.resultSetToObject(record));
+			}
+
+			record.close();
+		} catch (DatabaseIOException e) {
+			throw new PersistenceIOException(e.getMessage());
+		} catch (SQLException e) {
+			throw new PersistenceIOException("Error occurred while receiving a player list from the database: "
+											 +e.getMessage()+" - "+e.getErrorCode());
+		}
+		
+		return players;
 	}
 
-	@Override
-	public Vector<? extends ValueObject> readAll()
-			throws PersistenceIOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public Vector<? extends ValueObject> readAll(ValueObject reference)
-			throws PersistenceIOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	/**
+	 * DOCME
+	 */
 	@Override
 	public void remove(ValueObject candidate) throws PersistenceIOException {
-		// TODO Auto-generated method stub
+		Player deletablePlayer = (Player)candidate;
+		Object[] params = {deletablePlayer.getId()};
+
+		try {
+			this.delete(sql.get("delete"), params);
+		} catch (DatabaseIOException e) {
+			throw new PersistenceIOException(e.getMessage());
+		}
 		
 	}
 
 	@Override
 	public void save(ValueObject registrable) throws PersistenceIOException {
-		// TODO Auto-generated method stub
+		Player registrablePlayer = (Player)registrable;
+
+		try {
+			Object[] params = {
+				registrablePlayer.getUsername(),
+				registrablePlayer.getPassword(),
+				registrablePlayer.getLast_name(),
+				registrablePlayer.getFirst_name(),
+				registrablePlayer.getEmail(),
+				registrablePlayer.getLast_login()
+			};
+
+			this.insert(sql.get("insert"), params);
+		} catch (DatabaseIOException e) {
+			try {
+				Object[] params = {
+						registrablePlayer.getUsername(),
+						registrablePlayer.getPassword(),
+						registrablePlayer.getLast_name(),
+						registrablePlayer.getFirst_name(),
+						registrablePlayer.getEmail(),
+						registrablePlayer.getLast_login()
+				};
+
+				this.update(sql.get("update"), params);
+			} catch (DatabaseDuplicateRecordException exe) {
+				throw new CountryExistsException("Unable to serialize the "
+												+"player. There is already "
+												+"a similar one.");
+			} catch (DatabaseIOException ex) {
+				throw new PersistenceIOException("Unable to serialize the "
+												+"player object: "
+												+ex.getMessage());
+			}
+		}
+	}
+	
+	/**
+	 * DOCME
+	 * 
+	 * @return
+	 * @param current
+	 * @throws SQLException
+	 */
+	@Override
+	protected Player resultSetToObject(ResultSet current) throws SQLException {
+		Player player = new Player();
 		
+		player.setId(current.getInt(1));
+		player.setUsername(current.getString(2));
+		player.setPassword(current.getString(3));
+		player.setLast_name(current.getString(4));
+		player.setFirst_name(current.getString(5));
+		player.setEmail(current.getString(6));
+		player.setLast_login(current.getString(7));
+		
+		return player;
 	}
 
+	/**
+	 * DOCME
+	 */
+	@Override
+	public Vector<Player> readAll(ValueObject reference) throws PersistenceIOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
