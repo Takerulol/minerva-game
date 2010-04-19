@@ -38,7 +38,6 @@ import java.util.Vector;
 import de.hochschule.bremen.minerva.persistence.Crudable;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateRecordException;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
-import de.hochschule.bremen.minerva.persistence.exceptions.CountryNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
