@@ -1,4 +1,5 @@
-DROP TABLE neighbours;
-DROP TABLE countries;
-DROP TABLE continents;
-DROP TABLE worlds;
+DROP TABLE neighbour;
+DROP TABLE country;
+DROP TABLE continent;
+DROP TABLE world;
+DROP TABLE player;
