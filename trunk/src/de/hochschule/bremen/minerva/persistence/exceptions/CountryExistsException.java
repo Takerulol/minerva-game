@@ -33,9 +33,9 @@ public class CountryExistsException extends PersistenceIOException {
 
 	/**
 	 * DOCME
-	 *  
+	 * 
 	 */
-	private static final long serialVersionUID = 8365171814386246346L;
+	private static final long serialVersionUID = -4214144883197393870L;
 
 	/**
 	 * DOCME

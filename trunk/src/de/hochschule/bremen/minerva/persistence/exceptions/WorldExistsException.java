@@ -31,11 +31,12 @@ package de.hochschule.bremen.minerva.persistence.exceptions;
 
 public class WorldExistsException extends PersistenceIOException {
 
+	
 	/**
 	 * DOCME
-	 *  
+	 * 
 	 */
-	private static final long serialVersionUID = 8365171814386246346L;
+	private static final long serialVersionUID = 5443945233900971489L;
 
 	/**
 	 * DOCME
