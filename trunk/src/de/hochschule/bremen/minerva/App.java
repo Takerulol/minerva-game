@@ -48,17 +48,16 @@ public class App {
 		try {
 			Vector<World> worlds = WorldService.getInstance().loadAll();
 
-			for (World world : worlds) {
+			for (World world : worlds) {			
 				Vector<Country> countries = CountryService.getInstance().loadAll(world);
-				world.setCountries(countries);
-				
 				for (Country country : countries) {
 					country.setContinent(ContinentService.getInstance().load(country.getContinent().getId()));
 				}
-				
+
+				world.setCountries(countries);
+
 				System.out.println(world.toString());
 			}
-
 
 		} catch (PersistenceIOException e) {
 			e.printStackTrace();
