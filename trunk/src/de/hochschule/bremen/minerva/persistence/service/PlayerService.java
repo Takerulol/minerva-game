@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Crudable;
-import de.hochschule.bremen.minerva.persistence.exceptions.CountryNotFoundException;
+import de.hochschule.bremen.minerva.persistence.exceptions.PlayerNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.ValueObject;
@@ -21,7 +21,7 @@ public class PlayerService extends PersistenceService {
 
 	/**
 	 * Singleton pattern. It is not possible
-	 * to create a CountryService in the common way.
+	 * to create a PlayerService in the common way.
 	 * So this constructor is private.
 	 * 
 	 */
@@ -52,7 +52,7 @@ public class PlayerService extends PersistenceService {
 		try {
 			return (Player)storageHandler.read(id);
 		} catch (Exception e) {
-			throw new CountryNotFoundException(e.getMessage());
+			throw new PlayerNotFoundException(e.getMessage());
 		}
 	}
 

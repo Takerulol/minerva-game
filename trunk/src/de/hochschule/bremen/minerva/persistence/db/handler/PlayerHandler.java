@@ -38,8 +38,8 @@ import java.util.Vector;
 import de.hochschule.bremen.minerva.persistence.Crudable;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateRecordException;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
-import de.hochschule.bremen.minerva.persistence.exceptions.CountryExistsException;
-import de.hochschule.bremen.minerva.persistence.exceptions.CountryNotFoundException;
+import de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException;
+import de.hochschule.bremen.minerva.persistence.exceptions.PlayerNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.ValueObject;
@@ -75,7 +75,7 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Crudable {
 				player = this.resultSetToObject(record);
 				record.close();
 			} else {
-				throw new CountryNotFoundException("Found no player with username: '"
+				throw new PlayerNotFoundException("Found no player with username: '"
 												   +id+"'.");
 			}
 
@@ -163,7 +163,7 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Crudable {
 
 				this.update(sql.get("update"), params);
 			} catch (DatabaseDuplicateRecordException exe) {
-				throw new CountryExistsException("Unable to serialize the "
+				throw new PlayerExistsException("Unable to serialize the "
 												+"player. There is already "
 												+"a similar one.");
 			} catch (DatabaseIOException ex) {
