@@ -10,10 +10,11 @@ import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOExceptio
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
-/*
- * TODO: Documentation.
- */
+//TODO: DOCME the class and two methods.
 
+/**
+ * DOCME
+ */
 public class PlayerService extends PersistenceService {
 
 	private static PlayerService instance = null;
@@ -24,7 +25,6 @@ public class PlayerService extends PersistenceService {
 	 * Singleton pattern. It is not possible
 	 * to create a PlayerService in the common way.
 	 * So this constructor is private.
-	 * 
 	 */
 	private PlayerService() {}
 	
@@ -32,7 +32,7 @@ public class PlayerService extends PersistenceService {
 	 * Singleton pattern.
 	 * Static method that controls the object creation.
 	 * 
-	 * @return DOCME
+	 * @return PlayerService.instance
 	 */
 	public static PlayerService getInstance() {
 		if (PlayerService.instance == null) {
@@ -41,6 +41,11 @@ public class PlayerService extends PersistenceService {
 		return PlayerService.instance;
 	}
 	
+	/**
+	 * Method that delete the player object.
+	 * 
+	 * @throws PersistenceIOException
+	 */
 	@Override
 	public void delete(Object candidate) throws PersistenceIOException {
 		Player deletablePlayer = (Player)candidate;
@@ -48,6 +53,11 @@ public class PlayerService extends PersistenceService {
 		storageHandler.remove(deletablePlayer);
 	}
 
+	/**
+	 * DOCME
+	 * 
+	 * @throws PlayerNotFoundException, PersistenceIOException
+	 */
 	@Override
 	public ValueObject load(int id) throws PersistenceIOException {
 		try {
@@ -57,6 +67,12 @@ public class PlayerService extends PersistenceService {
 		}
 	}
 
+	/**
+	 * DOCME
+	 * 
+	 * @throws PersistenceIOException
+	 * @return players
+	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Player> loadAll() throws PersistenceIOException {
@@ -65,6 +81,11 @@ public class PlayerService extends PersistenceService {
 		return players;
 	}
 
+	/**
+	 * Method that save the object.
+	 * 
+	 * @throws PersistenceIOException
+	 */
 	@Override
 	public void save(Object candidate) throws PersistenceIOException {
 		Player registrablePlayer = (Player)candidate;
