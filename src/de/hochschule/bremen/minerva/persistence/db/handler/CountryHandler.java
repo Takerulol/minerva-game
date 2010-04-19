@@ -197,7 +197,7 @@ public class CountryHandler extends AbstractDatabaseHandler implements Crudable 
 			Object[] params = {
 				registrableCountry.getToken(),
 				registrableCountry.getName(),
-				Integer.toHexString(registrableCountry.getColor().getRGB()),
+				"ffffffff", //Integer.toHexString(registrableCountry.getColor().getRGB()),
 				registrableCountry.getContinent().getId(),
 				registrableCountry.getWorldId()
 			};
@@ -208,7 +208,7 @@ public class CountryHandler extends AbstractDatabaseHandler implements Crudable 
 				Object[] params = {
 					registrableCountry.getToken(),
 					registrableCountry.getName(),
-					Integer.toHexString(registrableCountry.getColor().getRGB()),
+					"ffffffff", //Integer.toHexString(registrableCountry.getColor().getRGB()),
 					registrableCountry.getContinent().getId(),
 					registrableCountry.getWorldId(),
 					registrableCountry.getId()

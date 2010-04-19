@@ -73,6 +73,7 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Crudabl
 			ResultSet record = this.select(sql.get("selectById"), params);
 			if (record.next()) {
 				continent = this.resultSetToObject(record);
+
 				record.close();
 			} else {
 				throw new ContinentNotFoundException("Found no continent"
@@ -174,8 +175,8 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Crudabl
 		Continent continent = new Continent();
 		
 		continent.setId(current.getInt(1));
-		continent.setName(current.getString(2));
-		
+		continent.setName(current.getString(2).trim());
+
 		return continent;
 	}
 
