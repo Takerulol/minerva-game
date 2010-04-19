@@ -30,29 +30,60 @@
 
 package de.hochschule.bremen.minerva.persistence;
 
+/**
+ * Abstract datatype for Crudible interface for having the possibility
+ * to enter different datatypes into the same read() method.
+ * 
+ * @author Christian Bollmann
+ */
 public class FilterParameter {
+	
+
 	
 	Object param;
 	
-	
+	/**
+	 * Constructor for integer values converted to Object.
+	 * 
+	 * @param param
+	 */
 	public FilterParameter(int param) {
-	//	this(param);
+		this((Object)param);
 	}
 	
+	/**
+	 * Constructor for String values converted to Object.
+	 * 
+	 * @param param
+	 */
 	public FilterParameter(String param) {
-		
+		this((Object)param);
 	}
 	
+	/**
+	 * Constructor for Object-type.
+	 * 
+	 * @param param
+	 */
 	private FilterParameter(Object param) {
 		this.param = param;
 	}
 	
 
-	
+	/**
+	 * Getting String out of param via typecast.
+	 * 
+	 * @return
+	 */
 	public String getString() {
 		return (String)this.param;
 	}
 	
+	/**
+	 * Getting Integer out of param via typecast.
+	 * 
+	 * @return
+	 */
 	public int getInt() {
 		return (Integer)this.param;
 	}
