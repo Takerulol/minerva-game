@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.vo.Player;
@@ -50,7 +51,7 @@ public class PlayerService extends PersistenceService {
 	@Override
 	public ValueObject load(int id) throws PersistenceIOException {
 		try {
-			return (Player)storageHandler.read(id);
+			return (Player)storageHandler.read(new FilterParameter(id));
 		} catch (Exception e) {
 			throw new PlayerNotFoundException(e.getMessage());
 		}

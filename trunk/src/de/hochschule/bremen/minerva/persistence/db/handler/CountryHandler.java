@@ -38,6 +38,7 @@ import de.hochschule.bremen.minerva.vo.Continent;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.World;
 import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateRecordException;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.CountryExistsException;
@@ -73,9 +74,9 @@ public class CountryHandler extends AbstractDatabaseHandler implements Crudable 
 	 * 
 	 */
 	@Override
-	public Country read(int id) throws PersistenceIOException {
+	public Country read(FilterParameter id) throws PersistenceIOException {
 		Country country = null;
-		Object[] params = {id};
+		Object[] params = {id.getInt()};
 		
 		try {
 			ResultSet record = this.select(sql.get("selectById"), params);

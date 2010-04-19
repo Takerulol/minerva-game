@@ -32,6 +32,7 @@ package de.hochschule.bremen.minerva.persistence.service;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.exceptions.CountryNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.vo.Country;
@@ -102,7 +103,7 @@ public class CountryService extends PersistenceService {
 	 */
 	public Country load(int id) throws CountryNotFoundException {
 		try {
-			return (Country)storageHandler.read(id);
+			return (Country)storageHandler.read(new FilterParameter(id));
 		} catch (Exception e) {
 			throw new CountryNotFoundException(e.getMessage());
 		}
