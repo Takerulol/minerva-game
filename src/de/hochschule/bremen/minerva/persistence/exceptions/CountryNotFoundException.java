@@ -40,7 +40,6 @@ public class CountryNotFoundException extends PersistenceIOException {
 	/**
 	 * DOCME
 	 * 
-	 * @param message
 	 */
 	public CountryNotFoundException() {
 		super();
