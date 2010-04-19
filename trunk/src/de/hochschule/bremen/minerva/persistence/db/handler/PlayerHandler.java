@@ -38,12 +38,18 @@ import java.util.Vector;
 import de.hochschule.bremen.minerva.persistence.Crudable;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateRecordException;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
+import de.hochschule.bremen.minerva.persistence.exceptions.CountryNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
+//TODO: DOCME of the whole class PlayerHandler and the last method 
+
+/**
+ * DOCME
+ */
 public class PlayerHandler extends AbstractDatabaseHandler implements Crudable {
 
 	private final static HashMap<String, String> sql = new HashMap<String, String>();
@@ -59,10 +65,11 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Crudable {
 
 
 	/**
+	 * Reads ONE player with the given id from the database.
 	 * 
-	 * @param username
-	 * @return
-	 * @throws PersistenceIOException
+	 * @param id - The player id.
+	 * @return player
+	 * @throws PlayerNotFoundException, PersistenceIOException
 	 */
 	@Override
 	public Player read(int id) throws PersistenceIOException {
@@ -91,9 +98,9 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Crudable {
 	}
 
 	/**
-	 * DOCME
+	 * Reads ALL player from the database.
 	 * 
-	 * @return
+	 * @return player
 	 * @throws PersistenceIOException
 	 */
 	@Override
@@ -120,7 +127,10 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Crudable {
 
 
 	/**
-	 * DOCME
+	 * Method remove to delete attributes of the player in the database.
+	 * 
+	 * @param candidate
+	 * @throws PersistenceIOException 
 	 */
 	@Override
 	public void remove(ValueObject candidate) throws PersistenceIOException {
@@ -135,6 +145,14 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Crudable {
 		
 	}
 
+	/**
+	 * Save attributes of the player in the database. 
+	 * If it is a new player, the player will be insert in the database.
+	 * If it is an already existing player, the attributes of the player will be update in the database.
+	 * 
+	 * @param registrable
+	 * @throws PlayerExistsException, PersistenceIOException
+	 */
 	@Override
 	public void save(ValueObject registrable) throws PersistenceIOException {
 		Player registrablePlayer = (Player)registrable;
@@ -175,11 +193,11 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Crudable {
 	}
 	
 	/**
-	 * DOCME
+	 * Get all attributes of the player from the database.
 	 * 
-	 * @return
 	 * @param current
 	 * @throws SQLException
+	 * @return player
 	 */
 	@Override
 	protected Player resultSetToObject(ResultSet current) throws SQLException {
@@ -198,6 +216,10 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Crudable {
 
 	/**
 	 * DOCME
+	 *
+	 * @param reference
+	 * @throws PersistenceIOException
+	 * @return null
 	 */
 	@Override
 	public Vector<Player> readAll(ValueObject reference) throws PersistenceIOException {
