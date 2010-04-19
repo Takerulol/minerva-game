@@ -39,119 +39,128 @@ public class Player extends ValueObject {
 	private String email = null;
 	private String lastLogin = null;
 	
-	/*
-	 *  TODO:
-	 *  - add getter/setter documentation.
-	 * 
-	 */
 
 	/**
-	 * DOCME
+	 * Sets the player id.
 	 * 
+	 * @param id 
 	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
 	/**
-	 * DOCME
+	 * Returns the id.
 	 * 
+	 * @return
 	 */
 	public int getId() {
 		return id;
 	}
 
 	/**
-	 * DOCME
+	 * Sets the player username.
 	 * 
+	 * @param username
 	 */
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
 	/**
-	 * DOCME
+	 * Returns the username.
 	 * 
+	 * @return 
 	 */
 	public String getUsername() {
 		return username;
 	}
 
 	/**
-	 * DOCME
+	 * Sets the player passwort.
 	 * 
+	 * @param passwort 
 	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
 	/**
-	 * DOCME
+	 * Returns the password.
 	 * 
+	 * @return
 	 */
 	public String getPassword() {
 		return password;
 	}
 
 	/**
-	 * DOCME
+	 * Sets the player last name.
 	 * 
+	 * @param last name
 	 */
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
 	/**
-	 * DOCME
+	 * Returns the last name.
 	 * 
+	 * @return
 	 */
 	public String getLastName() {
 		return lastName;
 	}
 
 	/**
-	 * DOCME
+	 * Sets the player first name.
 	 * 
+	 * @param first name
 	 */
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
 	/**
-	 * DOCME
+	 * Returns the first name.
 	 * 
+	 * @return
 	 */
 	public String getFirstName() {
 		return firstName;
 	}
 
 	/**
-	 * DOCME
+	 * Sets the player email.
 	 * 
+	 * @param email
 	 */
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
 	/**
-	 * DOCME
+	 * Returns the email.
 	 * 
+	 * @return
 	 */
 	public String getEmail() {
 		return email;
 	}
 
 	/**
-	 * DOCME
+	 * Sets the player last login.
 	 * 
+	 * @param last login
 	 */
 	public void setLastLogin(String lastLogin) {
 		this.lastLogin = lastLogin;
 	}
 
 	/**
-	 * DOCME
+	 * Returns the last login.
 	 * 
+	 * @return
 	 */
 	public String getLastLogin() {
 		return lastLogin;
