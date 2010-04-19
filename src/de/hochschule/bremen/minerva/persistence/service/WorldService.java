@@ -32,6 +32,7 @@ package de.hochschule.bremen.minerva.persistence.service;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
 import de.hochschule.bremen.minerva.vo.World;
@@ -88,7 +89,7 @@ public class WorldService extends PersistenceService {
 	 */
 	public World load(int id) throws WorldNotFoundException {
 		try {
-			return (World)storageHandler.read(id);
+			return (World)storageHandler.read(new FilterParameter(id));
 		} catch (Exception e) {
 			throw new WorldNotFoundException(e.getMessage());
 		}

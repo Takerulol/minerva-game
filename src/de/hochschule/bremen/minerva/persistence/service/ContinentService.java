@@ -32,6 +32,7 @@ package de.hochschule.bremen.minerva.persistence.service;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.exceptions.ContinentNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.vo.Continent;
@@ -80,7 +81,7 @@ public class ContinentService extends PersistenceService {
 	@Override
 	public Continent load(int id) throws PersistenceIOException {
 		try {
-			return (Continent)storageHandler.read(id);
+			return (Continent)storageHandler.read(new FilterParameter(id));
 		} catch (Exception e) {
 			throw new ContinentNotFoundException(e.getMessage());
 		}

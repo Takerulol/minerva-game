@@ -53,11 +53,11 @@ public interface Crudable {
 	/**
 	 * DOCME
 	 * 
-	 * @param id
+	 * @param param - Encapsulated parameter for the read session.
 	 * @return
 	 * @throws PersistenceIOException
 	 */
-	public ValueObject read(int id) throws PersistenceIOException;
+	public ValueObject read(FilterParameter param) throws PersistenceIOException;
 
 	/**
 	 * DOCME

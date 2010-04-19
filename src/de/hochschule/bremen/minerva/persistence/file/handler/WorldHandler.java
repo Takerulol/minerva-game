@@ -32,6 +32,7 @@ package de.hochschule.bremen.minerva.persistence.file.handler;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
@@ -39,7 +40,7 @@ import de.hochschule.bremen.minerva.vo.ValueObject;
 public class WorldHandler implements Crudable {
 
 	@Override
-	public ValueObject read(int id) throws PersistenceIOException {
+	public ValueObject read(FilterParameter param) throws PersistenceIOException {
 		// TODO Auto-generated method stub
 		return null;
 	}

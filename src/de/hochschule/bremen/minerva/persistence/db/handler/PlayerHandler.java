@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateRecordException;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException;
@@ -71,9 +72,9 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Crudable {
 	 * @throws PlayerNotFoundException, PersistenceIOException
 	 */
 	@Override
-	public Player read(int id) throws PersistenceIOException {
+	public Player read(FilterParameter id) throws PersistenceIOException {
 		Player player = null;
-		Object[] params = {id};
+		Object[] params = {id.getInt()};
 		
 		try {
 			ResultSet record = this.select(sql.get("selectById"), params);

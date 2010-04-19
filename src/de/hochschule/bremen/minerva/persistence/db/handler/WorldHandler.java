@@ -37,6 +37,7 @@ import java.util.Vector;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 import de.hochschule.bremen.minerva.vo.World;
 import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
@@ -64,9 +65,9 @@ public class WorldHandler extends AbstractDatabaseHandler implements Crudable {
 	 * @throws PersistenceIOException 
 	 * 
 	 */
-	public World read(int id) throws PersistenceIOException {
+	public World read(FilterParameter id) throws PersistenceIOException {
 		World world = null;
-		Object[] params = {id};
+		Object[] params = {id.getInt()};
 		
 		try {
 			ResultSet record = this.select(sql.get("selectById"), params);

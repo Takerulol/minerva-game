@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateRecordException;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.ContinentNotFoundException;
@@ -64,9 +65,9 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Crudabl
 	 * 
 	 */
 	@Override
-	public Continent read(int id) throws PersistenceIOException {
+	public Continent read(FilterParameter id) throws PersistenceIOException {
 		Continent continent = null;
-		Object[] params = {id};
+		Object[] params = {id.getInt()};
 		
 		try {
 			ResultSet record = this.select(sql.get("selectById"), params);
