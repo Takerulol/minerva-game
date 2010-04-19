@@ -204,12 +204,12 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Crudable {
 		Player player = new Player();
 		
 		player.setId(current.getInt(1));
-		player.setUsername(current.getString(2));
-		player.setPassword(current.getString(3));
-		player.setLastName(current.getString(4));
-		player.setFirstName(current.getString(5));
-		player.setEmail(current.getString(6));
-		player.setLastLogin(current.getString(7));
+		player.setUsername(current.getString(2).trim());
+		player.setPassword(current.getString(3).trim());
+		player.setLastName(current.getString(4).trim());
+		player.setFirstName(current.getString(5).trim());
+		player.setEmail(current.getString(6).trim());
+		player.setLastLogin(current.getString(7).trim());
 		
 		return player;
 	}
