@@ -34,7 +34,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
 
-import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateRecordException;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
@@ -48,7 +48,7 @@ import de.hochschule.bremen.minerva.vo.ValueObject;
  * DOCME
  * 
  */
-public class ContinentHandler extends AbstractDatabaseHandler implements Crudable {
+public class ContinentHandler extends AbstractDatabaseHandler implements Handler {
 
 	private final static HashMap<String, String> sql = new HashMap<String, String>();
 

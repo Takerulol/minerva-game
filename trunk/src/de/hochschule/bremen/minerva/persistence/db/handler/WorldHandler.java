@@ -36,7 +36,7 @@ import java.util.Vector;
 
 import de.hochschule.bremen.minerva.vo.ValueObject;
 import de.hochschule.bremen.minerva.vo.World;
-import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldExistsException;
@@ -48,7 +48,7 @@ import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOExceptio
  * DOCME
  * 
  */
-public class WorldHandler extends AbstractDatabaseHandler implements Crudable {
+public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 
 	private final static HashMap<String, String> sql = new HashMap<String, String>();
 

@@ -36,6 +36,6 @@ package de.hochschule.bremen.minerva.persistence;
  */
 public interface Persistence {
 	
-	public Crudable createHandler(Class<?> type);
+	public Handler createHandler(Class<?> type);
 
 }

@@ -31,7 +31,7 @@ package de.hochschule.bremen.minerva.persistence.service;
 
 import java.util.Vector;
 
-import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.exceptions.CountryNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
@@ -47,7 +47,7 @@ public class CountryService extends PersistenceService {
 
 	private static CountryService instance = null;
 
-	private Crudable storageHandler = CountryService.storage.createHandler(Country.class);
+	private Handler handler = CountryService.storage.createHandler(Country.class);
 
 	/**
 	 * Singleton pattern. It is not possible
@@ -78,7 +78,7 @@ public class CountryService extends PersistenceService {
 	 */
 	@SuppressWarnings("unchecked")
 	public Vector<Country> loadAll() throws PersistenceIOException {
-		Vector<Country> countries = (Vector)storageHandler.readAll();
+		Vector<Country> countries = (Vector)handler.readAll();
 		return countries;
 	}
 
@@ -91,7 +91,7 @@ public class CountryService extends PersistenceService {
 	 */
 	@SuppressWarnings("unchecked")
 	public Vector<Country> loadAll(World byWorld) throws PersistenceIOException {
-		Vector<Country> countries = (Vector)storageHandler.readAll(byWorld);
+		Vector<Country> countries = (Vector)handler.readAll(byWorld);
 		return countries;
 	}
 
@@ -103,7 +103,7 @@ public class CountryService extends PersistenceService {
 	 */
 	public Country load(int id) throws CountryNotFoundException {
 		try {
-			return (Country)storageHandler.read(new FilterParameter(id));
+			return (Country)handler.read(new FilterParameter(id));
 		} catch (Exception e) {
 			throw new CountryNotFoundException(e.getMessage());
 		}
@@ -112,7 +112,7 @@ public class CountryService extends PersistenceService {
 	@Override
 	public void save(Object candidate) throws PersistenceIOException {
 		Country registrableCountry = (Country)candidate;
-		storageHandler.save(registrableCountry);
+		handler.save(registrableCountry);
 	}
 
 	/**
@@ -123,6 +123,6 @@ public class CountryService extends PersistenceService {
 	public void delete(Object candidate) throws PersistenceIOException {
 		Country deletableCountry = (Country)candidate;
 		
-		storageHandler.remove(deletableCountry);
+		handler.remove(deletableCountry);
 	}
 }

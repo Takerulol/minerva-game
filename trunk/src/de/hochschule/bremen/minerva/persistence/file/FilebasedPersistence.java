@@ -29,13 +29,13 @@
  */
 package de.hochschule.bremen.minerva.persistence.file;
 
-import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.Persistence;
 
 public class FilebasedPersistence implements Persistence {
 
 	@Override
-	public Crudable createHandler(Class<?> type) {
+	public Handler createHandler(Class<?> type) {
 		// Not implemented. Only for demonstration purposes.
 		return null;
 	}

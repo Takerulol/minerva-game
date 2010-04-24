@@ -3,7 +3,7 @@ package de.hochschule.bremen.minerva.persistence.service;
 import java.util.List;
 import java.util.Vector;
 
-import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
@@ -19,7 +19,7 @@ public class PlayerService extends PersistenceService {
 
 	private static PlayerService instance = null;
 
-	private Crudable storageHandler = PlayerService.storage.createHandler(Player.class);
+	private Handler handler = PlayerService.storage.createHandler(Player.class);
 
 	/**
 	 * Singleton pattern. It is not possible
@@ -50,7 +50,7 @@ public class PlayerService extends PersistenceService {
 	public void delete(Object candidate) throws PersistenceIOException {
 		Player deletablePlayer = (Player)candidate;
 		
-		storageHandler.remove(deletablePlayer);
+		handler.remove(deletablePlayer);
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class PlayerService extends PersistenceService {
 	@Override
 	public ValueObject load(int id) throws PersistenceIOException {
 		try {
-			return (Player)storageHandler.read(new FilterParameter(id));
+			return (Player)handler.read(new FilterParameter(id));
 		} catch (Exception e) {
 			throw new PlayerNotFoundException(e.getMessage());
 		}
@@ -77,7 +77,7 @@ public class PlayerService extends PersistenceService {
 	@SuppressWarnings("unchecked")
 	public List<Player> loadAll() throws PersistenceIOException {
 		
-		Vector<Player> players = (Vector)storageHandler.readAll();
+		Vector<Player> players = (Vector)handler.readAll();
 		return players;
 	}
 
@@ -89,7 +89,7 @@ public class PlayerService extends PersistenceService {
 	@Override
 	public void save(Object candidate) throws PersistenceIOException {
 		Player registrablePlayer = (Player)candidate;
-		storageHandler.save(registrablePlayer);
+		handler.save(registrablePlayer);
 	}
 
 }
