@@ -31,7 +31,7 @@ package de.hochschule.bremen.minerva.persistence.db;
 
 import de.hochschule.bremen.minerva.vo.*;
 import de.hochschule.bremen.minerva.persistence.Persistence;
-import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.db.handler.ContinentHandler;
 import de.hochschule.bremen.minerva.persistence.db.handler.CountryHandler;
 import de.hochschule.bremen.minerva.persistence.db.handler.WorldHandler;
@@ -43,7 +43,7 @@ public class DatabasePersistence implements Persistence {
 	 * 
 	 */
 	@Override
-	public Crudable createHandler(Class<?> type) {
+	public Handler createHandler(Class<?> type) {
 		if (type == World.class) {
 			return new WorldHandler();
 		} else if (type == Country.class) {

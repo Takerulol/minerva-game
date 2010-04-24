@@ -31,7 +31,7 @@ package de.hochschule.bremen.minerva.persistence.service;
 
 import java.util.Vector;
 
-import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
@@ -46,7 +46,7 @@ public class WorldService extends PersistenceService {
 
 	private static WorldService instance = null;
 
-	private Crudable storageHandler = WorldService.storage.createHandler(World.class);
+	private Handler handler = WorldService.storage.createHandler(World.class);
 
 	/**
 	 * Singleton pattern. It is not possible
@@ -77,7 +77,7 @@ public class WorldService extends PersistenceService {
 	 */
 	@SuppressWarnings("unchecked")
 	public Vector<World> loadAll() throws PersistenceIOException {
-		Vector<World> worlds = (Vector<World>)storageHandler.readAll();
+		Vector<World> worlds = (Vector<World>)handler.readAll();
 		return worlds;
 	}
 
@@ -89,7 +89,7 @@ public class WorldService extends PersistenceService {
 	 */
 	public World load(int id) throws WorldNotFoundException {
 		try {
-			return (World)storageHandler.read(new FilterParameter(id));
+			return (World)handler.read(new FilterParameter(id));
 		} catch (Exception e) {
 			throw new WorldNotFoundException(e.getMessage());
 		}
@@ -98,7 +98,7 @@ public class WorldService extends PersistenceService {
 	@Override
 	public void save(Object candidate) throws PersistenceIOException {
 		World registrableWorld = (World)candidate;
-		storageHandler.save(registrableWorld);
+		handler.save(registrableWorld);
 	}
 
 	/**
@@ -109,6 +109,6 @@ public class WorldService extends PersistenceService {
 	public void delete(Object candidate) throws PersistenceIOException {
 		World deletableWorld = (World)candidate;
 		
-		storageHandler.remove(deletableWorld);
+		handler.remove(deletableWorld);
 	}
 }

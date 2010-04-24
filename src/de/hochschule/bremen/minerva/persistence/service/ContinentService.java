@@ -31,7 +31,7 @@ package de.hochschule.bremen.minerva.persistence.service;
 
 import java.util.Vector;
 
-import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.exceptions.ContinentNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
@@ -41,7 +41,7 @@ public class ContinentService extends PersistenceService {
 
 	private static ContinentService instance = null;
 
-	private Crudable storageHandler = CountryService.storage.createHandler(Continent.class);
+	private Handler handler = CountryService.storage.createHandler(Continent.class);
 
 	/**
 	 * Singleton pattern. It is not possible
@@ -70,7 +70,7 @@ public class ContinentService extends PersistenceService {
 	 */
 	@SuppressWarnings("unchecked")
 	public Vector<Continent> loadAll() throws PersistenceIOException {
-		Vector<Continent> continents = (Vector)storageHandler.readAll();
+		Vector<Continent> continents = (Vector)handler.readAll();
 		return continents;
 	}
 
@@ -81,7 +81,7 @@ public class ContinentService extends PersistenceService {
 	@Override
 	public Continent load(int id) throws PersistenceIOException {
 		try {
-			return (Continent)storageHandler.read(new FilterParameter(id));
+			return (Continent)handler.read(new FilterParameter(id));
 		} catch (Exception e) {
 			throw new ContinentNotFoundException(e.getMessage());
 		}
@@ -94,7 +94,7 @@ public class ContinentService extends PersistenceService {
 	@Override
 	public void save(Object candidate) throws PersistenceIOException {
 		Continent registrableContinent = (Continent)candidate;
-		storageHandler.save(registrableContinent);
+		handler.save(registrableContinent);
 	}
 
 	/**
@@ -104,6 +104,6 @@ public class ContinentService extends PersistenceService {
 	@Override
 	public void delete(Object candidate) throws PersistenceIOException {
 		Continent continent = (Continent)candidate;
-		storageHandler.remove(continent);
+		handler.remove(continent);
 	}
 }

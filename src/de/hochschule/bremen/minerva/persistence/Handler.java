@@ -48,7 +48,7 @@ import de.hochschule.bremen.minerva.vo.ValueObject;
  * @author akoenig
  *
  */
-public interface Crudable {
+public interface Handler {
 
 	/**
 	 * DOCME

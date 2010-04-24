@@ -31,13 +31,13 @@ package de.hochschule.bremen.minerva.persistence.file.handler;
 
 import java.util.Vector;
 
-import de.hochschule.bremen.minerva.persistence.Crudable;
+import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
 // Not implemented. Only for demonstration purposes.
-public class WorldHandler implements Crudable {
+public class WorldHandler implements Handler {
 
 	@Override
 	public ValueObject read(FilterParameter param) throws PersistenceIOException {
