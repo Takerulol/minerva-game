@@ -39,6 +39,7 @@ public class Player extends ValueObject {
 	private String email = null;
 	private String lastLogin = null;
 	
+	
 
 	/**
 	 * Sets the player id.
@@ -47,6 +48,7 @@ public class Player extends ValueObject {
 	 */
 	public void setId(int id) {
 		this.id = id;
+		System.out.println("Test");
 	}
 
 	/**
