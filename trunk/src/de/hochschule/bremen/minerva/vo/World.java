@@ -32,6 +32,8 @@ package de.hochschule.bremen.minerva.vo;
 
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.util.CountryGraph;
+
 public class World extends ValueObject {
 	
 	private int id = 0;
@@ -41,9 +43,8 @@ public class World extends ValueObject {
 	private String author = "";
 	private String version = "";
 
-	// TODO: Wir sollten hier keinen Vector sondern einen Graph implementieren.
-	// In diesem können wir ohne Probleme die Nachbarschaftsbeziehungen abbilden.
 	private Vector<Country> countries = null;
+	private CountryGraph countryGraph = new CountryGraph();
 	
 	/**
 	 * Sets the world id.
@@ -171,7 +172,16 @@ public class World extends ValueObject {
 		return this.countries;
 	}
 
-	
+	/**
+	 * Returns the country graph, which contains
+	 * the country-neighbour-relation.
+	 * 
+	 * @return
+	 */
+	public CountryGraph getCountryGraph() {
+		return countryGraph;
+	}
+
 	/**
 	 * Made out of all attributes one string.
 	 * 
@@ -180,6 +190,4 @@ public class World extends ValueObject {
 	public String toString() {
 		return getClass().getName() + ": [id=" + id + ", token=" +token + ", name=" + name + ", description=" + description + ", author=" + author + ", version=" + version + ", countries=" + countries +"]";
 	}
-	
-	
 }

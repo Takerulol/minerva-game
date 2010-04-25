@@ -53,9 +53,9 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 	private final static HashMap<String, String> sql = new HashMap<String, String>();
 
 	static {
-		sql.put("selectById", "select id, token, name, description, author, version from world where id = ?");
-		sql.put("selectAll", "select id, token, name, description, author, version from world order by name");
-		sql.put("insert", "insert into world (token, name, description, author, version) values (?, ?, ?, ?, ?)");
+		sql.put("selectById", "select \"id\", \"token\", \"name\", \"description\", \"author\", \"version\" from world where \"id\" = ?");
+		sql.put("selectAll", "select \"id\", \"token\", \"name\", \"description\", \"author\", \"version\" from world order by name");
+		sql.put("insert", "insert into world (\"token\", \"name\", \"description\", \"author\", \"version\") values (?, ?, ?, ?, ?)");
 		sql.put("update", "update world set token = ?, name = ?, description = ?, author = ?, version = ? where id = ?");
 		sql.put("delete", "delete from world where id = ?");
 	}
@@ -150,6 +150,10 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 		}
 	}
 
+	/**
+	 * DOCME
+	 * 
+	 */
 	@Override
 	public void remove(ValueObject candidate) throws PersistenceIOException {
 		World deletableWorld = (World)candidate;
@@ -172,6 +176,7 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 	protected World resultSetToObject(ResultSet current) throws SQLException {
 		World world = new World();
 
+		// TODO: Replace trim. Use correct database datatype.
 		world.setId(current.getInt(1));
 		world.setToken(current.getString(2).trim());
 		world.setName(current.getString(3).trim());

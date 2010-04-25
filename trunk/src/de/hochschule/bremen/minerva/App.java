@@ -34,8 +34,10 @@ import java.util.Vector;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.persistence.service.ContinentService;
 import de.hochschule.bremen.minerva.persistence.service.CountryService;
+import de.hochschule.bremen.minerva.persistence.service.NeighbourService;
 import de.hochschule.bremen.minerva.persistence.service.WorldService;
 import de.hochschule.bremen.minerva.vo.Country;
+import de.hochschule.bremen.minerva.vo.Neighbour;
 import de.hochschule.bremen.minerva.vo.World;
 
 public class App {
@@ -46,18 +48,32 @@ public class App {
 	public static void main(String[] args) {
 
 		try {
-			Vector<World> worlds = WorldService.getInstance().loadAll();
+			World world = WorldService.getInstance().load(1);
 
-			for (World world : worlds) {			
+			//for (World world : worlds) {			
 				Vector<Country> countries = CountryService.getInstance().loadAll(world);
+
 				for (Country country : countries) {
 					country.setContinent(ContinentService.getInstance().load(country.getContinent().getId()));
+
+					for (Neighbour neighbour : NeighbourService.getInstance().loadAll(country)) {
+						world.getCountryGraph().connect(country, neighbour);
+					}
 				}
 
 				world.setCountries(countries);
 
 				System.out.println(world.toString());
-			}
+
+				Country ukraine = CountryService.getInstance().load(3);
+				Country scandinavia = CountryService.getInstance().load(1);
+
+				if (world.getCountryGraph().neighbours(ukraine, scandinavia)) {
+					System.out.println("Ukraine und Skandinavien sind benachbart.");
+				} else {
+					System.out.println("Ukraine und Skandinavien sind NICHT benachbart.");
+				}
+			//}
 
 		} catch (PersistenceIOException e) {
 			e.printStackTrace();

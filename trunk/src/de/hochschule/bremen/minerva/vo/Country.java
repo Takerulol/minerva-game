@@ -30,35 +30,15 @@
 package de.hochschule.bremen.minerva.vo;
 
 import java.awt.Color;
-import java.util.List;
-import java.util.ListIterator;
 
 public class Country extends ValueObject {
 
-	private int id;
-	private String token;
-	private String name;
-	private Color color = null;
-	private Continent continent = null;
-	private List<Country> neighbours = null;
-	private int worldId = 0;
-	
-	
-	/**
-	 * Proves if parameter is neighbour country.
-	 * 
-	 * @param cnt
-	 * @return
-	 */
-	public boolean isNeighbourOf(Country cnt) {
-		ListIterator<Country> iter = cnt.getNeighbours().listIterator();
-		while (iter.hasNext()) {
-			if (iter.next().getId() == this.getId()) {
-				return true;
-			}
-		}
-		return false;
-	}
+	protected int id;
+	protected String token;
+	protected String name;
+	protected Color color = null;
+	protected Continent continent = null;
+	protected int worldId = 0;
 	
 	/**
 	 * Sets the country id.
@@ -150,23 +130,6 @@ public class Country extends ValueObject {
 	}
 
 	/**
-	 * Sets the country neighbours.
-	 * 
-	 * @param neighbours
-	 */
-	public void setNeighbours(List<Country> neighbours) {
-		this.neighbours = neighbours;
-	}
-
-	/**
-	 * Returns the neighbours.
-	 * @return
-	 */
-	public List<Country> getNeighbours() {
-		return this.neighbours;
-	}
-
-	/**
 	 * Sets the world id.
 	 * 
 	 * @param worldId
@@ -190,6 +153,6 @@ public class Country extends ValueObject {
 	 * @return
 	 */
 	public String toString() {
-		return getClass().getName() + "[id=" + id + ",token=" +token + ",name=" + name + ",color=" + color + ",continent=" + continent + ",neighbours=" + neighbours + "]";
+		return getClass().getName() + "[id=" + id + ",token=" +token + ",name=" + name + ",color=" + color + ",continent=" + continent + "]";
 	}
 }

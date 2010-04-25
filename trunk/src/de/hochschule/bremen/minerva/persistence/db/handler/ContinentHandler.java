@@ -53,8 +53,8 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 	private final static HashMap<String, String> sql = new HashMap<String, String>();
 
 	static {
-		sql.put("selectAll", "select id, name from continent order by name");
-		sql.put("selectById", "select id, name from continent where id = ?");
+		sql.put("selectAll", "select \"id\", \"name\" from continent order by name");
+		sql.put("selectById", "select \"id\", \"name\" from continent where \"id\" = ?");
 		sql.put("insert", "insert into continent (name) values (?)");
 		sql.put("update", "update continent set name = ? where id = ?");
 		sql.put("delete", "delete from continent where id = ?");
