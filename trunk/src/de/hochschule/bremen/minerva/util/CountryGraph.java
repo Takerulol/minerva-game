@@ -31,19 +31,57 @@
 package de.hochschule.bremen.minerva.util;
 
 import de.hochschule.bremen.minerva.vo.Country;
+import java.util.HashMap;
+import java.util.Vector;
 
 public class CountryGraph {
-
-	public void addCountry(Country country) {
-		
+	
+	/**
+	 * CountryGraph with neighbour-relations.
+	 * 
+	 */
+	private HashMap<Integer, Vector<Integer>> neighbours;
+	
+	/**
+	 * Constructor initializing neighbour-relation-map.
+	 * 
+	 */
+	public CountryGraph() {
+		neighbours = new HashMap<Integer, Vector<Integer>>();
 	}
 	
-	public void connect(Country country1, Country country2) {
+	/**
+	 * Connects country one with country in the map. If the country doesn't exit in the map, it will be created.
+	 * 
+	 * @param source
+	 * @param with
+	 */
+	public void connect(Country source, Country with) {
+		Vector<Integer> connections;
 		
+		if (neighbours.containsKey(source.getId())) {
+			 connections = neighbours.get(source.getId());
+		} else {
+			connections = new Vector<Integer>();
+		}
+			
+		connections.add(with.getId());
+		neighbours.put(source.getId(), connections);
 	}
 	
-	public boolean neighbours(Country country1, Country country2) {
+	/**
+	 * Compares two countries for a neighbour-connection.
+	 * 
+	 * @param one
+	 * @param two
+	 * @return
+	 */
+	public boolean neighbours(Country one, Country two) {
+		if (neighbours.get(one.getId()).contains(two.getId())) {
+			return true;
+		}
 		return false;
 	}
-	
+
+
 }
