@@ -59,11 +59,11 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	private final static HashMap<String, String> sql = new HashMap<String, String>();
 
 	static {
-		sql.put("selectById", "select id, token, name, color, continent, world from country where id = ?");
-		sql.put("selectAllByWorldId", "select id, token, name, color, continent, world from country where world = ?");
-		sql.put("insert", "insert into country (token, name, color, continent, world) values (?, ?, ?, ?, ?)");
-		sql.put("update", "update country set token = ?, name = ?, color = ?, continent = ?, world = ? where id = ?");
-		sql.put("delete", "delete from country where id = ?");
+		sql.put("selectById", "select \"id\", \"token\", \"name\", \"color\", \"continent\", \"world\" from country where \"id\" = ?");
+		sql.put("selectAllByWorldId", "select \"id\", \"token\", \"name\", \"color\", \"continent\", \"world\" from country where \"world\" = ?");
+		sql.put("insert", "insert into country (\"token\", \"name\", \"color\", \"continent\", \"world\") values (?, ?, ?, ?, ?)");
+		sql.put("update", "update country set \"token\" = ?, \"name\" = ?, \"color\" = ?, \"continent\" = ?, \"world\" = ? where \"id\" = ?");
+		sql.put("delete", "delete from country where \"id\" = ?");
 	}
 
 	/**

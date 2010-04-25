@@ -29,7 +29,7 @@
  */
 package de.hochschule.bremen.minerva.persistence.service;
 
-import java.util.List;
+import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Persistence;
 import de.hochschule.bremen.minerva.persistence.db.DatabasePersistence;
@@ -44,7 +44,7 @@ public abstract class PersistenceService {
 	protected static Persistence storage = new DatabasePersistence(); 
 	
 	// DOCME!!!
-	abstract public List<?> loadAll() throws PersistenceIOException;
+	abstract public Vector<?> loadAll() throws PersistenceIOException;
 
 	// DOCME!!!
 	abstract public ValueObject load(int id) throws PersistenceIOException;

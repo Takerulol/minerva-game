@@ -27,34 +27,13 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.persistence.db;
+package de.hochschule.bremen.minerva.vo;
 
-import de.hochschule.bremen.minerva.vo.*;
-import de.hochschule.bremen.minerva.persistence.Persistence;
-import de.hochschule.bremen.minerva.persistence.Handler;
-import de.hochschule.bremen.minerva.persistence.db.handler.ContinentHandler;
-import de.hochschule.bremen.minerva.persistence.db.handler.CountryHandler;
-import de.hochschule.bremen.minerva.persistence.db.handler.NeighbourHandler;
-import de.hochschule.bremen.minerva.persistence.db.handler.WorldHandler;
-
-public class DatabasePersistence implements Persistence {
-
-	/**
-	 * DOCME
-	 * 
-	 */
-	@Override
-	public Handler createHandler(Class<?> type) {
-		if (type == World.class) {
-			return new WorldHandler();
-		} else if (type == Country.class) {
-			return new CountryHandler();
-		} else if (type == Continent.class) {
-			return new ContinentHandler();
-		} else if (type == Neighbour.class) {
-			return new NeighbourHandler();
-		}
-		return null;
-	}
-	
-}
+/**
+ * DOCME
+ * Marker class
+ * 
+ * @author akoenig
+ *
+ */
+public class Neighbour extends Country {}

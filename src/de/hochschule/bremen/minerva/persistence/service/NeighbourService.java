@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id: ContinentService.java 122 2010-04-24 20:59:14Z andre.koenig $
+ * $Id$
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,91 +32,71 @@ package de.hochschule.bremen.minerva.persistence.service;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Handler;
-import de.hochschule.bremen.minerva.persistence.FilterParameter;
-import de.hochschule.bremen.minerva.persistence.exceptions.PlayerNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
-import de.hochschule.bremen.minerva.vo.Player;
+import de.hochschule.bremen.minerva.vo.Country;
+import de.hochschule.bremen.minerva.vo.Neighbour;
+import de.hochschule.bremen.minerva.vo.ValueObject;
 
-//TODO: DOCME the class and two methods.
+public class NeighbourService extends PersistenceService {
 
-/**
- * DOCME
- */
-public class PlayerService extends PersistenceService {
+	private static NeighbourService instance = null;
 
-	private static PlayerService instance = null;
-
-	private Handler handler = PlayerService.storage.createHandler(Player.class);
+	private Handler handler = NeighbourService.storage.createHandler(Neighbour.class);
 
 	/**
 	 * Singleton pattern. It is not possible
-	 * to create a PlayerService in the common way.
+	 * to create a NeighbourService in the common way.
 	 * So this constructor is private.
 	 */
-	private PlayerService() {}
+	private NeighbourService() {}
 	
 	/**
 	 * Singleton pattern.
 	 * Static method that controls the object creation.
 	 * 
-	 * @return PlayerService.instance
+	 * @return NeighbourService
 	 */
-	public static PlayerService getInstance() {
-		if (PlayerService.instance == null) {
-			PlayerService.instance = new PlayerService();
+	public static NeighbourService getInstance() {
+		if (NeighbourService.instance == null) {
+			NeighbourService.instance = new NeighbourService();
 		}
-		return PlayerService.instance;
+		return NeighbourService.instance;
 	}
-	
+
 	/**
-	 * Method that delete the player object.
+	 * DOCME
 	 * 
+	 * @param byCountry
+	 * @return
 	 * @throws PersistenceIOException
 	 */
+	@SuppressWarnings("unchecked")
+	public Vector<Neighbour> loadAll(Country byCountry) throws PersistenceIOException {
+		Vector<Neighbour> neighbours = (Vector)handler.readAll(byCountry);
+		return neighbours;
+	}
+
 	@Override
 	public void delete(Object candidate) throws PersistenceIOException {
-		Player deletablePlayer = (Player)candidate;
+		// TODO Auto-generated method stub
 		
-		handler.remove(deletablePlayer);
 	}
 
-	/**
-	 * DOCME
-	 * 
-	 * @throws PlayerNotFoundException, PersistenceIOException
-	 */
 	@Override
-	public Player load(int id) throws PersistenceIOException {
-		try {
-			return (Player)handler.read(new FilterParameter(id));
-		} catch (Exception e) {
-			throw new PlayerNotFoundException(e.getMessage());
-		}
+	public ValueObject load(int id) throws PersistenceIOException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	/**
-	 * DOCME
-	 * 
-	 * @throws PersistenceIOException
-	 * @return players
-	 */
-	@Override
-	@SuppressWarnings("unchecked")
-	public Vector<Player> loadAll() throws PersistenceIOException {
-		
-		Vector<Player> players = (Vector)handler.readAll();
-		return players;
-	}
-
-	/**
-	 * Method that save the object.
-	 * 
-	 * @throws PersistenceIOException
-	 */
 	@Override
 	public void save(Object candidate) throws PersistenceIOException {
-		Player registrablePlayer = (Player)candidate;
-		handler.save(registrablePlayer);
+		// TODO Auto-generated method stub
+		
 	}
 
+	@Override
+	public Vector<?> loadAll() throws PersistenceIOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
