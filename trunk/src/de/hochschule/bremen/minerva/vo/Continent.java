@@ -41,7 +41,6 @@ public class Continent extends ValueObject {
 	 */
 	public void setId(int id) {
 		this.id = id;
-		System.out.println("test");
 	}
 
 	/**
