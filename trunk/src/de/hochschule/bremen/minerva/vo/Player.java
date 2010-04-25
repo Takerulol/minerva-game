@@ -29,6 +29,8 @@
  */
 package de.hochschule.bremen.minerva.vo;
 
+import java.util.Vector;
+
 public class Player extends ValueObject {
 
 	private int id = 0;
@@ -39,7 +41,8 @@ public class Player extends ValueObject {
 	private String email = null;
 	private String lastLogin = null;
 	
-	
+	// The countries, that the player won.
+	private Vector<Country> countries = null;
 
 	/**
 	 * Sets the player id.
@@ -167,6 +170,24 @@ public class Player extends ValueObject {
 		return lastLogin;
 	}
 
+	/**
+	 * Sets the countries (owned by the player).
+	 * 
+	 * @param countries
+	 */
+	public void setCountries(Vector<Country> countries) {
+		this.countries = countries;
+	}
+	
+	/**
+	 * Returns the countries (owned by the player).
+	 * 
+	 * @return Vector with the country pointer.
+	 */
+	public Vector<Country> getCountries() {
+		return this.countries;
+	}
+	
 	/**
 	 * Made out of all attributes one string
 	 * 
