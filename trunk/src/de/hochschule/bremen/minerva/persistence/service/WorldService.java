@@ -95,6 +95,10 @@ public class WorldService extends PersistenceService {
 		}
 	}
 
+	/**
+	 * DOCME
+	 * 
+	 */
 	@Override
 	public void save(Object candidate) throws PersistenceIOException {
 		World registrableWorld = (World)candidate;
