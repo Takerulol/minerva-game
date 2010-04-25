@@ -31,6 +31,7 @@ package de.hochschule.bremen.minerva.vo;
 
 import java.awt.Color;
 import java.util.List;
+import java.util.ListIterator;
 
 public class Country extends ValueObject {
 
@@ -41,7 +42,24 @@ public class Country extends ValueObject {
 	private Continent continent = null;
 	private List<Country> neighbours = null;
 	private int worldId = 0;
-
+	
+	
+	/**
+	 * Proves if parameter is neighbour country.
+	 * 
+	 * @param cnt
+	 * @return
+	 */
+	public boolean isNeighbourOf(Country cnt) {
+		ListIterator<Country> iter = cnt.getNeighbours().listIterator();
+		while (iter.hasNext()) {
+			if (iter.next().getId() == this.getId()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * Sets the country id.
 	 * 
