@@ -41,6 +41,8 @@ public class World extends ValueObject {
 	private String author = "";
 	private String version = "";
 
+	// TODO: Wir sollten hier keinen Vector sondern einen Graph implementieren.
+	// In diesem können wir ohne Probleme die Nachbarschaftsbeziehungen abbilden.
 	private Vector<Country> countries = null;
 	
 	/**
