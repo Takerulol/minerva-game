@@ -75,6 +75,14 @@ public class App {
 				}
 			//}
 
+			/*
+			 * - Eingabe der Spieler
+			 * - Auswahl der Welt
+			 * 
+			 * Game game = new Game(world, player);
+			 *
+			 */
+				
 		} catch (PersistenceIOException e) {
 			e.printStackTrace();
 		}
