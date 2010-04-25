@@ -83,3 +83,6 @@ insert into neighbour (country, neighbour_country) values (6, 7);
 
 -- Groß-Britanien: Island
 insert into neighbour (country, neighbour_country) values (7, 6);
+
+-- ## Anlegen von Spielern
+insert into player (username, password, last_name, first_name, email, last_login) values ("notion", "5ea790e4a248dab6ac4b6ae1854463c7", "König", "André", andre.koenig@gm.com, 20100425);
