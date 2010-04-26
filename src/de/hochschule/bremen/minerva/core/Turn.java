@@ -53,12 +53,14 @@ public class Turn {
 	 * @param players
 	 */
 	public Turn(Player currentPlayer, World world, Vector<Player> players) {
-		this.setWorld(world);
-		this.currentPlayer = currentPlayer;
-		this.setPlayers(players);
+		setWorld(world);
+		setCurrentPlayer(currentPlayer);
+		setPlayers(players);
 		setAllocatableArmies(createArmies(this.currentPlayer));
 	}
 	
+
+
 	/**
 	 * TODO:
 	 * 	- Actually create armies.
@@ -107,12 +109,18 @@ public class Turn {
 	
 	/**
 	 * 
+	 * @param currentPlayer
+	 */
+	private void setCurrentPlayer(Player currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+	/**
+	 * 
 	 * @return
 	 */
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
-
 	/**
 	 * 
 	 * @param world
@@ -120,7 +128,6 @@ public class Turn {
 	private void setWorld(World world) {
 		this.world = world;
 	}
-
 	/**
 	 * 
 	 * @return
@@ -128,7 +135,6 @@ public class Turn {
 	public World getWorld() {
 		return world;
 	}
-
 	/**
 	 * 
 	 * @param players
@@ -136,7 +142,6 @@ public class Turn {
 	private void setPlayers(Vector<Player> players) {
 		this.players = players;
 	}
-
 	/**
 	 * 
 	 * @return
@@ -144,7 +149,6 @@ public class Turn {
 	public Vector<Player> getPlayers() {
 		return players;
 	}
-
 	/**
 	 * 
 	 * @param allocatableArmies
@@ -152,7 +156,6 @@ public class Turn {
 	private void setAllocatableArmies(Vector<Army> allocatableArmies) {
 		this.allocatableArmies = allocatableArmies;
 	}
-
 	/**
 	 * 
 	 * @return
