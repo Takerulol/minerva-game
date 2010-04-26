@@ -32,7 +32,8 @@ package de.hochschule.bremen.minerva.core;
 
 import java.util.Vector;
 
-import de.hochschule.bremen.minerva.core.exceptions.CountriesNotInRelationException;
+
+import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
 import de.hochschule.bremen.minerva.vo.Army;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Player;
