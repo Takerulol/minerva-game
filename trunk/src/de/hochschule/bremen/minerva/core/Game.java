@@ -71,6 +71,10 @@ public class Game {
 			}
 		}
 
+		if (!found) {
+			currentPlayer = this.player.firstElement();
+		}
+		
 		this.turns.add(new Turn(currentPlayer, this.world, this.player));
 		return this.turns.lastElement();
 	}
