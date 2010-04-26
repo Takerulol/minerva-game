@@ -32,28 +32,75 @@ package de.hochschule.bremen.minerva.core;
 
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.core.exceptions.CountriesNotInRelationException;
+import de.hochschule.bremen.minerva.vo.Army;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Player;
+import de.hochschule.bremen.minerva.vo.World;
 
 public class Turn {
-	private Vector<Country> countries = null;
+	private World world = null;
+	private Vector<Player> players = null;
 	private Player currentPlayer = null;
-	private Rules rules = null;
+	private Vector<Army> allocatableArmies = null;
 	
-	public Turn(Player current, Vector<Country> cnt, Rules rls) {
-		countries = cnt;
-		currentPlayer = current;
-		rules = rls;
+	/**
+	 * DOCME
+	 * 
+	 * @param currentPlayer
+	 * @param world
+	 * @param players
+	 */
+	public Turn(Player currentPlayer, World world, Vector<Player> players) {
+		this.world = world;
+		this.currentPlayer = currentPlayer;
+		this.players = players;
+		allocatableArmies = createArmies(this.currentPlayer);
 	}
 	
-	/*
+	/**
 	 * TODO:
-	 * 	- Verteilung
-	 *  - Angriff/Verteidigung
-	 *  - Umstrukturierung
-	 *  - Ende des Zuges
-	 *  - Beachtung der Regeln
-	 *  
+	 * 	- Actually create armies.
+	 * 
+	 * DOCME
+	 * @param currentPlayer
+	 * @return
 	 */
+	private Vector<Army> createArmies(Player currentPlayer) {
+		return null;
+	}
+	
+	/**
+	 * DOCME
+	 * 
+	 * @param country
+	 */
+	public void allocateArmy(Country country) {
+		
+	}
+	
+	/**
+	 * DOCME
+	 * 
+	 * @param attacker
+	 * @param defender
+	 * @param armyCount
+	 * @throws CountriesNotInRelationException
+	 */
+	public void attack(Country attacker, Country defender, int armyCount) throws CountriesNotInRelationException {
+		
+	}
+	
+	/**
+	 * DOCME
+	 * 
+	 * @param from
+	 * @param destination
+	 * @param armyCount
+	 * @throws CountriesNotInRelationException
+	 */
+	public void moveArmies(Country from, Country destination, int armyCount) throws CountriesNotInRelationException {
+		
+	}
 	
 }
