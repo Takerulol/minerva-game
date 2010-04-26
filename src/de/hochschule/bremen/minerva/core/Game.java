@@ -29,6 +29,7 @@
  */
 package de.hochschule.bremen.minerva.core;
 
+import java.util.Iterator;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.vo.Player;
@@ -55,27 +56,7 @@ public class Game {
 	 * 
 	 */
 	public Turn nextTurn() {
-		Player currentPlayer = null;
-		boolean found = false;
-
-		for (Player player : this.player) {
-			if (!found) {
-				if (player.isCurrentPlayer()) {
-					found = true;
-					player.setCurrentPlayer(false);
-				}
-			} else {
-				player.setCurrentPlayer(true);
-				currentPlayer = player;
-				break;
-			}
-		}
-
-		if (!found) {
-			currentPlayer = this.player.firstElement();
-		}
-		
-		this.turns.add(new Turn(currentPlayer, this.world, this.player));
+		this.turns.add(new Turn(this.nextPlayer(), this.world, this.player));
 		return this.turns.lastElement();
 	}
 
@@ -89,6 +70,7 @@ public class Game {
 	}
 
 	/**
+	 * DOCME
 	 * @return the player
 	 */
 	public Vector<Player> getPlayer() {
@@ -96,6 +78,7 @@ public class Game {
 	}
 
 	/**
+	 * DOCME
 	 * @return the turns
 	 */
 	public Vector<Turn> getTurns() {
@@ -103,10 +86,52 @@ public class Game {
 	}
 
 	/**
-	 * 
+	 * DOCME
 	 * @return Game finished?
 	 */
 	public boolean isFinished() {
 		return finished;
+	}
+
+	/**
+	 * Iterates over the player vector and determines
+	 * the current player. This player is not the current player
+	 * anymore. Sets the next player object in the list as the
+	 * current player and returns this instance.
+	 * 
+	 * If there is no player the "current player", we flag the first
+	 * player in the vector as the new current player.
+	 * 
+	 * @return The next player.
+	 * 
+	 */
+	private Player nextPlayer() {
+		Player currentPlayer = null;
+
+		boolean found = false;
+		boolean wasLast = false;
+		
+		for (Player player : this.player) {
+			if (!found) {
+				if (player.isCurrentPlayer()) {
+					player.setCurrentPlayer(false);
+					found = true;
+				}
+			} else {
+				player.setCurrentPlayer(true);
+				currentPlayer = player;
+				wasLast = true;
+			}
+		}
+		
+		// If there was no player the current player before or the last
+		// current player was the last entry in the vector use the first
+		// player as the new current player.
+		if (!found || wasLast) {
+			currentPlayer = this.player.firstElement();
+			currentPlayer.setCurrentPlayer(true);
+		}
+
+		return currentPlayer;
 	}
 }
