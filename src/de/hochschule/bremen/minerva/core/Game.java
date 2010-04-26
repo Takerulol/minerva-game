@@ -47,6 +47,34 @@ public class Game {
 	private boolean finished = false;
 
 	/**
+	 * Sets the next player and creates a new
+	 * Turn. With this turn it is possible to
+	 * implement the application logic.
+     *
+	 * @return Turn
+	 * 
+	 */
+	public Turn nextTurn() {
+		Player currentPlayer = null;
+		boolean found = false;
+		for (Player player : this.player) {
+			if (!found) {
+				if (player.isCurrentPlayer()) {
+					found = true;
+					player.setCurrentPlayer(false);
+				}
+			} else {
+				player.setCurrentPlayer(true);
+				currentPlayer = player;
+				break;
+			}
+		}
+
+		this.turns.add(new Turn(currentPlayer, this.world, this.player));
+		return this.turns.lastElement();
+	}
+
+	/**
 	 * DOCME
 	 * 
 	 * @return
