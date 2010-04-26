@@ -27,67 +27,53 @@
  *     http://minerva.idira.de
  * 
  */
-
 package de.hochschule.bremen.minerva.core;
 
 import java.util.Vector;
 
-import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Player;
+import de.hochschule.bremen.minerva.vo.World;
 
+/**
+ * DOCME 
+ * 
+ *
+ */
 public class Game {
 	
-	private Vector<Player> players = null;
-	private Vector<Country> countries = null;
-	private Player currentPlayer = null;
-	private Rules rules = null;
-	
-	public Game (Vector<Player> pl, Vector<Country> cnt) {
-		players = pl;
-		countries = cnt;
-		initialize();
+	private World world = null;
+	private Vector<Player> player = null;
+	private Vector<Turn> turns = null;
+	private boolean finished = false;
+
+	/**
+	 * DOCME
+	 * 
+	 * @return
+	 */
+	public World getWorld() {
+		return world;
 	}
-	
-	
-	//initialisierung von anfangswerten
-	public static void initialize() {
-		/*
-		 * TODO:
-		 * 	- Anfangsspieler bestimmen
-		 *  - Methodenaufrufe zur Verteilung (carina)
-		 *  - ggf. missionsverteilung (später)
-		 *  - regeln initilisieren
-		 */
-		
+
+	/**
+	 * @return the player
+	 */
+	public Vector<Player> getPlayer() {
+		return player;
 	}
-	
-	public void run() {
-		
+
+	/**
+	 * @return the turns
+	 */
+	public Vector<Turn> getTurns() {
+		return this.turns;
 	}
-	
-	public void close() {
-		players = null;
-		countries = null;
-		currentPlayer = null;
-		rules = null;
-	}
-	
-	
-	
-	
-	// Getter/Setter
-	public Vector<Player> getPlayers() {
-		return players;
-	}
-	public Vector<Country> getCountries() {
-		return countries;
-	}
-	public Player getCurrentPlayer() {
-		return currentPlayer;
-	}
-	
-	// Testkonstrukt fuer kleine Kartenumgebung (vll auch in cui auslagern)
-	public void testGame() {
-		
+
+	/**
+	 * 
+	 * @return Game finished?
+	 */
+	public boolean isFinished() {
+		return finished;
 	}
 }
