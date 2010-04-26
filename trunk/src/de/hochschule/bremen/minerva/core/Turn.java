@@ -69,7 +69,7 @@ public class Turn {
 	 * @return
 	 */
 	private Vector<Army> createArmies(Player currentPlayer) {
-		int armyGet = currentPlayer.getCountries().size() / 3;
+		int armyGet = currentPlayer.getCountryCount() / 3;
 		Vector<Army> newArmies = new Vector<Army>();
 		if ( armyGet > 3 ) {
 			for (int i = 0; i < armyGet; i++ ) {
