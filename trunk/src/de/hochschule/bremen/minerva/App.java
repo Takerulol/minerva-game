@@ -48,9 +48,9 @@ public class App {
 	public static void main(String[] args) {
 
 		try {
-			World world = WorldService.getInstance().load(1);
+			Vector<World> worlds = WorldService.getInstance().loadAll();
 
-			//for (World world : worlds) {			
+			for (World world : worlds) {			
 				Vector<Country> countries = CountryService.getInstance().loadAll(world);
 
 				for (Country country : countries) {
@@ -73,16 +73,7 @@ public class App {
 				} else {
 					System.out.println("Ukraine und Skandinavien sind NICHT benachbart.");
 				}
-			//}
-
-			/*
-			 * - Eingabe der Spieler
-			 * - Auswahl der Welt
-			 * 
-			 * Game game = new Game(world, player);
-			 *
-			 */
-				
+			}
 		} catch (PersistenceIOException e) {
 			e.printStackTrace();
 		}
