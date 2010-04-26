@@ -192,21 +192,23 @@ public class Player extends ValueObject {
 	}
 
 	/**
-	 * Sets the countries (owned by the player).
+	 * The player has captured a new country.
+	 * Add this country to the players country
+	 * vector.
 	 * 
 	 * @param countries
 	 */
-	public void setCountries(Vector<Country> countries) {
-		this.countries = countries;
+	public void addCountry(Country country) {
+		this.countries.add(country);
 	}
 	
 	/**
-	 * Returns the countries (owned by the player).
+	 * Oh nooo. The player has lost one country.
+	 * Remove it from the players country vector.
 	 * 
-	 * @return Vector with the country pointer.
 	 */
-	public Vector<Country> getCountries() {
-		return this.countries;
+	public void removeCountry(Country country) {
+		this.countries.remove(country);
 	}
 
 	/**
