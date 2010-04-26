@@ -53,10 +53,10 @@ public class Turn {
 	 * @param players
 	 */
 	public Turn(Player currentPlayer, World world, Vector<Player> players) {
-		this.world = world;
+		this.setWorld(world);
 		this.currentPlayer = currentPlayer;
-		this.players = players;
-		allocatableArmies = createArmies(this.currentPlayer);
+		this.setPlayers(players);
+		setAllocatableArmies(createArmies(this.currentPlayer));
 	}
 	
 	/**
@@ -102,6 +102,63 @@ public class Turn {
 	 */
 	public void moveArmies(Country from, Country destination, int armyCount) throws CountriesNotInRelationException {
 		
+	}
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	/**
+	 * 
+	 * @param world
+	 */
+	private void setWorld(World world) {
+		this.world = world;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public World getWorld() {
+		return world;
+	}
+
+	/**
+	 * 
+	 * @param players
+	 */
+	private void setPlayers(Vector<Player> players) {
+		this.players = players;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public Vector<Player> getPlayers() {
+		return players;
+	}
+
+	/**
+	 * 
+	 * @param allocatableArmies
+	 */
+	private void setAllocatableArmies(Vector<Army> allocatableArmies) {
+		this.allocatableArmies = allocatableArmies;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public Vector<Army> getAllocatableArmies() {
+		return allocatableArmies;
 	}
 	
 }
