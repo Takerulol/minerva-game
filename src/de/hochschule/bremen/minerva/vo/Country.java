@@ -30,6 +30,7 @@
 package de.hochschule.bremen.minerva.vo;
 
 import java.awt.Color;
+import java.util.Vector;
 
 public class Country extends ValueObject {
 
@@ -39,7 +40,9 @@ public class Country extends ValueObject {
 	protected Color color = null;
 	protected Continent continent = null;
 	protected int worldId = 0;
+	protected Vector<Army> armies = null;
 	
+
 	/**
 	 * Sets the country id.
 	 * 
@@ -148,6 +151,41 @@ public class Country extends ValueObject {
 	}
 
 	/**
+	 * Sets army-vector.
+	 * 
+	 * @param armies
+	 */
+	public void setArmies(Vector<Army> armies) {
+		this.armies = armies;
+	}
+
+	/**
+	 * Gets army-vector.
+	 * 
+	 * @return
+	 */
+	public Vector<Army> getArmies() {
+		return armies;
+	}
+	
+	/**
+	 * Adds one army to an existing army-vector.
+	 * 
+	 */
+	public void addArmy() {
+		getArmies().add(new Army());
+	}
+	
+	/**
+	 * Removes one army from an existing army-vector.
+	 * 
+	 */
+	public void removeArmy() {
+		if (getArmies().size() > 0) {
+			getArmies().remove(getArmies().size()-1);
+		}
+	}
+	/**
 	 * Made out of all attributes one string.
 	 * 
 	 * @return
@@ -155,4 +193,6 @@ public class Country extends ValueObject {
 	public String toString() {
 		return getClass().getName() + "[id=" + id + ",token=" +token + ",name=" + name + ",color=" + color + ",continent=" + continent + "]";
 	}
+
+
 }

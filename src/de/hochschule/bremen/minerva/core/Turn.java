@@ -59,27 +59,40 @@ public class Turn {
 		setAllocatableArmies(createArmies(this.currentPlayer));
 	}
 	
-
-
+	
 	/**
-	 * TODO:
-	 * 	- Actually create armies.
+	 * Creates armies for the current player by taking his countryCount / 3.
+	 * If its less than 3, the current player gets 3 armies.
 	 * 
 	 * DOCME
 	 * @param currentPlayer
 	 * @return
 	 */
 	private Vector<Army> createArmies(Player currentPlayer) {
-		return null;
+		int armyGet = currentPlayer.getCountries().size() / 3;
+		Vector<Army> newArmies = new Vector<Army>();
+		if ( armyGet > 3 ) {
+			for (int i = 0; i < armyGet; i++ ) {
+				newArmies.add(new Army());
+			}
+		} else {
+			for (int i = 0; i < 3; i++ ) {
+				newArmies.add(new Army());
+			}
+		}
+		return newArmies;
 	}
 	
 	/**
-	 * DOCME
+	 * Allocates a single allocatable army into a country.
 	 * 
 	 * @param country
 	 */
 	public void allocateArmy(Country country) {
-		
+		if ((currentPlayer.hasCountry(country)) && (getAllocatableArmies().size() > 0)) {
+			country.addArmy();
+			getAllocatableArmies().remove(getAllocatableArmies().size() - 1);
+		}
 	}
 	
 	/**
