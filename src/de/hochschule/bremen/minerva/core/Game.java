@@ -57,6 +57,7 @@ public class Game {
 	public Turn nextTurn() {
 		Player currentPlayer = null;
 		boolean found = false;
+
 		for (Player player : this.player) {
 			if (!found) {
 				if (player.isCurrentPlayer()) {
