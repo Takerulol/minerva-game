@@ -212,6 +212,15 @@ public class Player extends ValueObject {
 	}
 
 	/**
+	 * Returns the current players country count.
+	 *  
+	 * @return
+	 */
+	public int getCountryCount() {
+		return this.countries.size();
+	}
+
+	/**
 	 * Check if the user owns the given country.
 	 * 
 	 * @param country
