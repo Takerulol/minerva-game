@@ -187,6 +187,26 @@ public class Player extends ValueObject {
 	public Vector<Country> getCountries() {
 		return this.countries;
 	}
+
+	/**
+	 * Check if the user owns the given country.
+	 * 
+	 * @param country
+	 * @return
+	 */
+	public boolean hasCountry(Country country) {
+		return (this.countries.contains(country));
+	}
+
+	/**
+	 * Has the user lost all his countries?
+	 *  
+	 * @return true / false
+	 * 
+	 */
+	public boolean hasCountries() {
+		return (this.countries.size() > 0);
+	}
 	
 	/**
 	 * Made out of all attributes one string
