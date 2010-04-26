@@ -40,6 +40,7 @@ public class Player extends ValueObject {
 	private String firstName = null;
 	private String email = null;
 	private String lastLogin = null;
+	private boolean currentPlayer = false;
 	
 	// The countries, that the player won.
 	private Vector<Country> countries = null;
@@ -168,6 +169,26 @@ public class Player extends ValueObject {
 	 */
 	public String getLastLogin() {
 		return lastLogin;
+	}
+
+	/**
+	 * Sets the player as the current player.
+	 * 
+	 * @param currentPlayer the currentPlayer to set
+	 * 
+	 */
+	public void setCurrentPlayer(boolean currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+
+	/**
+	 * Is this player the current player?
+	 * 
+	 * @return the currentPlayer
+	 * 
+	 */
+	public boolean isCurrentPlayer() {
+		return currentPlayer;
 	}
 
 	/**
