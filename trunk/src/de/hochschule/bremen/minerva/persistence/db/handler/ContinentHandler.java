@@ -175,7 +175,7 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 		Continent continent = new Continent();
 		
 		continent.setId(current.getInt(1));
-		continent.setName(current.getString(2).trim());
+		continent.setName(current.getString(2));
 
 		return continent;
 	}

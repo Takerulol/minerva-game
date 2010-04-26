@@ -54,7 +54,7 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 
 	static {
 		sql.put("selectById", "select \"id\", \"token\", \"name\", \"description\", \"author\", \"version\" from world where \"id\" = ?");
-		sql.put("selectAll", "select \"id\", \"token\", \"name\", \"description\", \"author\", \"version\" from world order by name");
+		sql.put("selectAll", "select \"id\", \"token\", \"name\", \"description\", \"author\", \"version\" from world order by \"name\"");
 		sql.put("insert", "insert into world (\"token\", \"name\", \"description\", \"author\", \"version\") values (?, ?, ?, ?, ?)");
 		sql.put("update", "update world set token = ?, name = ?, description = ?, author = ?, version = ? where id = ?");
 		sql.put("delete", "delete from world where id = ?");
@@ -178,11 +178,11 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 
 		// TODO: Replace trim. Use correct database datatype.
 		world.setId(current.getInt(1));
-		world.setToken(current.getString(2).trim());
-		world.setName(current.getString(3).trim());
-		world.setDescription(current.getString(4).trim());
-		world.setAuthor(current.getString(5).trim());
-		world.setVersion(current.getString(6).trim());
+		world.setToken(current.getString(2));
+		world.setName(current.getString(3));
+		world.setDescription(current.getString(4));
+		world.setAuthor(current.getString(5));
+		world.setVersion(current.getString(6));
 
 		return world;
 	}
