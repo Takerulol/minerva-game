@@ -30,9 +30,22 @@
 package de.hochschule.bremen.minerva.ui.cui;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class MinervaCUI {
 
 	private BufferedReader console = null;
+	
+	public MinervaCUI() {
+		this.console = new BufferedReader(new InputStreamReader(System.in));
+		try {
+			String input = this.console.readLine();
+			System.out.println(input);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 }
