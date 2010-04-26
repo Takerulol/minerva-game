@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id$
+ * $Id: UserInterface.java 117 2010-04-22 18:19:46Z cbollmann@stud.hs-bremen.de $
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,8 +27,12 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.ui;
+package de.hochschule.bremen.minerva.ui.cui;
 
-public interface UserInterface {
+import java.io.BufferedReader;
 
+public class MinervaCUI {
+
+	private BufferedReader console = null;
+	
 }
