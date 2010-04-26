@@ -29,7 +29,6 @@
  */
 package de.hochschule.bremen.minerva.core;
 
-import java.util.Iterator;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.vo.Player;
