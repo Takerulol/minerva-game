@@ -39,6 +39,7 @@ import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.World;
 
+
 public class Turn {
 	private World world = null;
 	private Vector<Player> players = null;
@@ -46,7 +47,7 @@ public class Turn {
 	private Vector<Army> allocatableArmies = null;
 	
 	/**
-	 * DOCME
+	 * Constructs a new turn.
 	 * 
 	 * @param currentPlayer
 	 * @param world
@@ -64,7 +65,6 @@ public class Turn {
 	 * Creates armies for the current player by taking his countryCount / 3.
 	 * If its less than 3, the current player gets 3 armies.
 	 * 
-	 * DOCME
 	 * @param currentPlayer
 	 * @return
 	 */
@@ -173,8 +173,16 @@ public class Turn {
 	 * 
 	 * @return
 	 */
-	public Vector<Army> getAllocatableArmies() {
+	private Vector<Army> getAllocatableArmies() {
 		return allocatableArmies;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getAllocatableArmyCount() {
+		return getAllocatableArmies().size();
 	}
 	
 }
