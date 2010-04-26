@@ -175,7 +175,16 @@ public class Country extends ValueObject {
 	public void addArmy() {
 		getArmies().add(new Army());
 	}
-	
+
+	/**
+	 * Adds a army object to the country.
+	 * 
+	 * @param newArmy
+	 */
+	public void addArmy(Army newArmy) {
+		this.armies.add(newArmy);
+	}
+
 	/**
 	 * Removes one army from an existing army-vector.
 	 * 
@@ -185,6 +194,17 @@ public class Country extends ValueObject {
 			getArmies().remove(getArmies().size()-1);
 		}
 	}
+
+	/**
+	 * Removes the army object from the vector.
+	 * 
+	 * @param army
+	 * 
+	 */
+	public void removeArmy(Army army) {
+		this.armies.remove(army);
+	}
+
 	/**
 	 * Made out of all attributes one string.
 	 * 
@@ -193,6 +213,4 @@ public class Country extends ValueObject {
 	public String toString() {
 		return getClass().getName() + "[id=" + id + ",token=" +token + ",name=" + name + ",color=" + color + ",continent=" + continent + "]";
 	}
-
-
 }
