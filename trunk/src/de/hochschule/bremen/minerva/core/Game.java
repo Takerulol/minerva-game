@@ -31,6 +31,7 @@ package de.hochschule.bremen.minerva.core;
 
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.World;
 
@@ -42,8 +43,8 @@ import de.hochschule.bremen.minerva.vo.World;
 public class Game {
 	
 	private World world = null;
-	private Vector<Player> player = null;
-	private Vector<Turn> turns = null;
+	private Vector<Player> players = null;
+	private Vector<Turn> turns = new Vector<Turn>();
 	private boolean finished = false;
 
 	/**
@@ -55,6 +56,8 @@ public class Game {
 	public Game(World world, Vector<Player> player) {
 		this.setWorld(world);
 		this.setPlayer(player);
+		
+		this.allocateCountries();
 	}
 	
 	/**
@@ -66,7 +69,7 @@ public class Game {
 	 * 
 	 */
 	public Turn nextTurn() {
-		this.turns.add(new Turn(this.nextPlayer(), this.world, this.player));
+		this.turns.add(new Turn(this.nextPlayer(), this.world, this.players));
 		return this.turns.lastElement();
 	}
 
@@ -93,7 +96,7 @@ public class Game {
 	 * @return the player
 	 */
 	public Vector<Player> getPlayer() {
-		return player;
+		return players;
 	}
 
 	/**
@@ -102,7 +105,7 @@ public class Game {
 	 * @param player
 	 */
 	private void setPlayer(Vector<Player> player) {
-		this.player = player;
+		this.players = player;
 	}
 
 	/**
@@ -143,13 +146,13 @@ public class Game {
 		boolean foundCurrentPlayer = false;
 		boolean wasCurrentPlayerLast = false;
 		
-		for (Player player : this.player) {
+		for (Player player : this.players) {
 			if (!foundCurrentPlayer) {
 				if (player.isCurrentPlayer()) {
 					player.setCurrentPlayer(false);
 					foundCurrentPlayer = true;
 	
-					if (player == this.player.lastElement()) {
+					if (player == this.players.lastElement()) {
 						wasCurrentPlayerLast = true;
 					}
 				}
@@ -163,10 +166,33 @@ public class Game {
 		// current player was the last entry in the vector use the first
 		// player as the new current player.
 		if (wasCurrentPlayerLast || !foundCurrentPlayer) {
-			currentPlayer = this.player.firstElement();
+			currentPlayer = this.players.firstElement();
 			currentPlayer.setCurrentPlayer(true);
 		}
 
 		return currentPlayer;
-	} 
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	private void allocateCountries() {
+		Vector<Country> allocatableCountries = new Vector<Country>();
+		allocatableCountries = (Vector<Country>) this.world.getCountries().clone();
+		
+		for (int i = 0; i < ((this.world.getCountryCount() / this.players.size()) + 1); i++) {
+			for (Player player : this.players) {
+				if (!(allocatableCountries.size() == 0)) {
+					int index = (int) Math.random() * allocatableCountries.size();
+					player.addCountry(allocatableCountries.get(index));
+					
+					System.out.println(player.getUsername() + " wurde: "+allocatableCountries.get(index).getName() + " zugeordnet.");
+					
+					allocatableCountries.remove(index);
+				}
+			}
+		}
+	}
 }

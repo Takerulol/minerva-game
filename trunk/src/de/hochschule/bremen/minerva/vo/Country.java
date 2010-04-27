@@ -214,6 +214,15 @@ public class Country extends ValueObject {
 	}
 
 	/**
+	 * DOCME
+	 * 
+	 * @return
+	 */
+	public int getArmyCount() {
+		return this.armies.size();
+	}
+	
+	/**
 	 * Made out of all attributes one string.
 	 * 
 	 * @return
