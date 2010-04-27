@@ -311,12 +311,6 @@ public class Turn {
 		return null;
 	}
 
-
-	public void setAttackResults(Vector<AttackResult> attackResults) {
-		this.attackResults = attackResults;
-	}
-
-
 	public Vector<AttackResult> getAttackResults() {
 		return attackResults;
 	}
