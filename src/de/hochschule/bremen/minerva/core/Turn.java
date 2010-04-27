@@ -73,15 +73,15 @@ public class Turn {
 	private Vector<Army> createArmies(Player currentPlayer) {
 		int armyGet = currentPlayer.getCountryCount() / 3;
 		Vector<Army> newArmies = new Vector<Army>();
-		if ( armyGet > 3 ) {
-			for (int i = 0; i < armyGet; i++ ) {
-				newArmies.add(new Army());
-			}
-		} else {
-			for (int i = 0; i < 3; i++ ) {
-				newArmies.add(new Army());
-			}
+
+		if ( armyGet < 3 ) {
+			armyGet = 3;
 		}
+
+		for (int i = 0; i < armyGet; i++ ) {
+			newArmies.add(new Army());
+		}
+
 		return newArmies;
 	}
 	
@@ -139,8 +139,8 @@ public class Turn {
 				// Dice are compared and armies removed.
 				int def = defenderDice.size();
 				for (int i = 0; i < def; i++) {
-					Die highestAttacker = findLargestDie(attackerDice);
-					Die highestDefender = findLargestDie(defenderDice);
+					Die highestAttacker = Die.getLargest(attackerDice);
+					Die highestDefender = Die.getLargest(defenderDice);
 					if (highestAttacker.getNumber() > highestDefender.getNumber()) {
 						defender.removeArmy();
 						lostArmies[1]++;
@@ -291,24 +291,6 @@ public class Turn {
 		} else {
 			return 1;
 		}
-	}
-	
-	/**
-	 * Finds biggest die in dice-vector.
-	 * 
-	 * @param dice
-	 * @return
-	 */
-	private Die findLargestDie(Vector<Die> dice) {
-		Die output = new Die();
-		int largest = 0;
-		for (Die die : dice) {
-			if (die.getNumber() > largest) {
-				largest = die.getNumber();
-				output = die;
-			}
-		}
-		return output;
 	}
 	
 	/**

@@ -30,6 +30,8 @@
 
 package de.hochschule.bremen.minerva.util;
 
+import java.util.Vector;
+
 public class Die {
 
 	private int number = 0;
@@ -49,5 +51,23 @@ public class Die {
 	 */
 	public int getNumber() {
 		return number;
+	}
+
+	/**
+	 * Finds biggest die in dice-vector.
+	 * 
+	 * @param dice
+	 * @return
+	 */
+	public static Die getLargest(Vector<Die> dice) {
+		Die output = new Die();
+		int largest = 0;
+		for (Die die : dice) {
+			if (die.getNumber() > largest) {
+				largest = die.getNumber();
+				output = die;
+			}
+		}
+		return output;
 	}
 }
