@@ -301,7 +301,7 @@ public class Turn {
 	 * @param country
 	 * @return
 	 */
-	private Player findPlayerToCountry(Country country) {
+	public Player findPlayerToCountry(Country country) { // private
 		for (Player player : players) {
 			if (player.hasCountry(country)) {
 				return player;

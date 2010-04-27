@@ -65,19 +65,29 @@ public class MinervaCUI implements UserInterface {
 	 * 
 	 */
 	public void run() {
-		Game game = this.createGame();
+int i = 0;
+		this.createGame();
 
 		do {
-			this.out("Neue Runde beginnt ...");
+			this.outln("Neue Runde beginnt ...");
 
-			Turn turn = game.nextTurn();
-			this.out("Hier ");
-			
-			this.out(turn.getCurrentPlayer().getUsername() + " ist dran ...");
-			
-			
+			Turn turn = game.nextTurn();			
+			this.outln(turn.getCurrentPlayer().getUsername() + " ist dran ...");
+			this.outln(turn.getCurrentPlayer().getUsername() + " hat " + turn.getAllocatableArmyCount() + " Einheiten bekommen, die er jetzt verteilen muss.");
 
-		} while (!game.isFinished());
+			// Step 1: Allocate new armies.
+			for (int x = 0; x < turn.getAllocatableArmyCount(); x++) {				
+				this.printCountryList();
+
+				this.out((x+1)+ ". Einheit setzen. Eingabe der Land-Id: ");
+				Country country = this.game.getWorld().getCountry(this.readInt());
+				
+				turn.allocateArmy(country);
+				// TODO: Handle "CountryOwnershipException".
+			}
+
+i++;
+		} while (i < 3); //!game.isFinished());
 	}
 	
 	/**
@@ -85,11 +95,11 @@ public class MinervaCUI implements UserInterface {
 	 * 
 	 * @return
 	 */
-	private Game createGame() {		
+	private void createGame() {		
 		this.out("Spieleranzahl? ");
-		World world = null;
 
 		Vector<Player> player = this.createPlayers(this.readInt());
+		World world = null;
 
 		try {
 			world = this.createWorld();
@@ -98,7 +108,7 @@ public class MinervaCUI implements UserInterface {
 			throw new RuntimeException(e);
 		}
 
-		return new Game(world, player);
+		this.game = new Game(world, player);
 	}
 
 	/**
@@ -198,5 +208,27 @@ public class MinervaCUI implements UserInterface {
 		System.out.print(message);
 	}
 
+	/**
+	 * DOCME
+	 * 
+	 * @param message
+	 */
+	private void outln(String message) {
+		this.out(message + "\n");
+	}
+	
+	/**
+	 * DOCME
+	 */
+	private void printCountryList() {
+		this.outln("Länder =======================");
+		int i = 0;
+
+		for (Country country : this.game.getWorld().getCountries()) {
+			this.outln("[Id: "+i+ " - Name: "+country.getName() + " - Anzahl der Einheiten: "+country.getArmyCount());
+			i++;
+		}
+		this.outln("==============================");
+	}
 	
 }

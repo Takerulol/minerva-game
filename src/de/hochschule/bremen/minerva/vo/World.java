@@ -180,6 +180,16 @@ public class World extends ValueObject {
 	public int getCountryCount() {
 		return this.countries.size();
 	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public Country getCountry(int index) {
+		return this.countries.get(index);
+	}
 	
 	/**
 	 * Returns the country graph, which contains
