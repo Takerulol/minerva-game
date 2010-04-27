@@ -30,17 +30,17 @@
 
 package de.hochschule.bremen.minerva.exceptions;
 
-public class CountriesNotInRelationException extends Exception {
-	
+public class NotEnoughArmiesException extends Exception{
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -1737514955696140981L;
+	private static final long serialVersionUID = 1508846470029928606L;
 
 	/**
 	 * DOCME
 	 */
-	public CountriesNotInRelationException() {
+	public NotEnoughArmiesException() {
 		super();
 	}
 	
@@ -48,8 +48,7 @@ public class CountriesNotInRelationException extends Exception {
 	 * DOCME
 	 * @param message
 	 */
-	public CountriesNotInRelationException(String message) {
+	public NotEnoughArmiesException(String message) {
 		super(message);
 	}
-
 }
