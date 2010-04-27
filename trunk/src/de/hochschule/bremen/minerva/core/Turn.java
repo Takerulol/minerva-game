@@ -34,6 +34,7 @@ import java.util.Vector;
 
 
 import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
+import de.hochschule.bremen.minerva.util.Die;
 import de.hochschule.bremen.minerva.vo.Army;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Player;
@@ -104,7 +105,33 @@ public class Turn {
 	 * @throws CountriesNotInRelationException
 	 */
 	public void attack(Country attacker, Country defender, int armyCount) throws CountriesNotInRelationException {
-		
+		/*
+		 * TODO:
+		 * 	-angreifen
+		 * 	-würfeln
+		 * 	-defender berechnen
+		 */
+		if (this.world.getCountryGraph().neighbours(attacker, defender) && (armyCount <= 3) && (armyCount>0)) {
+			Vector<Die> attackerDice = new Vector<Die>();
+			Vector<Die> defenderDice = new Vector<Die>();
+			int defenderCount = this.calcMaxDefenderCount(defender);
+			
+			// Attacker and defender roll as much dice as they are allowed to.
+			for (int i = 1; i < armyCount; i++) {
+				Die die = new Die();
+				die.dice();
+				attackerDice.add(die);
+			}
+			for (int i = 1; i < defenderCount; i++) {
+				Die die = new Die();
+				die.dice();
+				defenderDice.add(die);
+			}
+			
+			
+			
+			
+		}
 	}
 	
 	/**
@@ -185,4 +212,39 @@ public class Turn {
 		return getAllocatableArmies().size();
 	}
 	
+	/**
+	 * Calculates maximum number of possible defending armies.
+	 * 
+	 * @param defender
+	 * @return
+	 */
+	private int calcMaxDefenderCount(Country defender) {
+		int count = 0;
+		for (Army army : defender.getArmies()) {
+			count++;
+		}
+		if (count > 1) {
+			return 2;
+		} else {
+			return 1;
+		}
+	}
+	
+	/**
+	 * Finds biggest die in dice-vector.
+	 * 
+	 * @param dice
+	 * @return
+	 */
+	private Die findLargestDie(Vector<Die> dice) {
+		Die output = new Die();
+		int largest = 0;
+		for (Die die : dice) {
+			if (die.getNumber() > largest) {
+				largest = die.getNumber();
+				output = die;
+			}
+		}
+		return output;
+	}
 }
