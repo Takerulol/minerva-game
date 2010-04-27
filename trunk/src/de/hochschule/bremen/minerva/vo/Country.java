@@ -40,9 +40,17 @@ public class Country extends ValueObject {
 	protected Color color = null;
 	protected Continent continent = null;
 	protected int worldId = 0;
-	protected Vector<Army> armies = null;
-	
 
+	protected Vector<Army> armies = new Vector<Army>();
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	public Country() {
+		this.armies.add(new Army());
+	}
+	
 	/**
 	 * Sets the country id.
 	 * 

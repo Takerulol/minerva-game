@@ -68,7 +68,14 @@ public class MinervaCUI implements UserInterface {
 		Game game = this.createGame();
 
 		do {
+			this.out("Neue Runde beginnt ...");
+
 			Turn turn = game.nextTurn();
+			this.out("Hier ");
+			
+			this.out(turn.getCurrentPlayer().getUsername() + " ist dran ...");
+			
+			
 
 		} while (!game.isFinished());
 	}
@@ -87,7 +94,7 @@ public class MinervaCUI implements UserInterface {
 		try {
 			world = this.createWorld();
 		} catch (PersistenceIOException e) {
-			this.out("[FEHLER] Auswahl der Welt nicht möglich. Grund: "+e.getMessage());
+			this.out("[FEHLER] Auswahl der Welt nicht mÃ¶glich. Grund: "+e.getMessage());
 			throw new RuntimeException(e);
 		}
 
@@ -103,7 +110,7 @@ public class MinervaCUI implements UserInterface {
 	private Vector<Player> createPlayers(int playerCount) {
 		Vector<Player> player = new Vector<Player>();
 		for (int i = 0; i < playerCount; i++) {
-			this.out("Bitte geben Sie den Namen für Spieler "+(i+1)+" ein: ");
+			this.out("Bitte geben Sie den Namen fÃ¼r Spieler "+(i+1)+" ein: ");
 			
 			Player newPlayer = new Player();
 			newPlayer.setUsername(this.readString());
@@ -121,7 +128,7 @@ public class MinervaCUI implements UserInterface {
 	private World createWorld() throws PersistenceIOException {
 		World world = null;
 
-		this.out("Auf welcher Welt möchten Sie spielen. Es stehen folgende zur Auswahl: \n");
+		this.out("Auf welcher Welt mÃ¶chten Sie spielen. Es stehen folgende zur Auswahl: \n");
 		int i = 1;
 		Vector<World> worlds = WorldService.getInstance().loadAll();
 		

@@ -57,11 +57,11 @@ public class Turn {
 	 * @param players
 	 */
 	public Turn(Player currentPlayer, World world, Vector<Player> players) {
-		setWorld(world);
-		setCurrentPlayer(currentPlayer);
-		setPlayers(players);
-		setAllocatableArmies(createArmies(this.currentPlayer));
-		attackResults = new Vector<AttackResult>();
+		this.setWorld(world);
+		this.setCurrentPlayer(currentPlayer);
+		this.setPlayers(players);
+		this.setAllocatableArmies(this.createArmies(this.currentPlayer));
+		this.attackResults = new Vector<AttackResult>();
 	}
 	
 	
@@ -76,14 +76,13 @@ public class Turn {
 		int armyGet = currentPlayer.getCountryCount() / 3;
 		Vector<Army> newArmies = new Vector<Army>();
 
-		if ( armyGet < 3 ) {
+		if (armyGet < 3) {
 			armyGet = 3;
 		}
 
-		for (int i = 0; i < armyGet; i++ ) {
+		for (int i = 0; i < armyGet; i++) {
 			newArmies.add(new Army());
 		}
-
 		return newArmies;
 	}
 	
