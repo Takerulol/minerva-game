@@ -47,6 +47,7 @@ public class Turn {
 	private Vector<Player> players = null;
 	private Player currentPlayer = null;
 	private Vector<Army> allocatableArmies = null;
+	private Vector<AttackResult> attackResults = null;
 	
 	/**
 	 * Constructs a new turn.
@@ -60,6 +61,7 @@ public class Turn {
 		setCurrentPlayer(currentPlayer);
 		setPlayers(players);
 		setAllocatableArmies(createArmies(this.currentPlayer));
+		attackResults = new Vector<AttackResult>();
 	}
 	
 	
@@ -110,7 +112,7 @@ public class Turn {
 	 * @return
 	 * @throws CountriesNotInRelationException
 	 */
-	public int[] attack(Country attacker, Country defender, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException {
+	public void attack(Country attacker, Country defender, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException {
 
 		if (this.world.getCountryGraph().neighbours(attacker, defender)) {
 			if ((armyCount <= 3) && (armyCount>0) && (currentPlayer.hasCountry(attacker)) && (!currentPlayer.hasCountry(defender))) {
@@ -121,7 +123,8 @@ public class Turn {
 				Vector<Die> attackerDice = new Vector<Die>();
 				Vector<Die> defenderDice = new Vector<Die>();
 				int defenderCount = this.calcMaxDefenderCount(defender);
-				int[] lostArmies = {0,0,0};
+				int[] lostArmies = {0,0};
+				boolean won = false;
 				
 				
 				// Attacker and defender roll as much dice as they are allowed to.
@@ -161,18 +164,18 @@ public class Turn {
 						defender.addArmy();
 						attacker.removeArmy();
 					}
-					lostArmies[2] = 1;
+					won = true;
 				}
 				
 				
+				//Creating new AttackResult
+				this.attackResults.add(new AttackResult(currentPlayer,findPlayerToCountry(defender), lostArmies[0], lostArmies[1], won));
 				
-				return lostArmies;
 			}
 			
 		} else {
 			throw new CountriesNotInRelationException("Countries are not connected.");
 		}
-		return null;
 	}
 	
 	/**
@@ -306,5 +309,15 @@ public class Turn {
 			}
 		}
 		return null;
+	}
+
+
+	public void setAttackResults(Vector<AttackResult> attackResults) {
+		this.attackResults = attackResults;
+	}
+
+
+	public Vector<AttackResult> getAttackResults() {
+		return attackResults;
 	}
 }
