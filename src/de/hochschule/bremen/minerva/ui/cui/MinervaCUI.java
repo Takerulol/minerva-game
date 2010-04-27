@@ -32,13 +32,22 @@ package de.hochschule.bremen.minerva.ui.cui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Vector;
 
 import de.hochschule.bremen.minerva.core.Game;
 import de.hochschule.bremen.minerva.core.Turn;
-import de.hochschule.bremen.minerva.ui.cui.exceptions.CuiException;
-import de.hochschule.bremen.minerva.ui.cui.exceptions.InvalidInputFormatException;
+import de.hochschule.bremen.minerva.vo.Country;
+import de.hochschule.bremen.minerva.vo.Neighbour;
+import de.hochschule.bremen.minerva.vo.Player;
+import de.hochschule.bremen.minerva.vo.World;
+import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.persistence.service.ContinentService;
+import de.hochschule.bremen.minerva.persistence.service.CountryService;
+import de.hochschule.bremen.minerva.persistence.service.NeighbourService;
+import de.hochschule.bremen.minerva.persistence.service.WorldService;
+import de.hochschule.bremen.minerva.ui.UserInterface;
 
-public class MinervaCUI {
+public class MinervaCUI implements UserInterface {
 
 	private Game game = null;
 	private BufferedReader console = null;
@@ -56,54 +65,121 @@ public class MinervaCUI {
 	 * 
 	 */
 	public void run() {
-		this.gameInit();
-		
+		Game game = this.createGame();
+
 		do {
 			Turn turn = game.nextTurn();
-			
+
 		} while (!game.isFinished());
 	}
+	
+	/**
+	 * DOCME
+	 * 
+	 * @return
+	 */
+	private Game createGame() {		
+		this.out("Spieleranzahl? ");
+		World world = null;
 
-	private void gameInit() {
-		this.out("Hallo Welt");
-		this.out("Bitte geben Sie die Anzahl der Spieler an: ");
-		
+		Vector<Player> player = this.createPlayers(this.readInt());
+
+		try {
+			world = this.createWorld();
+		} catch (PersistenceIOException e) {
+			this.out("[FEHLER] Auswahl der Welt nicht möglich. Grund: "+e.getMessage());
+			throw new RuntimeException(e);
+		}
+
+		return new Game(world, player);
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param playerCount
+	 * @return
+	 */
+	private Vector<Player> createPlayers(int playerCount) {
+		Vector<Player> player = new Vector<Player>();
+		for (int i = 0; i < playerCount; i++) {
+			this.out("Bitte geben Sie den Namen für Spieler "+(i+1)+" ein: ");
+			
+			Player newPlayer = new Player();
+			newPlayer.setUsername(this.readString());
+			player.add(newPlayer);
+		}
+		return player;
 	}
 
 	/**
 	 * DOCME
 	 * 
 	 * @return
-	 * @throws CuiException 
-	 * @throws InvalidInputFormatException 
+	 * @throws PersistenceIOException
 	 */
-	private int readInt() throws CuiException, InvalidInputFormatException {
-		int returnValue = 0;
+	private World createWorld() throws PersistenceIOException {
+		World world = null;
+
+		this.out("Auf welcher Welt möchten Sie spielen. Es stehen folgende zur Auswahl: \n");
+		int i = 1;
+		Vector<World> worlds = WorldService.getInstance().loadAll();
 		
-		try {
-			String line = this.read();
-			returnValue = Integer.parseInt(line);
-		} catch (NumberFormatException e) {
-			throw new InvalidInputFormatException();
-		} catch (CuiException e) {
-			throw new CuiException("Error while reading from console.");
+		for (World oneWorld : worlds) {
+			this.out("["+i+"]" + ": " + oneWorld.getName()+"\n");
+			i++;
 		}
 		
-		return returnValue;
+		this.out("Auswahl: ");
+		world = worlds.get(this.readInt() - 1);
+
+		Vector<Country> countries = CountryService.getInstance().loadAll(world);
+
+		for (Country country : countries) {
+			country.setContinent(ContinentService.getInstance().load(country.getContinent().getId()));
+
+			for (Neighbour neighbour : NeighbourService.getInstance().loadAll(country)) {
+				world.getCountryGraph().connect(country, neighbour);
+			}
+		}
+		world.setCountries(countries);
+		
+		return world;
+	}
+	
+	/**
+	 * DOCME
+	 * 
+	 * @return
+	 */
+	private int readInt() {
+		return Integer.parseInt(this.read());
 	}
 
 	/**
 	 * DOCME
 	 * 
 	 * @return
-	 * @throws CuiException
 	 */
-	private String read() throws CuiException {
+	private String readString() {
+		return this.read();
+	}
+
+	/**
+	 * Reads a line from the console.
+	 * 
+	 * @return
+	 */
+	private String read() {
+		String line = "";
+
 		try {
-			return this.console.readLine();
+			line = this.console.readLine();
 		} catch (IOException e) {
-			throw new CuiException();
+			throw new RuntimeException(e);
 		}
+		
+		return line;
 	}
 	
 	/**
