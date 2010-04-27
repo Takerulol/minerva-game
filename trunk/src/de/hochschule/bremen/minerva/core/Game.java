@@ -107,26 +107,29 @@ public class Game {
 	private Player nextPlayer() {
 		Player currentPlayer = null;
 
-		boolean found = false;
-		boolean wasLast = false;
+		boolean foundCurrentPlayer = false;
+		boolean wasCurrentPlayerLast = false;
 		
 		for (Player player : this.player) {
-			if (!found) {
+			if (!foundCurrentPlayer) {
 				if (player.isCurrentPlayer()) {
 					player.setCurrentPlayer(false);
-					found = true;
+					foundCurrentPlayer = true;
+	
+					if (player == this.player.lastElement()) {
+						wasCurrentPlayerLast = true;
+					}
 				}
 			} else {
 				player.setCurrentPlayer(true);
 				currentPlayer = player;
-				wasLast = true;
 			}
 		}
-		
+
 		// If there was no player the current player before or the last
 		// current player was the last entry in the vector use the first
 		// player as the new current player.
-		if (!found || wasLast) {
+		if (wasCurrentPlayerLast || !foundCurrentPlayer) {
 			currentPlayer = this.player.firstElement();
 			currentPlayer.setCurrentPlayer(true);
 		}
