@@ -47,6 +47,17 @@ public class Game {
 	private boolean finished = false;
 
 	/**
+	 * DOCME
+	 * 
+	 * @param world
+	 * @param player
+	 */
+	public Game(World world, Vector<Player> player) {
+		this.setWorld(world);
+		this.setPlayer(player);
+	}
+	
+	/**
 	 * Sets the next player and creates a new
 	 * Turn. With this turn it is possible to
 	 * implement the application logic.
@@ -70,10 +81,28 @@ public class Game {
 
 	/**
 	 * DOCME
+	 * 
+	 * @param world
+	 */
+	private void setWorld(World world) {
+		this.world = world;
+	}
+	
+	/**
+	 * DOCME
 	 * @return the player
 	 */
 	public Vector<Player> getPlayer() {
 		return player;
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param player
+	 */
+	private void setPlayer(Vector<Player> player) {
+		this.player = player;
 	}
 
 	/**
