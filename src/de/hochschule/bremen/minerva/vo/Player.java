@@ -43,8 +43,8 @@ public class Player extends ValueObject {
 	private boolean currentPlayer = false;
 	
 	// The countries, that the player won.
-	private Vector<Country> countries = null;
-
+	private Vector<Country> countries = new Vector<Country>();
+	
 	/**
 	 * Sets the player id.
 	 * 

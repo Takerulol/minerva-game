@@ -173,6 +173,15 @@ public class World extends ValueObject {
 	}
 
 	/**
+	 * DOCME
+	 * 
+	 * @return
+	 */
+	public int getCountryCount() {
+		return this.countries.size();
+	}
+	
+	/**
 	 * Returns the country graph, which contains
 	 * the country-neighbour-relation.
 	 * 
