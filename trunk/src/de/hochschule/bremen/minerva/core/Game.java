@@ -30,6 +30,8 @@
 package de.hochschule.bremen.minerva.core;
 
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Player;
@@ -41,7 +43,9 @@ import de.hochschule.bremen.minerva.vo.World;
  *
  */
 public class Game {
-	
+
+	private static Logger LOGGER = Logger.getLogger(Game.class.getName());
+
 	private World world = null;
 	private Vector<Player> players = null;
 	private Vector<Turn> turns = new Vector<Turn>();
@@ -187,9 +191,9 @@ public class Game {
 				if (!(allocatableCountries.size() == 0)) {
 					int index = (int) Math.random() * allocatableCountries.size();
 					player.addCountry(allocatableCountries.get(index));
-					
-					System.out.println(player.getUsername() + " wurde: "+allocatableCountries.get(index).getName() + " zugeordnet.");
-					
+
+					LOGGER.log(Level.INFO, allocatableCountries.get(index).getName() + " gehört jetzt dem Spieler '" + player.getUsername() + "'");
+
 					allocatableCountries.remove(index);
 				}
 			}

@@ -58,6 +58,7 @@ public class MinervaCUI implements UserInterface {
 	 */
 	public MinervaCUI() {
 		this.console = new BufferedReader(new InputStreamReader(System.in));
+		this.printWelcome();
 	}
 
 	/**
@@ -65,29 +66,26 @@ public class MinervaCUI implements UserInterface {
 	 * 
 	 */
 	public void run() {
-int i = 0;
 		this.createGame();
 
 		do {
-			this.outln("Neue Runde beginnt ...");
+			this.outln(true, "## Neue Runde ##");
 
 			Turn turn = game.nextTurn();			
-			this.outln(turn.getCurrentPlayer().getUsername() + " ist dran ...");
-			this.outln(turn.getCurrentPlayer().getUsername() + " hat " + turn.getAllocatableArmyCount() + " Einheiten bekommen, die er jetzt verteilen muss.");
+			this.outln(true, "Spieler '"+turn.getCurrentPlayer().getUsername() + "' ist am Zug und hat " + turn.getAllocatableArmyCount() + " Einheiten bekommen, die verteilt werden müssen.");
 
 			// Step 1: Allocate new armies.
 			for (int x = 0; x < turn.getAllocatableArmyCount(); x++) {				
 				this.printCountryList();
 
-				this.out((x+1)+ ". Einheit setzen. Eingabe der Land-Id: ");
+				this.outln("["+ turn.getCurrentPlayer().getUsername() +"]: "+ (x+1)+ ". Einheit setzen. Eingabe der [Id] des Landes: ");
 				Country country = this.game.getWorld().getCountry(this.readInt());
 				
 				turn.allocateArmy(country);
 				// TODO: Handle "CountryOwnershipException".
 			}
 
-i++;
-		} while (i < 3); //!game.isFinished());
+		} while (!game.isFinished());
 	}
 	
 	/**
@@ -95,8 +93,9 @@ i++;
 	 * 
 	 * @return
 	 */
-	private void createGame() {		
-		this.out("Spieleranzahl? ");
+	private void createGame() {
+		this.outln("## Initialisierung des Spiels ##");
+		this.outln(true, "- Mit wie vielen Spieler möchten Sie spielen? ");
 
 		Vector<Player> player = this.createPlayers(this.readInt());
 		World world = null;
@@ -104,7 +103,7 @@ i++;
 		try {
 			world = this.createWorld();
 		} catch (PersistenceIOException e) {
-			this.out("[FEHLER] Auswahl der Welt nicht möglich. Grund: "+e.getMessage());
+			this.error("[FEHLER] Auswahl der Welt nicht möglich. Grund: "+e.getMessage());
 			throw new RuntimeException(e);
 		}
 
@@ -120,7 +119,7 @@ i++;
 	private Vector<Player> createPlayers(int playerCount) {
 		Vector<Player> player = new Vector<Player>();
 		for (int i = 0; i < playerCount; i++) {
-			this.out("Bitte geben Sie den Namen für Spieler "+(i+1)+" ein: ");
+			this.outln(true, "- Bitte geben Sie den Namen des "+(i+1)+". Spielers ein: ");
 			
 			Player newPlayer = new Player();
 			newPlayer.setUsername(this.readString());
@@ -138,16 +137,16 @@ i++;
 	private World createWorld() throws PersistenceIOException {
 		World world = null;
 
-		this.out("Auf welcher Welt möchten Sie spielen. Es stehen folgende zur Auswahl: \n");
-		int i = 1;
+		this.outln(true, "- Auf welcher Welt möchten Sie spielen. Es stehen folgende zur Auswahl (kleinen Moment, bitte ...): \n");
 		Vector<World> worlds = WorldService.getInstance().loadAll();
 		
+		int i = 1;
 		for (World oneWorld : worlds) {
 			this.out("["+i+"]" + ": " + oneWorld.getName()+"\n");
 			i++;
 		}
 		
-		this.out("Auswahl: ");
+		this.outln("");
 		world = worlds.get(this.readInt() - 1);
 
 		Vector<Country> countries = CountryService.getInstance().loadAll(world);
@@ -191,6 +190,7 @@ i++;
 		String line = "";
 
 		try {
+			this.out("EINGABE> ");
 			line = this.console.readLine();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -216,19 +216,55 @@ i++;
 	private void outln(String message) {
 		this.out(message + "\n");
 	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param gap
+	 * @param message
+	 */
+	private void outln(boolean gap, String message) {
+		if (gap) {
+			this.outln("\n" + message);
+		} else {
+			this.outln(message);
+		}
+	}
+	
+	/**
+	 * DOCME
+	 * 
+	 * @param message
+	 */
+	private void error(String message) {
+		System.err.println(message);
+	}
 	
 	/**
 	 * DOCME
 	 */
 	private void printCountryList() {
-		this.outln("Länder =======================");
+		this.outln("\n-- Länderinformationen:");
 		int i = 0;
 
 		for (Country country : this.game.getWorld().getCountries()) {
-			this.outln("[Id: "+i+ " - Name: "+country.getName() + " - Anzahl der Einheiten: "+country.getArmyCount());
+			this.outln("["+i+"]: Name: "+country.getName() + " - Einheiten: "+country.getArmyCount());
 			i++;
 		}
-		this.outln("==============================");
+		this.outln("-- \n");
 	}
-	
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	private void printWelcome() {
+		this.outln("Minerva - The Game (http://minerva.idira.de)\n");
+		this.outln("Herzlich Willkommen zu einer Runde Minerva. Lass uns anfangen ...\n");
+		this.outln("Autoren:");
+		this.outln(true, "  - Carina Strempel <cstrempel@stud.hs-bremen.de>");
+		this.outln("  - Christian Bollmann <cbollmann@stud.hs-bremen.de>");
+		this.outln("  - André König <akoenig@stud.hs-bremen.de>\n");		
+		this.outln("=\n");
+	}
 }
