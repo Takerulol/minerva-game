@@ -34,6 +34,7 @@ import java.util.Vector;
 
 
 import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
+import de.hochschule.bremen.minerva.exceptions.NotEnoughArmiesException;
 import de.hochschule.bremen.minerva.util.Die;
 import de.hochschule.bremen.minerva.vo.Army;
 import de.hochschule.bremen.minerva.vo.Country;
@@ -97,57 +98,108 @@ public class Turn {
 	}
 	
 	/**
-	 * DOCME
+	 * Attacker country attacks defender country and chooses how many armies he uses.
+	 * Returns int[3] Array:
+	 * 	- first value: lost attacker armies
+	 *  - second value: lost defender armies
+	 *  - third value: 0 = attacker lost, 1 = attacker won the country
 	 * 
 	 * @param attacker
 	 * @param defender
 	 * @param armyCount
+	 * @return
 	 * @throws CountriesNotInRelationException
 	 */
-	public void attack(Country attacker, Country defender, int armyCount) throws CountriesNotInRelationException {
-		/*
-		 * TODO:
-		 * 	-angreifen
-		 * 	-würfeln
-		 * 	-defender berechnen
-		 */
-		if (this.world.getCountryGraph().neighbours(attacker, defender) && (armyCount <= 3) && (armyCount>0)) {
-			Vector<Die> attackerDice = new Vector<Die>();
-			Vector<Die> defenderDice = new Vector<Die>();
-			int defenderCount = this.calcMaxDefenderCount(defender);
-			
-			// Attacker and defender roll as much dice as they are allowed to.
-			for (int i = 1; i < armyCount; i++) {
-				Die die = new Die();
-				die.dice();
-				attackerDice.add(die);
+	public int[] attack(Country attacker, Country defender, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException {
+
+		if (this.world.getCountryGraph().neighbours(attacker, defender)) {
+			if ((armyCount <= 3) && (armyCount>0) && (currentPlayer.hasCountry(attacker)) && (!currentPlayer.hasCountry(defender))) {
+				
+				//Exception for not enough armies on the attacker country
+				if (armyCount <= attacker.getArmies().size()) throw new NotEnoughArmiesException("There are not enough armies to attack.");
+				
+				Vector<Die> attackerDice = new Vector<Die>();
+				Vector<Die> defenderDice = new Vector<Die>();
+				int defenderCount = this.calcMaxDefenderCount(defender);
+				int[] lostArmies = {0,0,0};
+				
+				
+				// Attacker and defender roll as much dice as they are allowed to.
+				for (int i = 1; i < armyCount; i++) {
+					Die die = new Die();
+					die.dice();
+					attackerDice.add(die);
+				}
+				for (int i = 1; i < defenderCount; i++) {
+					Die die = new Die();
+					die.dice();
+					defenderDice.add(die);
+				}
+				
+				// Dice are compared and armies removed.
+				for (@SuppressWarnings("unused") Die die : defenderDice) {
+					Die highestAttacker = findLargestDie(attackerDice);
+					Die highestDefender = findLargestDie(defenderDice);
+					if (highestAttacker.getNumber() > highestDefender.getNumber()) {
+						defender.removeArmy();
+						lostArmies[1]++;
+					} else {
+						attacker.removeArmy();
+						lostArmies[0]++;
+					}
+				}
+				
+				// If attacker won, he gets the country and moves his attacking armies there.
+				if (defender.getArmies().isEmpty()) {
+					Player loser = findPlayerToCountry(defender);
+					loser.removeCountry(defender);
+					currentPlayer.addCountry(defender);
+					for (int i = 0; i < armyCount-lostArmies[0]; i++) {
+						defender.addArmy();
+						attacker.removeArmy();
+					}
+					lostArmies[2] = 1;
+				}
+				
+				
+				
+				return lostArmies;
 			}
-			for (int i = 1; i < defenderCount; i++) {
-				Die die = new Die();
-				die.dice();
-				defenderDice.add(die);
-			}
 			
-			
-			
-			
+		} else {
+			throw new CountriesNotInRelationException("Countries are not connected.");
 		}
+		return null;
 	}
 	
 	/**
-	 * DOCME
+	 * Moves specific amount of armies from one to another, related country.
 	 * 
 	 * @param from
 	 * @param destination
 	 * @param armyCount
 	 * @throws CountriesNotInRelationException
 	 */
-	public void moveArmies(Country from, Country destination, int armyCount) throws CountriesNotInRelationException {
-		
+	public void moveArmies(Country from, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException {
+		if ((currentPlayer.hasCountry(from)) && (currentPlayer.hasCountry(destination))) {
+			
+			//Exception for not enough armies on the country to be moved from
+			if (world.getCountryGraph().neighbours(from, destination)) throw new CountriesNotInRelationException("Countries are not connected.");
+			if (from.getArmies().size() <= armyCount) throw new NotEnoughArmiesException("There are not enough armies to move.");
+			
+			//actually moving armies
+			for (int i = 0; i < armyCount; i++) {
+				from.removeArmy();
+				Army newArmy = new Army();
+				newArmy.moved(true);
+				destination.addArmy(newArmy);
+			}
+		}
 	}
 	
 	
 	/**
+	 * Sets current player.
 	 * 
 	 * @param currentPlayer
 	 */
@@ -155,6 +207,7 @@ public class Turn {
 		this.currentPlayer = currentPlayer;
 	}
 	/**
+	 * Returns current player.
 	 * 
 	 * @return
 	 */
@@ -162,6 +215,7 @@ public class Turn {
 		return currentPlayer;
 	}
 	/**
+	 * Sets world.
 	 * 
 	 * @param world
 	 */
@@ -169,6 +223,7 @@ public class Turn {
 		this.world = world;
 	}
 	/**
+	 * Returns world.
 	 * 
 	 * @return
 	 */
@@ -176,6 +231,7 @@ public class Turn {
 		return world;
 	}
 	/**
+	 * Sets players. (Vector)
 	 * 
 	 * @param players
 	 */
@@ -183,6 +239,7 @@ public class Turn {
 		this.players = players;
 	}
 	/**
+	 * Returns players. (Vector)
 	 * 
 	 * @return
 	 */
@@ -190,6 +247,7 @@ public class Turn {
 		return players;
 	}
 	/**
+	 * Sets allocatable armies.
 	 * 
 	 * @param allocatableArmies
 	 */
@@ -197,6 +255,7 @@ public class Turn {
 		this.allocatableArmies = allocatableArmies;
 	}
 	/**
+	 * Returns allocatable armies.
 	 * 
 	 * @return
 	 */
@@ -205,6 +264,7 @@ public class Turn {
 	}
 	
 	/**
+	 * Gets allocatable army-count.
 	 * 
 	 * @return
 	 */
@@ -220,7 +280,7 @@ public class Turn {
 	 */
 	private int calcMaxDefenderCount(Country defender) {
 		int count = 0;
-		for (Army army : defender.getArmies()) {
+		for (@SuppressWarnings("unused") Army army : defender.getArmies()) {
 			count++;
 		}
 		if (count > 1) {
@@ -246,5 +306,20 @@ public class Turn {
 			}
 		}
 		return output;
+	}
+	
+	/**
+	 * Finds the owner of a country.
+	 * 
+	 * @param country
+	 * @return
+	 */
+	private Player findPlayerToCountry(Country country) {
+		for (Player player : players) {
+			if (player.hasCountry(country)) {
+				return player;
+			}
+		}
+		return null;
 	}
 }
