@@ -137,7 +137,8 @@ public class Turn {
 				}
 				
 				// Dice are compared and armies removed.
-				for (@SuppressWarnings("unused") Die die : defenderDice) {
+				int def = defenderDice.size();
+				for (int i = 0; i < def; i++) {
 					Die highestAttacker = findLargestDie(attackerDice);
 					Die highestDefender = findLargestDie(defenderDice);
 					if (highestAttacker.getNumber() > highestDefender.getNumber()) {
@@ -147,6 +148,8 @@ public class Turn {
 						attacker.removeArmy();
 						lostArmies[0]++;
 					}
+					attackerDice.remove(highestAttacker);
+					defenderDice.remove(highestDefender);
 				}
 				
 				// If attacker won, he gets the country and moves his attacking armies there.
