@@ -118,6 +118,7 @@ public class Game {
 	 * @return Game finished?
 	 */
 	public boolean isFinished() {
+		if (turns.lastElement().getCurrentPlayer().getCountryCount() == world.getCountries().size()) finished = true;
 		return finished;
 	}
 
