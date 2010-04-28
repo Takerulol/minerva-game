@@ -33,6 +33,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import de.hochschule.bremen.minerva.core.Game;
 import de.hochschule.bremen.minerva.core.Turn;
@@ -48,7 +50,9 @@ import de.hochschule.bremen.minerva.persistence.service.WorldService;
 import de.hochschule.bremen.minerva.ui.UserInterface;
 
 public class MinervaCUI implements UserInterface {
-
+	
+	private static Logger LOGGER = Logger.getLogger(MinervaCUI.class.getName());
+	
 	private Game game = null;
 	private BufferedReader console = null;
 	
@@ -73,14 +77,16 @@ public class MinervaCUI implements UserInterface {
 
 			Turn turn = game.nextTurn();			
 			this.outln(true, "Spieler '"+turn.getCurrentPlayer().getUsername() + "' ist am Zug und hat " + turn.getAllocatableArmyCount() + " Einheiten bekommen, die verteilt werden müssen.");
-
+			
 			// Step 1: Allocate new armies.
-			for (int x = 0; x < turn.getAllocatableArmyCount(); x++) {				
+			//LOGGER.log(Level.INFO, ""+turn.getAllocatableArmyCount());
+			int armyCount = turn.getAllocatableArmyCount();
+			for (int x = 0; x < armyCount; x++) {				
 				this.printCountryList();
 
 				this.outln("["+ turn.getCurrentPlayer().getUsername() +"]: "+ (x+1)+ ". Einheit setzen. Eingabe der [Id] des Landes: ");
 				Country country = this.game.getWorld().getCountry(this.readInt());
-				
+				//LOGGER.log(Level.INFO, ""+x);
 				turn.allocateArmy(country);
 				// TODO: Handle "CountryOwnershipException".
 			}

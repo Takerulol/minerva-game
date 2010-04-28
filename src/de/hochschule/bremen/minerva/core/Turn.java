@@ -31,6 +31,7 @@
 package de.hochschule.bremen.minerva.core;
 
 import java.util.Vector;
+import java.util.logging.Logger;
 
 
 import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
@@ -43,6 +44,9 @@ import de.hochschule.bremen.minerva.vo.World;
 
 
 public class Turn {
+	
+	private static Logger LOGGER = Logger.getLogger(Turn.class.getName());
+	
 	private World world = null;
 	private Vector<Player> players = null;
 	private Player currentPlayer = null;
@@ -64,7 +68,7 @@ public class Turn {
 		this.attackResults = new Vector<AttackResult>();
 	}
 	
-	
+	//TODO: Regelabfrage, ob ganzer Kontinent besetzt ist.
 	/**
 	 * Creates armies for the current player by taking his countryCount / 3.
 	 * If its less than 3, the current player gets 3 armies.
