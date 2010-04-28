@@ -33,11 +33,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Vector;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import de.hochschule.bremen.minerva.core.Game;
 import de.hochschule.bremen.minerva.core.Turn;
+import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
+import de.hochschule.bremen.minerva.exceptions.NotEnoughArmiesException;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Neighbour;
 import de.hochschule.bremen.minerva.vo.Player;
@@ -55,7 +56,7 @@ public class MinervaCUI implements UserInterface {
 	
 	private Game game = null;
 	private BufferedReader console = null;
-	
+
 	/**
 	 * DOCME
 	 * 
@@ -78,20 +79,105 @@ public class MinervaCUI implements UserInterface {
 			Turn turn = game.nextTurn();			
 			this.outln(true, "Spieler '"+turn.getCurrentPlayer().getUsername() + "' ist am Zug und hat " + turn.getAllocatableArmyCount() + " Einheiten bekommen, die verteilt werden müssen.");
 			
+			this.outln(true, "### Verteilung der Einheiten ###");
+			
 			// Step 1: Allocate new armies.
-			//LOGGER.log(Level.INFO, ""+turn.getAllocatableArmyCount());
-			int armyCount = turn.getAllocatableArmyCount();
-			for (int x = 0; x < armyCount; x++) {				
-				this.printCountryList();
-
-				this.outln("["+ turn.getCurrentPlayer().getUsername() +"]: "+ (x+1)+ ". Einheit setzen. Eingabe der [Id] des Landes: ");
-				Country country = this.game.getWorld().getCountry(this.readInt());
-				//LOGGER.log(Level.INFO, ""+x);
-				turn.allocateArmy(country);
-				// TODO: Handle "CountryOwnershipException".
+			allocateNewArmies(turn);
+			
+			// Step 2: Attack?
+			this.outln(true, "- '"+turn.getCurrentPlayer().getUsername()+"' möchten Sie angreifen [J/N]?");
+			boolean answer = this.readBoolean();
+			
+			// Step 2: Attack!
+			if (answer) {
+				boolean nextAttack = false;
+				do {
+					//
+					this.printCountryList();
+					
+					// Choose own country
+					this.outln(true, "- Wählen Sie ihr Land, von dem Sie angreifen möchten: ");
+					Country attacker = turn.getWorld().getCountry(this.readInt());
+					
+					// Choose enemy country
+					this.outln(true, "- Wählen Sie ein Land, das Sie angreifen möchten: ");
+					Country defender = turn.getWorld().getCountry(this.readInt());
+					
+					// Choose 1 to max 3 armies to attack
+					this.outln(true, "- Bitte geben Sie die Anzahl der angreifenden Einheiten ein (max: "+turn.calcMaxAttackCount(attacker)+"): ");
+					int attackingArmies = this.readInt();
+					
+					// Attack
+					try {
+						turn.attack(attacker, defender, attackingArmies);
+					} catch (CountriesNotInRelationException e) {
+						this.error("Länder sind nicht benachbart. Grund: "+e.getMessage());
+					} catch (NotEnoughArmiesException e) {
+						this.error("Sie haben nicht genug Einheiten, um diesen Zug auszuführen");
+					}
+					
+					this.outln("- '"+turn.getCurrentPlayer().getUsername()+"' möchten Sie weiter angreifen [J/N]?");
+					nextAttack = this.readBoolean();
+				} while (nextAttack);
 			}
 
+			this.outln(true, "### Einheiten verschieben ###");
+			
+			// Step 3: Relocate your armies?
+			this.outln(true, "- '"+turn.getCurrentPlayer().getUsername()+"' möchten Sie Einheiten verschieben [J/N]?");
+			answer = this.readBoolean();
+			
+			// Step 3: Relocate your armies!
+			if (answer) {
+				boolean nextMove = false;
+				do {
+					//
+					this.printCountryList();
+					
+					// Choose own country
+					this.outln(true, "- Wählen Sie das Ausgangsland: ");
+					Country source = turn.getWorld().getCountry(this.readInt());
+					
+					// Choose second own country
+					this.outln(true, "- Wählen Sie das Ziel-Land: ");
+					Country destination = turn.getWorld().getCountry(this.readInt());
+					
+					// Choose army-count to move (one must remain)
+					this.outln(true, "- Bitte geben Sie die Anzahl der Einheiten an, die verschoben werden sollen (max: "+(source.getArmyCount()-1)+"): ");
+					int movingArmies = this.readInt();
+					
+					// relocation
+					try {
+						turn.moveArmies(source, destination, movingArmies);
+					} catch (CountriesNotInRelationException e) {
+						this.error("Länder sind nicht benachbart. Grund: "+e.getMessage());
+					} catch (NotEnoughArmiesException e) {
+						this.error("Sie haben nicht genug Einheiten.");
+					}
+					
+					this.outln(true, "- '"+turn.getCurrentPlayer().getUsername()+"' möchten Sie weiter Einheiten verschieben [J/N]?");
+					nextMove = this.readBoolean();
+				} while (nextMove);
+			}
+			
+			
 		} while (!game.isFinished());
+	}
+
+	private void allocateNewArmies(Turn turn) {
+		int armyCount = turn.getAllocatableArmyCount();
+
+		for (int x = 0; x < armyCount; x++) {				
+			this.printCountryList();
+
+			this.outln("["+ turn.getCurrentPlayer().getUsername() +"]: "+ (x+1)+ ". Einheit setzen. Eingabe der [Id] des Landes: ");
+			Country country = this.game.getWorld().getCountry(this.readInt());
+
+			turn.allocateArmy(country);
+			// TODO: Handle "CountryOwnershipException".
+		}
+
+		this.outln(true, "### Angriff ###");
 	}
 	
 	/**
@@ -148,7 +234,7 @@ public class MinervaCUI implements UserInterface {
 		
 		int i = 1;
 		for (World oneWorld : worlds) {
-			this.out("["+i+"]" + ": " + oneWorld.getName()+"\n");
+			this.out("["+i+"]" + ": " + oneWorld.getName()+" - "+oneWorld.getDescription()+"\n");
 			i++;
 		}
 		
@@ -187,6 +273,20 @@ public class MinervaCUI implements UserInterface {
 		return this.read();
 	}
 
+	/**
+	 * DOCME
+	 * 
+	 * @return
+	 */
+	private boolean readBoolean() {
+		String answer = this.read();
+		if (answer.equals("J") || answer.equals("j")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	/**
 	 * Reads a line from the console.
 	 * 
@@ -254,7 +354,13 @@ public class MinervaCUI implements UserInterface {
 		int i = 0;
 
 		for (Country country : this.game.getWorld().getCountries()) {
-			this.outln("["+i+"]: Name: "+country.getName() + " - Einheiten: "+country.getArmyCount());
+			
+			// WARNING: ugly hack
+			Turn turn = this.game.getTurns().lastElement();
+			Player currentPlayer = turn.getCurrentPlayer();
+			boolean hasCountry = currentPlayer.hasCountry(country);
+			
+			this.outln("["+i+"]: Name: "+country.getName() + " - Einheiten: "+country.getArmyCount() + ((hasCountry) ? " - Dein Land!" : ""));
 			i++;
 		}
 		this.outln("-- \n");

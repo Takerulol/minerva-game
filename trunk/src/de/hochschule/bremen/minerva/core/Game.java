@@ -150,6 +150,11 @@ public class Game {
 		boolean foundCurrentPlayer = false;
 		boolean wasCurrentPlayerLast = false;
 		
+//		int currentIndex = players.indexOf(turns.lastElement().getCurrentPlayer());
+//		int nextIndex = (currentIndex+1)%players.size();
+//		Player nextPlayer = players.get(nextIndex);
+//		return nextPlayer;
+		
 		for (Player player : this.players) {
 			if (!foundCurrentPlayer) {
 				if (player.isCurrentPlayer()) {
@@ -189,10 +194,10 @@ public class Game {
 		for (int i = 0; i < ((this.world.getCountryCount() / this.players.size()) + 1); i++) {
 			for (Player player : this.players) {
 				if (!(allocatableCountries.size() == 0)) {
-					int index = (int) Math.random() * allocatableCountries.size();
+					int index = (int) (Math.random() * allocatableCountries.size());
 					player.addCountry(allocatableCountries.get(index));
 
-					LOGGER.log(Level.INFO, allocatableCountries.get(index).getName() + " gehört jetzt dem Spieler '" + player.getUsername() + "'");
+					//LOGGER.log(Level.INFO, allocatableCountries.get(index).getName() + " gehört jetzt dem Spieler '" + player.getUsername() + "'");
 
 					allocatableCountries.remove(index);
 				}
