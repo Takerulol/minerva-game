@@ -121,7 +121,9 @@ public class Turn {
 			if ((armyCount <= 3) && (armyCount>0) && (currentPlayer.hasCountry(attacker)) && (!currentPlayer.hasCountry(defender))) {
 				
 				//Exception for not enough armies on the attacker country
-				if (armyCount <= attacker.getArmies().size()) throw new NotEnoughArmiesException("There are not enough armies to attack.");
+				if (!(armyCount <= attacker.getArmyCount())) {
+					throw new NotEnoughArmiesException("There are not enough armies to attack.");
+				}
 				
 				Vector<Die> attackerDice = new Vector<Die>();
 				Vector<Die> defenderDice = new Vector<Die>();
@@ -131,12 +133,12 @@ public class Turn {
 				
 				
 				// Attacker and defender roll as much dice as they are allowed to.
-				for (int i = 1; i < armyCount; i++) {
+				for (int i = 0; i < armyCount; i++) {
 					Die die = new Die();
 					die.dice();
 					attackerDice.add(die);
 				}
-				for (int i = 1; i < defenderCount; i++) {
+				for (int i = 0; i < defenderCount; i++) {
 					Die die = new Die();
 					die.dice();
 					defenderDice.add(die);
@@ -288,14 +290,26 @@ public class Turn {
 	 * @return
 	 */
 	private int calcMaxDefenderCount(Country defender) {
-		int count = 0;
-		for (@SuppressWarnings("unused") Army army : defender.getArmies()) {
-			count++;
-		}
-		if (count > 1) {
+		if (defender.getArmyCount() > 1) {
 			return 2;
 		} else {
 			return 1;
+		}
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param country
+	 * @return
+	 */
+	public int calcMaxAttackCount(Country country) {
+		int armyCount = country.getArmyCount();
+
+		if (armyCount > 3) {
+			return 3;
+		} else {
+			return armyCount-1;
 		}
 	}
 	
