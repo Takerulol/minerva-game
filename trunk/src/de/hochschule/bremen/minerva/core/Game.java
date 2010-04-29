@@ -145,41 +145,54 @@ public class Game {
 	 * 
 	 */
 	private Player nextPlayer() {
-		Player currentPlayer = null;
-
-		boolean foundCurrentPlayer = false;
-		boolean wasCurrentPlayerLast = false;
+//		Player currentPlayer = null;
+//
+//		boolean foundCurrentPlayer = false;
+//		boolean wasCurrentPlayerLast = false;
+		/*
+		 * TODO: schöner machen mit betrachtung noch ausgeschiedenen spielern
+		 */
 		
-//		int currentIndex = players.indexOf(turns.lastElement().getCurrentPlayer());
-//		int nextIndex = (currentIndex+1)%players.size();
-//		Player nextPlayer = players.get(nextIndex);
-//		return nextPlayer;
+		if (!turns.isEmpty()) {
+			int currentIndex = players.indexOf(turns.lastElement().getCurrentPlayer());
+			turns.lastElement().getCurrentPlayer().setCurrentPlayer(false);
+			int nextIndex = (currentIndex+1)%players.size();
+			Player nextPlayer = players.get(nextIndex);
+			nextPlayer.setCurrentPlayer(true);
+			return nextPlayer;
+		} else {
+			Player nextPlayer = players.firstElement();
+			nextPlayer.setCurrentPlayer(true);
+			return nextPlayer;
+		}
 		
-		for (Player player : this.players) {
-			if (!foundCurrentPlayer) {
-				if (player.isCurrentPlayer()) {
-					player.setCurrentPlayer(false);
-					foundCurrentPlayer = true;
-	
-					if (player == this.players.lastElement()) {
-						wasCurrentPlayerLast = true;
-					}
-				}
-			} else {
-				player.setCurrentPlayer(true);
-				currentPlayer = player;
-			}
-		}
-
-		// If there was no player the current player before or the last
-		// current player was the last entry in the vector use the first
-		// player as the new current player.
-		if (wasCurrentPlayerLast || !foundCurrentPlayer) {
-			currentPlayer = this.players.firstElement();
-			currentPlayer.setCurrentPlayer(true);
-		}
-
-		return currentPlayer;
+		
+		
+//		for (Player player : this.players) {
+//			if (!foundCurrentPlayer) {
+//				if (player.isCurrentPlayer()) {
+//					player.setCurrentPlayer(false);
+//					foundCurrentPlayer = true;
+//	
+//					if (player == this.players.lastElement()) {
+//						wasCurrentPlayerLast = true;
+//					}
+//				}
+//			} else {
+//				player.setCurrentPlayer(true);
+//				currentPlayer = player;
+//			}
+//		}
+//
+//		// If there was no player the current player before or the last
+//		// current player was the last entry in the vector use the first
+//		// player as the new current player.
+//		if (wasCurrentPlayerLast || !foundCurrentPlayer) {
+//			currentPlayer = this.players.firstElement();
+//			currentPlayer.setCurrentPlayer(true);
+//		}
+//
+//		return currentPlayer;
 	}
 
 	/**
