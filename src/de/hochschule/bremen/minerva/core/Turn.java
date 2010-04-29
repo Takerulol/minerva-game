@@ -195,8 +195,12 @@ public class Turn {
 		if ((currentPlayer.hasCountry(from)) && (currentPlayer.hasCountry(destination))) {
 			
 			//Exception for not enough armies on the country to be moved from
-			if (world.getCountryGraph().neighbours(from, destination)) throw new CountriesNotInRelationException("Countries are not connected.");
-			if (from.getArmies().size() <= armyCount) throw new NotEnoughArmiesException("There are not enough armies to move.");
+			if (!(world.getCountryGraph().neighbours(from, destination))) {
+				throw new CountriesNotInRelationException("Countries are not connected.");
+			}
+			if (from.getArmyCount() <= armyCount) {
+				throw new NotEnoughArmiesException("There are not enough armies to move.");
+			}
 			
 			//actually moving armies
 			for (int i = 0; i < armyCount; i++) {
