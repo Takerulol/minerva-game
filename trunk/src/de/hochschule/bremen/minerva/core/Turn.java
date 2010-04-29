@@ -294,6 +294,7 @@ public class Turn {
 	 * @return
 	 */
 	private int calcMaxDefenderCount(Country defender) {
+		// TODO: verhaeltnis angreifer/verteitiger
 		if (defender.getArmyCount() > 1) {
 			return 2;
 		} else {
