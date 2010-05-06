@@ -149,14 +149,15 @@ public class Game {
 //
 //		boolean foundCurrentPlayer = false;
 //		boolean wasCurrentPlayerLast = false;
-		/*
-		 * TODO: schöner machen mit betrachtung noch ausgeschiedenen spielern
-		 */
+
 		
 		if (!turns.isEmpty()) {
 			int currentIndex = players.indexOf(turns.lastElement().getCurrentPlayer());
 			turns.lastElement().getCurrentPlayer().setCurrentPlayer(false);
-			int nextIndex = (currentIndex+1)%players.size();
+			int nextIndex ;
+			do {
+				nextIndex = (++currentIndex)%players.size();
+			} while (players.get(nextIndex).hasCountries());
 			Player nextPlayer = players.get(nextIndex);
 			nextPlayer.setCurrentPlayer(true);
 			return nextPlayer;
