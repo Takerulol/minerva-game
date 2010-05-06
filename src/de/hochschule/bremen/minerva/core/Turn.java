@@ -127,7 +127,7 @@ public class Turn {
 				
 				Vector<Die> attackerDice = new Vector<Die>();
 				Vector<Die> defenderDice = new Vector<Die>();
-				int defenderCount = this.calcMaxDefenderCount(defender);
+				int defenderCount = this.calcMaxDefenderCount(defender, armyCount);
 				int[] lostArmies = {0,0};
 				boolean won = false;
 				
@@ -143,6 +143,7 @@ public class Turn {
 					die.dice();
 					defenderDice.add(die);
 				}
+				 							
 				
 				// Dice are compared and armies removed.
 				int def = defenderDice.size();
@@ -293,8 +294,12 @@ public class Turn {
 	 * @param defender
 	 * @return
 	 */
-	private int calcMaxDefenderCount(Country defender) {
-		// TODO: verhaeltnis angreifer/verteitiger
+	private int calcMaxDefenderCount(Country defender, int armyCount) {
+			
+		if(armyCount == 1){
+			return 1;
+		}
+		
 		if (defender.getArmyCount() > 1) {
 			return 2;
 		} else {
