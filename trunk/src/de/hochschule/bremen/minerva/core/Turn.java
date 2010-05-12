@@ -201,6 +201,7 @@ public class Turn {
 				throw new NotEnoughArmiesException("There are not enough armies to move.");
 			}
 			
+			//TODO: abfrage ob armee schon bewegt wurde
 			//actually moving armies
 			for (int i = 0; i < armyCount; i++) {
 				from.removeArmy();
