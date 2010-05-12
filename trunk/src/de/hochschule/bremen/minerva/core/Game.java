@@ -155,7 +155,7 @@ public class Game {
 			int nextIndex ;
 			do {
 				nextIndex = (++currentIndex)%players.size();
-			} while (players.get(nextIndex).hasCountries());
+			} while (!players.get(nextIndex).hasCountries());
 			Player nextPlayer = players.get(nextIndex);
 			nextPlayer.setCurrentPlayer(true);
 			return nextPlayer;
