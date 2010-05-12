@@ -36,6 +36,7 @@ import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.vo.Player;
+import de.hochschule.bremen.minerva.vo.ValueObject;
 
 //TODO: DOCME the class and two methods.
 
@@ -74,7 +75,7 @@ public class PlayerService extends PersistenceService {
 	 * @throws PersistenceIOException
 	 */
 	@Override
-	public void delete(Object candidate) throws PersistenceIOException {
+	public void delete(ValueObject candidate) throws PersistenceIOException {
 		Player deletablePlayer = (Player)candidate;
 		
 		handler.remove(deletablePlayer);
@@ -114,7 +115,7 @@ public class PlayerService extends PersistenceService {
 	 * @throws PersistenceIOException
 	 */
 	@Override
-	public void save(Object candidate) throws PersistenceIOException {
+	public void save(ValueObject candidate) throws PersistenceIOException {
 		Player registrablePlayer = (Player)candidate;
 		handler.save(registrablePlayer);
 	}
