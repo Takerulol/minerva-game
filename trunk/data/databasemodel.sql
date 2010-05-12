@@ -87,10 +87,10 @@ insert into continent ("name") values ('Section 1');
 insert into continent ("name") values ('Section 2');
 insert into continent ("name") values ('Section 3');
 
-insert into country ("token", "name", "color", "world", "continent") values ('io', 'Io', 'ffffff', 2, 1); -- 8
-insert into country ("token", "name", "color", "world", "continent") values ('eur', 'Europa', 'ffffff', 2, 1); -- 9 
-insert into country ("token", "name", "color", "world", "continent") values ('ga', 'Ganymed', 'ffffff', 2, 1); -- 10
-insert into country ("token", "name", "color", "world", "continent") values ('kal', 'Kallisto', 'ffffff', 2, 1); -- 11
+insert into country ("token", "name", "color", "world", "continent") values ('io', 'Io', 'ffffff', 2, 2); -- 8
+insert into country ("token", "name", "color", "world", "continent") values ('eur', 'Europa', 'ffffff', 2, 2); -- 9 
+insert into country ("token", "name", "color", "world", "continent") values ('ga', 'Ganymed', 'ffffff', 2, 2); -- 10
+insert into country ("token", "name", "color", "world", "continent") values ('kal', 'Kallisto', 'ffffff', 2, 2); -- 11
 
 insert into country ("token", "name", "color", "world", "continent") values ('am', 'Amalthea', 'ffffff', 2, 2); -- 12
 insert into country ("token", "name", "color", "world", "continent") values ('hm', 'Himalia', 'ffffff', 2, 2); -- 13
