@@ -31,8 +31,6 @@
 package de.hochschule.bremen.minerva.core;
 
 import java.util.Vector;
-import java.util.logging.Logger;
-
 
 import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughArmiesException;
@@ -45,7 +43,7 @@ import de.hochschule.bremen.minerva.vo.World;
 
 public class Turn {
 	
-	private static Logger LOGGER = Logger.getLogger(Turn.class.getName());
+	//private static Logger LOGGER = Logger.getLogger(Turn.class.getName());
 	
 	private World world = null;
 	private Vector<Player> players = null;
