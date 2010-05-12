@@ -76,8 +76,9 @@ insert into neighbour ("country", "neighbour_country") values (5, 7);
 insert into neighbour ("country", "neighbour_country") values (6, 5);
 insert into neighbour ("country", "neighbour_country") values (6, 7);
 
--- NACHBARN Groß-Britanien: Island
+-- NACHBARN Groß-Britanien: Island, West-Europa
 insert into neighbour ("country", "neighbour_country") values (7, 6);
+insert into neighbour ("country", "neighbour_country") values (7, 5); 
 
 -- ## Jupiter #################################################
 insert into world ("token", "name", "description", "author", "version") values ('jupiter', 'Der Jupiter', 'Der Jupiter mit seinen Monden.', 'Carina Strempel', '1.0 beta');
