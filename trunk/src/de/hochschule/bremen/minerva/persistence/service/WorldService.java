@@ -35,6 +35,7 @@ import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
+import de.hochschule.bremen.minerva.vo.ValueObject;
 import de.hochschule.bremen.minerva.vo.World;
 
 /**
@@ -100,7 +101,7 @@ public class WorldService extends PersistenceService {
 	 * 
 	 */
 	@Override
-	public void save(Object candidate) throws PersistenceIOException {
+	public void save(ValueObject candidate) throws PersistenceIOException {
 		World registrableWorld = (World)candidate;
 		handler.save(registrableWorld);
 	}
@@ -110,7 +111,7 @@ public class WorldService extends PersistenceService {
 	 * 
 	 */
 	@Override
-	public void delete(Object candidate) throws PersistenceIOException {
+	public void delete(ValueObject candidate) throws PersistenceIOException {
 		World deletableWorld = (World)candidate;
 		
 		handler.remove(deletableWorld);

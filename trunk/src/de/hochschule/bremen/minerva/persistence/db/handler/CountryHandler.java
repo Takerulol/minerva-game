@@ -33,6 +33,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import de.hochschule.bremen.minerva.vo.Continent;
 import de.hochschule.bremen.minerva.vo.Country;
@@ -56,11 +58,14 @@ import de.hochschule.bremen.minerva.vo.ValueObject;
  */
 public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 
+	private static Logger LOGGER = Logger.getLogger(CountryHandler.class.getName());
+	
 	private final static HashMap<String, String> sql = new HashMap<String, String>();
 
 	static {
 		sql.put("selectById", "select \"id\", \"token\", \"name\", \"color\", \"continent\", \"world\" from country where \"id\" = ?");
 		sql.put("selectAllByWorldId", "select \"id\", \"token\", \"name\", \"color\", \"continent\", \"world\" from country where \"world\" = ?");
+		sql.put("selectAllByContinentId", "select \"id\", \"token\", \"name\", \"color\", \"continent\", \"world\" from country where \"continent\" = ?");
 		sql.put("insert", "insert into country (\"token\", \"name\", \"color\", \"continent\", \"world\") values (?, ?, ?, ?, ?)");
 		sql.put("update", "update country set \"token\" = ?, \"name\" = ?, \"color\" = ?, \"continent\" = ?, \"world\" = ? where \"id\" = ?");
 		sql.put("delete", "delete from country where \"id\" = ?");
@@ -117,7 +122,7 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 		WorldHandler handler = new WorldHandler();
 		Vector<World> worlds = handler.readAll();
 
-		return this.readAll(worlds.firstElement().getId());
+		return this.readAll(worlds.firstElement());
 	}
 
 	/**
@@ -131,25 +136,74 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	 * @throws PersistenceIOException
 	 *  
 	 */
-	public Vector<Country> readAll(ValueObject byWorld) throws PersistenceIOException {
-		World paramWorld = (World)byWorld;
-		return this.readAll(paramWorld.getId());
+	public Vector<Country> readAll(ValueObject byVo) throws PersistenceIOException {
+		Vector<Country> countries = null;
+		
+		if (byVo instanceof World) {
+			LOGGER.log(Level.INFO, "by world");
+			countries = this.readAll((World)byVo);
+		} else if (byVo instanceof Continent) {
+			LOGGER.log(Level.INFO, "by continent");
+			countries = this.readAll((Continent)byVo);
+		} else {
+			throw new PersistenceIOException("There is no method implementation for the given value object: "+byVo.getClass());
+		}
+		
+		return countries;
 	}
 
 	/**
-	 * Reads all countries from the database which linked
+	 * Reads all countries from the database which are linked
+	 * to the given continent. 
+	 * 
+	 * @param byContinent
+	 * @return A collection with the selected countries.
+	 * @throws PersistenceIOException
+	 */
+	private Vector<Country> readAll(Continent byContinent) throws PersistenceIOException {
+		try {
+			Object[] params = {byContinent.getId()};
+			return this.readAll(sql.get("selectAllByContinentId"), params);
+		} catch (PersistenceIOException e) {
+			throw new PersistenceIOException("Error while reading all countries "
+					+"from the database by the given continent id: "+byContinent.getId());
+		}
+	}
+	
+	/**
+	 * Reads all countries from the database which are linked
 	 * to the given world.
 	 * 
 	 * @param byWorldId - A int with the world id.
 	 * @return A collection with the selected countries.
 	 * @throws PersistenceIOException 
 	 */
-	private Vector<Country> readAll(int byWorldId) throws PersistenceIOException {
+	private Vector<Country> readAll(World byWorld) throws PersistenceIOException {
+		try {
+			Object[] params = {byWorld.getId()};
+			return this.readAll(sql.get("selectAllByWorldId"), params);
+		} catch (PersistenceIOException e) {
+			throw new PersistenceIOException("Error while reading all countries "
+					+"from the database by the given world id: "+byWorld.getId());
+		}
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param sqlKey
+	 * @param params
+	 * @return
+	 * @throws PersistenceIOException
+	 */
+	private Vector<Country> readAll(String sql, Object[] params) throws PersistenceIOException {
 		Vector<Country> countries = new Vector<Country>();
 
+		LOGGER.log(Level.INFO, sql);
+		LOGGER.log(Level.INFO, ""+params[0]);
+		
 		try {
-			Object[] params = {byWorldId};
-			ResultSet record = this.select(sql.get("selectAllByWorldId"), params);
+			ResultSet record = this.select(sql, params);
 
 			while (record.next()) {
 				countries.add(this.resultSetToObject(record));
@@ -159,16 +213,12 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 		} catch (DatabaseIOException e) {
 			throw new PersistenceIOException(e.getMessage());
 		} catch (SQLException e) {
-			throw new PersistenceIOException("Error occurred while "
-											+"receiving a country list "
-											+"from the database (world id = "
-											 +byWorldId+"): "+e.getMessage()
-											 +" - "+e.getErrorCode());
+			throw new PersistenceIOException("SQL error code: "+e.getErrorCode());
 		}
 
-		return countries;
+		return countries;		
 	}
-
+	
 	/**
 	 * DOCME
 	 * 

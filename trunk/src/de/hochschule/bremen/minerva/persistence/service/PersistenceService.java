@@ -50,10 +50,10 @@ public abstract class PersistenceService {
 	abstract public ValueObject load(int id) throws PersistenceIOException;
 
 	// DOCME!!!
-	abstract public void save(Object candidate) throws PersistenceIOException;
+	abstract public void save(ValueObject candidate) throws PersistenceIOException;
 
 	// DOCME!!!
-	abstract public void delete(Object candidate) throws PersistenceIOException;
+	abstract public void delete(ValueObject candidate) throws PersistenceIOException;
 
 	/**
 	 * Possibility to switch the persistence engine.

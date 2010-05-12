@@ -36,7 +36,7 @@ import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.exceptions.CountryNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.vo.Country;
-import de.hochschule.bremen.minerva.vo.World;
+import de.hochschule.bremen.minerva.vo.ValueObject;
 
 /**
  * DOCME
@@ -90,8 +90,8 @@ public class CountryService extends PersistenceService {
 	 * @throws PersistenceIOException
 	 */
 	@SuppressWarnings("unchecked")
-	public Vector<Country> loadAll(World byWorld) throws PersistenceIOException {
-		Vector<Country> countries = (Vector)handler.readAll(byWorld);
+	public Vector<Country> loadAll(ValueObject byVo) throws PersistenceIOException {
+		Vector<Country> countries = (Vector)handler.readAll(byVo);
 		return countries;
 	}
 
@@ -110,7 +110,7 @@ public class CountryService extends PersistenceService {
 	}
 
 	@Override
-	public void save(Object candidate) throws PersistenceIOException {
+	public void save(ValueObject candidate) throws PersistenceIOException {
 		Country registrableCountry = (Country)candidate;
 		handler.save(registrableCountry);
 	}
@@ -120,7 +120,7 @@ public class CountryService extends PersistenceService {
 	 * 
 	 */
 	@Override
-	public void delete(Object candidate) throws PersistenceIOException {
+	public void delete(ValueObject candidate) throws PersistenceIOException {
 		Country deletableCountry = (Country)candidate;
 		
 		handler.remove(deletableCountry);

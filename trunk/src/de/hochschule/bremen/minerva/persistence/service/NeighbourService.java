@@ -77,7 +77,7 @@ public class NeighbourService extends PersistenceService {
 	}
 
 	@Override
-	public void delete(Object candidate) throws PersistenceIOException {
+	public void delete(ValueObject candidate) throws PersistenceIOException {
 		// TODO Auto-generated method stub
 		
 	}
@@ -89,7 +89,7 @@ public class NeighbourService extends PersistenceService {
 	}
 
 	@Override
-	public void save(Object candidate) throws PersistenceIOException {
+	public void save(ValueObject candidate) throws PersistenceIOException {
 		// TODO Auto-generated method stub
 		
 	}

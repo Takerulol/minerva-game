@@ -36,6 +36,7 @@ import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.exceptions.ContinentNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.vo.Continent;
+import de.hochschule.bremen.minerva.vo.ValueObject;
 
 public class ContinentService extends PersistenceService {
 
@@ -92,7 +93,7 @@ public class ContinentService extends PersistenceService {
 	 * 
 	 */
 	@Override
-	public void save(Object candidate) throws PersistenceIOException {
+	public void save(ValueObject candidate) throws PersistenceIOException {
 		Continent registrableContinent = (Continent)candidate;
 		handler.save(registrableContinent);
 	}
@@ -102,7 +103,7 @@ public class ContinentService extends PersistenceService {
 	 * 
 	 */
 	@Override
-	public void delete(Object candidate) throws PersistenceIOException {
+	public void delete(ValueObject candidate) throws PersistenceIOException {
 		Continent continent = (Continent)candidate;
 		handler.remove(continent);
 	}
