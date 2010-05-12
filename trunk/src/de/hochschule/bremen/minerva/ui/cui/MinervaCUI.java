@@ -33,7 +33,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Vector;
-import java.util.logging.Logger;
 
 import de.hochschule.bremen.minerva.core.Game;
 import de.hochschule.bremen.minerva.core.Turn;
@@ -52,7 +51,7 @@ import de.hochschule.bremen.minerva.ui.UserInterface;
 
 public class MinervaCUI implements UserInterface {
 	
-	private static Logger LOGGER = Logger.getLogger(MinervaCUI.class.getName());
+	//private static Logger LOGGER = Logger.getLogger(MinervaCUI.class.getName());
 	
 	private Game game = null;
 	private BufferedReader console = null;

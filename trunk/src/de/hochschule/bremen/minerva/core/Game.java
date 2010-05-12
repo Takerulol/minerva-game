@@ -30,8 +30,6 @@
 package de.hochschule.bremen.minerva.core;
 
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Player;
@@ -44,7 +42,7 @@ import de.hochschule.bremen.minerva.vo.World;
  */
 public class Game {
 
-	private static Logger LOGGER = Logger.getLogger(Game.class.getName());
+	//private static Logger LOGGER = Logger.getLogger(Game.class.getName());
 
 	private World world = null;
 	private Vector<Player> players = null;
