@@ -39,7 +39,7 @@ public class Player extends ValueObject {
 	private String lastName = null;
 	private String firstName = null;
 	private String email = null;
-	private boolean isLoggedIn = false;
+	private boolean loggedIn = false;
 	private boolean currentPlayer = false;
 	
 	// The countries, that the player won.
@@ -154,13 +154,13 @@ public class Player extends ValueObject {
 	}
 
 	/**
-	 * Sets the player as an isLoggedIn player.
+	 * Sets the player as an logged in player.
 	 * 
 	 * @param isLoggedIn
 	 * 
 	 */
-	public void setPlayerIsLoggedIn(boolean isLoggedIn) {
-		this.isLoggedIn = isLoggedIn;
+	public void setLoggedIn(boolean loggedIn) {
+		this.loggedIn = loggedIn;
 	}
 
 	/**
@@ -170,7 +170,7 @@ public class Player extends ValueObject {
 	 * 
 	 */
 	public boolean isLoggedIn(){
-		return isLoggedIn;
+		return this.loggedIn;
 	}
 
 	/**
@@ -248,6 +248,6 @@ public class Player extends ValueObject {
 	 * @return
 	 */
 	public String toString() {
-		return getClass().getName() + "[id=" + id + ",username=" + username + ",last_name=" + lastName + ",first_name=" + firstName + ",email=" + email + "]";
+		return getClass().getName() + "[id=" + this.id + ",username=" + this.username + ",last_name=" + this.lastName + ",first_name=" + this.firstName + ",email=" + this.email + ", loggedIn=" + this.loggedIn + "]";
 	}
 }
