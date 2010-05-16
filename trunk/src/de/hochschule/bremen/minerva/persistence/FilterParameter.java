@@ -87,5 +87,13 @@ public class FilterParameter {
 	public int getInt() {
 		return (Integer)this.param;
 	}
-	
+
+	/**
+	 * Is this filter parameter a string?
+	 * 
+	 * @return 
+	 */
+	public boolean isString() {
+		return (this.param instanceof java.lang.String);
+	}
 }

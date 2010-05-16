@@ -98,13 +98,27 @@ public class PlayerService extends PersistenceService {
 	/**
 	 * DOCME
 	 * 
+	 * @param username
+	 * @return
+	 * @throws PersistenceIOException
+	 */
+	public Player load(String username) throws PersistenceIOException {
+		try {
+			return (Player)handler.read(new FilterParameter(username));
+		} catch (Exception e) {
+			throw new PlayerNotFoundException(e.getMessage());
+		}
+	}
+	
+	/**
+	 * DOCME
+	 * 
 	 * @throws PersistenceIOException
 	 * @return players
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public Vector<Player> loadAll() throws PersistenceIOException {
-		
 		Vector<Player> players = (Vector)handler.readAll();
 		return players;
 	}

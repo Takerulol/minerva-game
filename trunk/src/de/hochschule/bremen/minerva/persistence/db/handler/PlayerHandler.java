@@ -55,42 +55,52 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 	private final static HashMap<String, String> sql = new HashMap<String, String>();
 
 	static {
-		sql.put("selectByUsername", "select id, username, password, last_name, first_name, email, last_login from player where username = ?");
-		sql.put("selectById", "select id, username, password, last_name, first_name, email, last_login from player where id = ?");
-		sql.put("selectAll", "select id, username, password, last_name, first_name, email, last_login from player order by username");
-		sql.put("insert", "insert into player (username, password, last_name, first_name, email, last_login) values (?, ?, ?, ?, ?, ?)");
-		sql.put("update", "update player set username = ?, password = ?, last_name = ?, first_name = ?, email = ?, last_login = ? where username = ?");
-		sql.put("delete", "delete from player where username = ?");
+		sql.put("selectByUsername", "select \"id\", \"username\", \"password\", \"last_name\", \"first_name\", \"email\", \"logged_in\" from player where \"username\" = ?");
+		sql.put("selectById", "select \"id\", \"username\", \"password\", \"last_name\", \"first_name\", \"email\", \"logged_in\" from player where \"id\" = ?");
+		sql.put("selectAll", "select \"id\", \"username\", \"password\", \"last_name\", \"first_name\", \"email\", \"logged_in\" from player order by \"username\"");
+		sql.put("insert", "insert into player (\"username\", \"password\", \"last_name\", \"first_name\", \"email\") values (?, ?, ?, ?, ?)");
+		sql.put("update", "update player set \"username\" = ?, \"password\" = ?, \"last_name\" = ?, \"first_name\" = ?, \"email\" = ?, \"logged_in\" = ? where \"username\" = ?");
+		sql.put("delete", "delete from player where \"username\" = ?");
 	}
 
 
 	/**
 	 * Reads ONE player with the given id from the database.
 	 * 
-	 * @param id - The player id.
+	 * @param filter - The player id.
 	 * @return player
 	 * @throws PlayerNotFoundException, PersistenceIOException
 	 */
 	@Override
-	public Player read(FilterParameter id) throws PersistenceIOException {
+	public Player read(FilterParameter filter) throws PersistenceIOException {
 		Player player = null;
-		Object[] params = {id.getInt()};
-		
+		Object[] params = new Object[1];
+		String statement = null;
+
 		try {
-			ResultSet record = this.select(sql.get("selectById"), params);
+		
+			if (filter.isString()) {
+				params[0] = filter.getString();
+				statement = sql.get("selectByUsername");
+			} else {
+				params[0] = filter.getInt();
+				statement = sql.get("selectById");
+			}
+			
+			ResultSet record = this.select(statement, params);
 			if (record.next()) {
 				player = this.resultSetToObject(record);
 				record.close();
 			} else {
-				throw new PlayerNotFoundException("Found no player with username: '"
-												   +id+"'.");
+				throw new PlayerNotFoundException("Found no player with username/id: '"
+												   +filter+"'.");
 			}
 
 		} catch (DatabaseIOException e) {
 			throw new PersistenceIOException(e.getMessage());
 		} catch (SQLException e) {
 			throw new PersistenceIOException("Error occurred while reading "
-					                       + "the player (username=" +id+") "
+					                       + "the player (username=" +filter+") "
 					                       + "from the database.");
 		}
 		
@@ -164,7 +174,6 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 				registrablePlayer.getLastName(),
 				registrablePlayer.getFirstName(),
 				registrablePlayer.getEmail(),
-				registrablePlayer.getLastLogin()
 			};
 
 			this.insert(sql.get("insert"), params);
@@ -176,7 +185,7 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 						registrablePlayer.getLastName(),
 						registrablePlayer.getFirstName(),
 						registrablePlayer.getEmail(),
-						registrablePlayer.getLastLogin()
+						(registrablePlayer.isLoggedIn()) ? 1 : 0
 				};
 
 				this.update(sql.get("update"), params);
@@ -209,7 +218,7 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 		player.setLastName(current.getString(4));
 		player.setFirstName(current.getString(5));
 		player.setEmail(current.getString(6));
-		player.setLastLogin(current.getString(7));
+		player.setLoggedIn((current.getShort(7)) == 1); 
 		
 		return player;
 	}
