@@ -39,7 +39,7 @@ public class Player extends ValueObject {
 	private String lastName = null;
 	private String firstName = null;
 	private String email = null;
-	private String lastLogin = null;
+	private boolean isLoggedIn = false;
 	private boolean currentPlayer = false;
 	
 	// The countries, that the player won.
@@ -82,7 +82,7 @@ public class Player extends ValueObject {
 	}
 
 	/**
-	 * Sets the player passwort.
+	 * Sets the player password.
 	 * 
 	 * @param passwort 
 	 */
@@ -154,21 +154,23 @@ public class Player extends ValueObject {
 	}
 
 	/**
-	 * Sets the player last login.
+	 * Sets the player as an isLoggedIn player.
 	 * 
-	 * @param last login
+	 * @param isLoggedIn
+	 * 
 	 */
-	public void setLastLogin(String lastLogin) {
-		this.lastLogin = lastLogin;
+	public void setPlayerIsLoggedIn(boolean isLoggedIn) {
+		this.isLoggedIn = isLoggedIn;
 	}
 
 	/**
-	 * Returns the last login.
+	 * Is this player logged in?
 	 * 
-	 * @return
+	 * @return isloggedIn
+	 * 
 	 */
-	public String getLastLogin() {
-		return lastLogin;
+	public boolean isLoggedIn(){
+		return isLoggedIn;
 	}
 
 	/**
@@ -203,7 +205,7 @@ public class Player extends ValueObject {
 	}
 	
 	/**
-	 * Oh nooo. The player has lost one country.
+	 * Oh no. The player has lost one country.
 	 * Remove it from the players country vector.
 	 * 
 	 */
@@ -246,6 +248,6 @@ public class Player extends ValueObject {
 	 * @return
 	 */
 	public String toString() {
-		return getClass().getName() + "[id=" + id + ",username=" + username + ",last_name=" + lastName + ",first_name=" + firstName + ",email=" + email + ",last_login=" + lastLogin + "]";
+		return getClass().getName() + "[id=" + id + ",username=" + username + ",last_name=" + lastName + ",first_name=" + firstName + ",email=" + email + "]";
 	}
 }
