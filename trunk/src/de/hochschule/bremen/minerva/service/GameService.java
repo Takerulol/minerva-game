@@ -69,18 +69,9 @@ public class GameService {
 		Vector<World> worlds = WorldService.getInstance().loadAll();
 
 		for (World world : worlds) {
-			Vector<Country> countries = CountryService.getInstance().loadAll(world);
-			
-			for (Country country : countries) {
-				country.setContinent(ContinentService.getInstance().load(country.getContinent().getId()));
-				
-				for (Neighbour neighbour : NeighbourService.getInstance().loadAll(country)) {
-					world.getCountryGraph().connect(country, neighbour);
-				}
-			}
-			world.setCountries(countries);
+			this.loadWorldDependencies(world);
 		}
-		
+
 		return worlds;
 	}
 
@@ -103,5 +94,53 @@ public class GameService {
 		} else {
 			return this.getWorldList();
 		}
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param id
+	 * @return
+	 * @throws PersistenceIOException
+	 */
+	public World getWorld(int id) throws PersistenceIOException {
+		World world = new World();
+		world.setId(id);
+		
+		return this.getWorld(world);
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param world
+	 * @return
+	 * @throws PersistenceIOException
+	 */
+	public World getWorld(World world) throws PersistenceIOException {
+		world = WorldService.getInstance().load(world.getId());
+		this.loadWorldDependencies(world);
+
+		return world;
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param world
+	 * @return
+	 * @throws PersistenceIOException 
+	 */
+	private void loadWorldDependencies(World world) throws PersistenceIOException {
+		Vector<Country> countries = CountryService.getInstance().loadAll(world);
+		
+		for (Country country : countries) {
+			country.setContinent(ContinentService.getInstance().load(country.getContinent().getId()));
+			
+			for (Neighbour neighbour : NeighbourService.getInstance().loadAll(country)) {
+				world.getCountryGraph().connect(country, neighbour);
+			}
+		}
+		world.setCountries(countries);
 	}
 }
