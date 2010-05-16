@@ -35,6 +35,7 @@ import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.db.handler.ContinentHandler;
 import de.hochschule.bremen.minerva.persistence.db.handler.CountryHandler;
 import de.hochschule.bremen.minerva.persistence.db.handler.NeighbourHandler;
+import de.hochschule.bremen.minerva.persistence.db.handler.PlayerHandler;
 import de.hochschule.bremen.minerva.persistence.db.handler.WorldHandler;
 
 public class DatabasePersistence implements Persistence {
@@ -53,6 +54,8 @@ public class DatabasePersistence implements Persistence {
 			return new ContinentHandler();
 		} else if (type == Neighbour.class) {
 			return new NeighbourHandler();
+		} else if (type == Player.class) {
+			return new PlayerHandler();
 		}
 		return null;
 	}
