@@ -43,7 +43,7 @@ public class World extends ValueObject {
 	private String author = "";
 	private String version = "";
 
-	private Vector<Country> countries = null;
+	private Vector<Country> countries = new Vector<Country>();
 	private CountryGraph countryGraph = new CountryGraph();
 	
 	/**
