@@ -35,10 +35,15 @@ CREATE TABLE player (
 	"last_name" VARCHAR(25) NOT NULL,
 	"first_name" VARCHAR(25) NOT NULL,
 	"email" CHAR(50) UNIQUE NOT NULL,
-	"last_login" TIMESTAMP NOT NULL
+	"logged_in" SMALLINT NOT NULL DEFAULT 0
 );
 
 // Testdaten
+
+-- ## Player ###############################################
+insert into player ("username", "password", "last_name", "first_name", "email") values ('Takero', '81dc9bdb52d04dc20036dbd8313ed055', 'Bollmann', 'Christian', 'cbollmann@stud.hs-bremen.de');
+insert into player ("username", "password", "last_name", "first_name", "email") values ('cstrempel', '81dc9bdb52d04dc20036dbd8313ed055', 'Strempel', 'Carina', 'cstrempel@stud.hs-bremen.de');
+insert into player ("username", "password", "last_name", "first_name", "email") values ('akoenig', '81dc9bdb52d04dc20036dbd8313ed055', 'König', 'André', 'akoenig@stud.hs-bremen.de');
 
 -- ## Erde #################################################
 insert into world ("token", "name", "description", "author", "version") values ('earth', 'Die Erde', 'Die Erde als Risiko-Map', 'André König', '1.0 beta');
@@ -48,10 +53,10 @@ insert into continent ("name") values ('Europa');
 insert into country ("token", "name", "color", "world", "continent") values ('sk', 'Skandinavien', 'ffffff', 1, 1);
 insert into country ("token", "name", "color", "world", "continent") values ('ua', 'Ukraine', 'ffffff', 1, 1);
 insert into country ("token", "name", "color", "world", "continent") values ('me', 'Mittel-Europa', 'ffffff', 1, 1);
-insert into country ("token", "name", "color", "world", "continent") values ('se', 'Süd-Europa', 'ffffff', 1, 1);
+insert into country ("token", "name", "color", "world", "continent") values ('se', 'SÃ¼d-Europa', 'ffffff', 1, 1);
 insert into country ("token", "name", "color", "world", "continent") values ('we', 'West-Europa', 'ffffff', 1, 1);
 insert into country ("token", "name", "color", "world", "continent") values ('is', 'Island', 'ffffff', 1, 1);
-insert into country ("token", "name", "color", "world", "continent") values ('uk', 'Groß-Britanien', 'ffffff', 1, 1);
+insert into country ("token", "name", "color", "world", "continent") values ('uk', 'GroÃŸ-Britanien', 'ffffff', 1, 1);
 
 insert into neighbour ("country", "neighbour_country") values (1, 2);
 
@@ -59,24 +64,24 @@ insert into neighbour ("country", "neighbour_country") values (1, 2);
 insert into neighbour ("country", "neighbour_country") values (2, 1);
 insert into neighbour ("country", "neighbour_country") values (2, 3);
 
--- NACHBARN Mittel-Europa: Ukraine, Süd-Europa, West-Europa
+-- NACHBARN Mittel-Europa: Ukraine, SÃ¼d-Europa, West-Europa
 insert into neighbour ("country", "neighbour_country") values (3, 2);
 insert into neighbour ("country", "neighbour_country") values (3, 4);
 insert into neighbour ("country", "neighbour_country") values (3, 5);
 
--- NACHBARN Süd-Europa: Mittel-Europa
+-- NACHBARN SÃ¼d-Europa: Mittel-Europa
 insert into neighbour ("country", "neighbour_country") values (4, 3); 
 
--- NACHBARN West-Europa: Mittel-Europa, Island, Groß-Britanien
+-- NACHBARN West-Europa: Mittel-Europa, Island, GroÃŸ-Britanien
 insert into neighbour ("country", "neighbour_country") values (5, 3);
 insert into neighbour ("country", "neighbour_country") values (5, 6);
 insert into neighbour ("country", "neighbour_country") values (5, 7); 
 
--- NACHBARN Island: West-Europa, Groß-Britanien
+-- NACHBARN Island: West-Europa, GroÃŸ-Britanien
 insert into neighbour ("country", "neighbour_country") values (6, 5);
 insert into neighbour ("country", "neighbour_country") values (6, 7);
 
--- NACHBARN Groß-Britanien: Island, West-Europa
+-- NACHBARN GroÃŸ-Britanien: Island, West-Europa
 insert into neighbour ("country", "neighbour_country") values (7, 6);
 insert into neighbour ("country", "neighbour_country") values (7, 5); 
 
