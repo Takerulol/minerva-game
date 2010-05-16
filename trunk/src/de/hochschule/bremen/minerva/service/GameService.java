@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id: Turn.java 124 2010-04-25 09:40:26Z cbollmann@stud.hs-bremen.de $
+ * $Id$
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,6 +30,78 @@
 
 package de.hochschule.bremen.minerva.service;
 
+import java.util.Vector;
+
+import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.persistence.service.ContinentService;
+import de.hochschule.bremen.minerva.persistence.service.CountryService;
+import de.hochschule.bremen.minerva.persistence.service.NeighbourService;
+import de.hochschule.bremen.minerva.persistence.service.WorldService;
+import de.hochschule.bremen.minerva.vo.Country;
+import de.hochschule.bremen.minerva.vo.Neighbour;
+import de.hochschule.bremen.minerva.vo.World;
+
 public class GameService {
 
+	private static GameService instance = null;
+	
+	private GameService() {}
+
+	/**
+	 * DOCME
+	 * 
+	 * @return
+	 */
+	public static GameService getInstance() {
+		if (GameService.instance == null) {
+			GameService.instance = new GameService();
+		}
+		
+		return GameService.instance;
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @return
+	 */
+	public Vector<World> getWorldList() throws PersistenceIOException {
+		Vector<World> worlds = WorldService.getInstance().loadAll();
+
+		for (World world : worlds) {
+			Vector<Country> countries = CountryService.getInstance().loadAll(world);
+			
+			for (Country country : countries) {
+				country.setContinent(ContinentService.getInstance().load(country.getContinent().getId()));
+				
+				for (Neighbour neighbour : NeighbourService.getInstance().loadAll(country)) {
+					world.getCountryGraph().connect(country, neighbour);
+				}
+			}
+			world.setCountries(countries);
+		}
+		
+		return worlds;
+	}
+
+	/**
+	 * 
+	 * Loads a world list from the persistence layer. 
+	 * 
+	 * IMPORTANT: If the 'lite' parameter is 'true', the method
+	 * will only load the common world data (like: name, author, ...).
+	 * If it is 'false' is behaves like the 'getWorldList' method and loads
+	 * all complex world data (like country dependencies and so on).
+	 * 
+	 * @param lite - Does not load all country dependencies (only the world data).
+	 * @return
+	 * @throws PersistenceIOException
+	 */
+	public Vector<World> getWorldList(boolean lite) throws PersistenceIOException {
+		if (lite) {
+			return WorldService.getInstance().loadAll();
+		} else {
+			return this.getWorldList();
+		}
+	}
 }
