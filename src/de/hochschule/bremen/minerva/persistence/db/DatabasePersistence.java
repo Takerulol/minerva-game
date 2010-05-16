@@ -29,7 +29,12 @@
  */
 package de.hochschule.bremen.minerva.persistence.db;
 
-import de.hochschule.bremen.minerva.vo.*;
+import de.hochschule.bremen.minerva.vo.Continent;
+import de.hochschule.bremen.minerva.vo.Country;
+import de.hochschule.bremen.minerva.vo.Neighbour;
+import de.hochschule.bremen.minerva.vo.Player;
+import de.hochschule.bremen.minerva.vo.World;
+
 import de.hochschule.bremen.minerva.persistence.Persistence;
 import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.db.handler.ContinentHandler;
