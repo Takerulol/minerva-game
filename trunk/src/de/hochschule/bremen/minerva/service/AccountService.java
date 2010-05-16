@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id: Turn.java 124 2010-04-25 09:40:26Z cbollmann@stud.hs-bremen.de $
+ * $Id$
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,6 +30,91 @@
 
 package de.hochschule.bremen.minerva.service;
 
+import java.util.Vector;
+import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
+import de.hochschule.bremen.minerva.exceptions.PlayerExistsException;
+import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
+import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.vo.Player;
+
 public class AccountService {
 
+	/**
+	 * DOCME
+	 * @param player
+	 * @throws PlayerExistsException
+	 * @throws PersistenceIOException
+	 */
+	public void create(Player player) throws PlayerExistsException, PersistenceIOException {
+		
+	}
+	
+	/**
+	 * DOCME
+	 * @return
+	 * @throws PersistenceIOException
+	 */
+	public Vector<Player> getPlayerList() throws PersistenceIOException {
+		return null;
+	}
+	
+	/**
+	 * DOCME
+	 * @param loggedInPlayers
+	 * @return
+	 * @throws PersistenceIOException
+	 */
+	public Vector<Player> getPlayerList(boolean loggedInPlayers) throws PersistenceIOException {
+		return null;
+	}
+	
+	/**
+	 * DOCME
+	 * @param username
+	 * @return
+	 * @throws PersistenceIOException
+	 */
+	public Player getPlayer(String username) throws PersistenceIOException {
+		return null;
+	}
+	
+	/**
+	 * DOCME
+	 * @param id
+	 * @return
+	 * @throws PersistenceIOException
+	 */
+	public Player getPlayer(int id) throws PersistenceIOException {
+		return null;
+	}
+	
+	/**
+	 * DOCME
+	 * @param player
+	 * @return
+	 * @throws PersistenceIOException
+	 */
+	public Player getPlayer(Player player) throws PersistenceIOException {
+		return null;
+	}
+	
+	/**
+	 * DOCME
+	 * @param player
+	 * @throws WrongPasswordException
+	 * @throws PlayerDoesNotExistException
+	 * @throws PersistenceIOException
+	 */
+	public void login(Player player) throws WrongPasswordException, PlayerDoesNotExistException, PersistenceIOException {
+		
+	}
+	
+	/**
+	 * DOCME
+	 * @throws PersistenceIOException
+	 */
+	public void logout() throws PersistenceIOException {
+		
+	}
+	
 }
