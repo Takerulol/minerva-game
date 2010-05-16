@@ -53,10 +53,10 @@ insert into continent ("name") values ('Europa');
 insert into country ("token", "name", "color", "world", "continent") values ('sk', 'Skandinavien', 'ffffff', 1, 1);
 insert into country ("token", "name", "color", "world", "continent") values ('ua', 'Ukraine', 'ffffff', 1, 1);
 insert into country ("token", "name", "color", "world", "continent") values ('me', 'Mittel-Europa', 'ffffff', 1, 1);
-insert into country ("token", "name", "color", "world", "continent") values ('se', 'SÃ¼d-Europa', 'ffffff', 1, 1);
+insert into country ("token", "name", "color", "world", "continent") values ('se', 'Süd-Europa', 'ffffff', 1, 1);
 insert into country ("token", "name", "color", "world", "continent") values ('we', 'West-Europa', 'ffffff', 1, 1);
 insert into country ("token", "name", "color", "world", "continent") values ('is', 'Island', 'ffffff', 1, 1);
-insert into country ("token", "name", "color", "world", "continent") values ('uk', 'GroÃŸ-Britanien', 'ffffff', 1, 1);
+insert into country ("token", "name", "color", "world", "continent") values ('uk', 'Groß-Britanien', 'ffffff', 1, 1);
 
 insert into neighbour ("country", "neighbour_country") values (1, 2);
 
