@@ -35,10 +35,43 @@ import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.persistence.service.PersistenceService;
+import de.hochschule.bremen.minerva.persistence.service.PlayerService;
 import de.hochschule.bremen.minerva.vo.Player;
 
 public class AccountService {
 
+	private static AccountService instance = null;
+
+	private PersistenceService service = PlayerService.getInstance();
+
+	/**
+	 * Singleton pattern. It is not possible
+	 * to create a CountryService in the common way.
+	 * So this constructor is private.
+	 * 
+	 */
+	private AccountService() {}
+	
+	/**
+	 * Singleton pattern.
+	 * Static method that controls the object creation.
+	 * 
+	 * @return DOCME
+	 */
+	public static AccountService getInstance() {
+		if (AccountService.instance == null) {
+			AccountService.instance = new AccountService();
+		}
+		return AccountService.instance;
+	}
+	
+	/*
+	 * TODO:
+	 * 	- implement methods
+	 * 	- docs
+	 */
+	
 	/**
 	 * DOCME
 	 * @param player
@@ -54,8 +87,10 @@ public class AccountService {
 	 * @return
 	 * @throws PersistenceIOException
 	 */
+	@SuppressWarnings("unchecked")
 	public Vector<Player> getPlayerList() throws PersistenceIOException {
-		return null;
+		Vector<Player> players = (Vector)service.loadAll();
+		return players;
 	}
 	
 	/**
