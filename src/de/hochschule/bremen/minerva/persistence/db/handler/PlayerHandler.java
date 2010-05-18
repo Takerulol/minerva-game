@@ -207,7 +207,7 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 			// call-by-reference
 			registrable = registrablePlayer;
 		} catch (PersistenceIOException e) {
-			throw new PersistenceIOException("Unable to determine the players after save operation (player = '"
+			throw new PersistenceIOException("Unable to determine the players id after save operation (player = '"
 					+registrablePlayer.getUsername() +"').");
 		}
 	}
