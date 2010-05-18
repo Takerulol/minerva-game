@@ -89,6 +89,15 @@ public class FilterParameter {
 	}
 
 	/**
+	 * Getting the params as raw type.
+	 * 
+	 * @return
+	 */
+	public Object getObject() {
+		return this.param;
+	}
+	
+	/**
 	 * Is this filter parameter a string?
 	 * 
 	 * @return 
