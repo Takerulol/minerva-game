@@ -86,8 +86,8 @@ public class Player extends ValueObject {
 	 * 
 	 * @param passwort 
 	 */
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPassword(String md5Hash) {
+		this.password = md5Hash;
 	}
 
 	/**
