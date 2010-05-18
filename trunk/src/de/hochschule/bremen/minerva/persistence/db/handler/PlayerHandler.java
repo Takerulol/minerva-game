@@ -93,14 +93,14 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 				record.close();
 			} else {
 				throw new PlayerNotFoundException("Found no player with username/id: '"
-												   +filter+"'.");
+												   +filter.getObject()+"'.");
 			}
 
 		} catch (DatabaseIOException e) {
 			throw new PersistenceIOException(e.getMessage());
 		} catch (SQLException e) {
 			throw new PersistenceIOException("Error occurred while reading "
-					                       + "the player (username=" +filter+") "
+					                       + "the player (username/id=" +filter.getObject()+") "
 					                       + "from the database.");
 		}
 		
