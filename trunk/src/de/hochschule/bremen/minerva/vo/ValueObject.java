@@ -30,5 +30,5 @@
 package de.hochschule.bremen.minerva.vo;
 
 public abstract class ValueObject {
-
+	protected static final int DEFAULT_ID = -1;
 }

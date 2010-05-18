@@ -37,7 +37,6 @@ import java.util.Vector;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 import de.hochschule.bremen.minerva.vo.World;
 import de.hochschule.bremen.minerva.persistence.Handler;
-import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
@@ -54,10 +53,11 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 
 	static {
 		sql.put("selectById", "select \"id\", \"token\", \"name\", \"description\", \"author\", \"version\" from world where \"id\" = ?");
+		sql.put("selectByName", "select \"id\", \"token\", \"name\", \"description\", \"author\", \"version\" from world where \"name\" = ?");
 		sql.put("selectAll", "select \"id\", \"token\", \"name\", \"description\", \"author\", \"version\" from world order by \"name\"");
 		sql.put("insert", "insert into world (\"token\", \"name\", \"description\", \"author\", \"version\") values (?, ?, ?, ?, ?)");
-		sql.put("update", "update world set token = ?, name = ?, description = ?, author = ?, version = ? where id = ?");
-		sql.put("delete", "delete from world where id = ?");
+		sql.put("update", "update world set \"token\" = ?, \"name\" = ?, \"description\" = ?, \"author\" = ?, \"version\" = ? where \"id\" = ?");
+		sql.put("delete", "delete from world where \"id\" = ?");
 	}
 
 	/**
@@ -65,29 +65,72 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 	 * @throws PersistenceIOException 
 	 * 
 	 */
-	public World read(FilterParameter id) throws PersistenceIOException {
+	public World read(int id) throws PersistenceIOException {
 		World world = null;
-		Object[] params = {id.getInt()};
+		Object[] params = {id};
 		
 		try {
-			ResultSet record = this.select(sql.get("selectById"), params);
+			world = this.read(sql.get("selectById"), params);
+		} catch (WorldNotFoundException e) {
+			throw new WorldNotFoundException("The world with the id '"+id+"' wasn't found.");
+		} catch (DatabaseIOException e) {
+			throw new PersistenceIOException("Error occurred while reading "
+                    + "the world (id=" + id +") "
+                    + "from the database. Reason: "+e.getMessage());
+		}
+		
+		return world;
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	public World read(String name) throws PersistenceIOException {
+		World world = null;
+		Object[] params = {name};
+
+		try {
+			world = this.read(sql.get("selectByName"), params);
+		} catch (WorldNotFoundException e) {
+			throw new WorldNotFoundException("The world '"+name+"' wasn't found.");
+		} catch (DatabaseIOException e) {
+			throw new PersistenceIOException("Error occurred while reading "
+					                       + "the world '" + name +"' "
+					                       + "from the database. Reason: "+e.getMessage());
+		}
+		
+		return world;
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param sql
+	 * @param params
+	 * @return
+	 * @throws WorldNotFoundException
+	 * @throws DatabaseIOException
+	 */
+	private World read(String sql, Object[] params) throws WorldNotFoundException, DatabaseIOException {
+		World world = null;
+
+		try {
+			ResultSet record = this.select(sql, params);
+
 			if (record.next()) {
 				world = this.resultSetToObject(record);
 				record.close();
 			} else {
-				throw new WorldNotFoundException("Found no world with id: '"+id+"'.");
+				throw new WorldNotFoundException();
 			}
-
-		} catch (DatabaseIOException e) {
-			throw new PersistenceIOException(e.getMessage());
 		} catch (SQLException e) {
-			throw new PersistenceIOException("Error occurred while reading the world (id="
-											 +id+") from the database.");
+			throw new DatabaseIOException("Error while reading from result set: " + e.getErrorCode());
 		}
 
 		return world;
 	}
-
+	
 	/**
 	 * Loads all worlds from the database and return a
 	 * list with world value objects.
@@ -118,21 +161,16 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 	}
 
 	@Override
-	public void save(ValueObject registrable) throws PersistenceIOException {
-		World registrableWorld = (World)registrable;
+	public void save(ValueObject world) throws PersistenceIOException {
+		World registrableWorld = (World)world;
 
 		try {
-			Object[] params = {
-				registrableWorld.getToken(),
-				registrableWorld.getName(),
-				registrableWorld.getDescription(),
-				registrableWorld.getAuthor(),
-				registrableWorld.getVersion()
-			};
-
-			this.insert(sql.get("insert"), params);
-		} catch (DatabaseIOException e) {
 			try {
+				// We try to load the world by the given id.
+				// When this is not possible (WorldNotFoundException), we
+				// will update the record else we will insert it.
+				this.read(registrableWorld.getId());
+
 				Object[] params = {
 					registrableWorld.getToken(),
 					registrableWorld.getName(),
@@ -142,12 +180,30 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 					registrableWorld.getId()
 				};
 				this.update(sql.get("update"), params);
-			} catch (DatabaseDuplicateRecordException exe) {
-				throw new WorldExistsException("Unable to serialize the world. There is already a similar one.");
-			} catch (DatabaseIOException ex) {
-				throw new PersistenceIOException("Unable to serialize the world object: "+ex.getMessage());
+			} catch (WorldNotFoundException e) {
+				Object[] params = {
+					registrableWorld.getToken(),
+					registrableWorld.getName(),
+					registrableWorld.getDescription(),
+					registrableWorld.getAuthor(),
+					registrableWorld.getVersion()
+				};
+
+				this.insert(sql.get("insert"), params);
 			}
+		} catch (DatabaseDuplicateRecordException ex) {
+			throw new WorldExistsException("Unable to serialize the "
+					+"world '"+registrableWorld.getName()+"'. There is already "
+					+"a similar one.");
+		} catch (DatabaseIOException e) {
+			throw new PersistenceIOException("Unable to serialize the world '"+registrableWorld.getName()+"'. Reason: "+e.getMessage());
 		}
+
+		// The player does not have a player id.
+		// So we read the player object by the given username
+		// to fulfill the referenced player value object.
+		registrableWorld.setId(this.read(registrableWorld.getName()).getId());
+		world = registrableWorld;
 	}
 
 	/**

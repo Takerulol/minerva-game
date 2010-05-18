@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id: PersistenceIOException.java 76 2010-04-17 17:04:20Z andre.koenig $
+ * $Id$
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,7 +30,7 @@
 
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
-public class PlayerNotFoundException extends PersistenceIOException {
+public class PlayerNotFoundException extends NotFoundException {
 
 	/**
 	 * DOCME

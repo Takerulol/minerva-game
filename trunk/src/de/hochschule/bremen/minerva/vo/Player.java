@@ -33,7 +33,7 @@ import java.util.Vector;
 
 public class Player extends ValueObject {
 
-	private int id = 0;
+	private int id = DEFAULT_ID;
 	private String username = null;
 	private String password = null;
 	private String lastName = null;

@@ -32,6 +32,7 @@ package de.hochschule.bremen.minerva.persistence.service;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Handler;
+import de.hochschule.bremen.minerva.persistence.exceptions.NotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Neighbour;
@@ -96,6 +97,13 @@ public class NeighbourService extends PersistenceService {
 
 	@Override
 	public Vector<?> loadAll() throws PersistenceIOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ValueObject load(String name) throws NotFoundException,
+			PersistenceIOException {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -32,7 +32,7 @@ package de.hochschule.bremen.minerva.persistence.service;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Handler;
-import de.hochschule.bremen.minerva.persistence.FilterParameter;
+import de.hochschule.bremen.minerva.persistence.exceptions.ContinentExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.ContinentNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.vo.Continent;
@@ -78,22 +78,33 @@ public class ContinentService extends PersistenceService {
 	/**
 	 * DOCME
 	 * 
+	 * @param name
+	 * @return
+	 * @throws PersistenceIOException
 	 */
 	@Override
-	public Continent load(int id) throws PersistenceIOException {
-		try {
-			return (Continent)handler.read(new FilterParameter(id));
-		} catch (Exception e) {
-			throw new ContinentNotFoundException(e.getMessage());
-		}
+	public Continent load(int id) throws ContinentNotFoundException, PersistenceIOException {
+		return (Continent)handler.read(id);
 	}
 
 	/**
 	 * DOCME
 	 * 
+	 * @param name
+	 * @return
+	 * @throws PersistenceIOException
+	 */
+	public Continent load(String name) throws ContinentNotFoundException, PersistenceIOException {
+		return (Continent)handler.read(name);
+	}
+	
+	
+	/**
+	 * DOCME
+	 * 
 	 */
 	@Override
-	public void save(ValueObject candidate) throws PersistenceIOException {
+	public void save(ValueObject candidate) throws ContinentExistsException, PersistenceIOException {
 		handler.save((Continent)candidate);
 	}
 

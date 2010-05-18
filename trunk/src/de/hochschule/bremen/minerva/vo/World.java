@@ -36,12 +36,12 @@ import de.hochschule.bremen.minerva.util.CountryGraph;
 
 public class World extends ValueObject {
 	
-	private int id = 0;
-	private String token = "";
-	private String name = "";
-	private String description = "";
-	private String author = "";
-	private String version = "";
+	private int id = DEFAULT_ID;
+	private String token = null;
+	private String name = null;
+	private String description = null;
+	private String author = null;
+	private String version = null;
 
 	private Vector<Country> countries = new Vector<Country>();
 	private CountryGraph countryGraph = new CountryGraph();

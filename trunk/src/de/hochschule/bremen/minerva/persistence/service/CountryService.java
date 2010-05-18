@@ -32,7 +32,7 @@ package de.hochschule.bremen.minerva.persistence.service;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Handler;
-import de.hochschule.bremen.minerva.persistence.FilterParameter;
+import de.hochschule.bremen.minerva.persistence.exceptions.CountryExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.CountryNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.vo.Country;
@@ -101,16 +101,24 @@ public class CountryService extends PersistenceService {
 	 * @param id
 	 * @return
 	 */
-	public Country load(int id) throws CountryNotFoundException {
-		try {
-			return (Country)handler.read(new FilterParameter(id));
-		} catch (Exception e) {
-			throw new CountryNotFoundException(e.getMessage());
-		}
+	public Country load(int id) throws CountryNotFoundException, PersistenceIOException {
+		return (Country)handler.read(id);
 	}
 
+	/**
+	 * DOCME
+	 * 
+	 * @param name
+	 * @return
+	 * @throws CountryNotFoundException
+	 * @throws PersistenceIOException
+	 */
+	public Country load(String name) throws CountryNotFoundException, PersistenceIOException {
+		return (Country)handler.read(name);
+	}
+	
 	@Override
-	public void save(ValueObject candidate) throws PersistenceIOException {
+	public void save(ValueObject candidate) throws CountryExistsException, PersistenceIOException {
 		handler.save((Country)candidate);
 	}
 

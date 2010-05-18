@@ -27,31 +27,28 @@
  *     http://minerva.idira.de
  * 
  */
-
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
-public class PlayerExistsException extends ExistsException {
+public class ContinentExistsException extends ExistsException {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8548848860083061773L;
 
 	/**
 	 * DOCME
 	 * 
 	 */
-	private static final long serialVersionUID = -1406415230390126832L;
-
-	/**
-	 * DOCME
-	 * 
-	 */
-	public PlayerExistsException() {
+	public ContinentExistsException() {
 		super();
 	}
-	
+
 	/**
 	 * DOCME
-	 * 
 	 * @param message
 	 */
-	public PlayerExistsException(String message) {
+	public ContinentExistsException(String message) {
 		super(message);
 	}
 }

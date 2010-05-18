@@ -35,12 +35,11 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Handler;
-import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateRecordException;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
+import de.hochschule.bremen.minerva.persistence.exceptions.ContinentExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.ContinentNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
-import de.hochschule.bremen.minerva.persistence.exceptions.WorldExistsException;
 import de.hochschule.bremen.minerva.vo.Continent;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
@@ -53,44 +52,92 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 	private final static HashMap<String, String> sql = new HashMap<String, String>();
 
 	static {
-		sql.put("selectAll", "select \"id\", \"name\" from continent order by name");
 		sql.put("selectById", "select \"id\", \"name\" from continent where \"id\" = ?");
-		sql.put("insert", "insert into continent (name) values (?)");
-		sql.put("update", "update continent set name = ? where id = ?");
-		sql.put("delete", "delete from continent where id = ?");
+		sql.put("selectByName", "select \"id\", \"name\" from continent where \"name\" = ?");
+		sql.put("selectAll", "select \"id\", \"name\" from continent order by name");
+		sql.put("insert", "insert into continent (\"name\") values (?)");
+		sql.put("update", "update continent set \"name\" = ? where \"id\" = ?");
+		sql.put("delete", "delete from continent where \"id\" = ?");
 	}
 
 	/**
-	 * DOCME
+	 * Reads ONE continent from the database by the given id.
+	 * 
+	 * @param id - The continent id.
+	 * @return The continent value object.
+	 * @throws ContinentNotFoundException which is a PersistenceIOException
 	 * 
 	 */
 	@Override
-	public Continent read(FilterParameter id) throws PersistenceIOException {
+	public Continent read(int id) throws PersistenceIOException {
 		Continent continent = null;
-		Object[] params = {id.getInt()};
-		
+		Object[] params = {id};
+
 		try {
-			ResultSet record = this.select(sql.get("selectById"), params);
-			if (record.next()) {
-				continent = this.resultSetToObject(record);
-
-				record.close();
-			} else {
-				throw new ContinentNotFoundException("Found no continent"
-													+"with id: '"+id+"'.");
-			}
-
+			continent = this.read(sql.get("selectById"), params);
+		} catch (ContinentNotFoundException e) {
+			throw new ContinentNotFoundException("The continent with the id '"+id+"' wasn't found.");
 		} catch (DatabaseIOException e) {
-			throw new PersistenceIOException(e.getMessage());
-		} catch (SQLException e) {
 			throw new PersistenceIOException("Error occurred while reading "
-					                       + "the continent (id=" +id+") "
-					                       + "from the database.");
+					                       + "the continent (id=" + id +") "
+					                       + "from the database. Reason: "+e.getMessage());
 		}
 
 		return continent;
 	}
 
+	/**
+	 * Reads ONE continent from the database by the given name.
+	 * 
+	 * @param name - The continent name.
+	 * @return The continent value object
+	 * @throws ContinentNotFoundException which is a PersistenceIOException
+	 * 
+	 */
+	public Continent read(String name) throws PersistenceIOException {
+		Continent continent = null;
+		Object[] params = {name};
+
+		try {
+			continent = this.read(sql.get("selectByName"), params);
+		} catch (ContinentNotFoundException e) {
+			throw new ContinentNotFoundException("The continent '"+name+"' wasn't found.");
+		} catch (DatabaseIOException e) {
+			throw new PersistenceIOException("Error occurred while reading "
+					                       + "the continent (name=" + name +") "
+					                       + "from the database. Reason: "+e.getMessage());
+		}
+
+		return continent;
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param sql
+	 * @param params
+	 * @return
+	 * @throws ContinentNotFoundException
+	 */
+	private Continent read(String sql, Object[] params) throws ContinentNotFoundException, DatabaseIOException {
+		Continent continent = null;
+
+		try {
+			ResultSet record = this.select(sql, params);
+
+			if (record.next()) {
+				continent = this.resultSetToObject(record);
+				record.close();
+			} else {
+				throw new ContinentNotFoundException();
+			}
+		} catch (SQLException e) {
+			throw new DatabaseIOException("Error while reading from result set: " + e.getErrorCode());
+		}
+
+		return continent;
+	}
+	
 	/**
 	 * DOCME
 	 * 
@@ -128,25 +175,34 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 		Continent registrableContinent = (Continent)registrable;
 
 		try {
-			Object[] params = {registrableContinent.getName()};
-
-			this.insert(sql.get("insert"), params);
-		} catch (DatabaseIOException e) {
 			try {
+				// We try to load the continent by the given id.
+				// When this is not possible (ContinentNotFoundException), we
+				// will update the record else we will insert it.
+				this.read(registrableContinent.getId());
+	
 				Object[] params = {
 					registrableContinent.getName(),
 					registrableContinent.getId()
 				};
 				this.update(sql.get("update"), params);
-			} catch (DatabaseDuplicateRecordException exe) {
-				throw new WorldExistsException("Unable to serialize the continent. "
-											  +"There is already a similar one.");
-			} catch (DatabaseIOException ex) {
-				throw new PersistenceIOException("Unable to serialize the "
-											    +"continent object: "
-											    +ex.getMessage());
+			} catch (ContinentNotFoundException e) {
+				Object[] params = {registrableContinent.getName()};
+				
+				this.insert(sql.get("insert"), params);
 			}
+		} catch (DatabaseDuplicateRecordException ex) {
+			throw new ContinentExistsException("Unable to serialize the continent: '"
+					+registrableContinent.getName()+"'. There is already a similar one.");
+		} catch (DatabaseIOException e) {
+			throw new PersistenceIOException("Unable to serialize the continent object: '"+registrableContinent.getName()+"'. Reason: "+e.getMessage());
 		}
+
+		// The continent does not have a continent id.
+		// So we read the continent object by the given name
+		// to fulfill the referenced continent value object.
+		registrableContinent.setId(this.read(registrableContinent.getName()).getId());
+		registrable = registrableContinent;
 	}
 
 	/**

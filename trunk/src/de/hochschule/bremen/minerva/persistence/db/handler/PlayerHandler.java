@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id: CountryHandler.java 85 2010-04-18 14:24:04Z andre.koenig $
+ * $Id$
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -36,7 +36,6 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Handler;
-import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateRecordException;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException;
@@ -55,58 +54,90 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 	private final static HashMap<String, String> sql = new HashMap<String, String>();
 
 	static {
-		sql.put("selectByUsername", "select \"id\", \"username\", \"password\", \"last_name\", \"first_name\", \"email\", \"logged_in\" from player where \"username\" = ?");
 		sql.put("selectById", "select \"id\", \"username\", \"password\", \"last_name\", \"first_name\", \"email\", \"logged_in\" from player where \"id\" = ?");
+		sql.put("selectByName", "select \"id\", \"username\", \"password\", \"last_name\", \"first_name\", \"email\", \"logged_in\" from player where \"username\" = ?");
 		sql.put("selectAll", "select \"id\", \"username\", \"password\", \"last_name\", \"first_name\", \"email\", \"logged_in\" from player order by \"username\"");
 		sql.put("insert", "insert into player (\"username\", \"password\", \"last_name\", \"first_name\", \"email\") values (?, ?, ?, ?, ?)");
-		sql.put("update", "update player set \"username\" = ?, \"password\" = ?, \"last_name\" = ?, \"first_name\" = ?, \"email\" = ?, \"logged_in\" = ? where \"username\" = ?");
-		sql.put("delete", "delete from player where \"username\" = ?");
+		sql.put("update", "update player set \"username\" = ?, \"password\" = ?, \"last_name\" = ?, \"first_name\" = ?, \"email\" = ?, \"logged_in\" = ? where \"id\" = ?");
+		sql.put("delete", "delete from player where \"id\" = ?");
 	}
 
 
 	/**
 	 * Reads ONE player with the given id from the database.
 	 * 
-	 * @param filter - The player id.
+	 * @param id - The player id.
 	 * @return player
 	 * @throws PlayerNotFoundException, PersistenceIOException
+	 * 
 	 */
 	@Override
-	public Player read(FilterParameter filter) throws PersistenceIOException {
+	public Player read(int id) throws PersistenceIOException {
 		Player player = null;
-		Object[] params = new Object[1];
-		String statement = null;
+		Object[] params = {id};
 
 		try {
-		
-			if (filter.isString()) {
-				params[0] = filter.getString();
-				statement = sql.get("selectByUsername");
-			} else {
-				params[0] = filter.getInt();
-				statement = sql.get("selectById");
-			}
-			
-			ResultSet record = this.select(statement, params);
-			if (record.next()) {
-				player = this.resultSetToObject(record);
-				record.close();
-			} else {
-				throw new PlayerNotFoundException("Found no player with username/id: '"
-												   +filter.getObject()+"'.");
-			}
-
+			player = this.read(sql.get("selectById"), params);
+		} catch (PlayerNotFoundException e) {
+			throw new PlayerNotFoundException("The player with the id '"+id+"' wasn't found.");
 		} catch (DatabaseIOException e) {
-			throw new PersistenceIOException(e.getMessage());
-		} catch (SQLException e) {
 			throw new PersistenceIOException("Error occurred while reading "
-					                       + "the player (username/id=" +filter.getObject()+") "
-					                       + "from the database.");
+					                       + "the player (id=" + id +") "
+					                       + "from the database. Reason: "+e.getMessage());
+		}
+
+		return player;
+	}
+
+	/**
+	 * Reads ONE player with the given name from the database.
+	 * 
+	 * @param name - The username.
+	 * @return Player object from the database.
+	 */
+	public Player read(String name) throws PersistenceIOException {
+		Player player = null;
+		Object[] params = {name};
+
+		try {
+			player = this.read(sql.get("selectByName"), params);
+		} catch (PlayerNotFoundException e) {
+			throw new PlayerNotFoundException("The player with the username '"+name+"' wasn't found.");
+		} catch (DatabaseIOException e) {
+			throw new PersistenceIOException("Error occurred while reading "
+					                       + "the player (username=" + name +") "
+					                       + "from the database. Reason: "+e.getMessage());
 		}
 		
 		return player;
 	}
 
+	/**
+	 * DOCME
+	 * 
+	 * @param sql
+	 * @param params - Object array with parameters for the prepared statement.
+	 * 
+	 */
+	private Player read(String sql, Object[] params) throws PlayerNotFoundException, DatabaseIOException {
+		Player player = null;
+
+		try {
+			ResultSet record = this.select(sql, params);
+
+			if (record.next()) {
+				player = this.resultSetToObject(record);
+				record.close();
+			} else {
+				throw new PlayerNotFoundException();
+			}
+		} catch (SQLException e) {
+			throw new DatabaseIOException("Error while reading from result set: " + e.getErrorCode());
+		}
+
+		return player;
+	}
+	
 	/**
 	 * Reads ALL player from the database.
 	 * 
@@ -160,50 +191,55 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 	 * If it is a new player, the player will be insert in the database.
 	 * If it is an already existing player, the attributes of the player will be update in the database.
 	 * 
-	 * @param registrable
+	 * @param player
 	 * @throws PlayerExistsException, PersistenceIOException
 	 */
 	@Override
-	public void save(ValueObject registrable) throws PersistenceIOException {
-		Player registrablePlayer = (Player)registrable;
-		int playerId = 0;
+	public void save(ValueObject player) throws PersistenceIOException {
+		Player registrablePlayer = (Player)player;
 
 		try {
-			Object[] params = {
-				registrablePlayer.getUsername(),
-				registrablePlayer.getPassword(),
-				registrablePlayer.getLastName(),
-				registrablePlayer.getFirstName(),
-				registrablePlayer.getEmail(),
-			};
-
-			playerId = this.insert(sql.get("insert"), params);
-		} catch (DatabaseIOException e) {
 			try {
+				// We try to load the player by the given id.
+				// When this is not possible (PlayerNotFoundException), we
+				// will update the record else we will insert it.
+				this.read(registrablePlayer.getId());
+				
 				Object[] params = {
-						registrablePlayer.getUsername(),
-						registrablePlayer.getPassword(),
-						registrablePlayer.getLastName(),
-						registrablePlayer.getFirstName(),
-						registrablePlayer.getEmail(),
-						((registrablePlayer.isLoggedIn()) ? 1 : 0),
-						registrablePlayer.getUsername()
+					registrablePlayer.getUsername(),
+					registrablePlayer.getPassword(),
+					registrablePlayer.getLastName(),
+					registrablePlayer.getFirstName(),
+					registrablePlayer.getEmail(),
+					((registrablePlayer.isLoggedIn()) ? 1 : 0),
+					registrablePlayer.getId()
 				};
 
-				playerId = this.update(sql.get("update"), params);
-			} catch (DatabaseDuplicateRecordException exe) {
-				throw new PlayerExistsException("Unable to serialize the "
-												+"player. There is already "
-												+"a similar one.");
-			} catch (DatabaseIOException ex) {
-				throw new PersistenceIOException("Unable to serialize the "
-												+"player object: "
-												+ex.getMessage());
+				this.update(sql.get("update"), params);
+			} catch (PlayerNotFoundException e) {
+				Object[] params = {
+					registrablePlayer.getUsername(),
+					registrablePlayer.getPassword(),
+					registrablePlayer.getLastName(),
+					registrablePlayer.getFirstName(),
+					registrablePlayer.getEmail(),
+				};
+
+				this.insert(sql.get("insert"), params);
 			}
+		} catch (DatabaseDuplicateRecordException ex) {
+			throw new PlayerExistsException("Unable to serialize the "
+					+"player: '"+registrablePlayer.getUsername()+"'. There is already "
+					+"a similar one.");
+		} catch (DatabaseIOException e) {
+			throw new PersistenceIOException("Unable to serialize the player: '"+registrablePlayer.getUsername()+"'. Reason: "+e.getMessage());			
 		}
-		
-		registrablePlayer.setId(playerId);
-		registrable = registrablePlayer;
+
+		// The player does not have a player id.
+		// So we read the player object by the given username
+		// to fulfill the referenced player value object.
+		registrablePlayer.setId(this.read(registrablePlayer.getUsername()).getId());
+		player = registrablePlayer;
 	}
 
 	/**

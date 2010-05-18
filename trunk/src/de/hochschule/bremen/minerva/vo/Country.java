@@ -34,9 +34,9 @@ import java.util.Vector;
 
 public class Country extends ValueObject {
 
-	protected int id;
-	protected String token;
-	protected String name;
+	protected int id = DEFAULT_ID;
+	protected String token = null;
+	protected String name = null;
 	protected Color color = null;
 	protected Continent continent = null;
 	protected int worldId = 0;
@@ -228,6 +228,6 @@ public class Country extends ValueObject {
 	 * @return
 	 */
 	public String toString() {
-		return getClass().getName() + "[id=" + id + ",token=" +token + ",name=" + name + ",color=" + color + ",continent=" + continent + "]";
+		return getClass().getName() + "[id="+this.id +",token="+this.token+",name="+this.name+",color="+this.color+",continent="+this.continent+", world id="+this.worldId+"]";
 	}
 }

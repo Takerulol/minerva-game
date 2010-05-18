@@ -29,7 +29,7 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
-public class WorldExistsException extends PersistenceIOException {
+public class WorldExistsException extends ExistsException {
 
 	
 	/**
