@@ -31,7 +31,7 @@ package de.hochschule.bremen.minerva.vo;
 
 public class Continent extends ValueObject {
 
-	private int id = 0;
+	private int id = DEFAULT_ID;
 	private String name = "";
 
 	/**

@@ -34,7 +34,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
 
-import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
@@ -93,18 +92,6 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 		return neighbour;
 	}
 
-	/**
-	 * DOCME
-	 * 
-	 */
-	@Override
-	public ValueObject read(FilterParameter param) throws PersistenceIOException {
-		// TODO Auto-generated method stub
-		return null;		
-	}
-
-
-
 	@Override
 	public Vector<? extends ValueObject> readAll() throws PersistenceIOException {
 		// TODO Auto-generated method stub
@@ -121,5 +108,17 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 	public void save(ValueObject registrable) throws PersistenceIOException {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public ValueObject read(int id) throws PersistenceIOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ValueObject read(String name) throws PersistenceIOException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

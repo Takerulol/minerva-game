@@ -32,8 +32,8 @@ package de.hochschule.bremen.minerva.persistence.service;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Handler;
-import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.persistence.exceptions.WorldExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 import de.hochschule.bremen.minerva.vo.World;
@@ -88,20 +88,28 @@ public class WorldService extends PersistenceService {
 	 * @param id
 	 * @return
 	 */
-	public World load(int id) throws WorldNotFoundException {
-		try {
-			return (World)handler.read(new FilterParameter(id));
-		} catch (Exception e) {
-			throw new WorldNotFoundException(e.getMessage());
-		}
+	public World load(int id) throws WorldNotFoundException, PersistenceIOException {
+		return (World)handler.read(id);
 	}
 
 	/**
 	 * DOCME
 	 * 
+	 * @param name
+	 * @return
+	 * @throws WorldNotFoundException
+	 * @throws PersistenceIOException
+	 */
+	public World load(String name) throws WorldNotFoundException, PersistenceIOException {
+		return (World)handler.read(name);
+	}
+	
+	/**
+	 * DOCME
+	 * 
 	 */
 	@Override
-	public void save(ValueObject candidate) throws PersistenceIOException {
+	public void save(ValueObject candidate) throws WorldExistsException, PersistenceIOException {
 		handler.save((World)candidate);
 	}
 

@@ -40,7 +40,6 @@ import de.hochschule.bremen.minerva.vo.Continent;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.World;
 import de.hochschule.bremen.minerva.persistence.Handler;
-import de.hochschule.bremen.minerva.persistence.FilterParameter;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateRecordException;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.CountryExistsException;
@@ -64,6 +63,7 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 
 	static {
 		sql.put("selectById", "select \"id\", \"token\", \"name\", \"color\", \"continent\", \"world\" from country where \"id\" = ?");
+		sql.put("selectByName", "select \"id\", \"token\", \"name\", \"color\", \"continent\", \"world\" from country where \"name\" = ?");
 		sql.put("selectAllByWorldId", "select \"id\", \"token\", \"name\", \"color\", \"continent\", \"world\" from country where \"world\" = ?");
 		sql.put("selectAllByContinentId", "select \"id\", \"token\", \"name\", \"color\", \"continent\", \"world\" from country where \"continent\" = ?");
 		sql.put("insert", "insert into country (\"token\", \"name\", \"color\", \"continent\", \"world\") values (?, ?, ?, ?, ?)");
@@ -79,26 +79,67 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	 * 
 	 */
 	@Override
-	public Country read(FilterParameter id) throws PersistenceIOException {
+	public Country read(int id) throws PersistenceIOException {
 		Country country = null;
-		Object[] params = {id.getInt()};
-		
+		Object[] params = {id};
+
 		try {
-			ResultSet record = this.select(sql.get("selectById"), params);
+			country = this.read(sql.get("selectById"), params);
+		} catch (CountryNotFoundException e) {
+			throw new CountryNotFoundException("The country with the id '"+id+"' wasn't found.");
+		} catch (DatabaseIOException e) {
+			throw new PersistenceIOException("Error occurred while reading "
+					                       + "the country (id=" + id +") "
+					                       + "from the database. Reason: "+e.getMessage());
+		}
+
+		return country;
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	public Country read(String name) throws PersistenceIOException {
+		Country country = null;
+		Object[] params = {name};
+
+		try {
+			country = this.read(sql.get("selectByName"), params);
+		} catch (CountryNotFoundException e) {
+			throw new CountryNotFoundException("The country '"+name+"' wasn't found.");
+		} catch (DatabaseIOException e) {
+			throw new PersistenceIOException("Error occurred while reading "
+					                       + "the country '" + name + "'"
+					                       + "from the database. Reason: "+e.getMessage());
+		}
+		
+		return country;
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param sql
+	 * @param params
+	 * @return
+	 * @throws CountryNotFoundException
+	 * @throws DatabaseIOException
+	 */
+	private Country read(String sql, Object[] params) throws CountryNotFoundException, DatabaseIOException {
+		Country country = null;
+
+		try {
+			ResultSet record = this.select(sql, params);
+
 			if (record.next()) {
 				country = this.resultSetToObject(record);
 				record.close();
 			} else {
-				throw new CountryNotFoundException("Found no country with id: '"
-												   +id+"'.");
+				throw new CountryNotFoundException();
 			}
-
-		} catch (DatabaseIOException e) {
-			throw new PersistenceIOException(e.getMessage());
 		} catch (SQLException e) {
-			throw new PersistenceIOException("Error occurred while reading "
-					                       + "the country (id=" +id+") "
-					                       + "from the database.");
+			throw new DatabaseIOException("Error while reading from result set: " + e.getErrorCode());
 		}
 
 		return country;
@@ -240,21 +281,16 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	 * 
 	 */
 	@Override
-	public void save(ValueObject registrable) throws PersistenceIOException {
-		Country registrableCountry = (Country)registrable;
+	public void save(ValueObject country) throws PersistenceIOException {
+		Country registrableCountry = (Country)country;
 
 		try {
-			Object[] params = {
-				registrableCountry.getToken(),
-				registrableCountry.getName(),
-				"ffffffff", //Integer.toHexString(registrableCountry.getColor().getRGB()),
-				registrableCountry.getContinent().getId(),
-				registrableCountry.getWorldId()
-			};
-
-			this.insert(sql.get("insert"), params);
-		} catch (DatabaseIOException e) {
 			try {
+				// We try to load the country by the given id.
+				// When this is not possible (CountryNotFoundException), we
+				// will update the record else we will insert it.
+				this.read(registrableCountry.getId());
+
 				Object[] params = {
 					registrableCountry.getToken(),
 					registrableCountry.getName(),
@@ -265,16 +301,29 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 				};
 
 				this.update(sql.get("update"), params);
-			} catch (DatabaseDuplicateRecordException exe) {
-				throw new CountryExistsException("Unable to serialize the "
-												+"country. There is already "
-												+"a similar one.");
-			} catch (DatabaseIOException ex) {
-				throw new PersistenceIOException("Unable to serialize the "
-												+"country object: "
-												+ex.getMessage());
+			} catch (CountryNotFoundException e) {
+				Object[] params = {
+					registrableCountry.getToken(),
+					registrableCountry.getName(),
+					"ffffffff", //Integer.toHexString(registrableCountry.getColor().getRGB()),
+					registrableCountry.getContinent().getId(),
+					registrableCountry.getWorldId()
+				};
+				this.insert(sql.get("insert"), params);
 			}
+		} catch (DatabaseDuplicateRecordException ex) {
+			throw new CountryExistsException("Unable to serialize the "
+						+"country: '"+registrableCountry.getName()+"'. There is already "
+						+"a similar one.");
+		} catch (DatabaseIOException e) {
+			throw new PersistenceIOException("Unable to serialize the country: '"+registrableCountry.getName()+"'. Reason: "+e.getMessage());
 		}
+
+		// The country does not have a player id.
+		// So we read the country object by the given name
+		// to fulfill the referenced country value object.
+		registrableCountry.setId(this.read(registrableCountry.getName()).getId());
+		country = registrableCountry;
 	}
 
 	/**

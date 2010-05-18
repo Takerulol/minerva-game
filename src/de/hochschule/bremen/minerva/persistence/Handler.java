@@ -51,13 +51,22 @@ import de.hochschule.bremen.minerva.vo.ValueObject;
 public interface Handler {
 
 	/**
-	 * DOCME
+	 * Read a object by id.
 	 * 
-	 * @param param - Encapsulated parameter for the read session.
+	 * @param id
 	 * @return
 	 * @throws PersistenceIOException
 	 */
-	public ValueObject read(FilterParameter param) throws PersistenceIOException;
+	public ValueObject read(int id) throws PersistenceIOException;
+
+	/**
+	 * Read a object by name
+	 * 
+	 * @param name
+	 * @return
+	 * @throws PersistenceIOException
+	 */
+	public ValueObject read(String name) throws PersistenceIOException;
 
 	/**
 	 * DOCME

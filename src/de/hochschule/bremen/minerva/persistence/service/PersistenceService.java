@@ -33,6 +33,8 @@ import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Persistence;
 import de.hochschule.bremen.minerva.persistence.db.DatabasePersistence;
+import de.hochschule.bremen.minerva.persistence.exceptions.ExistsException;
+import de.hochschule.bremen.minerva.persistence.exceptions.NotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.persistence.file.FilebasedPersistence;
 import de.hochschule.bremen.minerva.vo.ValueObject;
@@ -47,10 +49,13 @@ public abstract class PersistenceService {
 	abstract public Vector<?> loadAll() throws PersistenceIOException;
 
 	// DOCME!!!
-	abstract public ValueObject load(int id) throws PersistenceIOException;
+	abstract public ValueObject load(int id) throws NotFoundException, PersistenceIOException;
+
+	// DOCME !!!
+	abstract public ValueObject load(String name) throws NotFoundException, PersistenceIOException;
 
 	// DOCME!!!
-	abstract public void save(ValueObject candidate) throws PersistenceIOException;
+	abstract public void save(ValueObject candidate) throws ExistsException, PersistenceIOException;
 
 	// DOCME!!!
 	abstract public void delete(ValueObject candidate) throws PersistenceIOException;

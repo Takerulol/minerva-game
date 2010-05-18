@@ -29,7 +29,7 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
-public class ContinentNotFoundException extends PersistenceIOException {
+public class ContinentNotFoundException extends NotFoundException {
 
 	/**
 	 * DOCME

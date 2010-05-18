@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id: ContinentService.java 122 2010-04-24 20:59:14Z andre.koenig $
+ * $Id$
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,13 +32,11 @@ package de.hochschule.bremen.minerva.persistence.service;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Handler;
-import de.hochschule.bremen.minerva.persistence.FilterParameter;
+import de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.ValueObject;
-
-//TODO: DOCME the class and two methods.
 
 /**
  * DOCME
@@ -70,15 +68,13 @@ public class PlayerService extends PersistenceService {
 	}
 	
 	/**
-	 * Method that delete the player object.
+	 * Method that deletes the player.
 	 * 
 	 * @throws PersistenceIOException
 	 */
 	@Override
 	public void delete(ValueObject candidate) throws PersistenceIOException {
-		Player deletablePlayer = (Player)candidate;
-		
-		handler.remove(deletablePlayer);
+		handler.remove((Player)candidate);
 	}
 
 	/**
@@ -87,12 +83,8 @@ public class PlayerService extends PersistenceService {
 	 * @throws PlayerNotFoundException, PersistenceIOException
 	 */
 	@Override
-	public Player load(int id) throws PersistenceIOException {
-		try {
-			return (Player)handler.read(new FilterParameter(id));
-		} catch (Exception e) {
-			throw new PlayerNotFoundException(e.getMessage());
-		}
+	public Player load(int id) throws PlayerNotFoundException, PersistenceIOException {
+		return (Player)handler.read(id);
 	}
 
 	/**
@@ -102,12 +94,8 @@ public class PlayerService extends PersistenceService {
 	 * @return
 	 * @throws PersistenceIOException
 	 */
-	public Player load(String username) throws PersistenceIOException {
-		try {
-			return (Player)handler.read(new FilterParameter(username));
-		} catch (Exception e) {
-			throw new PlayerNotFoundException(e.getMessage());
-		}
+	public Player load(String username) throws PlayerNotFoundException, PersistenceIOException {
+		return (Player)handler.read(username);
 	}
 	
 	/**
@@ -119,8 +107,7 @@ public class PlayerService extends PersistenceService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public Vector<Player> loadAll() throws PersistenceIOException {
-		Vector<Player> players = (Vector)handler.readAll();
-		return players;
+		return (Vector)handler.readAll();
 	}
 
 	/**
@@ -129,8 +116,7 @@ public class PlayerService extends PersistenceService {
 	 * @throws PersistenceIOException
 	 */
 	@Override
-	public void save(ValueObject candidate) throws PersistenceIOException {
+	public void save(ValueObject candidate) throws PlayerExistsException, PersistenceIOException {
 		handler.save((Player)candidate);
 	}
-
 }
