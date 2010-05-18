@@ -175,7 +175,6 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 				registrablePlayer.getFirstName(),
 				registrablePlayer.getEmail(),
 			};
-
 			this.insert(sql.get("insert"), params);
 		} catch (DatabaseIOException e) {
 			try {
@@ -185,7 +184,8 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 						registrablePlayer.getLastName(),
 						registrablePlayer.getFirstName(),
 						registrablePlayer.getEmail(),
-						(registrablePlayer.isLoggedIn()) ? 1 : 0
+						((registrablePlayer.isLoggedIn()) ? 1 : 0),
+						registrablePlayer.getUsername()
 				};
 
 				this.update(sql.get("update"), params);
@@ -198,6 +198,17 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 												+"player object: "
 												+ex.getMessage());
 			}
+		}
+		
+		// Determine the players id.
+		try {
+			registrablePlayer.setId(this.read(new FilterParameter(registrablePlayer.getUsername())).getId());
+			
+			// call-by-reference
+			registrable = registrablePlayer;
+		} catch (PersistenceIOException e) {
+			throw new PersistenceIOException("Unable to determine the players after save operation (player = '"
+					+registrablePlayer.getUsername() +"').");
 		}
 	}
 	
