@@ -130,8 +130,7 @@ public class PlayerService extends PersistenceService {
 	 */
 	@Override
 	public void save(ValueObject candidate) throws PersistenceIOException {
-		Player registrablePlayer = (Player)candidate;
-		handler.save(registrablePlayer);
+		handler.save((Player)candidate);
 	}
 
 }
