@@ -166,6 +166,7 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 	@Override
 	public void save(ValueObject registrable) throws PersistenceIOException {
 		Player registrablePlayer = (Player)registrable;
+		int playerId = 0;
 
 		try {
 			Object[] params = {
@@ -175,7 +176,8 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 				registrablePlayer.getFirstName(),
 				registrablePlayer.getEmail(),
 			};
-			this.insert(sql.get("insert"), params);
+
+			playerId = this.insert(sql.get("insert"), params);
 		} catch (DatabaseIOException e) {
 			try {
 				Object[] params = {
@@ -188,7 +190,7 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 						registrablePlayer.getUsername()
 				};
 
-				this.update(sql.get("update"), params);
+				playerId = this.update(sql.get("update"), params);
 			} catch (DatabaseDuplicateRecordException exe) {
 				throw new PlayerExistsException("Unable to serialize the "
 												+"player. There is already "
@@ -200,18 +202,10 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 			}
 		}
 		
-		// Determine the players id.
-		try {
-			registrablePlayer.setId(this.read(new FilterParameter(registrablePlayer.getUsername())).getId());
-			
-			// call-by-reference
-			registrable = registrablePlayer;
-		} catch (PersistenceIOException e) {
-			throw new PersistenceIOException("Unable to determine the players id after save operation (player = '"
-					+registrablePlayer.getUsername() +"').");
-		}
+		registrablePlayer.setId(playerId);
+		registrable = registrablePlayer;
 	}
-	
+
 	/**
 	 * Get all attributes of the player from the database.
 	 * 

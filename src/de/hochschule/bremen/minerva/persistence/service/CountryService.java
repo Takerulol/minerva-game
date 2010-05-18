@@ -111,8 +111,7 @@ public class CountryService extends PersistenceService {
 
 	@Override
 	public void save(ValueObject candidate) throws PersistenceIOException {
-		Country registrableCountry = (Country)candidate;
-		handler.save(registrableCountry);
+		handler.save((Country)candidate);
 	}
 
 	/**
