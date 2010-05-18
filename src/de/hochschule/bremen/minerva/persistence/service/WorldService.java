@@ -102,8 +102,7 @@ public class WorldService extends PersistenceService {
 	 */
 	@Override
 	public void save(ValueObject candidate) throws PersistenceIOException {
-		World registrableWorld = (World)candidate;
-		handler.save(registrableWorld);
+		handler.save((World)candidate);
 	}
 
 	/**

@@ -94,8 +94,7 @@ public class ContinentService extends PersistenceService {
 	 */
 	@Override
 	public void save(ValueObject candidate) throws PersistenceIOException {
-		Continent registrableContinent = (Continent)candidate;
-		handler.save(registrableContinent);
+		handler.save((Continent)candidate);
 	}
 
 	/**
