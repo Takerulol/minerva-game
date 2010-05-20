@@ -69,10 +69,10 @@ public abstract class PersistenceService {
 	 *
 	 */
 	public static void switchPersistenceEngine() {
-		if (storage instanceof DatabasePersistence) {
-			storage = new FilebasedPersistence();
+		if (PersistenceService.storage instanceof DatabasePersistence) {
+			PersistenceService.storage = new FilebasedPersistence();
 		} else {
-			storage = new DatabasePersistence();
+			PersistenceService.storage = new DatabasePersistence();
 		}
 	}
 }

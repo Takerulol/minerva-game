@@ -40,39 +40,36 @@ public class WorldHandler implements Handler {
 
 	@Override
 	public ValueObject read(int id) throws PersistenceIOException {
-		// TODO Auto-generated method stub
+		System.out.println("WorldHandler.read() - Filebased storage is not implemented.");
 		return null;
 	}
 
 	public ValueObject read(String name) throws PersistenceIOException {
-		// TODO Auto-generated method stub		
+		System.out.println("WorldHandler.read() - Filebased storage is not implemented.");		
 		return null;
 	}
 
 	@Override
 	public Vector<? extends ValueObject> readAll()
 			throws PersistenceIOException {
-		// TODO Auto-generated method stub
+		System.out.println("WorldHandler.readAll() - Filebased storage is not implemented.");
 		return null;
 	}
 
 	@Override
 	public Vector<? extends ValueObject> readAll(ValueObject reference)
 			throws PersistenceIOException {
-		// TODO Auto-generated method stub
+		System.out.println("WorldHandler.readAll() - Filebased storage is not implemented.");
 		return null;
 	}
 
 	@Override
 	public void remove(ValueObject candidate) throws PersistenceIOException {
-		// TODO Auto-generated method stub
-		
+		System.out.println("WorldHandler.remove() - Filebased storage is not implemented.");
 	}
 
 	@Override
 	public void save(ValueObject registrable) throws PersistenceIOException {
-		// TODO Auto-generated method stub
-		
+		System.out.println("WorldHandler.save() - Filebased storage is not implemented.");
 	}
-
 }

@@ -35,7 +35,10 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Handler;
+import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateRecordException;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
+import de.hochschule.bremen.minerva.persistence.exceptions.NeighbourExistsException;
+import de.hochschule.bremen.minerva.persistence.exceptions.NeighbourNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Neighbour;
@@ -46,7 +49,10 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 	private final static HashMap<String, String> sql = new HashMap<String, String>();
 
 	static {
-		sql.put("selectById", "select a.\"id\" as id from country a, neighbour b where b.\"neighbour_country\" = a.\"id\" and b.\"country\" = ?");
+		sql.put("selectByMappingId", "select \"id\", \"neighbour_country\", \"country\" as \"neighbour\" from neighbour where \"id\" = ?");
+		sql.put("selectByReferencedCountryId", "select \"id\", \"neighbour_country\", \"country\" as \"neighbour\" from neighbour where \"country\" = ?");
+		sql.put("insert", "insert into neighbour (\"country\", \"neighbour_country\") values (?, ?)");
+		sql.put("update", "update neighbour set \"country\" = ?, \"neighbour_country\" = ? where \"id\" = ?");
 	}
 
 	/**
@@ -54,16 +60,65 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 	 * 
 	 */
 	@Override
-	public Vector<Neighbour> readAll(ValueObject reference) throws PersistenceIOException {
-		Country referenceCountry = (Country)reference;
-		Vector<Neighbour> countries = new Vector<Neighbour>();
+	public ValueObject read(int countryId) throws PersistenceIOException {
+		Neighbour neighbour = null;
+		Object[] params = {countryId};
+
+		try {
+			neighbour = this.read(sql.get("selectByMappingId"), params);
+		} catch (NeighbourNotFoundException e) {
+			throw new NeighbourNotFoundException("The neighbour mapping with the id '"+countryId+"' wasn't found.");
+		} catch (DatabaseIOException e) {
+			throw new PersistenceIOException("Error occurred while reading "
+					                       + "the neighbour (mapping id = " + countryId +") "
+					                       + "from the database. Reason: "+e.getMessage());
+		}
+
+		return neighbour;
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param sql
+	 * @param params - Object array with parameters for the prepared statement.
+	 * 
+	 */
+	private Neighbour read(String sql, Object[] params) throws NeighbourNotFoundException, DatabaseIOException {
+		Neighbour neighbour = null;
+
+		try {
+			ResultSet record = this.select(sql, params);
+
+			if (record.next()) {
+				neighbour = this.resultSetToObject(record);
+				record.close();
+			} else {
+				throw new NeighbourNotFoundException();
+			}
+		} catch (SQLException e) {
+			throw new DatabaseIOException("Error while reading from result set: " + e.getErrorCode());
+		}
+
+		return neighbour;
+	}
+
+	/**
+	 * Reads all neighbours by a given reference country
+	 * 
+	 */
+	@Override
+	public Vector<Neighbour> readAll(ValueObject referencedCountry) throws PersistenceIOException {
+		Country referenceCountry = (Country)referencedCountry;
+		Vector<Neighbour> neighbours = new Vector<Neighbour>();
 
 		try {
 			Object[] params = {referenceCountry.getId()};
-			ResultSet record = this.select(sql.get("selectById"), params);
+			ResultSet record = this.select(sql.get("selectByReferencedCountryId"), params);
 
 			while (record.next()) {
-				countries.add(this.resultSetToObject(record));
+				Neighbour neighbour = this.resultSetToObject(record);
+				neighbours.add(neighbour);
 			}
 
 			record.close();
@@ -78,9 +133,46 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 											+" - "+e.getErrorCode());
 		}
 
-		return countries;
+		return neighbours;
 	}
 
+	@Override
+	public void save(ValueObject registrable) throws PersistenceIOException {
+		Neighbour registrableNeighbour = (Neighbour)registrable;
+
+		try {
+			try {
+				// We try to load the neighbour relation by a given mapping id.
+				// When this is not possible (NeighbourNotFoundException), we
+				// will update the record else we will insert it.
+				this.read(registrableNeighbour.getMappingId());
+				
+				Object[] params = {
+					registrableNeighbour.getReference().getId(),
+					registrableNeighbour.getId(),
+					registrableNeighbour.getMappingId()
+				};
+				this.update(sql.get("update"), params);
+			} catch (NeighbourNotFoundException e) {
+				Object[] params = {
+					registrableNeighbour.getReference().getId(),
+					registrableNeighbour.getId()
+				};
+				System.out.println("insert");
+				this.insert(sql.get("insert"), params);
+			}
+		} catch (DatabaseDuplicateRecordException e) {
+			throw new NeighbourExistsException("Unable to serialize the "
+					+"neighbour relation. There is already a relation with: country id = '"
+					+registrableNeighbour.getReference().getId() + " and neighbour id = '"
+					+registrableNeighbour.getId());
+		} catch (DatabaseIOException e) {
+			throw new PersistenceIOException("Unable to serialize the neighbour mapping with referenced country id = '"
+					+registrableNeighbour.getReference().getId()+"' and neighbour id = '"
+					+registrableNeighbour.getId()+"'. Reason: "+e.getMessage());
+		}
+	}
+	
 	/**
 	 * DOCME
 	 * 
@@ -88,7 +180,13 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 	@Override
 	protected Neighbour resultSetToObject(ResultSet current) throws SQLException {
 		Neighbour neighbour = new Neighbour();
-		neighbour.setId(current.getInt(1));
+		neighbour.setMappingId(current.getInt(1));
+		neighbour.setId(current.getInt(2));
+		
+		Country country = new Country();
+		country.setId(current.getInt(3));
+
+		neighbour.setReference(country);
 		return neighbour;
 	}
 
@@ -102,18 +200,6 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 	public void remove(ValueObject candidate) throws PersistenceIOException {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public void save(ValueObject registrable) throws PersistenceIOException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public ValueObject read(int id) throws PersistenceIOException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

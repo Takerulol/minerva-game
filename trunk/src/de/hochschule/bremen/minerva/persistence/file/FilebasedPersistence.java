@@ -31,12 +31,32 @@ package de.hochschule.bremen.minerva.persistence.file;
 
 import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.Persistence;
+import de.hochschule.bremen.minerva.persistence.file.handler.ContinentHandler;
+import de.hochschule.bremen.minerva.persistence.file.handler.CountryHandler;
+import de.hochschule.bremen.minerva.persistence.file.handler.PlayerHandler;
+import de.hochschule.bremen.minerva.persistence.file.handler.WorldHandler;
+import de.hochschule.bremen.minerva.persistence.file.handler.NeighbourHandler;
+import de.hochschule.bremen.minerva.vo.Continent;
+import de.hochschule.bremen.minerva.vo.Country;
+import de.hochschule.bremen.minerva.vo.Neighbour;
+import de.hochschule.bremen.minerva.vo.Player;
+import de.hochschule.bremen.minerva.vo.World;
 
 public class FilebasedPersistence implements Persistence {
 
 	@Override
 	public Handler createHandler(Class<?> type) {
-		// Not implemented. Only for demonstration purposes.
+		if (type == World.class) {
+			return new WorldHandler();
+		} else if (type == Country.class) {
+			return new CountryHandler();
+		} else if (type == Continent.class) {
+			return new ContinentHandler();
+		} else if (type == Neighbour.class) {
+			return new NeighbourHandler();
+		} else if (type == Player.class) {
+			return new PlayerHandler();
+		}
 		return null;
 	}
 

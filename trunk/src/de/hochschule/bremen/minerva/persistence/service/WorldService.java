@@ -78,8 +78,7 @@ public class WorldService extends PersistenceService {
 	 */
 	@SuppressWarnings("unchecked")
 	public Vector<World> loadAll() throws PersistenceIOException {
-		Vector<World> worlds = (Vector<World>)handler.readAll();
-		return worlds;
+		return (Vector<World>)handler.readAll();
 	}
 
 	/**
