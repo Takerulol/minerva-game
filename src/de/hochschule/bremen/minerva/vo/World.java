@@ -202,6 +202,16 @@ public class World extends ValueObject {
 	}
 
 	/**
+	 * Wrapper class for connecting countries (CountryGraph).
+	 * 
+	 * @param source
+	 * @param with
+	 */
+	public void connectCountries(Country source, Country with) {
+		this.countryGraph.connect(source, with);
+	}
+	
+	/**
 	 * Made out of all attributes one string.
 	 * 
 	 * @return

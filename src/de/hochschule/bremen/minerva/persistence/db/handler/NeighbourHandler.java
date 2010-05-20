@@ -158,7 +158,6 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 					registrableNeighbour.getReference().getId(),
 					registrableNeighbour.getId()
 				};
-				System.out.println("insert");
 				this.insert(sql.get("insert"), params);
 			}
 		} catch (DatabaseDuplicateRecordException e) {

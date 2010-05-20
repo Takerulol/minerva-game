@@ -58,13 +58,13 @@ public class CountryGraph {
 	 */
 	public void connect(Country source, Country with) {
 		Vector<Integer> connections;
-		
+
 		if (neighbours.containsKey(source.getId())) {
 			 connections = neighbours.get(source.getId());
 		} else {
 			connections = new Vector<Integer>();
 		}
-			
+
 		connections.add(with.getId());
 		neighbours.put(source.getId(), connections);
 	}
@@ -83,5 +83,28 @@ public class CountryGraph {
 		return false;
 	}
 
+	/**
+	 * Returns a integer vector with the neighbour ids
+	 * by a given country.
+	 * 
+	 * @param byCountryId
+	 * @return
+	 */
+	public Vector<Integer> getNeighbours(int byCountryId) {
+		return this.neighbours.get(byCountryId);
+	}
 
+	/**
+	 * Has a specific country neighbours?
+	 * 
+	 * @param countryId
+	 * @return
+	 */
+	public boolean hasNeighbours(int countryId) {
+		if (this.neighbours.get(countryId) == null) {
+			return false;
+		} else {
+			return !this.neighbours.get(countryId).isEmpty();
+		}
+	}
 }
