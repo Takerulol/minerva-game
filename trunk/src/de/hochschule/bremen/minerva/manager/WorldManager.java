@@ -28,7 +28,7 @@
  * 
  */
 
-package de.hochschule.bremen.minerva.service;
+package de.hochschule.bremen.minerva.manager;
 
 import java.util.Vector;
 
@@ -41,23 +41,23 @@ import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Neighbour;
 import de.hochschule.bremen.minerva.vo.World;
 
-public class GameService {
+public class WorldManager {
 
-	private static GameService instance = null;
+	private static WorldManager instance = null;
 	
-	private GameService() {}
+	private WorldManager() {}
 
 	/**
 	 * DOCME
 	 * 
 	 * @return
 	 */
-	public static GameService getInstance() {
-		if (GameService.instance == null) {
-			GameService.instance = new GameService();
+	public static WorldManager getInstance() {
+		if (WorldManager.instance == null) {
+			WorldManager.instance = new WorldManager();
 		}
 		
-		return GameService.instance;
+		return WorldManager.instance;
 	}
 
 	/**
