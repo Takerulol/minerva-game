@@ -28,7 +28,7 @@
  * 
  */
 
-package de.hochschule.bremen.minerva.service;
+package de.hochschule.bremen.minerva.manager;
 
 import java.util.Vector;
 import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
@@ -38,9 +38,9 @@ import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOExceptio
 import de.hochschule.bremen.minerva.persistence.service.PlayerService;
 import de.hochschule.bremen.minerva.vo.Player;
 
-public class AccountService {
+public class AccountManager {
 
-	private static AccountService instance = null;
+	private static AccountManager instance = null;
 
 	private PlayerService service = PlayerService.getInstance();
 
@@ -50,7 +50,7 @@ public class AccountService {
 	 * So this constructor is private.
 	 * 
 	 */
-	private AccountService() {}
+	private AccountManager() {}
 	
 	/**
 	 * Singleton pattern.
@@ -58,11 +58,11 @@ public class AccountService {
 	 * 
 	 * @return DOCME
 	 */
-	public static AccountService getInstance() {
-		if (AccountService.instance == null) {
-			AccountService.instance = new AccountService();
+	public static AccountManager getInstance() {
+		if (AccountManager.instance == null) {
+			AccountManager.instance = new AccountManager();
 		}
-		return AccountService.instance;
+		return AccountManager.instance;
 	}
 	
 	/*
