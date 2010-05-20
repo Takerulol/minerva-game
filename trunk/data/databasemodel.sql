@@ -1,5 +1,5 @@
 CREATE TABLE world (
-	"id" INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 0, INCREMENT BY 1),
+	"id" INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
 	"token" VARCHAR(10) UNIQUE NOT NULL,
 	"name" VARCHAR(64) UNIQUE NOT NULL,
 	"description" VARCHAR(1024) NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE world (
 );
 
 CREATE TABLE country (
-	"id" INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 0, INCREMENT BY 1),
+	"id" INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
 	"token" VARCHAR(5) UNIQUE NOT NULL,
 	"name" VARCHAR(25) UNIQUE NOT NULL,
 	"color" VARCHAR(8) NOT NULL,
@@ -19,20 +19,21 @@ CREATE TABLE country (
 );
 
 CREATE TABLE continent (
-	"id" INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 0, INCREMENT BY 1), 
+	"id" INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), 
 	"name" VARCHAR(25) UNIQUE NOT NULL,
 	PRIMARY KEY ("id")
 );
 
 CREATE TABLE neighbour (
-	"id" INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 0, INCREMENT BY 1), 
+	"id" INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), 
 	"country" INT NOT NULL, 
 	"neighbour_country" INT NOT NULL,
-	PRIMARY KEY ("id")
+	PRIMARY KEY ("id"),
+	UNIQUE ("country", "neighbour_country")
 );
 
 CREATE TABLE player (
-	"id" INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 0, INCREMENT BY 1),
+	"id" INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
 	"username" VARCHAR(25) UNIQUE NOT NULL,
 	"password" VARCHAR(32) NOT NULL,
 	"last_name" VARCHAR(25) NOT NULL,
@@ -68,20 +69,21 @@ insert into neighbour ("country", "neighbour_country") values (1, 2);
 insert into neighbour ("country", "neighbour_country") values (2, 1);
 insert into neighbour ("country", "neighbour_country") values (2, 3);
 
--- NACHBARN Mittel-Europa: Ukraine, SÃ¼d-Europa, West-Europa
+-- NACHBARN Mittel-Europa: Ukraine, Süd-Europa, West-Europa
 insert into neighbour ("country", "neighbour_country") values (3, 2);
 insert into neighbour ("country", "neighbour_country") values (3, 4);
 insert into neighbour ("country", "neighbour_country") values (3, 5);
+-- insert into neighbour ("country", "neighbour_country") values (3, 7);
 
--- NACHBARN SÃ¼d-Europa: Mittel-Europa
+-- NACHBARN Süd-Europa: Mittel-Europa
 insert into neighbour ("country", "neighbour_country") values (4, 3); 
 
--- NACHBARN West-Europa: Mittel-Europa, Island, GroÃŸ-Britanien
+-- NACHBARN West-Europa: Mittel-Europa, Island, Groß-Britanien
 insert into neighbour ("country", "neighbour_country") values (5, 3);
 insert into neighbour ("country", "neighbour_country") values (5, 6);
 insert into neighbour ("country", "neighbour_country") values (5, 7); 
 
--- NACHBARN Island: West-Europa, GroÃŸ-Britanien
+-- NACHBARN Island: West-Europa, Groß-Britanien
 insert into neighbour ("country", "neighbour_country") values (6, 5);
 insert into neighbour ("country", "neighbour_country") values (6, 7);
 

@@ -32,7 +32,9 @@ package de.hochschule.bremen.minerva.manager;
 
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.exceptions.WorldDoesNotExistException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
 import de.hochschule.bremen.minerva.persistence.service.ContinentService;
 import de.hochschule.bremen.minerva.persistence.service.CountryService;
 import de.hochschule.bremen.minerva.persistence.service.NeighbourService;
@@ -61,15 +63,95 @@ public class WorldManager {
 	}
 
 	/**
+	 * Adds a new world to the minerva system.
+	 * Wrapper method @see WorldManager#persist(World)
+	 * (for splitting the add (initial save) and store). 
+	 * 
+	 * All world information will be stored, except
+	 * of the country relation data. The country id's for
+	 * example, will be generated in the persistence layer.
+	 * So with this method it is NOT possible to store the
+	 * neighbouring countries. You have to call this method
+	 * to register the world initially. After that, you are
+	 * able to create the connections between the countries
+	 * and call @see {@link WorldManager#store(World)}
+	 * for country dependency storage.
+	 * 
+	 * example:
+	 * World world = new World()
+	 * 
+	 * // ...
+	 * // Set the world information
+	 * // world.setName("my World");
+	 * // ... 
+	 * // Country sweden = new Country()
+	 * // sweden.setName("Sweden");
+	 * // ...
+	 * // Country norway = new Country();
+	 * // norway.setName("Norway");
+	 * // ...
+	 * 
+	 * // Add the new world to minerva system
+	 * WorldManager.getInstance().add(world);
+	 * 
+	 * // Create the country relations
+	 * world.connectCountries(sweden, norway);
+	 *
+	 * // Store the world.
+	 * WorldManager.getInstance().store(world);
+	 * 
+	 * 
+	 * @param world
+	 * 
+	 */
+	public void add(World world) throws PersistenceIOException { // TODO: exception-handling (WorldExistsException)
+		WorldService.getInstance().save(world);
+
+		for (Country country : world.getCountries()) {
+			ContinentService.getInstance().save(country.getContinent());
+			
+			country.setWorldId(world.getId());
+			CountryService.getInstance().save(country);
+		}
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param world
+	 * @throws PersistenceIOException
+	 */
+	public void store(World world) throws WorldDoesNotExistException, PersistenceIOException {
+		try {
+			WorldService.getInstance().load(world.getId());
+			
+			for (Country country : world.getCountries()) {
+				Vector<Integer> neighbours = world.getCountryGraph().getNeighbours(country.getId());
+
+				if (world.getCountryGraph().hasNeighbours(country.getId())) {
+					for (Integer id : neighbours) {
+						Neighbour neighbour = new Neighbour();
+						neighbour.setId(id);
+						neighbour.getReference().setId(country.getId());
+						NeighbourService.getInstance().save(neighbour);
+					}
+				}
+			}
+		} catch (WorldNotFoundException e) {
+			throw new WorldDoesNotExistException("The world does not exist. Please verify that it was registered correctly (see: WorldManager#add)");
+		}
+	}
+
+	/**
 	 * DOCME
 	 * 
 	 * @return
 	 */
-	public Vector<World> getWorldList() throws PersistenceIOException {
+	public Vector<World> getList() throws PersistenceIOException {
 		Vector<World> worlds = WorldService.getInstance().loadAll();
 
 		for (World world : worlds) {
-			this.loadWorldDependencies(world);
+			this.loadDependencies(world);
 		}
 
 		return worlds;
@@ -88,11 +170,11 @@ public class WorldManager {
 	 * @return
 	 * @throws PersistenceIOException
 	 */
-	public Vector<World> getWorldList(boolean lite) throws PersistenceIOException {
+	public Vector<World> getList(boolean lite) throws PersistenceIOException {
 		if (lite) {
 			return WorldService.getInstance().loadAll();
 		} else {
-			return this.getWorldList();
+			return this.getList();
 		}
 	}
 
@@ -103,11 +185,11 @@ public class WorldManager {
 	 * @return
 	 * @throws PersistenceIOException
 	 */
-	public World getWorld(int id) throws PersistenceIOException {
+	public World get(int id) throws PersistenceIOException {
 		World world = new World();
 		world.setId(id);
 		
-		return this.getWorld(world);
+		return this.get(world);
 	}
 
 	/**
@@ -117,9 +199,9 @@ public class WorldManager {
 	 * @return
 	 * @throws PersistenceIOException
 	 */
-	public World getWorld(World world) throws PersistenceIOException {
+	public World get(World world) throws PersistenceIOException {
 		world = WorldService.getInstance().load(world.getId());
-		this.loadWorldDependencies(world);
+		this.loadDependencies(world);
 
 		return world;
 	}
@@ -131,7 +213,7 @@ public class WorldManager {
 	 * @return
 	 * @throws PersistenceIOException 
 	 */
-	private void loadWorldDependencies(World world) throws PersistenceIOException {
+	private void loadDependencies(World world) throws PersistenceIOException {
 		Vector<Country> countries = CountryService.getInstance().loadAll(world);
 		
 		for (Country country : countries) {

@@ -90,9 +90,9 @@ public abstract class AbstractDatabaseHandler {
 	 * @param params
 	 */
 	private PreparedStatement createPreparedStatement(String sql, Object[] params) throws SQLException {
-		PreparedStatement statement = AbstractDatabaseHandler.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
+		PreparedStatement statement = AbstractDatabaseHandler.connection.prepareStatement(sql);
 		statement.clearParameters();
+
 		for (int i = 0; i < params.length; i++) {
 			Object param = params[i];
 			Class<? extends Object> paramType = param.getClass();
@@ -105,7 +105,7 @@ public abstract class AbstractDatabaseHandler {
 				statement.setShort(i+1, (Short)param);
 			}
 		}
-		
+
 		return statement;
 	}
 
@@ -159,7 +159,6 @@ public abstract class AbstractDatabaseHandler {
 		try {
 			PreparedStatement statement = this.createPreparedStatement(sql, params);
 			statement.executeUpdate();
-
 			statement.close();
 		} catch (SQLException e) {
 			switch (e.getErrorCode()) {

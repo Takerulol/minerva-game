@@ -309,6 +309,7 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 					registrableCountry.getContinent().getId(),
 					registrableCountry.getWorldId()
 				};
+
 				this.insert(sql.get("insert"), params);
 			}
 		} catch (DatabaseDuplicateRecordException ex) {
