@@ -30,26 +30,29 @@
 package de.hochschule.bremen.minerva.vo;
 
 /**
- * DOCME
- * Marker class
+ * The Neighbour is a marker class, which extends the
+ * Country class. It represents the mapping between a country
+ * and ONE neighbour (1:1 relation).
  * 
  */
 public class Neighbour extends Country {
 
 	private int mappingID = DEFAULT_ID;
+
 	private Country reference = new Country();
 
 	/**
-	 * DOCME
+	 * Sets the mapping id. It identifies
+	 * the neighbour/country relationship.
 	 * 
-	 * @param id
+	 * @param mappingId
 	 */
-	public void setMappingId(int id) {
-		this.mappingID = id;
+	public void setMappingId(int mappingId) {
+		this.mappingID = mappingId;
 	}
 
 	/**
-	 * DOCME
+	 * Returns the mapping id.
 	 * 
 	 * @return
 	 */
@@ -58,7 +61,9 @@ public class Neighbour extends Country {
 	}
 
 	/**
-	 * DOCME
+	 * Sets the referenced country. The neighbour/country
+	 * mapping represents a 1:1 relation. So the neighbour
+	 * and ONE nearby country.
 	 * 
 	 * @param country
 	 */
@@ -67,7 +72,7 @@ public class Neighbour extends Country {
 	}
 
 	/**
-	 * DOCME
+	 * Returns the referenced country.
 	 * 
 	 * @return
 	 */
