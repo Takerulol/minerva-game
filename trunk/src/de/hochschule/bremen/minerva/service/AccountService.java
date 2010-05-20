@@ -35,7 +35,6 @@ import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
-import de.hochschule.bremen.minerva.persistence.service.PersistenceService;
 import de.hochschule.bremen.minerva.persistence.service.PlayerService;
 import de.hochschule.bremen.minerva.vo.Player;
 
@@ -43,7 +42,7 @@ public class AccountService {
 
 	private static AccountService instance = null;
 
-	private PersistenceService service = PlayerService.getInstance();
+	private PlayerService service = PlayerService.getInstance();
 
 	/**
 	 * Singleton pattern. It is not possible
@@ -78,8 +77,9 @@ public class AccountService {
 	 * @throws PlayerExistsException
 	 * @throws PersistenceIOException
 	 */
-	public void create(Player player) throws PlayerExistsException, PersistenceIOException {
-		
+	public void createPlayer(Player player) throws PlayerExistsException, PersistenceIOException {
+		// TODO: passwort, etc abfragen
+		service.save(player);
 	}
 	
 	/**
@@ -100,7 +100,14 @@ public class AccountService {
 	 * @throws PersistenceIOException
 	 */
 	public Vector<Player> getPlayerList(boolean loggedInPlayers) throws PersistenceIOException {
-		return null;
+		Vector<Player> players = (Vector<Player>)service.loadAll();
+		for (Player player : players) {
+			if (!player.isLoggedIn()) {
+				players.remove(player);
+			}
+		}
+		
+		return players;
 	}
 	
 	/**
@@ -110,7 +117,7 @@ public class AccountService {
 	 * @throws PersistenceIOException
 	 */
 	public Player getPlayer(String username) throws PersistenceIOException {
-		return null;
+		return service.load(username);
 	}
 	
 	/**
@@ -120,7 +127,7 @@ public class AccountService {
 	 * @throws PersistenceIOException
 	 */
 	public Player getPlayer(int id) throws PersistenceIOException {
-		return null;
+		return service.load(id);
 	}
 	
 	/**
@@ -129,8 +136,19 @@ public class AccountService {
 	 * @return
 	 * @throws PersistenceIOException
 	 */
-	public Player getPlayer(Player player) throws PersistenceIOException {
-		return null;
+	public Player getPlayer(Player player) throws PersistenceIOException, PlayerDoesNotExistException {
+		Player temp = null;
+		
+		if (player.getId() > -1) {
+			temp = service.load(player.getId());
+		} else if (player.getUsername() != null) {
+			temp = service.load(player.getUsername());
+		} else {
+			throw new PlayerDoesNotExistException("The player doesn't contain an id or a" +
+													" username.");
+		}
+		
+		return temp;
 	}
 	
 	/**
@@ -141,14 +159,17 @@ public class AccountService {
 	 * @throws PersistenceIOException
 	 */
 	public void login(Player player) throws WrongPasswordException, PlayerDoesNotExistException, PersistenceIOException {
-		
+		//TODO: password,  bla exceptions halt
+		Player temp = this.getPlayer(player);
+		temp.setLoggedIn(true);
+		service.save(temp);
 	}
 	
 	/**
 	 * DOCME
 	 * @throws PersistenceIOException
 	 */
-	public void logout() throws PersistenceIOException {
+	public void logout(Player player) throws PersistenceIOException {
 		
 	}
 	
