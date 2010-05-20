@@ -32,6 +32,7 @@ package de.hochschule.bremen.minerva.persistence.service;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Handler;
+import de.hochschule.bremen.minerva.persistence.exceptions.NeighbourNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.NotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.vo.Country;
@@ -73,8 +74,16 @@ public class NeighbourService extends PersistenceService {
 	 */
 	@SuppressWarnings("unchecked")
 	public Vector<Neighbour> loadAll(Country byCountry) throws PersistenceIOException {
-		Vector<Neighbour> neighbours = (Vector)handler.readAll(byCountry);
-		return neighbours;
+		return (Vector)handler.readAll(byCountry);
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	@Override
+	public void save(ValueObject candidate) throws PersistenceIOException {
+		handler.save((Neighbour)candidate);
 	}
 
 	@Override
@@ -84,17 +93,10 @@ public class NeighbourService extends PersistenceService {
 	}
 
 	@Override
-	public ValueObject load(int id) throws PersistenceIOException {
-		// TODO Auto-generated method stub
-		return null;
+	public Neighbour load(int id) throws NeighbourNotFoundException, PersistenceIOException {
+		return (Neighbour)handler.read(id);
 	}
-
-	@Override
-	public void save(ValueObject candidate) throws PersistenceIOException {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	@Override
 	public Vector<?> loadAll() throws PersistenceIOException {
 		// TODO Auto-generated method stub

@@ -27,51 +27,30 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.vo;
+package de.hochschule.bremen.minerva.persistence.exceptions;
 
-/**
- * DOCME
- * Marker class
- * 
- */
-public class Neighbour extends Country {
+public class NeighbourNotFoundException extends NotFoundException {
 
-	private int mappingID = DEFAULT_ID;
-	private Country reference = new Country();
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8579256857835744155L;
 
 	/**
 	 * DOCME
 	 * 
-	 * @param id
 	 */
-	public void setMappingId(int id) {
-		this.mappingID = id;
+	public NeighbourNotFoundException() {
+		super();
 	}
 
 	/**
 	 * DOCME
 	 * 
-	 * @return
+	 * @param message
 	 */
-	public int getMappingId() {
-		return this.mappingID;
-	}
-
-	/**
-	 * DOCME
-	 * 
-	 * @param country
-	 */
-	public void setReference(Country country) {
-		this.reference = country;
-	}
-
-	/**
-	 * DOCME
-	 * 
-	 * @return
-	 */
-	public Country getReference() {
-		return this.reference;
+	public NeighbourNotFoundException(String message) {
+		super(message);
 	}
 }

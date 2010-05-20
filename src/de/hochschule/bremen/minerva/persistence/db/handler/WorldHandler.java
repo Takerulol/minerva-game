@@ -66,7 +66,7 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 	 * 
 	 */
 	public World read(int id) throws PersistenceIOException {
-		World world = null;
+		World world = new World();
 		Object[] params = {id};
 		
 		try {
@@ -87,7 +87,7 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 	 * 
 	 */
 	public World read(String name) throws PersistenceIOException {
-		World world = null;
+		World world = new World();
 		Object[] params = {name};
 
 		try {
@@ -113,7 +113,7 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 	 * @throws DatabaseIOException
 	 */
 	private World read(String sql, Object[] params) throws WorldNotFoundException, DatabaseIOException {
-		World world = null;
+		World world = new World();
 
 		try {
 			ResultSet record = this.select(sql, params);
