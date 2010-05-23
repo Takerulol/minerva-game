@@ -30,15 +30,18 @@
 
 package de.hochschule.bremen.minerva.manager;
 
+import java.io.File;
 import java.util.Vector;
 
-import de.hochschule.bremen.minerva.exceptions.WorldDoesNotExistException;
+import de.hochschule.bremen.minerva.exceptions.WorldFileExtensionException;
+import de.hochschule.bremen.minerva.exceptions.WorldFileNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
 import de.hochschule.bremen.minerva.persistence.service.ContinentService;
 import de.hochschule.bremen.minerva.persistence.service.CountryService;
 import de.hochschule.bremen.minerva.persistence.service.NeighbourService;
 import de.hochschule.bremen.minerva.persistence.service.WorldService;
+import de.hochschule.bremen.minerva.util.WorldFile;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Neighbour;
 import de.hochschule.bremen.minerva.vo.World;
@@ -64,8 +67,6 @@ public class WorldManager {
 
 	/**
 	 * Adds a new world to the minerva system.
-	 * Wrapper method @see WorldManager#persist(World)
-	 * (for splitting the add (initial save) and store). 
 	 * 
 	 * All world information will be stored, except
 	 * of the country relation data. The country id's for
@@ -74,8 +75,7 @@ public class WorldManager {
 	 * neighbouring countries. You have to call this method
 	 * to register the world initially. After that, you are
 	 * able to create the connections between the countries
-	 * and call @see {@link WorldManager#store(World)}
-	 * for country dependency storage.
+	 * and call this method again for country dependency storage.
 	 * 
 	 * example:
 	 * World world = new World()
@@ -92,7 +92,7 @@ public class WorldManager {
 	 * // ...
 	 * 
 	 * // Add the new world to minerva system
-	 * WorldManager.getInstance().add(world);
+	 * WorldManager.getInstance().store(world);
 	 * 
 	 * // Create the country relations
 	 * world.connectCountries(sweden, norway);
@@ -104,7 +104,20 @@ public class WorldManager {
 	 * @param world
 	 * 
 	 */
-	public void add(World world) throws PersistenceIOException { // TODO: exception-handling (WorldExistsException)
+	public void store(World world) throws PersistenceIOException {
+		boolean dependencyStorage = true; // Store county dependencies?
+
+		// We try to load the world by the given name to verify that
+		// it was already send through the persistence layer and have all
+		// generated ids. If it is possible to load the world, with the
+		// storage engine, we are able to store also the country dependencies.
+		try {
+			World dummy = WorldService.getInstance().load(world.getName());
+			world.setId(dummy.getId());
+		} catch (WorldNotFoundException e) {
+			dependencyStorage = false;
+		}
+
 		WorldService.getInstance().save(world);
 
 		for (Country country : world.getCountries()) {
@@ -113,18 +126,8 @@ public class WorldManager {
 			country.setWorldId(world.getId());
 			CountryService.getInstance().save(country);
 		}
-	}
 
-	/**
-	 * DOCME
-	 * 
-	 * @param world
-	 * @throws PersistenceIOException
-	 */
-	public void store(World world) throws WorldDoesNotExistException, PersistenceIOException {
-		try {
-			WorldService.getInstance().load(world.getId());
-			
+		if (dependencyStorage) {
 			for (Country country : world.getCountries()) {
 				Vector<Integer> neighbours = world.getCountryGraph().getNeighbours(country.getId());
 
@@ -137,9 +140,31 @@ public class WorldManager {
 					}
 				}
 			}
-		} catch (WorldNotFoundException e) {
-			throw new WorldDoesNotExistException("The world does not exist. Please verify that it was registered correctly (see: WorldManager#add)");
 		}
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param file
+	 * @throws WorldFileExtensionException 
+	 * @throws WorldFileNotFoundException 
+	 */
+	public void store(File worldFile) throws WorldFileExtensionException, WorldFileNotFoundException  {
+		WorldFile importer = new WorldFile(worldFile);
+		importer.exec();
+
+		World world = new World();
+
+		world.setToken(importer.getToken());
+		world.setName(importer.getName());
+		world.setDescription(importer.getDescription());
+		world.setAuthor(importer.getAuthor());
+		world.setVersion(importer.getVersion());
+
+		world.setCountries(importer.getCountries());
+
+		importer.close();
 	}
 
 	/**
