@@ -33,7 +33,6 @@ import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -211,17 +210,6 @@ public class WorldFile extends World {
 			int id = Integer.parseInt(node.getNamedItem("id").getNodeValue());
 			this.temporallyCountries.put(id, country);
 		}
-	}
-	
-	/**
-	 * Extracts the countries from the world import file.
-	 * 
-	 * @return
-	 */
-	private Vector<Country> extractCountries(Element root) {
-		// Extract the continents from the world import file
-		
-		return null;
 	}
 	
 	/**
