@@ -29,8 +29,10 @@
  */
 package de.hochschule.bremen.minerva.util;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -39,12 +41,14 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import de.hochschule.bremen.minerva.exceptions.WorldFileExtensionException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileParseException;
+import de.hochschule.bremen.minerva.vo.Continent;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.World;
 
@@ -53,6 +57,15 @@ public class WorldFile extends World {
 	private static final String MESSAGE_FILE_NOT_WELLFORMED = "The world import file is not well-formed. ";
 	
 	private File worldFile = null;
+
+	// We define an internal HashMap which contains the continent objects from the
+	// world import file. It is necessary to save it temporally because of the different
+	// id mapping structure in the world import file. It differs from the auto generated
+	// ids in the persistence layer.
+	private HashMap<Integer, Continent> temporallyContinents = new HashMap<Integer, Continent>();
+	
+	// DOCME
+	private HashMap<Integer, Country> temporallyCountries = new HashMap<Integer, Country>();
 	
 	/**
 	 * DOCME
@@ -107,11 +120,17 @@ public class WorldFile extends World {
 			// The version
 			this.setVersion(this.extractText(root, "version"));
 			if (this.getVersion().isEmpty()) {
-				throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing version data.");
+				throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'version'.");
+			}
+
+			// Extract the continents
+			this.extractContinents(root, "continent");
+			if (this.temporallyContinents.isEmpty()) {
+				throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'continents'.");
 			}
 
 			// Extract the countries
-			this.setCountries(this.extractCountries());
+			this.extractCountries(root, "country");
 
 		} catch (IOException e) {
 			throw new WorldFileNotFoundException(e.getMessage());
@@ -136,7 +155,7 @@ public class WorldFile extends World {
 		Document doc = docBuilder.parse(this.getWorldFile().toURI().toString());
 		return doc.getDocumentElement();
 	}
-	
+
 	/**
 	 * DOCME
 	 * 
@@ -149,11 +168,59 @@ public class WorldFile extends World {
 	}
 
 	/**
+	 * DOCME
+	 * 
+	 * @param root
+	 */
+	private void extractContinents(Element root, String tag) {
+		NodeList continents = root.getElementsByTagName(tag);
+		
+		for (int i = 0; i < continents.getLength(); i++) {
+			NamedNodeMap node = continents.item(i).getAttributes();
+			Continent continent = new Continent();
+			continent.setName(node.getNamedItem("name").getNodeValue());
+
+			int id = Integer.parseInt(node.getNamedItem("id").getNodeValue());
+			this.temporallyContinents.put(id, continent);
+		}
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param root
+	 * @param tag
+	 * TODO: Add well-formed checks
+	 * TODO: Get the color from the file
+	 */
+	public void extractCountries(Element root, String tag) {
+		NodeList countries = root.getElementsByTagName(tag);
+		
+		for (int i = 0; i < countries.getLength(); i++) {
+			NamedNodeMap node = countries.item(i).getAttributes();
+			Country country = new Country();
+			country.setToken(node.getNamedItem("token").getNodeValue());
+			country.setName(node.getNamedItem("name").getNodeValue());
+			country.setColor(Color.BLACK);//node.getNamedItem("color").getNodeValue());
+			
+			int continentId = Integer.parseInt(node.getNamedItem("continent").getNodeValue());
+			country.setContinent(this.temporallyContinents.get(continentId));
+			
+			System.out.println(country.toString());
+			
+			int id = Integer.parseInt(node.getNamedItem("id").getNodeValue());
+			this.temporallyCountries.put(id, country);
+		}
+	}
+	
+	/**
 	 * Extracts the countries from the world import file.
 	 * 
 	 * @return
 	 */
-	private Vector<Country> extractCountries() {
+	private Vector<Country> extractCountries(Element root) {
+		// Extract the continents from the world import file
+		
 		return null;
 	}
 	
