@@ -35,6 +35,7 @@ import java.util.Vector;
 
 import de.hochschule.bremen.minerva.exceptions.WorldFileExtensionException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileNotFoundException;
+import de.hochschule.bremen.minerva.exceptions.WorldFileParseException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
 import de.hochschule.bremen.minerva.persistence.service.ContinentService;
@@ -149,22 +150,14 @@ public class WorldManager {
 	 * @param file
 	 * @throws WorldFileExtensionException 
 	 * @throws WorldFileNotFoundException 
+	 * @throws WorldFileParseException 
+	 * @throws PersistenceIOException 
 	 */
-	public void store(File worldFile) throws WorldFileExtensionException, WorldFileNotFoundException  {
-		WorldFile importer = new WorldFile(worldFile);
-		importer.exec();
+	public void store(File worldFile) throws WorldFileExtensionException, WorldFileNotFoundException, WorldFileParseException, PersistenceIOException  {
+		WorldFile world = new WorldFile(worldFile);
+		world.parse();
 
-		World world = new World();
-
-		world.setToken(importer.getToken());
-		world.setName(importer.getName());
-		world.setDescription(importer.getDescription());
-		world.setAuthor(importer.getAuthor());
-		world.setVersion(importer.getVersion());
-
-		world.setCountries(importer.getCountries());
-
-		importer.close();
+		//this.store(world);
 	}
 
 	/**
