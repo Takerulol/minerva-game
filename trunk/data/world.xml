@@ -2,6 +2,8 @@
 
 <world>
 	<meta>
+		<token>mywrld</token>
+		<name>My World</name>
 		<author>Carina Strempel, Christian Bollmann, André König</author>
 		<description>Hier würde ein Beschreibungstext stehen.</description>
 		<version>1.0 beta</version>
