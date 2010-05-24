@@ -16,7 +16,7 @@ CREATE TABLE country (
 	"world" INT NOT NULL,
 	"continent" INT NOT NULL,
 	PRIMARY KEY ("id"),
-	UNIQUE("token", "name", "World")
+	UNIQUE("token", "name", "world")
 );
 
 CREATE TABLE continent (
