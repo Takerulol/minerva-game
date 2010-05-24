@@ -102,9 +102,8 @@ public class AccountManager {
 	 * @return
 	 * @throws PersistenceIOException
 	 */
-	@SuppressWarnings("unchecked")
 	public Vector<Player> getPlayerList() throws PersistenceIOException {
-		Vector<Player> players = (Vector)service.loadAll();
+		Vector<Player> players = (Vector<Player>)service.loadAll();
 		return players;
 	}
 	
@@ -115,12 +114,17 @@ public class AccountManager {
 	 * @return
 	 * @throws PersistenceIOException
 	 */
+	@SuppressWarnings("unchecked")
 	public Vector<Player> getPlayerList(boolean loggedInPlayers) throws PersistenceIOException {
 		Vector<Player> players = (Vector<Player>)service.loadAll();
-		for (Player player : players) {
-			if (!player.isLoggedIn()) {
-				players.remove(player);
+		if (loggedInPlayers && (players != null)) {
+			Vector<Player> temp = (Vector<Player>) players.clone();
+			for (Player player : players) {
+				if (!player.isLoggedIn()) {
+					temp.remove(player);
+				}
 			}
+			players = temp;
 		}
 		return players;
 	}
