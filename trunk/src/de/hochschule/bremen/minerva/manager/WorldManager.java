@@ -85,11 +85,11 @@ public class WorldManager {
 	 * // Set the world information
 	 * // world.setName("my World");
 	 * // ... 
-	 * // Country sweden = new Country()
-	 * // sweden.setName("Sweden");
+	 * Country sweden = new Country()
+	 * sweden.setName("Sweden");
 	 * // ...
-	 * // Country norway = new Country();
-	 * // norway.setName("Norway");
+	 * Country norway = new Country();
+	 * norway.setName("Norway");
 	 * // ...
 	 * 
 	 * // Add the new world to minerva system
@@ -130,9 +130,9 @@ public class WorldManager {
 
 		if (dependencyStorage) {
 			for (Country country : world.getCountries()) {
-				Vector<Integer> neighbours = world.getCountryGraph().getNeighbours(country.getId());
+				Vector<Integer> neighbours = world.getNeighbours(country.getId());
 
-				if (world.getCountryGraph().hasNeighbours(country.getId())) {
+				if (world.hasNeighbours(country)) {
 					for (Integer id : neighbours) {
 						Neighbour neighbour = new Neighbour();
 						neighbour.setId(id);
@@ -157,7 +157,11 @@ public class WorldManager {
 		WorldFile world = new WorldFile(worldFile);
 		world.parse();
 
-		//this.store(world);
+		this.store(world);
+
+		world.createCountryDependencies();
+
+		this.store(world);
 	}
 
 	/**
@@ -238,7 +242,7 @@ public class WorldManager {
 			country.setContinent(ContinentService.getInstance().load(country.getContinent().getId()));
 			
 			for (Neighbour neighbour : NeighbourService.getInstance().loadAll(country)) {
-				world.getCountryGraph().connect(country, neighbour);
+				world.connectCountries(country, neighbour);
 			}
 		}
 		world.setCountries(countries);

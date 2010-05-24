@@ -40,16 +40,9 @@ public class CountryGraph {
 	 * CountryGraph with neighbour-relations.
 	 * 
 	 */
-	private HashMap<Integer, Vector<Integer>> neighbours;
-	
-	/**
-	 * Constructor initializing neighbour-relation-map.
-	 * 
-	 */
-	public CountryGraph() {
-		neighbours = new HashMap<Integer, Vector<Integer>>();
-	}
-	
+	private HashMap<Integer, Vector<Integer>> neighbours = new HashMap<Integer, Vector<Integer>>();
+
+
 	/**
 	 * Connects country one with country in the map. If the country doesn't exit in the map, it will be created.
 	 * 
@@ -57,6 +50,9 @@ public class CountryGraph {
 	 * @param with
 	 */
 	public void connect(Country source, Country with) {
+		System.out.println(source);
+		System.out.println(with);
+		
 		Vector<Integer> connections;
 
 		if (neighbours.containsKey(source.getId())) {

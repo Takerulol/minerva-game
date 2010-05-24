@@ -25,7 +25,7 @@
 		<country id="2" continent="0" color="" token="me" name="Mittel-Europa" neighbours="0, 1, 2, 3, 4, 6" />
 		<country id="3" continent="0" color="" token="se" name="Süd-Europa" neighbours="1, 2, 4, 17, 23, 24" />
 		<country id="4" continent="0" color="" token="we" name="West-Europa" neighbours="2, 3, 5, 23" />
-		<country id="5" continent="0" color="" token="is" name="Island" neighbours="0, 5, 42" />
+		<country id="5" continent="0" color="" token="is" name="Island" neighbours="0" />
 		<country id="6" continent="0" color="" token="uk" name="Groß-Britanien" neighbours="0, 2, 4, 6" />
 		
 		<!-- Asien -->
@@ -34,7 +34,7 @@
 		<country id="9" continent="1" color="" token="ja" name="Jakutien" neighbours="8, 10, 11" />
 		<country id="10" continent="1" color="" token="ka" name="Kamtschatka" neighbours="9, 11, 12, 13, 37" />
 		<country id="11" continent="1" color="" token="ir" name="Irkutsk" neighbours="8, 9, 10, 12" />
-		<country id="12" continent="1" color="" token="mo" name="Mongolei" neighbours="8, 10, 11, 13, 14" />
+		<country id="12" continent="1" color="" token="ml" name="Mongolei" neighbours="8, 10, 11, 13, 14" />
 		<country id="13" continent="1" color="" token="jp" name="Japan" neighbours="10, 12" />
 		<country id="14" continent="1" color="" token="cn" name="China" neighbours="7, 8, 12, 15, 16, 18" />
 		<country id="15" continent="1" color="" token="sia" name="Siam" neighbours="14, 16, 19" />
