@@ -176,16 +176,17 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 
 		try {
 			try {
-				// We try to load the continent by the given id.
+				// We try to load the continent by the given name.
 				// When this is not possible (ContinentNotFoundException), we
 				// will update the record else we will insert it.
-				this.read(registrableContinent.getId());
-	
+				registrableContinent = this.read(registrableContinent.getName());
+
 				Object[] params = {
 					registrableContinent.getName(),
 					registrableContinent.getId()
 				};
 				this.update(sql.get("update"), params);
+
 			} catch (ContinentNotFoundException e) {
 				Object[] params = {registrableContinent.getName()};
 				

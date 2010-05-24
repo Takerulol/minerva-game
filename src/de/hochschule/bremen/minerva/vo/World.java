@@ -155,6 +155,15 @@ public class World extends ValueObject {
 	}
 
 	/**
+	 * DOCME
+	 * 
+	 * @param country
+	 */
+	public void addCountry(Country country) {
+		this.countries.add(country);
+	}
+	
+	/**
 	 * Sets the world countries.
 	 * 
 	 * @param countries
@@ -196,6 +205,7 @@ public class World extends ValueObject {
 	 * the country-neighbour-relation.
 	 * 
 	 * @return
+	 * @deprecated - Use methods within the world instead.
 	 */
 	public CountryGraph getCountryGraph() {
 		return countryGraph;
@@ -210,7 +220,66 @@ public class World extends ValueObject {
 	public void connectCountries(Country source, Country with) {
 		this.countryGraph.connect(source, with);
 	}
-	
+
+	/**
+	 * Wrapper method for hiding the country graph.
+	 * Checks if two given countries are connected or not.
+	 * 
+	 * @param one - The first country
+	 * @param two - The second country
+	 * 
+	 * @return
+	 */
+	public boolean areNeighbours(Country one, Country two) {
+		return this.countryGraph.neighbours(one, two);
+	}
+
+	/**
+	 * Wrapper method for hiding the country graph.
+	 * Checks if a given country has neighbouring countries.
+	 * 
+	 * @param country - Has this county neighbours?
+	 * @return
+	 */
+	public boolean hasNeighbours(Country country) {
+		return this.countryGraph.hasNeighbours(country.getId());
+	}
+
+	/**
+	 * Wrapper method for hiding the country graph.
+	 * 
+	 * @param country
+	 * @return
+	 * 
+	 */
+	public Vector<Integer> getNeighbours(int countryId) {
+		return this.countryGraph.getNeighbours(countryId);
+	}
+
+	/**
+	 * Wrapper method for hiding the country graph.
+	 * Returns a country vector which represents the neighbouring
+	 * countries by an given country.
+	 * 
+	 * @param country
+	 * @return
+	 */
+	public Vector<Country> getNeighbours(Country country) {
+		Vector<Integer> countries = this.countryGraph.getNeighbours(country.getId());
+		Vector<Country> selectedCountries = new Vector<Country>();
+
+		for (Integer countryId : countries) {
+			for (Country originCountry : this.getCountries()) {
+				if (country.getId() == countryId) {
+					selectedCountries.add(originCountry);
+					break;
+				}
+			}
+		}
+		
+		return selectedCountries;
+	}
+
 	/**
 	 * Made out of all attributes one string.
 	 * 

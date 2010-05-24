@@ -115,7 +115,7 @@ public class Turn {
 	 */
 	public void attack(Country attacker, Country defender, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException {
 
-		if (this.world.getCountryGraph().neighbours(attacker, defender)) {
+		if (this.world.areNeighbours(attacker, defender)) {
 			if ((armyCount <= 3) && (armyCount>0) && (currentPlayer.hasCountry(attacker)) && (!currentPlayer.hasCountry(defender))) {
 				
 				//Exception for not enough armies on the attacker country
@@ -194,7 +194,7 @@ public class Turn {
 		if ((currentPlayer.hasCountry(from)) && (currentPlayer.hasCountry(destination))) {
 			
 			//Exception for not enough armies on the country to be moved from
-			if (!(world.getCountryGraph().neighbours(from, destination))) {
+			if (!(world.areNeighbours(from, destination))) {
 				throw new CountriesNotInRelationException("Countries are not connected.");
 			}
 			if (from.getArmyCount() <= armyCount) {

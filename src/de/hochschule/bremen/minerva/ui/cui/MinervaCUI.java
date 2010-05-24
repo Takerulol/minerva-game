@@ -254,7 +254,7 @@ public class MinervaCUI implements UserInterface {
 			country.setContinent(ContinentService.getInstance().load(country.getContinent().getId()));
 
 			for (Neighbour neighbour : NeighbourService.getInstance().loadAll(country)) {
-				world.getCountryGraph().connect(country, neighbour);
+				world.connectCountries(country, neighbour);
 			}
 		}
 		world.setCountries(countries);

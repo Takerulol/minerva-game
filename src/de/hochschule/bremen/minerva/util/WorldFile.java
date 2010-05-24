@@ -33,6 +33,8 @@ import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Vector;
+import java.util.Map.Entry;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -56,24 +58,20 @@ public class WorldFile extends World {
 	
 	private static final String MESSAGE_FILE_NOT_WELLFORMED = "The world import file is not well-formed. ";
 
-	// The xml tag sections
-	private static final String TAG_META = "meta";
-
-	private static final String TAG_CONTINENTS = "continents";
-
-	private static final String TAG_COUNTRIES = "countries";
-	
-	
 	private File worldFile = null;
 
 	// We define an internal HashMap which contains the continent objects from the
 	// world import file. It is necessary to save it temporally because of the different
 	// id mapping structure in the world import file. It differs from the auto generated
-	// ids in the persistence layer.
-	private HashMap<Integer, Continent> temporallyContinents = new HashMap<Integer, Continent>();
+	// ids in the persistence layer. This map is only for internal purposes and will not
+	// stored via the persistence layer.
+	private HashMap<Integer, Continent> extractedContinents = new HashMap<Integer, Continent>();
 	
-	// DOCME
-	private HashMap<Integer, Country> temporallyCountries = new HashMap<Integer, Country>();
+	// This temporally map contains the countries from the world import file.
+	private HashMap<Integer, Country> extractedCountries = new HashMap<Integer, Country>();
+
+	// The neighbour mapping
+	private HashMap<Integer, Vector<Integer>> neighbourMapping = new HashMap<Integer, Vector<Integer>>();
 	
 	/**
 	 * DOCME
@@ -92,19 +90,21 @@ public class WorldFile extends World {
 	 * 
 	 */
 	public void parse() throws WorldFileExtensionException, WorldFileNotFoundException, WorldFileParseException {
-		if (!this.worldFile.getName().endsWith(".world")) {
-			throw new WorldFileExtensionException("The file '"+this.worldFile.getName() +
-					  "' does not have the correct extension. Please verify to import a valid "
-					+ "world import file (*.world).");
-		}
-
 		try {
-			Element root = this.open();
+			// Initial file validation.
+			// Is this the correct file type? ...
+			this.validate();
+			
+			Element dataSource = this.open();
 
-			this.validate(root);
-			this.extractMeta(root);
-			this.extractContinents(root);
-			this.extractCountries(root);
+			// Data source validation.
+			// Is the world import file valid?
+			this.validate(dataSource);
+
+			this.extractMeta(dataSource);
+			this.extractContinents(dataSource);
+			this.extractCountries(dataSource);
+
 		} catch (IOException e) {
 			throw new WorldFileNotFoundException(e.getMessage());
 		} catch (SAXException e) {
@@ -119,7 +119,16 @@ public class WorldFile extends World {
 	 * 
 	 */
 	public void createCountryDependencies() {
-		
+		for (Entry<Integer, Vector<Integer>> entry : this.neighbourMapping.entrySet()) {
+			Country country = this.extractedCountries.get(entry.getKey());
+
+			for (int neighbourId : entry.getValue()) {
+				System.out.println("NEIGH: "+neighbourId);
+				Country neighbour = this.extractedCountries.get(neighbourId);
+				
+				this.connectCountries(country, neighbour);
+			}
+		}
 	}
 	
 	/**
@@ -138,50 +147,40 @@ public class WorldFile extends World {
 	}
 
 	/**
-	 * DOCME
-	 * 
-	 * @param tag
-	 * @return
-	 */
-	private String extractText(Element root, String tag) {
-		NodeList nodes = root.getElementsByTagName(tag);
-		return (nodes.getLength() > 0) ? nodes.item(0).getTextContent() : "";
-	}
-
-	/**
 	 * Extracts the meta data from the world import file
 	 * and pushs the data into the object attributes.
 	 * 
-	 * @param root - The document root @see {@link WorldFile#open()}
+	 * @param dataSource - The document root @see {@link WorldFile#open()}
 	 * @throws WorldFileParseException - If the document is not well-formed.
+	 * 
 	 */
-	private void extractMeta(Element root) throws WorldFileParseException {
+	private void extractMeta(Element dataSource) throws WorldFileParseException {
 		// The worlds token
-		this.setToken(this.extractText(root, "token"));
+		this.setToken(this.extractText(dataSource, "token"));
 		if (this.getToken().isEmpty()) {
 			throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'token'.");
 		}
 
 		// The worlds name
-		this.setName(this.extractText(root, "name"));
+		this.setName(this.extractText(dataSource, "name"));
 		if (this.getName().isEmpty()) {
 			throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'name'.");
 		}
 
 		// The worlds description
-		this.setDescription(this.extractText(root, "description"));
+		this.setDescription(this.extractText(dataSource, "description"));
 		if (this.getDescription().isEmpty()) {
 			throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'description'.");
 		}
 		
 		// The author
-		this.setAuthor(this.extractText(root, "author"));
+		this.setAuthor(this.extractText(dataSource, "author"));
 		if (this.getAuthor().isEmpty()) {
 			throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'author'.");
 		}
 
 		// The version
-		this.setVersion(this.extractText(root, "version"));
+		this.setVersion(this.extractText(dataSource, "version"));
 		if (this.getVersion().isEmpty()) {
 			throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'version'.");
 		}
@@ -191,11 +190,12 @@ public class WorldFile extends World {
 	 * Extracts the continent data from the world import file
 	 * and saves the data in an temporally hash map.
 	 * 
-	 * @param root - The document root @see {@link WorldFile#open()}
+	 * @param dataSource - The document root @see {@link WorldFile#open()}
 	 * @throws WorldFileParseException - If the document is not well-formed.
+	 * 
 	 */
-	private void extractContinents(Element root) throws WorldFileParseException {
-		NodeList continents = root.getElementsByTagName("continent");
+	private void extractContinents(Element dataSource) throws WorldFileParseException {
+		NodeList continents = dataSource.getElementsByTagName("continent");
 		
 		for (int i = 0; i < continents.getLength(); i++) {
 			NamedNodeMap node = continents.item(i).getAttributes();
@@ -203,10 +203,10 @@ public class WorldFile extends World {
 			continent.setName(node.getNamedItem("name").getNodeValue());
 
 			int id = Integer.parseInt(node.getNamedItem("id").getNodeValue());
-			this.temporallyContinents.put(id, continent);
+			this.extractedContinents.put(id, continent);
 		}
 		
-		if (this.temporallyContinents.isEmpty()) {
+		if (this.extractedContinents.isEmpty()) {
 			throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'continents' data.");
 		}
 	}
@@ -214,14 +214,15 @@ public class WorldFile extends World {
 	/**
 	 * DOCME
 	 * 
-	 * @param root
+	 * @param dataSource
 	 * @param tag
 	 * TODO: Add well-formed checks
 	 * TODO: Get the color from the file
-	 * @throws WorldFileParseException 
+	 * @throws WorldFileParseException
+	 * 
 	 */
-	private void extractCountries(Element root) throws WorldFileParseException {
-		NodeList countries = root.getElementsByTagName("country");
+	private void extractCountries(Element dataSource) throws WorldFileParseException {
+		NodeList countries = dataSource.getElementsByTagName("country");
 		
 		for (int i = 0; i < countries.getLength(); i++) {
 			NamedNodeMap node = countries.item(i).getAttributes();
@@ -231,16 +232,39 @@ public class WorldFile extends World {
 			country.setColor(Color.BLACK);//node.getNamedItem("color").getNodeValue());
 			
 			int continentId = Integer.parseInt(node.getNamedItem("continent").getNodeValue());
-			country.setContinent(this.temporallyContinents.get(continentId));
-			
-			System.out.println(country.toString());
-			
+			country.setContinent(this.extractedContinents.get(continentId));
+
 			int id = Integer.parseInt(node.getNamedItem("id").getNodeValue());
-			this.temporallyCountries.put(id, country);
+			this.extractedCountries.put(id, country);
+
+			// Extract the neighbours
+			String neighbourValue = node.getNamedItem("neighbours").getNodeValue();
+			String[] neighbours = neighbourValue.split(",");
+			Vector<Integer> neighbourIds = new Vector<Integer>();
+
+			for (String neighbourId : neighbours) {
+				neighbourIds.add(Integer.parseInt(neighbourId.trim()));
+			}
+			this.neighbourMapping.put(id, neighbourIds);
+
+			this.addCountry(country);
 		}
 
-		if (this.temporallyCountries.isEmpty()) {
+		if (this.extractedCountries.isEmpty()) {
 			throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'country' data.");
+		}
+	}
+
+	/**
+	 * Common file validation.
+	 * 
+	 * @throws WorldFileExtensionException
+	 */
+	public void validate() throws WorldFileExtensionException {
+		if (!this.worldFile.getName().endsWith(".world")) {
+			throw new WorldFileExtensionException("The file '"+this.worldFile.getName() +
+					  "' does not have the correct extension. Please verify to import a valid "
+					+ "world import file (*.world).");
 		}
 	}
 	
@@ -249,21 +273,32 @@ public class WorldFile extends World {
 	 * @throws WorldFileParseException 
 	 * 
 	 */
-	public void validate(Element root) throws WorldFileParseException {
-		Node node = root.getElementsByTagName(TAG_META).item(0);
+	public void validate(Element dataSource) throws WorldFileParseException {
+		Node node = dataSource.getElementsByTagName("meta").item(0);
 		if (node == null || node.getChildNodes().getLength() <= 0) {
 			throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'meta' section.");
 		}
 		
-		node = root.getElementsByTagName(TAG_CONTINENTS).item(0);
+		node = dataSource.getElementsByTagName("continents").item(0);
 		if (node == null || node.getChildNodes().getLength() <= 0) {
 			throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'continents' section.");
 		}
 
-		node = root.getElementsByTagName(TAG_COUNTRIES).item(0);
+		node = dataSource.getElementsByTagName("countries").item(0);
 		if (node == null || node.getChildNodes().getLength() <= 0) {
 			throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'countries' section.");
 		}
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param tag
+	 * @return
+	 */
+	private String extractText(Element root, String tag) {
+		NodeList nodes = root.getElementsByTagName(tag);
+		return (nodes.getLength() > 0) ? nodes.item(0).getTextContent() : "";
 	}
 
 	/**
