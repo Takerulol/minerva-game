@@ -131,6 +131,7 @@ public class WorldManager {
 
 		if (dependencyStorage) {
 			for (Country country : world.getCountries()) {
+				// TODO: Replace the following code with the new world.getNeighbours(country) method.
 				Vector<Integer> neighbours = world.getNeighbours(country.getId());
 
 				if (world.hasNeighbours(country)) {
