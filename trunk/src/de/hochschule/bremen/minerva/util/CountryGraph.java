@@ -50,9 +50,6 @@ public class CountryGraph {
 	 * @param with
 	 */
 	public void connect(Country source, Country with) {
-		System.out.println(source);
-		System.out.println(with);
-		
 		Vector<Integer> connections;
 
 		if (neighbours.containsKey(source.getId())) {

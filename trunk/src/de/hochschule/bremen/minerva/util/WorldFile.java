@@ -123,7 +123,6 @@ public class WorldFile extends World {
 			Country country = this.extractedCountries.get(entry.getKey());
 
 			for (int neighbourId : entry.getValue()) {
-				System.out.println("NEIGH: "+neighbourId);
 				Country neighbour = this.extractedCountries.get(neighbourId);
 				
 				this.connectCountries(country, neighbour);
