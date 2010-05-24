@@ -30,11 +30,15 @@
 
 package de.hochschule.bremen.minerva.manager;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Vector;
 import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.persistence.exceptions.PlayerNotFoundException;
 import de.hochschule.bremen.minerva.persistence.service.PlayerService;
 import de.hochschule.bremen.minerva.vo.Player;
 
@@ -65,25 +69,36 @@ public class AccountManager {
 		return AccountManager.instance;
 	}
 	
-	/*
-	 * TODO:
-	 * 	- implement methods
-	 * 	- docs
-	 */
-	
 	/**
-	 * DOCME
+	 * Adds the desired player into the database.
+	 * 
 	 * @param player
 	 * @throws PlayerExistsException
 	 * @throws PersistenceIOException
 	 */
 	public void createPlayer(Player player) throws PlayerExistsException, PersistenceIOException {
-		// TODO: passwort, etc abfragen
-		service.save(player);
+		
+		MessageDigest m = null;
+		try {
+			m = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			
+		}
+		m.update(player.getPassword().getBytes(), 0, player.getPassword().length() );
+		player.setPassword(new BigInteger(1,m.digest()).toString(16));
+		
+		
+		try {
+			service.save(player);
+		} catch (de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException e) {
+			throw new PlayerExistsException("There is already a player with that username" +
+												" and/or email.");
+		} 
 	}
 	
 	/**
-	 * DOCME
+	 * Gets all players in database
+	 * 
 	 * @return
 	 * @throws PersistenceIOException
 	 */
@@ -94,7 +109,8 @@ public class AccountManager {
 	}
 	
 	/**
-	 * DOCME
+	 * Gets all players in database and can return all logged in players.
+	 * 
 	 * @param loggedInPlayers
 	 * @return
 	 * @throws PersistenceIOException
@@ -106,32 +122,44 @@ public class AccountManager {
 				players.remove(player);
 			}
 		}
-		
 		return players;
 	}
 	
 	/**
-	 * DOCME
+	 * Gets a player by username.
+	 * 
 	 * @param username
 	 * @return
-	 * @throws PersistenceIOException
+	 * @throws PlayerDoesNotExistException, PersistenceIOException
 	 */
-	public Player getPlayer(String username) throws PersistenceIOException {
-		return service.load(username);
+	public Player getPlayer(String username) throws PlayerDoesNotExistException, PersistenceIOException {
+		try {
+			return service.load(username);
+		} catch (PlayerNotFoundException e) {
+			throw new PlayerDoesNotExistException("A player with that username does not" +
+													" exist.");
+		}
 	}
 	
 	/**
-	 * DOCME
+	 * Gets a player by id.
+	 * 
 	 * @param id
 	 * @return
-	 * @throws PersistenceIOException
+	 * @throws PlayerDoesNotExistException, PersistenceIOException
 	 */
-	public Player getPlayer(int id) throws PersistenceIOException {
-		return service.load(id);
+	public Player getPlayer(int id) throws PlayerDoesNotExistException, PersistenceIOException {
+		try {
+			return service.load(id);
+		} catch (PlayerNotFoundException e) {
+			throw new PlayerDoesNotExistException("A player with that id does not" +
+													" exist.");
+		}
 	}
 	
 	/**
-	 * DOCME
+	 * Gets a player by given username or id (if username not given).
+	 * 
 	 * @param player
 	 * @return
 	 * @throws PersistenceIOException
@@ -139,10 +167,16 @@ public class AccountManager {
 	public Player getPlayer(Player player) throws PersistenceIOException, PlayerDoesNotExistException {
 		Player temp = null;
 		
-		if (player.getId() > -1) {
-			temp = service.load(player.getId());
-		} else if (player.getUsername() != null) {
-			temp = service.load(player.getUsername());
+		
+		if (player.getUsername() != null) {
+			temp = this.getPlayer(player.getUsername());
+		} else if (player.getId() > 0) {
+			try {
+				temp = this.getPlayer(player.getId());
+			} catch (PlayerDoesNotExistException e) {
+				throw new PlayerDoesNotExistException("Username not given and a player with" +
+														" that id does not exist.");
+			}
 		} else {
 			throw new PlayerDoesNotExistException("The player doesn't contain an id or a" +
 													" username.");
@@ -152,6 +186,35 @@ public class AccountManager {
 	}
 	
 	/**
+	 * Gets a player by given username or id (if username not given).
+	 * Can also update the player-parameter with the collected data.
+	 * 
+	 * @param player
+	 * @param update
+	 * @return
+	 * @throws PersistenceIOException
+	 * @throws PlayerDoesNotExistException
+	 */
+	public Player getPlayer(Player player, Boolean update) throws PersistenceIOException, PlayerDoesNotExistException {
+		Player temp = this.getPlayer(player);
+		if (update) {
+			//update of player data
+			player.setId(temp.getId());
+			player.setUsername(temp.getUsername());
+			player.setPassword(temp.getPassword());
+			player.setLastName(temp.getLastName());
+			player.setFirstName(temp.getFirstName());
+			player.setEmail(temp.getEmail());
+			player.setLoggedIn(temp.isLoggedIn()); 
+			
+			return temp;
+		} else {
+			return temp;
+		}
+	}
+	
+	
+	/**
 	 * DOCME
 	 * @param player
 	 * @throws WrongPasswordException
@@ -159,18 +222,48 @@ public class AccountManager {
 	 * @throws PersistenceIOException
 	 */
 	public void login(Player player) throws WrongPasswordException, PlayerDoesNotExistException, PersistenceIOException {
-		//TODO: password,  bla exceptions halt
-		Player temp = this.getPlayer(player);
-		temp.setLoggedIn(true);
-		service.save(temp);
+		
+		MessageDigest m = null;
+		try {
+			m = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			
+		}
+		
+		Player temp = null;
+		try {
+			temp = this.getPlayer(player);
+		} catch (PlayerNotFoundException e) {
+			throw new PlayerDoesNotExistException("A player with that username does not exist.");
+		}
+		
+		m.update(player.getPassword().getBytes(),0,player.getPassword().length());
+		String pwTemp = new BigInteger(1,m.digest()).toString(16);
+		
+		if (pwTemp.equals(temp.getPassword())) {
+			temp.setLoggedIn(true);
+			service.save(temp);
+		} else {
+			throw new WrongPasswordException("The password you typed in is wrong.");
+		}
+		
+		
 	}
 	
 	/**
-	 * DOCME
-	 * @throws PersistenceIOException
+	 * This will logout the desired player, regardless if he is logged in or not.
+	 * 
+	 * @throws PlayerDoesNotExistException, PersistenceIOException
 	 */
-	public void logout(Player player) throws PersistenceIOException {
-		
+	public void logout(Player player) throws PlayerDoesNotExistException, PersistenceIOException {
+		Player temp = null;
+		try {
+			temp = this.getPlayer(player);
+		} catch (PlayerDoesNotExistException e) {
+			throw new PlayerDoesNotExistException("You can't logout a player that does not exist.");
+		}
+		temp.setLoggedIn(false);
+		service.save(temp);
 	}
 	
 }
