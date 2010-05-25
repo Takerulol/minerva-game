@@ -205,7 +205,9 @@ public class MinervaCUI implements UserInterface {
 		this.outln(true, "[1] Login");
 		this.outln("[2] Registrierung");
 		this.outln("[3] Registrierte Spieler anzeigen");
-		this.outln("[4] Initialisierung beenden");
+		this.outln("[4] Eingeloggte Spieler anzeigen");
+		this.outln("[5] Alle Spieler ausloggen");
+		this.outln("[6] Initialisierung beenden");
 		this.outln();
 
 		int input = this.readInt();
@@ -222,7 +224,21 @@ public class MinervaCUI implements UserInterface {
 			break;
 			
 			case 3:
-				this.printRegisteredUsers();
+				this.printRegisteredUsers(false);
+				this.initPlayers(players);
+			break;
+
+			case 5:
+			try {
+				AccountManager.getInstance().logout();
+			} catch (PersistenceIOException e) {
+				this.error("Es ist ein allgemeiner Persistierungsfehler aufgetreten: "+e.getMessage());
+				Runtime.getRuntime().exit(0);
+			}
+			break;
+			
+			case 4:
+				this.printRegisteredUsers(true);
 				this.initPlayers(players);
 			break;
 		}
@@ -263,7 +279,7 @@ public class MinervaCUI implements UserInterface {
 
 		return player;
 	}
-
+	
 	/**
 	 * DOCME
 	 * 
@@ -280,7 +296,8 @@ public class MinervaCUI implements UserInterface {
 		this.outln();
 
 		this.outln("- Bitte geben Sie das Passwort des Benutzers ein: ");
-		player.setPassword(this.readString());
+		String password = this.readString();
+		player.setPassword(password);
 		this.outln();
 
 		this.outln("- Bitte geben Sie den Namen des Benutzers ein: ");
@@ -299,12 +316,11 @@ public class MinervaCUI implements UserInterface {
 			AccountManager.getInstance().createPlayer(player);
 		} catch (PlayerExistsException e) {
 			this.error("Der eingegebene Spieler existiert bereits. Legen Sie bitte einen neuen an (anderer Benutzername/E-Mail).");
-			return this.loginPlayer();
+			return this.registerPlayer();
 		} catch (PersistenceIOException e) {
 			this.error("Allgemeiner Persistierungsfehler: "+e.getMessage());
 			Runtime.getRuntime().exit(0);
 		}
-		
 		
 		return player;
 	}
@@ -568,11 +584,16 @@ public class MinervaCUI implements UserInterface {
 	 * DOCME 
 	 * 
 	 */
-	private void printRegisteredUsers() {
+	private void printRegisteredUsers(boolean loggedInUsers) {
 		this.outln();
 		try {
-			for (Player player : AccountManager.getInstance().getPlayerList()) {
-				this.outln(player.getLastName() + ", "+player.getFirstName() + " - "+player.getUsername() + " - "+player.getEmail());
+			Vector<Player> players = AccountManager.getInstance().getPlayerList(loggedInUsers);
+			if (players.size() > 0) {
+				for (Player player : players) {
+					this.outln(player.getLastName() + ", "+player.getFirstName() + " - "+player.getUsername() + " - "+player.getEmail());
+				}
+			} else {
+				this.outln("Keine Spieler gefunden ...");
 			}
 		} catch (PersistenceIOException e) {
 			this.error("Es ist ein allgemeiner Persistierungsfehler aufgetreten. Grund: "+ e.getMessage());
