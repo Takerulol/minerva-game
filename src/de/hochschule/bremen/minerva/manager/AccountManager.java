@@ -213,6 +213,8 @@ public class AccountManager {
 		
 		m.update(player.getPassword().getBytes(),0,player.getPassword().length());
 		String pwTemp = new BigInteger(1,m.digest()).toString(16);
+System.out.println("Eingegebenes Passwort: "+pwTemp);
+System.out.println("Hash aus der Persistence: "+player.getPassword());
 		
 		if (pwTemp.equals(player.getPassword())) {
 			player.setLoggedIn(true);
