@@ -54,6 +54,7 @@ import de.hochschule.bremen.minerva.vo.Continent;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.World;
 
+// TODO: If the country/neighbour mapping is not valid -> throw Exception (at the moment "NullPointerException" ); ).
 public class WorldFile extends World {
 	
 	private static final String MESSAGE_FILE_NOT_WELLFORMED = "The world import file is not well-formed. ";
@@ -66,24 +67,27 @@ public class WorldFile extends World {
 	// ids in the persistence layer. This map is only for internal purposes and will not
 	// stored via the persistence layer.
 	private HashMap<Integer, Continent> extractedContinents = new HashMap<Integer, Continent>();
-	
+
 	// This temporally map contains the countries from the world import file.
 	private HashMap<Integer, Country> extractedCountries = new HashMap<Integer, Country>();
 
-	// The neighbour mapping
+	// The neighbour mapping. Because there is a different mapping in the worlds import file.
 	private HashMap<Integer, Vector<Integer>> neighbourMapping = new HashMap<Integer, Vector<Integer>>();
 	
 	/**
-	 * DOCME
+	 * Registers the world import file object.
 	 * 
-	 * @param worldFile
+	 * @param worldFile - The world import file object (*.world)
+	 * 
 	 */
 	public WorldFile(File worldFile) {
 		this.worldFile = worldFile;
 	}
 
 	/**
-	 * DOCME
+	 * Parses the world import file and pushs the data into the
+	 * world value object attributes @see {@link World}
+	 * 
 	 * @throws WorldFileNotFoundException - If the given "*.world" file was not found.
 	 * @throws WorldFileParseException 
 	 * @throws WorldFileExtensionException 
@@ -115,7 +119,17 @@ public class WorldFile extends World {
 	}
 
 	/**
-	 * DOCME
+	 * Uses the world import file internal mapping structure
+	 * and ports this to the real world value objects.
+	 * 
+	 * IMPORTANT: Use this method after you've persisted the world
+	 * before. After you've persisted the countries for example will
+	 * have the generated ids from the persistence layer. Otherwise it
+	 * is not possible to create the mapping.
+	 * 
+	 * NOTE: You have to store the world object after creating the country
+	 * dependencies to instruct the persistence layer to store this country
+	 * relations.
 	 * 
 	 */
 	public void createCountryDependencies() {
@@ -211,33 +225,43 @@ public class WorldFile extends World {
 	}
 
 	/**
-	 * DOCME
+	 * Extracts the countries from the world import file.
+	 * The countries will be pushed into the countries vector
+	 * (@see {@link World#getCountries()}.
 	 * 
-	 * @param dataSource
-	 * @param tag
-	 * TODO: Add well-formed checks
-	 * TODO: Get the color from the file
-	 * @throws WorldFileParseException
+	 * The world import file has an own "country-country" relation
+	 * mapping (the ids from the persistence layer differs from the
+	 * ids in the world import file).
+	 * 
+	 * Further the method will extract the country dependencies
+	 * and add the correct continent to the country value object.
+	 * 
+	 * @param dataSource - The worlds import file root element
+	 * 
+	 * @throws WorldFileParseException - If the world import file has the wrong data structure.
 	 * 
 	 */
 	private void extractCountries(Element dataSource) throws WorldFileParseException {
-		NodeList countries = dataSource.getElementsByTagName("country");
+		NodeList dataSourceCountries = dataSource.getElementsByTagName("country");
 		
-		for (int i = 0; i < countries.getLength(); i++) {
-			NamedNodeMap node = countries.item(i).getAttributes();
+		for (int i = 0; i < dataSourceCountries.getLength(); i++) {
+			NamedNodeMap dataSourceCountry = dataSourceCountries.item(i).getAttributes();
+
 			Country country = new Country();
-			country.setToken(node.getNamedItem("token").getNodeValue());
-			country.setName(node.getNamedItem("name").getNodeValue());
+			country.setToken(dataSourceCountry.getNamedItem("token").getNodeValue());
+			country.setName(dataSourceCountry.getNamedItem("name").getNodeValue());
+
+			// TODO: Get the color from the file
 			country.setColor(Color.BLACK);//node.getNamedItem("color").getNodeValue());
-			
-			int continentId = Integer.parseInt(node.getNamedItem("continent").getNodeValue());
+
+			int continentId = Integer.parseInt(dataSourceCountry.getNamedItem("continent").getNodeValue());
 			country.setContinent(this.extractedContinents.get(continentId));
 
-			int id = Integer.parseInt(node.getNamedItem("id").getNodeValue());
+			int id = Integer.parseInt(dataSourceCountry.getNamedItem("id").getNodeValue());
 			this.extractedCountries.put(id, country);
 
 			// Extract the neighbours
-			String neighbourValue = node.getNamedItem("neighbours").getNodeValue();
+			String neighbourValue = dataSourceCountry.getNamedItem("neighbours").getNodeValue();
 			String[] neighbours = neighbourValue.split(",");
 			Vector<Integer> neighbourIds = new Vector<Integer>();
 
@@ -268,9 +292,12 @@ public class WorldFile extends World {
 	}
 	
 	/**
-	 * DOCME
-	 * @throws WorldFileParseException 
-	 * 
+	 * Checks if the data sources given data structure
+	 * is valid. If it is not valid the method will raise
+	 * the WorldFileParseException.
+	 *
+	 * @throws WorldFileParseException - The world import file is not well-formed.
+	 *
 	 */
 	public void validate(Element dataSource) throws WorldFileParseException {
 		Node node = dataSource.getElementsByTagName("meta").item(0);
@@ -290,10 +317,12 @@ public class WorldFile extends World {
 	}
 
 	/**
-	 * DOCME
+	 * Extracts the text from an given xml node.
+	 * For example <tag>text</tag>.
 	 * 
-	 * @param tag
-	 * @return
+	 * @param tag - The tag name from which this method will extract the text.
+	 * @return The tag content.
+	 * 
 	 */
 	private String extractText(Element root, String tag) {
 		NodeList nodes = root.getElementsByTagName(tag);
@@ -301,9 +330,10 @@ public class WorldFile extends World {
 	}
 
 	/**
-	 * DOCME
+	 * The world import file object.
 	 * 
-	 * @return
+	 * @return - The world import file.
+	 * 
 	 */
 	public File getWorldFile() {
 		return this.worldFile;
