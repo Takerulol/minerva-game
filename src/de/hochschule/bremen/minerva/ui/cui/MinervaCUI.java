@@ -30,6 +30,7 @@
 package de.hochschule.bremen.minerva.ui.cui;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Vector;
@@ -38,21 +39,23 @@ import de.hochschule.bremen.minerva.core.Game;
 import de.hochschule.bremen.minerva.core.Turn;
 import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughArmiesException;
+import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
+import de.hochschule.bremen.minerva.exceptions.PlayerExistsException;
+import de.hochschule.bremen.minerva.exceptions.WorldFileExtensionException;
+import de.hochschule.bremen.minerva.exceptions.WorldFileNotFoundException;
+import de.hochschule.bremen.minerva.exceptions.WorldFileParseException;
+import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.vo.Country;
-import de.hochschule.bremen.minerva.vo.Neighbour;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.World;
+import de.hochschule.bremen.minerva.manager.AccountManager;
+import de.hochschule.bremen.minerva.manager.WorldManager;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
-import de.hochschule.bremen.minerva.persistence.service.ContinentService;
-import de.hochschule.bremen.minerva.persistence.service.CountryService;
-import de.hochschule.bremen.minerva.persistence.service.NeighbourService;
-import de.hochschule.bremen.minerva.persistence.service.WorldService;
+import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
 import de.hochschule.bremen.minerva.ui.UserInterface;
 
 public class MinervaCUI implements UserInterface {
-	
-	//private static Logger LOGGER = Logger.getLogger(MinervaCUI.class.getName());
-	
+
 	private Game game = null;
 	private BufferedReader console = null;
 
@@ -70,7 +73,105 @@ public class MinervaCUI implements UserInterface {
 	 * 
 	 */
 	public void run() {
-		this.createGame();
+		int input = this.menue();
+		
+		switch (input) {
+
+			// Import new world from world import file.
+			case 1:
+				this.importWorld();
+				this.run();
+			break;
+
+			// Start a new game
+			case 2:
+				this.startGame();
+			break;
+			
+			default:
+				this.error("Ungültige Eingabe ...");
+				this.run();
+			break;
+		}
+	}
+
+	/**
+	 * Prints the top menue
+	 * 
+	 * @return int - The selected menue item
+	 */
+	private int menue() {
+		this.outln(true, "# Menü #");
+		this.outln(true, "[1] Eine neue Welt aus einer *.world-Datei importieren.");
+		this.outln("[2] Neues Spiel starten.");
+		this.outln("");
+		return this.readInt();
+	}
+
+	/**
+	 * World import user interaction.
+	 * 
+	 */
+	private void importWorld() {
+		this.importWorld(true);
+	}
+
+	/**
+	 * World import user interaction.
+	 * 
+	 * @param showHeadline
+	 */
+	private void importWorld(boolean showHeadline) {
+		if (showHeadline) {
+			this.outln(true, "## Importieren einer neuen Welt aus einer *.world-Datei. ##");
+		}
+		
+		this.outln(true, "Bitte geben Sie die 'WorldImport-Datei' (inkl. des kompletten Pfades) ein (Abbruch durch Eingabe von  'x'): ");
+		
+		String input = this.readString();
+		
+		if (!input.equals("x")) {
+			try {
+				WorldManager.getInstance().store(new File(input));
+			} catch (WorldFileNotFoundException e) {
+				this.error("Die angegebene WorldImport-Datei wurde nicht gefunden. Bitte überprüfen Sie den Pfad.");
+				this.importWorld(false);
+			} catch (WorldFileExtensionException e) {
+				this.error("Die angegebene WorldImport-Datei besitzt nicht die richtige Dateierweiterung (*.world).");
+				this.importWorld(false);
+			} catch (WorldFileParseException e) {
+				this.error("Die angegebene WorldImport-Datei ist nicht 'wohlgeformt': "+e.getMessage());
+				this.importWorld(false);
+			} catch (PersistenceIOException e) {
+				this.error("Es ist ein allgemeiner Persistierungsfehler aufgetreten: "+e.getMessage());
+				Runtime.getRuntime().exit(0);
+			}
+		}
+	}
+
+	/**
+	 * Game initialization.
+	 * 
+	 */
+	private void startGame() {
+		this.outln(true, "## Initialisierung des Spiels ##");
+
+		// Player initialization
+		Vector<Player> players = new Vector<Player>();
+		this.initPlayers(players);
+
+		// World initialization
+		World selectedWorld = null;
+		
+		try {
+			selectedWorld = this.initWorld();
+		} catch (WorldNotFoundException e) {
+			this.error("Die ausgewählte Welt wurde nicht gefunden. Grund: "+e.getMessage());
+		} catch (PersistenceIOException e) {
+			this.error("Es ist ein allgemeiner Persistenzfehler aufgetreten. Beende die Anwendung. Grund: "+e.getMessage());
+		}
+
+		this.game = new Game(selectedWorld, players);
 
 		do {
 			this.outln(true, "## Neue Runde ##");
@@ -93,6 +194,152 @@ public class MinervaCUI implements UserInterface {
 		} while (!game.isFinished());
 	}
 
+	/**
+	 * DOCME
+	 * 
+	 * @param players
+	 */
+	private void initPlayers(Vector<Player> players) {
+		this.outln(true, "### Initialisierung der Spieler  ###");
+
+		this.outln(true, "[1] Login");
+		this.outln("[2] Registrierung");
+		this.outln("[3] Registrierte Spieler anzeigen");
+		this.outln("[4] Initialisierung beenden");
+		this.outln();
+
+		int input = this.readInt();
+
+		switch (input) {
+			case 1:
+				players.add(this.loginPlayer());
+				this.initPlayers(players);
+			break;
+
+			case 2:
+				players.add(this.registerPlayer());
+				this.initPlayers(players);
+			break;
+			
+			case 3:
+				this.printRegisteredUsers();
+				this.initPlayers(players);
+			break;
+		}
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @return
+	 */
+	private Player loginPlayer() {
+		this.outln(true, "#### Login ####");
+
+		Player player = new Player();
+
+		this.outln(true, "- Bitte geben Sie den Benutzernamen des Players an: ");
+		player.setUsername(this.readString());
+		this.outln();
+		
+		this.outln(true, "- Bitte geben Sie das Passwort ein: ");
+		player.setPassword(this.readString());
+		this.outln();
+		
+		try {
+			AccountManager.getInstance().login(player);
+		} catch (WrongPasswordException e) {
+			this.error("Login fehlgeschlagen.");
+			return this.loginPlayer();
+
+		} catch (PlayerDoesNotExistException e) {
+			this.error("Der eingegebene Spieler existiert nicht.");
+			return this.loginPlayer();
+
+		} catch (PersistenceIOException e) {
+			this.error("Allgemeiner Persistierungsfehler: "+e.getMessage());
+			Runtime.getRuntime().exit(0);
+		}
+
+		return player;
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @return
+	 */
+	private Player registerPlayer() {
+		this.outln(true, "#### Registrierung ####");
+		this.outln("");
+
+		Player player = new Player();
+
+		this.outln("- Bitte geben Sie den Benutzernamen ein: ");
+		player.setUsername(this.readString());
+		this.outln();
+
+		this.outln("- Bitte geben Sie das Passwort des Benutzers ein: ");
+		player.setPassword(this.readString());
+		this.outln();
+
+		this.outln("- Bitte geben Sie den Namen des Benutzers ein: ");
+		player.setLastName(this.readString());
+		this.outln();
+
+		this.outln("- Bitte geben Sie den Vornamen des Benutzers ein: ");
+		player.setFirstName(this.readString());
+		this.outln();
+
+		this.outln("- Bitte geben Sie die E-Mail Adresse des Benutzers ein: ");
+		player.setEmail(this.readString());
+		this.outln();
+
+		try {
+			AccountManager.getInstance().createPlayer(player);
+		} catch (PlayerExistsException e) {
+			this.error("Der eingegebene Spieler existiert bereits. Legen Sie bitte einen neuen an (anderer Benutzername/E-Mail).");
+			return this.loginPlayer();
+		} catch (PersistenceIOException e) {
+			this.error("Allgemeiner Persistierungsfehler: "+e.getMessage());
+			Runtime.getRuntime().exit(0);
+		}
+		
+		
+		return player;
+	}
+
+	/**
+	 * DOCME
+	 * @throws PersistenceIOException 
+	 * @throws WorldNotFoundException 
+	 * 
+	 */
+	private World initWorld() throws WorldNotFoundException, PersistenceIOException {
+		this.outln(true, "### Initialisierung der Welt ###");
+
+		Vector<World> worlds = WorldManager.getInstance().getList(true);
+
+		this.outln(true, "- Auf welcher Welt möchten Sie spielen. Es stehen folgende zur Auswahl (kleinen Moment, bitte ...): \n");
+		
+		// This is code is ugly. We know. But this loop is only for the CUI.
+		int i = 1;
+		for (World oneWorld : worlds) {
+			this.out("["+i+"]" + ": " + oneWorld.getName()+" - "+oneWorld.getDescription()+"\n");
+			i++;
+		}
+		this.outln("");
+		// END-UGLY-CODE
+
+		World world = worlds.get(this.readInt() - 1);
+		return WorldManager.getInstance().get(world);
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param turn
+	 */
 	private void moveArmies(Turn turn) {
 		boolean answer;
 		this.outln(true, "### Einheiten verschieben ###");
@@ -133,6 +380,11 @@ public class MinervaCUI implements UserInterface {
 		}
 	}
 
+	/**
+	 * DOCME
+	 * 
+	 * @param turn
+	 */
 	private void attack(Turn turn) {
 		this.outln(true, "### Angriff ###");
 		
@@ -173,6 +425,11 @@ public class MinervaCUI implements UserInterface {
 		}
 	}
 
+	/**
+	 * DOCME
+	 * 
+	 * @param turn
+	 */
 	private void allocateNewArmies(Turn turn) {
 		int armyCount = turn.getAllocatableArmyCount();
 
@@ -183,85 +440,9 @@ public class MinervaCUI implements UserInterface {
 			Country country = this.game.getWorld().getCountry(this.readInt());
 
 			turn.allocateArmy(country);
-			// TODO: Handle "CountryOwnershipException".
 		}
 	}
-	
-	/**
-	 * DOCME
-	 * 
-	 * @return
-	 */
-	private void createGame() {
-		this.outln("## Initialisierung des Spiels ##");
-		this.outln(true, "- Mit wie vielen Spieler möchten Sie spielen? ");
 
-		Vector<Player> player = this.createPlayers(this.readInt());
-		World world = null;
-
-		try {
-			world = this.createWorld();
-		} catch (PersistenceIOException e) {
-			this.error("[FEHLER] Auswahl der Welt nicht möglich. Grund: "+e.getMessage());
-			throw new RuntimeException(e);
-		}
-
-		this.game = new Game(world, player);
-	}
-
-	/**
-	 * DOCME
-	 * 
-	 * @param playerCount
-	 * @return
-	 */
-	private Vector<Player> createPlayers(int playerCount) {
-		Vector<Player> player = new Vector<Player>();
-		for (int i = 0; i < playerCount; i++) {
-			this.outln(true, "- Bitte geben Sie den Namen des "+(i+1)+". Spielers ein: ");
-			
-			Player newPlayer = new Player();
-			newPlayer.setUsername(this.readString());
-			player.add(newPlayer);
-		}
-		return player;
-	}
-
-	/**
-	 * DOCME
-	 * 
-	 * @return
-	 * @throws PersistenceIOException
-	 */
-	private World createWorld() throws PersistenceIOException {
-		World world = null;
-
-		this.outln(true, "- Auf welcher Welt möchten Sie spielen. Es stehen folgende zur Auswahl (kleinen Moment, bitte ...): \n");
-		Vector<World> worlds = WorldService.getInstance().loadAll();
-		
-		int i = 1;
-		for (World oneWorld : worlds) {
-			this.out("["+i+"]" + ": " + oneWorld.getName()+" - "+oneWorld.getDescription()+"\n");
-			i++;
-		}
-		
-		this.outln("");
-		world = worlds.get(this.readInt() - 1);
-
-		Vector<Country> countries = CountryService.getInstance().loadAll(world);
-
-		for (Country country : countries) {
-			country.setContinent(ContinentService.getInstance().load(country.getContinent().getId()));
-
-			for (Neighbour neighbour : NeighbourService.getInstance().loadAll(country)) {
-				world.connectCountries(country, neighbour);
-			}
-		}
-		world.setCountries(countries);
-		
-		return world;
-	}
-	
 	/**
 	 * DOCME
 	 * 
@@ -333,6 +514,14 @@ public class MinervaCUI implements UserInterface {
 	/**
 	 * DOCME
 	 * 
+	 */
+	private void outln() {
+		this.outln("");
+	}
+	
+	/**
+	 * DOCME
+	 * 
 	 * @param gap
 	 * @param message
 	 */
@@ -350,7 +539,8 @@ public class MinervaCUI implements UserInterface {
 	 * @param message
 	 */
 	private void error(String message) {
-		System.err.println(message);
+		this.outln("[ERROR]: "+message);
+		this.outln("");
 	}
 	
 	/**
@@ -373,6 +563,22 @@ public class MinervaCUI implements UserInterface {
 		this.outln("-- \n");
 	}
 
+	/**
+	 * DOCME 
+	 * 
+	 */
+	private void printRegisteredUsers() {
+		this.outln();
+		try {
+			for (Player player : AccountManager.getInstance().getPlayerList()) {
+				this.outln(player.getLastName() + ", "+player.getFirstName() + " - "+player.getUsername() + " - "+player.getEmail());
+			}
+		} catch (PersistenceIOException e) {
+			this.error(e.getMessage());
+			throw new RuntimeException();
+		}
+	}
+	
 	/**
 	 * DOCME
 	 * 
