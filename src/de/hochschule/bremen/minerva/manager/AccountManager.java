@@ -169,14 +169,12 @@ public class AccountManager {
 	 * @throws PersistenceIOException
 	 */
 	public Player getPlayer(Player player) throws PersistenceIOException, PlayerDoesNotExistException {
-		Player temp = null;
-		
 		
 		if (player.getUsername() != null) {
-			temp = this.getPlayer(player.getUsername());
+			player = this.getPlayer(player.getUsername());
 		} else if (player.getId() > 0) {
 			try {
-				temp = this.getPlayer(player.getId());
+				player = this.getPlayer(player.getId());
 			} catch (PlayerDoesNotExistException e) {
 				throw new PlayerDoesNotExistException("Username not given and a player with" +
 														" that id does not exist.");
@@ -186,40 +184,13 @@ public class AccountManager {
 													" username.");
 		}
 		
-		return temp;
+		return player;
 	}
 	
+	
 	/**
-	 * Gets a player by given username or id (if username not given).
-	 * Can also update the player-parameter with the collected data.
+	 * The desired player will be logged in.
 	 * 
-	 * @param player
-	 * @param update
-	 * @return
-	 * @throws PersistenceIOException
-	 * @throws PlayerDoesNotExistException
-	 */
-	public Player getPlayer(Player player, Boolean update) throws PersistenceIOException, PlayerDoesNotExistException {
-		Player temp = this.getPlayer(player);
-		if (update) {
-			//update of player data
-			player.setId(temp.getId());
-			player.setUsername(temp.getUsername());
-			player.setPassword(temp.getPassword());
-			player.setLastName(temp.getLastName());
-			player.setFirstName(temp.getFirstName());
-			player.setEmail(temp.getEmail());
-			player.setLoggedIn(temp.isLoggedIn()); 
-			
-			return temp;
-		} else {
-			return temp;
-		}
-	}
-	
-	
-	/**
-	 * DOCME
 	 * @param player
 	 * @throws WrongPasswordException
 	 * @throws PlayerDoesNotExistException
@@ -234,9 +205,8 @@ public class AccountManager {
 			
 		}
 		
-		Player temp = null;
 		try {
-			temp = this.getPlayer(player);
+			player = this.getPlayer(player);
 		} catch (PlayerNotFoundException e) {
 			throw new PlayerDoesNotExistException("A player with that username does not exist.");
 		}
@@ -244,9 +214,9 @@ public class AccountManager {
 		m.update(player.getPassword().getBytes(),0,player.getPassword().length());
 		String pwTemp = new BigInteger(1,m.digest()).toString(16);
 		
-		if (pwTemp.equals(temp.getPassword())) {
-			temp.setLoggedIn(true);
-			service.save(temp);
+		if (pwTemp.equals(player.getPassword())) {
+			player.setLoggedIn(true);
+			service.save(player);
 		} else {
 			throw new WrongPasswordException("The password you typed in is wrong.");
 		}
@@ -260,14 +230,26 @@ public class AccountManager {
 	 * @throws PlayerDoesNotExistException, PersistenceIOException
 	 */
 	public void logout(Player player) throws PlayerDoesNotExistException, PersistenceIOException {
-		Player temp = null;
 		try {
-			temp = this.getPlayer(player);
+			player = this.getPlayer(player);
 		} catch (PlayerDoesNotExistException e) {
 			throw new PlayerDoesNotExistException("You can't logout a player that does not exist.");
 		}
-		temp.setLoggedIn(false);
-		service.save(temp);
+		player.setLoggedIn(false);
+		service.save(player);
+	}
+	
+	/**
+	 * All logged in players will be looged out.
+	 * 
+	 * @throws PersistenceIOException
+	 */
+	public void logout() throws PersistenceIOException {
+		Vector<Player> loggedInPlayers = this.getPlayerList(true);
+		for (Player player : loggedInPlayers) {
+			player.setLoggedIn(false);
+			service.save(player);
+		}
 	}
 	
 }
