@@ -216,10 +216,17 @@ public class AccountManager {
 		String pwTemp = new BigInteger(1,m.digest()).toString(16);
 		
 		if (pwTemp.equals(temp.getPassword())) {
-			player.setLoggedIn(true);
-			temp.setLoggedIn(true); // TODO: Is this really necessary?
-			player = temp;
-			service.save(player);
+			temp.setLoggedIn(true);
+			service.save(temp);
+			
+			// TODO: Refactor and move this to Player#copy(Player player)
+			player.setId(temp.getId());
+			player.setUsername(temp.getUsername());
+			player.setFirstName(temp.getFirstName());
+			player.setLastName(temp.getLastName());
+			player.setEmail(temp.getEmail());
+			player.setLoggedIn(temp.isLoggedIn());
+			
 		} else {
 			throw new WrongPasswordException("The password you typed in is wrong.");
 		}
