@@ -83,6 +83,7 @@ public class MinervaCUI implements UserInterface {
 				this.run();
 			break;
 
+			// Print the world list
 			case 2:
 				this.printWorldList();
 				this.run();
