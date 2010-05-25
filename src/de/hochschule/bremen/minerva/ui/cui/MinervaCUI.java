@@ -487,7 +487,8 @@ public class MinervaCUI implements UserInterface {
 			this.out("EINGABE> ");
 			line = this.console.readLine();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			this.error("Beim Lesen der Eingabe. Grund: "+e.getMessage());
+			Runtime.getRuntime().exit(0);
 		}
 		
 		return line;
@@ -574,8 +575,8 @@ public class MinervaCUI implements UserInterface {
 				this.outln(player.getLastName() + ", "+player.getFirstName() + " - "+player.getUsername() + " - "+player.getEmail());
 			}
 		} catch (PersistenceIOException e) {
-			this.error(e.getMessage());
-			throw new RuntimeException();
+			this.error("Es ist ein allgemeiner Persistierungsfehler aufgetreten. Grund: "+ e.getMessage());
+			Runtime.getRuntime().exit(0);
 		}
 	}
 	
