@@ -283,7 +283,7 @@ public class WorldFile extends World {
 	 * 
 	 * @throws WorldFileExtensionException
 	 */
-	public void validate() throws WorldFileExtensionException {
+	private void validate() throws WorldFileExtensionException {
 		if (!this.worldFile.getName().endsWith(".world")) {
 			throw new WorldFileExtensionException("The file '"+this.worldFile.getName() +
 					  "' does not have the correct extension. Please verify to import a valid "
@@ -299,7 +299,7 @@ public class WorldFile extends World {
 	 * @throws WorldFileParseException - The world import file is not well-formed.
 	 *
 	 */
-	public void validate(Element dataSource) throws WorldFileParseException {
+	private void validate(Element dataSource) throws WorldFileParseException {
 		Node node = dataSource.getElementsByTagName("meta").item(0);
 		if (node == null || node.getChildNodes().getLength() <= 0) {
 			throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'meta' section.");
