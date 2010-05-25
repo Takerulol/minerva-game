@@ -216,8 +216,9 @@ public class AccountManager {
 		String pwTemp = new BigInteger(1,m.digest()).toString(16);
 		
 		if (pwTemp.equals(temp.getPassword())) {
-			player = temp;
 			player.setLoggedIn(true);
+			temp.setLoggedIn(true); // TODO: Is this really necessary?
+			player = temp;
 			service.save(player);
 		} else {
 			throw new WrongPasswordException("The password you typed in is wrong.");
