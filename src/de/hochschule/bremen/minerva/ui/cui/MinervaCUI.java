@@ -83,8 +83,13 @@ public class MinervaCUI implements UserInterface {
 				this.run();
 			break;
 
-			// Start a new game
 			case 2:
+				this.printWorldList();
+				this.run();
+			break;
+			
+			// Start a new game
+			case 3:
 				this.startGame();
 			break;
 			
@@ -103,7 +108,8 @@ public class MinervaCUI implements UserInterface {
 	private int menue() {
 		this.outln(true, "# Menü #");
 		this.outln(true, "[1] Eine neue Welt aus einer *.world-Datei importieren.");
-		this.outln("[2] Neues Spiel starten.");
+		this.outln("[2] Alle Welten anzeigen.");
+		this.outln("[3] Neues Spiel starten.");
 		this.outln("");
 		return this.readInt();
 	}
@@ -133,6 +139,7 @@ public class MinervaCUI implements UserInterface {
 		if (!input.equals("x")) {
 			try {
 				WorldManager.getInstance().store(new File(input));
+				this.outln(true, "Die Welt wurde erfolgreich importiert ...");
 			} catch (WorldFileNotFoundException e) {
 				this.error("Die angegebene WorldImport-Datei wurde nicht gefunden. Bitte überprüfen Sie den Pfad.");
 				this.importWorld(false);
@@ -143,7 +150,7 @@ public class MinervaCUI implements UserInterface {
 				this.error("Die angegebene WorldImport-Datei ist nicht 'wohlgeformt': "+e.getMessage());
 				this.importWorld(false);
 			} catch (PersistenceIOException e) {
-				this.error("Es ist ein allgemeiner Persistierungsfehler aufgetreten: "+e.getMessage());
+				this.error("Es ist ein allgemeiner Persistenzfehler aufgetreten: "+e.getMessage());
 				Runtime.getRuntime().exit(0);
 			}
 		}
@@ -231,8 +238,10 @@ public class MinervaCUI implements UserInterface {
 			case 5:
 			try {
 				AccountManager.getInstance().logout();
+				this.outln(true, "Es wurden alle Spieler ausgeloggt.");
+				this.initPlayers(players);
 			} catch (PersistenceIOException e) {
-				this.error("Es ist ein allgemeiner Persistierungsfehler aufgetreten: "+e.getMessage());
+				this.error("Es ist ein allgemeiner Persistenzfehler aufgetreten: "+e.getMessage());
 				Runtime.getRuntime().exit(0);
 			}
 			break;
@@ -264,6 +273,7 @@ public class MinervaCUI implements UserInterface {
 		
 		try {
 			AccountManager.getInstance().login(player);
+			this.outln("Login war erfolgreich.");
 		} catch (WrongPasswordException e) {
 			this.error("Login fehlgeschlagen.");
 			return this.loginPlayer();
@@ -273,7 +283,7 @@ public class MinervaCUI implements UserInterface {
 			return this.loginPlayer();
 
 		} catch (PersistenceIOException e) {
-			this.error("Allgemeiner Persistierungsfehler: "+e.getMessage());
+			this.error("Allgemeiner Persistenzfehler: "+e.getMessage());
 			Runtime.getRuntime().exit(0);
 		}
 
@@ -318,7 +328,7 @@ public class MinervaCUI implements UserInterface {
 			this.error("Der eingegebene Spieler existiert bereits. Legen Sie bitte einen neuen an (anderer Benutzername/E-Mail).");
 			return this.registerPlayer();
 		} catch (PersistenceIOException e) {
-			this.error("Allgemeiner Persistierungsfehler: "+e.getMessage());
+			this.error("Allgemeiner Persistenzfehler: "+e.getMessage());
 			Runtime.getRuntime().exit(0);
 		}
 		
@@ -596,7 +606,23 @@ public class MinervaCUI implements UserInterface {
 				this.outln("Keine Spieler gefunden ...");
 			}
 		} catch (PersistenceIOException e) {
-			this.error("Es ist ein allgemeiner Persistierungsfehler aufgetreten. Grund: "+ e.getMessage());
+			this.error("Es ist ein allgemeiner Persistenzfehler aufgetreten. Grund: "+ e.getMessage());
+			Runtime.getRuntime().exit(0);
+		}
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	private void printWorldList() {
+		this.outln();
+		try {
+			for (World world : WorldManager.getInstance().getList(true)) {
+				this.outln(world.getName() + " - " + world.getDescription());
+			}
+		} catch (PersistenceIOException e) {
+			this.error("Es ist ein allgemeiner Persistenzfehler aufgetreten. Grund: "+ e.getMessage());
 			Runtime.getRuntime().exit(0);
 		}
 	}
