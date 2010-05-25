@@ -47,16 +47,16 @@ CREATE TABLE player (
 -- Testdaten
 
 -- ## Player ############################################### (Password is: 1234)
-insert into player ("username", "password", "last_name", "first_name", "email") values ('Takero', '81dc9bdb52d04dc20036dbd8313ed055', 'Bollmann', 'Christian', 'cbollmann@stud.hs-bremen.de');
-insert into player ("username", "password", "last_name", "first_name", "email") values ('cstrempel', '81dc9bdb52d04dc20036dbd8313ed055', 'Strempel', 'Carina', 'cstrempel@stud.hs-bremen.de');
-insert into player ("username", "password", "last_name", "first_name", "email") values ('akoenig', '81dc9bdb52d04dc20036dbd8313ed055', 'König', 'André', 'akoenig@stud.hs-bremen.de');
+insert into player ("username", "password", "last_name", "first_name", "email") values ('Takero', 'e6c4a6e5b6ef2605d834322014d1a499', 'Bollmann', 'Christian', 'cbollmann@stud.hs-bremen.de');
+insert into player ("username", "password", "last_name", "first_name", "email") values ('cstrempel', '4a22fc46dbd1e7e623d424c44777aac7', 'Strempel', 'Carina', 'cstrempel@stud.hs-bremen.de');
+insert into player ("username", "password", "last_name", "first_name", "email") values ('akoenig', 'd025a79c8c89af438c9cace6ed918c78', 'König', 'André', 'akoenig@stud.hs-bremen.de');
 
 -- ## Erde #################################################
 insert into world ("token", "name", "description", "author", "version") values ('earth', 'Die Erde', 'Die Erde als Risiko-Map', 'André König', '1.0 beta');
 
 insert into continent ("name") values ('Europa');
 
-insert into country ("token", "name", "color", "world", "continent") values ('sk', 'Skandinavien', 'ffffff', 1, 1);
+insert into country ("token", "name", "color", "world", "continent") values ('sk', 'Nord-Europa', 'ffffff', 1, 1);
 insert into country ("token", "name", "color", "world", "continent") values ('ua', 'Ukraine', 'ffffff', 1, 1);
 insert into country ("token", "name", "color", "world", "continent") values ('me', 'Mittel-Europa', 'ffffff', 1, 1);
 insert into country ("token", "name", "color", "world", "continent") values ('se', 'Süd-Europa', 'ffffff', 1, 1);
@@ -100,7 +100,7 @@ insert into continent ("name") values ('Section 2');
 insert into continent ("name") values ('Section 3');
 
 insert into country ("token", "name", "color", "world", "continent") values ('io', 'Io', 'ffffff', 2, 2); -- 8
-insert into country ("token", "name", "color", "world", "continent") values ('eur', 'Europa', 'ffffff', 2, 2); -- 9 
+insert into country ("token", "name", "color", "world", "continent") values ('eur', 'Europa-Mond', 'ffffff', 2, 2); -- 9 
 insert into country ("token", "name", "color", "world", "continent") values ('ga', 'Ganymed', 'ffffff', 2, 2); -- 10
 insert into country ("token", "name", "color", "world", "continent") values ('kal', 'Kallisto', 'ffffff', 2, 2); -- 11
 
