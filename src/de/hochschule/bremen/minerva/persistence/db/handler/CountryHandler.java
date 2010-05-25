@@ -33,8 +33,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
 
 import de.hochschule.bremen.minerva.vo.Continent;
 import de.hochschule.bremen.minerva.vo.Country;
@@ -57,7 +57,7 @@ import de.hochschule.bremen.minerva.vo.ValueObject;
  */
 public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 
-	private static Logger LOGGER = Logger.getLogger(CountryHandler.class.getName());
+	//private static Logger LOGGER = Logger.getLogger(CountryHandler.class.getName());
 	
 	private final static HashMap<String, String> sql = new HashMap<String, String>();
 
@@ -181,10 +181,8 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 		Vector<Country> countries = null;
 		
 		if (byVo instanceof World) {
-			LOGGER.log(Level.INFO, "by world");
 			countries = this.readAll((World)byVo);
 		} else if (byVo instanceof Continent) {
-			LOGGER.log(Level.INFO, "by continent");
 			countries = this.readAll((Continent)byVo);
 		} else {
 			throw new PersistenceIOException("There is no method implementation for the given value object: "+byVo.getClass());
@@ -240,8 +238,8 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	private Vector<Country> readAll(String sql, Object[] params) throws PersistenceIOException {
 		Vector<Country> countries = new Vector<Country>();
 
-		LOGGER.log(Level.INFO, sql);
-		LOGGER.log(Level.INFO, ""+params[0]);
+		//LOGGER.log(Level.INFO, sql);
+		//LOGGER.log(Level.INFO, ""+params[0]);
 		
 		try {
 			ResultSet record = this.select(sql, params);

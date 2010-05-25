@@ -54,15 +54,15 @@ insert into player ("username", "password", "last_name", "first_name", "email") 
 -- ## Erde #################################################
 insert into world ("token", "name", "description", "author", "version") values ('earth', 'Die Erde', 'Die Erde als Risiko-Map', 'André König', '1.0 beta');
 
-insert into continent ("name") values ('Europa');
+insert into continent ("name") values ('Mittel-Europa');
 
 insert into country ("token", "name", "color", "world", "continent") values ('sk', 'Nord-Europa', 'ffffff', 1, 1);
-insert into country ("token", "name", "color", "world", "continent") values ('ua', 'Ukraine', 'ffffff', 1, 1);
-insert into country ("token", "name", "color", "world", "continent") values ('me', 'Mittel-Europa', 'ffffff', 1, 1);
-insert into country ("token", "name", "color", "world", "continent") values ('se', 'Süd-Europa', 'ffffff', 1, 1);
-insert into country ("token", "name", "color", "world", "continent") values ('we', 'West-Europa', 'ffffff', 1, 1);
-insert into country ("token", "name", "color", "world", "continent") values ('is', 'Island', 'ffffff', 1, 1);
-insert into country ("token", "name", "color", "world", "continent") values ('uk', 'Groß-Britanien', 'ffffff', 1, 1);
+insert into country ("token", "name", "color", "world", "continent") values ('ua', 'Polen', 'ffffff', 1, 1);
+insert into country ("token", "name", "color", "world", "continent") values ('me', 'Deutschland', 'ffffff', 1, 1);
+insert into country ("token", "name", "color", "world", "continent") values ('se', 'Spanien', 'ffffff', 1, 1);
+insert into country ("token", "name", "color", "world", "continent") values ('we', 'Niederlande', 'ffffff', 1, 1);
+insert into country ("token", "name", "color", "world", "continent") values ('is', 'Schweden', 'ffffff', 1, 1);
+insert into country ("token", "name", "color", "world", "continent") values ('uk', 'Dänemark', 'ffffff', 1, 1);
 
 insert into neighbour ("country", "neighbour_country") values (1, 2);
 
