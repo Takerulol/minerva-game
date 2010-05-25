@@ -2,10 +2,10 @@
 
 <world>
 	<meta>
-		<token>mywrld</token>
-		<name>My World</name>
+		<token>origworld</token>
+		<name>Original Risiko-Welt</name>
 		<author>Carina Strempel, Christian Bollmann, André König</author>
-		<description>Hier würde ein Beschreibungstext stehen.</description>
+		<description>Die original Welt des Risiko-Spiels von Hasbro.</description>
 		<version>1.0 beta</version>
 	</meta>
 
@@ -73,6 +73,4 @@
 		<country id="40" continent="5" color="" token="qu" name="Quebec" neighbours="34, 39, 41" />
 		<country id="41" continent="5" color="" token="dk" name="Grönland" neighbours="6, 40" />
 	</countries>
-
-	<missions></missions>
 </world>
