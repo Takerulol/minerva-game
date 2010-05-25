@@ -274,7 +274,7 @@ public class MinervaCUI implements UserInterface {
 		
 		try {
 			AccountManager.getInstance().login(player);
-			this.outln("Login war erfolgreich.");
+			this.outln("Hallo "+player.getFirstName()+", schön dich zu sehen :)");
 		} catch (WrongPasswordException e) {
 			this.error("Login fehlgeschlagen.");
 			return this.loginPlayer();
@@ -325,6 +325,7 @@ public class MinervaCUI implements UserInterface {
 
 		try {
 			AccountManager.getInstance().createPlayer(player);
+			this.outln("Der Spieler '"+player.getUsername()+"' wurde registriert.");
 		} catch (PlayerExistsException e) {
 			this.error("Der eingegebene Spieler existiert bereits. Legen Sie bitte einen neuen an (anderer Benutzername/E-Mail).");
 			return this.registerPlayer();
