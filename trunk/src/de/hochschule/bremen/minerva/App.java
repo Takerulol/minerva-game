@@ -84,7 +84,7 @@ TESTCODE für das Erstellen einer Welt. (Bitte, nicht entfernen :))
 			world.setCountries(countries);
 
 			// Persistence
-			WorldManager.getInstance().add(world);
+			WorldManager.getInstance().store(world);
 
 			for (Country country : world.getCountries()) {
 				System.out.println("Country id is now: "+country.getId());
