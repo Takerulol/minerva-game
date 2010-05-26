@@ -45,7 +45,9 @@ import de.hochschule.bremen.minerva.vo.Player;
 public class AccountManager {
 
 	private static AccountManager instance = null;
-
+	private static String HASH_ALGORITHM = "MD5";
+	
+	
 	private PlayerService service = PlayerService.getInstance();
 
 	/**
@@ -80,7 +82,7 @@ public class AccountManager {
 		
 		MessageDigest m = null;
 		try {
-			m = MessageDigest.getInstance("MD5");
+			m = MessageDigest.getInstance(HASH_ALGORITHM);
 		} catch (NoSuchAlgorithmException e) {
 			
 		}
@@ -200,7 +202,7 @@ public class AccountManager {
 		
 		MessageDigest m = null;
 		try {
-			m = MessageDigest.getInstance("MD5");
+			m = MessageDigest.getInstance(HASH_ALGORITHM);
 		} catch (NoSuchAlgorithmException e) {
 			
 		}
@@ -250,7 +252,7 @@ public class AccountManager {
 	}
 	
 	/**
-	 * All logged in players will be looged out.
+	 * All logged in players will be logged out.
 	 * 
 	 * @throws PersistenceIOException
 	 */
