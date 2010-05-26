@@ -119,17 +119,21 @@ public class Turn {
 	public void attack(Country attacker, Country defender, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException {
 
 		if (this.world.areNeighbours(attacker, defender)) {
-			if ((armyCount <= 3) && (armyCount>0) && (currentPlayer.hasCountry(attacker)) && (!currentPlayer.hasCountry(defender))) {
+			
+			//Exception for attacking an own country
+			if (currentPlayer.hasCountry(defender)) {
+				throw new IsOwnCountryException("The owner of the denfending country is " +
+													"the attacker himself.");
+			}
+			
+			if ((armyCount <= 3) && (armyCount>0) && (currentPlayer.hasCountry(attacker))) {
 				
 				//Exception for not enough armies on the attacker country
 				if (!(armyCount <= attacker.getArmyCount())) {
 					throw new NotEnoughArmiesException("There are not enough armies to attack.");
 				}
 				
-				//Exception for attacking an own country
-				if (currentPlayer.hasCountry(defender)) {
-					throw new IsOwnCountryException("The owner of the denfending country is the attacker himself.");
-				}
+				
 				
 				
 				Vector<Die> attackerDice = new Vector<Die>();
