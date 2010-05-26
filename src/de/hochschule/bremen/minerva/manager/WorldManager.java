@@ -47,6 +47,16 @@ import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Neighbour;
 import de.hochschule.bremen.minerva.vo.World;
 
+/**
+ * The world manager is a singleton, which summarizes the functionality
+ * to read and write world value objects via the persistence layer. So this
+ * manager provides a lightweight access to the underlying layers (persistence
+ * layer for example).
+ *
+ * @version $Id$
+ * @since 1.0
+ *
+ */
 public class WorldManager {
 
 	private static WorldManager instance = null;
@@ -57,7 +67,8 @@ public class WorldManager {
 	 * The world manager is a singleton class. It is not
 	 * possible to create more than one instance.
 	 * 
-	 * @return
+	 * @return WorldManager The WorldManager instance.
+	 * 
 	 */
 	public static WorldManager getInstance() {
 		if (WorldManager.instance == null) {
@@ -74,7 +85,7 @@ public class WorldManager {
 	 * of the country relation data. The country id's for
 	 * example, will be generated in the persistence layer.
 	 * So with this method it is NOT possible to store the
-	 * neighbouring countries. You have to call this method
+	 * neighboring countries. You have to call this method
 	 * to register the world initially. After that, you are
 	 * able to create the connections between the countries
 	 * and call this method again for country dependency storage.
@@ -104,7 +115,8 @@ public class WorldManager {
 	 * WorldManager.getInstance().store(world);
 	 * </pre>
 	 * 
-	 * @param world
+	 * @param world The world object, which should be stored.
+	 * @see 		World
 	 * 
 	 */
 	public void store(World world) throws PersistenceIOException {
@@ -153,11 +165,11 @@ public class WorldManager {
 	 * an external tool which is able to create playable minerva
 	 * world.
 	 * 
-	 * @param file - The world import file (*.world)
-	 * @throws WorldFileExtensionException - Wrong file extension. 
-	 * @throws WorldFileNotFoundException - The given world import file wasn't found.
-	 * @throws WorldFileParseException - The given world import file is not well-formed. 
-	 * @throws PersistenceIOException - Common exception from the persistence layer.
+	 * @param file The world import file (*.world)
+	 * @throws WorldFileExtensionException Wrong file extension. 
+	 * @throws WorldFileNotFoundException The given world import file wasn't found.
+	 * @throws WorldFileParseException The given world import file is not well-formed. 
+	 * @throws PersistenceIOException Common exception from the persistence layer.
 	 * 
 	 */
 	public void store(File worldFile) throws WorldFileExtensionException, WorldFileNotFoundException, WorldFileParseException, PersistenceIOException  {
@@ -175,7 +187,7 @@ public class WorldManager {
 	 * Loads a world list from the persistence layer.
 	 * 
 	 * @return A vector with all worlds from the persistence layer.
-	 * @throws PersistenceIOException - Common exception from the persistence layer.
+	 * @throws PersistenceIOException Common exception from the persistence layer.
 	 * 
 	 */
 	public Vector<World> getList() throws PersistenceIOException {
@@ -196,9 +208,9 @@ public class WorldManager {
 	 * If it is 'false' is behaves like the 'getWorldList' method and loads
 	 * all complex world data (like country dependencies and so on).
 	 * 
-	 * @param lite - Does not load all country dependencies (only the world data).
+	 * @param lite Does not load all country dependencies (only the world data).
 	 * @return A vector with all worlds from the persistence layer.
-	 * @throws PersistenceIOException - Common exception from the persistence layer.
+	 * @throws PersistenceIOException Common exception from the persistence layer.
 	 * 
 	 */
 	public Vector<World> getList(boolean lite) throws PersistenceIOException {
@@ -212,10 +224,10 @@ public class WorldManager {
 	/**
 	 * Loads a world from the persistence layer by an given id. 
 	 * 
-	 * @param id - The world id.
-	 * @return - The world object.
-	 * @throws PersistenceIOException - Common exception from the persistence layer.
-	 * @throws WorldNotFoundException - If the world wasn't found.
+	 * @param id The world id.
+	 * @return The filled world object.
+	 * @throws PersistenceIOException Common exception from the persistence layer.
+	 * @throws WorldNotFoundException If the world wasn't found.
 	 * 
 	 */
 	public World get(int id) throws WorldNotFoundException, PersistenceIOException {
@@ -228,12 +240,13 @@ public class WorldManager {
 	/**
 	 * Loads a world from the persistence layer
 	 * by an given "incomplete" world. Incomplete means,
-	 * that the world object must have a valid id.
+	 * that the world object must have a valid id. The method
+	 * will fill the world object and returns it.
 	 * 
 	 * @param world
-	 * @return - The "complete" world object.
-	 * @throws PersistenceIOException - Common exception from the persistence layer.
-	 * @throws WorldNotFoundException - If the world wasn't found.
+	 * @return The "complete" world object.
+	 * @throws WorldNotFoundException If the world wasn't found.
+	 * @throws PersistenceIOException Common exception from the persistence layer.
 	 * 
 	 */
 	public World get(World world) throws WorldNotFoundException, PersistenceIOException {
@@ -247,8 +260,9 @@ public class WorldManager {
 	 * Load country dependencies for a given world
 	 * from the persistence layer.
 	 * 
-	 * @param world - The world for which we should load the country dependencies.
-	 * @throws PersistenceIOException 
+	 * @param world The world for which we should load the country dependencies.
+	 * @throws PersistenceIOException Common exception from the persistence layer.
+	 *  
 	 */
 	private void loadDependencies(World world) throws PersistenceIOException {
 		Vector<Country> countries = CountryService.getInstance().loadAll(world);
