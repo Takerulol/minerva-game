@@ -240,9 +240,10 @@ public class Country extends ValueObject {
 	}
 	
 	/**
-	 * Made out of all attributes one string.
+	 * Returns a string with all object attributes.
 	 * 
-	 * @return
+	 * @return All object attributes.
+	 * 
 	 */
 	public String toString() {
 		return getClass().getName() + "[id="+this.id +",token="+this.token+",name="+this.name+",color="+this.color+",continent="+this.continent+", world id="+this.worldId+"]";

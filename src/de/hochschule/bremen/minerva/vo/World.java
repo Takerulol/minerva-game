@@ -34,6 +34,17 @@ import java.util.Vector;
 
 import de.hochschule.bremen.minerva.util.CountryGraph;
 
+/**
+ * Represents a world with countries and a country graph, which
+ * stores the country/neighbour-mapping.
+ * 
+ * @see Country
+ * @see CountryGraph
+ * 
+ * @version $Id$
+ * @since 1.0
+ *
+ */
 public class World extends ValueObject {
 	
 	private int id = DEFAULT_ID;
@@ -50,6 +61,7 @@ public class World extends ValueObject {
 	 * Sets the world id.
 	 * 
 	 * @param id - Integer value (see persistence).
+	 * 
 	 */
 	public void setId(int id) {
 		this.id = id;
@@ -58,7 +70,8 @@ public class World extends ValueObject {
 	/**
 	 * Returns the id.
 	 * 
-	 * @return
+	 * @return The world id.
+	 * 
 	 */
 	public int getId() {
 		return this.id;
@@ -68,6 +81,7 @@ public class World extends ValueObject {
 	 * Sets the world token.
 	 * 
 	 * @param token
+	 * 
 	 */
 	public void setToken(String token) {
 		this.token = token;
@@ -76,7 +90,8 @@ public class World extends ValueObject {
 	/**
 	 * Returns the token.
 	 * 
-	 * @return
+	 * @return The world token.
+	 * 
 	 */
 	public String getToken() {
 		return this.token;
@@ -86,6 +101,7 @@ public class World extends ValueObject {
 	 * Sets the world name.
 	 * 
 	 * @param name
+	 * 
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -94,7 +110,8 @@ public class World extends ValueObject {
 	/**
 	 * Returns the name.
 	 * 
-	 * @return
+	 * @return The world name.
+	 * 
 	 */
 	public String getName() {
 		return this.name;
@@ -104,6 +121,7 @@ public class World extends ValueObject {
 	 * Sets the world description.
 	 * 
 	 * @param description
+	 * 
 	 */
 	public void setDescription(String description) {
 		this.description = description;
@@ -112,7 +130,8 @@ public class World extends ValueObject {
 	/**
 	 * Returns the description.
 	 * 
-	 * @return
+	 * @return The world description.
+	 * 
 	 */
 	public String getDescription() {
 		return this.description;
@@ -122,6 +141,7 @@ public class World extends ValueObject {
 	 * Sets the world author.
 	 * 
 	 * @param author
+	 * 
 	 */
 	public void setAuthor(String author) {
 		this.author = author;
@@ -130,7 +150,8 @@ public class World extends ValueObject {
 	/**
 	 * Returns the author.
 	 * 
-	 * @return
+	 * @return The world author.
+	 * 
 	 */
 	public String getAuthor() {
 		return this.author;
@@ -140,6 +161,7 @@ public class World extends ValueObject {
 	 * Sets the world version.
 	 * 
 	 * @param version
+	 * 
 	 */
 	public void setVersion(String version) {
 		this.version = version;
@@ -148,16 +170,19 @@ public class World extends ValueObject {
 	/**
 	 * Returns the version.
 	 * 
-	 * @return
+	 * @return The world version.
+	 * 
 	 */
 	public String getVersion() {
 		return this.version;
 	}
 
 	/**
-	 * DOCME
+	 * Add a country to this world.
 	 * 
 	 * @param country
+	 * @see Country
+	 * 
 	 */
 	public void addCountry(Country country) {
 		this.countries.add(country);
@@ -167,6 +192,8 @@ public class World extends ValueObject {
 	 * Sets the world countries.
 	 * 
 	 * @param countries
+	 * @see Vector
+	 * 
 	 */
 	public void setCountries(Vector<Country> countries) {
 		this.countries = countries;
@@ -175,37 +202,62 @@ public class World extends ValueObject {
 	/**
 	 * Returns the countries.
 	 * 
-	 * @return
+	 * @return A vector with country objects.
+	 * @see Country
+	 * 
 	 */
 	public Vector<Country> getCountries() {
 		return this.countries;
 	}
 
 	/**
-	 * DOCME
+	 * Wrapper method, which returns the country count.
 	 * 
-	 * @return
+	 * @return The country count.
+	 * 
 	 */
 	public int getCountryCount() {
 		return this.countries.size();
 	}
 
 	/**
-	 * DOCME
+	 * Get a country by an given vector index.
 	 * 
 	 * @param index
-	 * @return
+	 * @return The country object, which was searched for.
+	 * @deprecated Use {@link World#getCountry(Country)} instead.
+	 * 
 	 */
 	public Country getCountry(int index) {
 		return this.countries.get(index);
 	}
+
+	/**
+	 * Returns a country object by an given country object :)
+	 * Note that, the given country object must have
+	 * the country id.
+	 * 
+	 * @param byCountry
+	 * @return The country object, which was searched for.
+	 * @see Country
+	 * 
+	 */
+	public Country getCountry(Country byCountry) {
+		Country searchedCountry = new Country();
+		for (Country country : this.getCountries()) {
+			if (country.getId() == byCountry.getId()) {
+				searchedCountry = country;
+			}
+		}
+		return searchedCountry;
+	}
 	
 	/**
-	 * Returns the country graph, which contains
-	 * the country-neighbour-relation.
+	 * Returns the country graph, which contains the country-neighbour-relation.
 	 * 
 	 * @return
-	 * @deprecated - Use methods within the world instead.
+	 * @deprecated Use methods within the world instead (for example {@link World#connectCountries(Country, Country)})
+	 * 
 	 */
 	public CountryGraph getCountryGraph() {
 		return countryGraph;
@@ -214,8 +266,11 @@ public class World extends ValueObject {
 	/**
 	 * Wrapper class for connecting countries (CountryGraph).
 	 * 
-	 * @param source
-	 * @param with
+	 * @param source The source country. 
+	 * @param with The country which will be connected with the source
+	 * @see Country
+	 * @see CountryGraph
+	 * 
 	 */
 	public void connectCountries(Country source, Country with) {
 		this.countryGraph.connect(source, with);
@@ -228,7 +283,8 @@ public class World extends ValueObject {
 	 * @param one - The first country
 	 * @param two - The second country
 	 * 
-	 * @return
+	 * @return true/false
+	 * 
 	 */
 	public boolean areNeighbours(Country one, Country two) {
 		return this.countryGraph.neighbours(one, two);
@@ -236,20 +292,24 @@ public class World extends ValueObject {
 
 	/**
 	 * Wrapper method for hiding the country graph.
-	 * Checks if a given country has neighbouring countries.
+	 * Checks if a given country has neighboring countries.
 	 * 
 	 * @param country - Has this county neighbours?
-	 * @return
+	 * @return true/false
+	 * @see Country
+	 * 
 	 */
 	public boolean hasNeighbours(Country country) {
 		return this.countryGraph.hasNeighbours(country.getId());
 	}
 
 	/**
-	 * Wrapper method for hiding the country graph.
+	 * Wrapper method for hiding the country graph. Returns
+	 * a country by an given country object.
 	 * 
 	 * @param country
-	 * @return
+	 * @return A vector with integers, which represents referenced country id's
+	 * @deprecated Use {@link World#getNeighbours(Country)} instead.
 	 * 
 	 */
 	public Vector<Integer> getNeighbours(int countryId) {
@@ -281,9 +341,10 @@ public class World extends ValueObject {
 	}
 
 	/**
-	 * Made out of all attributes one string.
+	 * Returns a string with all object attributes.
 	 * 
-	 * @return
+	 * @return All object attributes.
+	 * 
 	 */
 	public String toString() {
 		return getClass().getName() + ": [id=" + id + ", token=" +token + ", name=" + name + ", description=" + description + ", author=" + author + ", version=" + version + ", countries=" + countries +"]";
