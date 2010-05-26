@@ -74,8 +74,8 @@ public class AccountManager {
 	/**
 	 * Adds the desired player into the database.
 	 * 
-	 * @param player
-	 * @throws PlayerExistsException
+	 * @param player Player object to create an entry in the database with.
+	 * @throws PlayerExistsException Thrown if the player or email already exists.
 	 * @throws PersistenceIOException
 	 */
 	public void createPlayer(Player player) throws PlayerExistsException, PersistenceIOException {
@@ -101,7 +101,7 @@ public class AccountManager {
 	/**
 	 * Gets all players in database
 	 * 
-	 * @return
+	 * @return Vector of all registered players in the database.
 	 * @throws PersistenceIOException
 	 */
 	public Vector<Player> getPlayerList() throws PersistenceIOException {
@@ -112,8 +112,8 @@ public class AccountManager {
 	/**
 	 * Gets all players in database and can return all logged in players.
 	 * 
-	 * @param loggedInPlayers
-	 * @return
+	 * @param loggedInPlayers True if you want to get all logged in players.
+	 * @return Vector of all registered players in the database. If loggedInPlayers == true you will only get the logged in players.
 	 * @throws PersistenceIOException
 	 */
 	@SuppressWarnings("unchecked")
@@ -132,10 +132,10 @@ public class AccountManager {
 	}
 	
 	/**
-	 * Gets a player by username.
+	 * Gets a player by username out of the database.
 	 * 
-	 * @param username
-	 * @return
+	 * @param username Username of the player you want to get.
+	 * @return Player object of the desired player.
 	 * @throws PlayerDoesNotExistException, PersistenceIOException
 	 */
 	public Player getPlayer(String username) throws PlayerDoesNotExistException, PersistenceIOException {
@@ -148,10 +148,10 @@ public class AccountManager {
 	}
 	
 	/**
-	 * Gets a player by id.
+	 * Gets a player by id out of the database.
 	 * 
-	 * @param id
-	 * @return
+	 * @param id Id of the player you want to get.
+	 * @return Player object of the desired player.
 	 * @throws PlayerDoesNotExistException, PersistenceIOException
 	 */
 	public Player getPlayer(int id) throws PlayerDoesNotExistException, PersistenceIOException {
@@ -166,8 +166,8 @@ public class AccountManager {
 	/**
 	 * Gets a player by given username or id (if username not given).
 	 * 
-	 * @param player
-	 * @return
+	 * @param player Player object you want to fully get out of database.
+	 * @return Player object of the desired player.
 	 * @throws PersistenceIOException
 	 */
 	public Player getPlayer(Player player) throws PersistenceIOException, PlayerDoesNotExistException {
@@ -193,9 +193,9 @@ public class AccountManager {
 	/**
 	 * The desired player will be logged in.
 	 * 
-	 * @param player
-	 * @throws WrongPasswordException
-	 * @throws PlayerDoesNotExistException
+	 * @param player Player you want to login.
+	 * @throws WrongPasswordException Password typed in didn't match.
+	 * @throws PlayerDoesNotExistException Player you want to login doesn't exist.
 	 * @throws PersistenceIOException
 	 */
 	public void login(Player player) throws WrongPasswordException, PlayerDoesNotExistException, PersistenceIOException {
@@ -239,7 +239,8 @@ public class AccountManager {
 	/**
 	 * This will logout the desired player, regardless if he is logged in or not.
 	 * 
-	 * @throws PlayerDoesNotExistException, PersistenceIOException
+	 * @throws PlayerDoesNotExistException Player you want to logout doesn't exist.
+	 * @throws PersistenceIOException
 	 */
 	public void logout(Player player) throws PlayerDoesNotExistException, PersistenceIOException {
 		try {
