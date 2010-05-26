@@ -32,6 +32,10 @@ package de.hochschule.bremen.minerva.vo;
 import java.awt.Color;
 import java.util.Vector;
 
+/**
+ * Represents a country.
+ *
+ */
 public class Country extends ValueObject {
 
 	protected int id = DEFAULT_ID;
@@ -44,7 +48,7 @@ public class Country extends ValueObject {
 	protected Vector<Army> armies = new Vector<Army>();
 
 	/**
-	 * DOCME
+	 * Creates a new country and add one army by default.
 	 * 
 	 */
 	public Country() {
@@ -55,6 +59,7 @@ public class Country extends ValueObject {
 	 * Sets the country id.
 	 * 
 	 * @param id
+	 * 
 	 */
 	public void setId(int id) {
 		this.id = id;
@@ -63,7 +68,8 @@ public class Country extends ValueObject {
 	/**
 	 * Returns the id.
 	 * 
-	 * @return
+	 * @return The country id.
+	 * 
 	 */
 	public int getId() {
 		return this.id;
@@ -73,6 +79,7 @@ public class Country extends ValueObject {
 	 * Sets the country token.
 	 * 
 	 * @param token
+	 * 
 	 */
 	public void setToken(String token) {
 		this.token = token;
@@ -81,14 +88,15 @@ public class Country extends ValueObject {
 	/**
 	 * Returns the token.
 	 * 
-	 * @return
+	 * @return The country token.
+	 * 
 	 */
 	public String getToken() {
 		return this.token;
 	}
 
 	/**
-	 * Sets the country name.
+	 * Sets the name.
 	 * 
 	 * @param name
 	 */
@@ -99,7 +107,7 @@ public class Country extends ValueObject {
 	/**
 	 * Returns the name.
 	 * 
-	 * @return
+	 * @return The country name.
 	 */
 	public String getName() {
 		return this.name;
@@ -109,6 +117,7 @@ public class Country extends ValueObject {
 	 * Sets the country color.
 	 * 
 	 * @param color
+	 * 
 	 */
 	public void setColor(Color color) {
 		this.color = color;
@@ -116,7 +125,10 @@ public class Country extends ValueObject {
 
 	/**
 	 * Returns the color.
-	 * @return
+	 * 
+	 * @return The country color.
+	 * @see Color
+	 * 
 	 */
 	public Color getColor() {
 		return this.color;
@@ -126,6 +138,7 @@ public class Country extends ValueObject {
 	 * Sets the country continent.
 	 * 
 	 * @param continent
+	 * 
 	 */
 	public void setContinent(Continent continent) {
 		this.continent = continent;
@@ -134,7 +147,8 @@ public class Country extends ValueObject {
 	/**
 	 * Returns the continent.
 	 * 
-	 * @return
+	 * @return The country continent.
+	 * 
 	 */
 	public Continent getContinent() {
 		return this.continent;
