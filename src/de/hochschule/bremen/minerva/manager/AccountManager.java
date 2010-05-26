@@ -45,7 +45,7 @@ import de.hochschule.bremen.minerva.vo.Player;
 public class AccountManager {
 
 	private static AccountManager instance = null;
-	private static String HASH_ALGORITHM = "MD5";
+	private static String PASSWORD_HASH_ALGORITHM = "MD5";
 	
 	
 	private PlayerService service = PlayerService.getInstance();
@@ -82,7 +82,7 @@ public class AccountManager {
 		
 		MessageDigest m = null;
 		try {
-			m = MessageDigest.getInstance(HASH_ALGORITHM);
+			m = MessageDigest.getInstance(PASSWORD_HASH_ALGORITHM);
 		} catch (NoSuchAlgorithmException e) {
 			
 		}
@@ -202,7 +202,7 @@ public class AccountManager {
 		
 		MessageDigest m = null;
 		try {
-			m = MessageDigest.getInstance(HASH_ALGORITHM);
+			m = MessageDigest.getInstance(PASSWORD_HASH_ALGORITHM);
 		} catch (NoSuchAlgorithmException e) {
 			
 		}
