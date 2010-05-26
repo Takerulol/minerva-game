@@ -41,7 +41,13 @@ import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.World;
 
-
+/**
+ * This represents a single turn by the current player inside a game/match.
+ * 
+ * 
+ * @author cbollmann
+ *
+ */
 public class Turn {
 	
 	//private static Logger LOGGER = Logger.getLogger(Turn.class.getName());
@@ -55,9 +61,9 @@ public class Turn {
 	/**
 	 * Constructs a new turn.
 	 * 
-	 * @param currentPlayer
-	 * @param world
-	 * @param players
+	 * @param currentPlayer This is the new current player.
+	 * @param world The world object played on.
+	 * @param players The player vector inheriting all players to this match.
 	 */
 	public Turn(Player currentPlayer, World world, Vector<Player> players) {
 		this.setWorld(world);
@@ -67,13 +73,14 @@ public class Turn {
 		this.attackResults = new Vector<AttackResult>();
 	}
 	
-	//TODO: Regelabfrage, ob ganzer Kontinent besetzt ist.
+	//TODO: Regelabfrage, ob ganzer Kontinent besetzt ist. änderung dass methode nur einmal
+	// ausgefuehrt werden darf.
 	/**
 	 * Creates armies for the current player by taking his countryCount / 3.
 	 * If its less than 3, the current player gets 3 armies.
 	 * 
-	 * @param currentPlayer
-	 * @return
+	 * @param currentPlayer The current player of this turn.
+	 * @return Vector of armies gained per turn.
 	 */
 	private Vector<Army> createArmies(Player currentPlayer) {
 		int armyGet = currentPlayer.getCountryCount() / 3;
@@ -89,10 +96,12 @@ public class Turn {
 		return newArmies;
 	}
 	
+	//TODO: möglicherweise Exception wenn keine einheiten mehr verfügbar sind? oder abwaelzen 
+	// auf gui, dass naechster schritt automatisch kommt.
 	/**
 	 * Allocates a single allocatable army into a country.
 	 * 
-	 * @param country
+	 * @param country The country where to put an army.
 	 */
 	public void allocateArmy(Country country) {
 		if ((currentPlayer.hasCountry(country)) && (getAllocatableArmies().size() > 0)) {
@@ -103,18 +112,13 @@ public class Turn {
 	
 	/**
 	 * Attacker country attacks defender country and chooses how many armies he uses.
-	 * Returns int[3] Array:
-	 * 	- first value: lost attacker armies
-	 *  - second value: lost defender armies
-	 *  - third value: 0 = attacker lost, 1 = attacker won the country
 	 * 
-	 * @param attacker
-	 * @param defender
-	 * @param armyCount
-	 * @return
-	 * @throws CountriesNotInRelationException
-	 * @throws IsOwnCountryException 
-	 * @throws NotEnoughArmiesException
+	 * @param attacker Country where to attack from.
+	 * @param defender Country which will be attacked.
+	 * @param armyCount Number of armies used. max: 1 <= armies available <= 3 ; min: 1. Minimum one army must remain on the country.
+	 * @throws CountriesNotInRelationException The countries are not connected.
+	 * @throws IsOwnCountryException Trying to attack an own country.
+	 * @throws NotEnoughArmiesException Too little or too many armies used.
 	 */
 	public void attack(Country attacker, Country defender, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException {
 
@@ -198,10 +202,11 @@ public class Turn {
 	/**
 	 * Moves specific amount of armies from one to another, related country.
 	 * 
-	 * @param from
-	 * @param destination
-	 * @param armyCount
-	 * @throws CountriesNotInRelationException
+	 * @param from Country from where to move.
+	 * @param destination Country to move to.
+	 * @param armyCount Number of armies you want to move.
+	 * @throws CountriesNotInRelationException Countries are not connected.
+	 * @throws NotEnoughArmiesException Not enough armies on the country to move.
 	 */
 	public void moveArmies(Country from, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException {
 		if ((currentPlayer.hasCountry(from)) && (currentPlayer.hasCountry(destination))) {
@@ -229,7 +234,7 @@ public class Turn {
 	/**
 	 * Sets current player.
 	 * 
-	 * @param currentPlayer
+	 * @param currentPlayer The current player.
 	 */
 	private void setCurrentPlayer(Player currentPlayer) {
 		this.currentPlayer = currentPlayer;
@@ -237,7 +242,7 @@ public class Turn {
 	/**
 	 * Returns current player.
 	 * 
-	 * @return
+	 * @return The current player.
 	 */
 	public Player getCurrentPlayer() {
 		return currentPlayer;
@@ -245,7 +250,7 @@ public class Turn {
 	/**
 	 * Sets world.
 	 * 
-	 * @param world
+	 * @param world The world to play in.
 	 */
 	private void setWorld(World world) {
 		this.world = world;
@@ -253,7 +258,7 @@ public class Turn {
 	/**
 	 * Returns world.
 	 * 
-	 * @return
+	 * @return The world where you are playing in.
 	 */
 	public World getWorld() {
 		return world;
@@ -261,7 +266,7 @@ public class Turn {
 	/**
 	 * Sets players. (Vector)
 	 * 
-	 * @param players
+	 * @param players Vector of all players in this game/match.
 	 */
 	private void setPlayers(Vector<Player> players) {
 		this.players = players;
@@ -269,15 +274,15 @@ public class Turn {
 	/**
 	 * Returns players. (Vector)
 	 * 
-	 * @return
+	 * @return players Vector of all players in this game/match.
 	 */
 	public Vector<Player> getPlayers() {
 		return players;
 	}
 	/**
-	 * Sets allocatable armies.
+	 * Sets allocatable armies, usually the one created with createArmies.
 	 * 
-	 * @param allocatableArmies
+	 * @param allocatableArmies The armies which can be allocated by the player.
 	 */
 	private void setAllocatableArmies(Vector<Army> allocatableArmies) {
 		this.allocatableArmies = allocatableArmies;
@@ -285,7 +290,7 @@ public class Turn {
 	/**
 	 * Returns allocatable armies.
 	 * 
-	 * @return
+	 * @return Vector with armies.
 	 */
 	private Vector<Army> getAllocatableArmies() {
 		return allocatableArmies;
@@ -294,7 +299,7 @@ public class Turn {
 	/**
 	 * Gets allocatable army-count.
 	 * 
-	 * @return
+	 * @return Integer of the number of armies to allocate.
 	 */
 	public int getAllocatableArmyCount() {
 		return getAllocatableArmies().size();
@@ -303,8 +308,9 @@ public class Turn {
 	/**
 	 * Calculates maximum number of possible defending armies.
 	 * 
-	 * @param defender
-	 * @return
+	 * @param defender Country which will defend.
+	 * @param armyCount Number of attacking armies.
+	 * @return Number of armies defending (1 or 2).
 	 */
 	private int calcMaxDefenderCount(Country defender, int armyCount) {
 			
@@ -320,10 +326,10 @@ public class Turn {
 	}
 
 	/**
-	 * DOCME
+	 * Calculates maximum number of armies which can attack from the selected country.
 	 * 
-	 * @param country
-	 * @return
+	 * @param country Country where to calculate the maximum number to attack with.
+	 * @return Maximum number of armies to attack with.
 	 */
 	public int calcMaxAttackCount(Country country) {
 		int armyCount = country.getArmyCount();
@@ -338,8 +344,8 @@ public class Turn {
 	/**
 	 * Finds the owner of a country.
 	 * 
-	 * @param country
-	 * @return
+	 * @param country Country where you want to find the owner.
+	 * @return Owner of the country.
 	 */
 	public Player findPlayerToCountry(Country country) { // private
 		for (Player player : players) {
