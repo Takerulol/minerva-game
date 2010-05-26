@@ -48,7 +48,5 @@ public class Mission extends ValueObject {
 	 */
 	public boolean isFulfilled() {
 		return fulfilled;
-	}
-	
-	
+	}	
 }
