@@ -38,6 +38,7 @@ import java.util.Vector;
 import de.hochschule.bremen.minerva.core.Game;
 import de.hochschule.bremen.minerva.core.Turn;
 import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
+import de.hochschule.bremen.minerva.exceptions.IsOwnCountryException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughArmiesException;
 import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.exceptions.PlayerExistsException;
@@ -449,6 +450,8 @@ public class MinervaCUI implements UserInterface {
 					this.error("Länder sind nicht benachbart. Grund: "+e.getMessage());
 				} catch (NotEnoughArmiesException e) {
 					this.error("Sie haben nicht genug Einheiten, um diesen Zug auszuführen");
+				} catch (IsOwnCountryException e) {
+					this.error("Das anzugreifende Land gehört Ihnen.");
 				}
 				
 				this.outln("- '"+turn.getCurrentPlayer().getUsername()+"' möchten Sie weiter angreifen [J/N]?");
