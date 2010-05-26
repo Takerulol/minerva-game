@@ -85,7 +85,8 @@ public class WorldFile extends World {
 	/**
 	 * Registers the world import file object.
 	 * 
-	 * @param worldFile - The world import file object (*.world)
+	 * @param worldFile The world import file object (*.world)
+	 * @see File
 	 * 
 	 */
 	public WorldFile(File worldFile) {
@@ -94,11 +95,12 @@ public class WorldFile extends World {
 
 	/**
 	 * Parses the world import file and pushs the data into the
-	 * world value object attributes @see {@link World}
+	 * world value object attributes.
 	 * 
-	 * @throws WorldFileNotFoundException - If the given "*.world" file was not found.
-	 * @throws WorldFileParseException 
-	 * @throws WorldFileExtensionException 
+	 * @throws WorldFileNotFoundException If the given "*.world" file was not found.
+	 * @throws WorldFileParseException If the world import file is not "well-formed".
+	 * @throws WorldFileExtensionException If the file extension is wrong.
+	 * @see World 
 	 * 
 	 */
 	public void parse() throws WorldFileExtensionException, WorldFileNotFoundException, WorldFileParseException {
@@ -128,14 +130,14 @@ public class WorldFile extends World {
 
 	/**
 	 * Uses the world import file internal mapping structure
-	 * and ports this to the real world value objects.
-	 * 
-	 * IMPORTANT: Use this method after you've persisted the world
+	 * and ports this to the real world value objects.<br />
+	 * <br />
+	 * <b>IMPORTANT:</b> Use this method after you've persisted the world
 	 * before. After you've persisted the countries for example will
 	 * have the generated ids from the persistence layer. Otherwise it
-	 * is not possible to create the mapping.
-	 * 
-	 * NOTE: You have to store the world object after creating the country
+	 * is not possible to create the mapping.<br />
+	 * <br />
+	 * <b>NOTE:</b> You have to store the world object after creating the country
 	 * dependencies to instruct the persistence layer to store this country
 	 * relations.
 	 * 
@@ -153,12 +155,12 @@ public class WorldFile extends World {
 	}
 	
 	/**
-	 * Starts the parser and returns the document root.
+	 * Opens the world import file and returns the document root.
 	 * 
-	 * @return
+	 * @return The world import file root element.
 	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
+	 * @throws SAXException Parser engine exception.
+	 * @throws IOException File not found.
 	 */
 	private Element open() throws ParserConfigurationException, SAXException, IOException {
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -171,8 +173,8 @@ public class WorldFile extends World {
 	 * Extracts the meta data from the world import file
 	 * and pushs the data into the object attributes.
 	 * 
-	 * @param dataSource - The document root @see {@link WorldFile#open()}
-	 * @throws WorldFileParseException - If the document is not well-formed.
+	 * @param dataSource The document root @see WorldFile#open()
+	 * @throws WorldFileParseException If the document is not well-formed.
 	 * 
 	 */
 	private void extractMeta(Element dataSource) throws WorldFileParseException {
@@ -211,8 +213,8 @@ public class WorldFile extends World {
 	 * Extracts the continent data from the world import file
 	 * and saves the data in an temporally hash map.
 	 * 
-	 * @param dataSource - The document root @see {@link WorldFile#open()}
-	 * @throws WorldFileParseException - If the document is not well-formed.
+	 * @param dataSource The document root @see WorldFile#open()
+	 * @throws WorldFileParseException If the document is not well-formed.
 	 * 
 	 */
 	private void extractContinents(Element dataSource) throws WorldFileParseException {
@@ -235,18 +237,17 @@ public class WorldFile extends World {
 	/**
 	 * Extracts the countries from the world import file.
 	 * The countries will be pushed into the countries vector
-	 * (@see {@link World#getCountries()}.
+	 * World#getCountries()
 	 * 
 	 * The world import file has an own "country-country" relation
-	 * mapping (the ids from the persistence layer differs from the
-	 * ids in the world import file).
+	 * mapping (the id's from the persistence layer differs from the
+	 * id's in the world import file).
 	 * 
 	 * Further the method will extract the country dependencies
 	 * and add the correct continent to the country value object.
 	 * 
-	 * @param dataSource - The worlds import file root element
-	 * 
-	 * @throws WorldFileParseException - If the world import file has the wrong data structure.
+	 * @param dataSource The worlds import file root element
+	 * @throws WorldFileParseException If the world import file has the wrong data structure.
 	 * 
 	 */
 	private void extractCountries(Element dataSource) throws WorldFileParseException {
@@ -304,7 +305,7 @@ public class WorldFile extends World {
 	 * is valid. If it is not valid the method will raise
 	 * the WorldFileParseException.
 	 *
-	 * @throws WorldFileParseException - The world import file is not well-formed.
+	 * @throws WorldFileParseException The world import file is not well-formed.
 	 *
 	 */
 	private void validate(Element dataSource) throws WorldFileParseException {
@@ -328,7 +329,7 @@ public class WorldFile extends World {
 	 * Extracts the text from an given xml node.
 	 * For example <tag>text</tag>.
 	 * 
-	 * @param tag - The tag name from which this method will extract the text.
+	 * @param tag The tag name from which this method will extract the text.
 	 * @return The tag content.
 	 * 
 	 */
@@ -340,7 +341,7 @@ public class WorldFile extends World {
 	/**
 	 * The world import file object.
 	 * 
-	 * @return - The world import file.
+	 * @return The world import file.
 	 * 
 	 */
 	public File getWorldFile() {
