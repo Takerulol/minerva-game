@@ -54,8 +54,16 @@ import de.hochschule.bremen.minerva.vo.Continent;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.World;
 
-// TODO: If the country/neighbour mapping is not valid -> throw Exception (at the moment "NullPointerException" ); ).
+/**
+ * Represents a physical file that contains the data structure to describe
+ * a world with it's countries and country dependencies. It is possible to
+ * parse this file and store the information in the world value object attributes.
+ * 
+ * @version $Id$
+ *
+ */
 public class WorldFile extends World {
+	// TODO: If the country/neighbour mapping is not valid -> throw Exception (at the moment "NullPointerException" ); ).
 	
 	private static final String MESSAGE_FILE_NOT_WELLFORMED = "The world import file is not well-formed. ";
 
@@ -71,7 +79,7 @@ public class WorldFile extends World {
 	// This temporally map contains the countries from the world import file.
 	private HashMap<Integer, Country> extractedCountries = new HashMap<Integer, Country>();
 
-	// The neighbour mapping. Because there is a different mapping in the worlds import file.
+	// The neighbor mapping. Because there is a different mapping in the worlds import file.
 	private HashMap<Integer, Vector<Integer>> neighbourMapping = new HashMap<Integer, Vector<Integer>>();
 	
 	/**
