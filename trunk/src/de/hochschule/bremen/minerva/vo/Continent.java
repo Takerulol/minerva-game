@@ -32,6 +32,9 @@ package de.hochschule.bremen.minerva.vo;
 /**
  * Represents a country value object.
  *
+ * @version $Id$
+ * @since 1.0
+ *
  */
 public class Continent extends ValueObject {
 

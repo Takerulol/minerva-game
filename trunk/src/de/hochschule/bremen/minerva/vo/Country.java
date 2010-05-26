@@ -35,6 +35,9 @@ import java.util.Vector;
 /**
  * Represents a country.
  *
+ * @version $Id$
+ * @since 1.0
+ * 
  */
 public class Country extends ValueObject {
 
