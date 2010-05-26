@@ -80,6 +80,7 @@ public class WorldManager {
 	 * and call this method again for country dependency storage.
 	 * 
 	 * example:
+	 * <pre>
 	 * World world = new World()
 	 * 
 	 * // ...
@@ -101,7 +102,7 @@ public class WorldManager {
 	 *
 	 * // Store the world.
 	 * WorldManager.getInstance().store(world);
-	 * 
+	 * </pre>
 	 * 
 	 * @param world
 	 * 
