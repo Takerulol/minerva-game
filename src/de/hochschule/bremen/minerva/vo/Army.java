@@ -29,26 +29,30 @@
  */
 package de.hochschule.bremen.minerva.vo;
 
+/**
+ * The army value object
+ *
+ */
 public class Army extends ValueObject {
 
 	private boolean moved = false;
 
 	/**
-	 * Flag this army as "moved". Use this
-	 * method, if the army was moved from one
-	 * country to another country.
+	 * Flag this army as "moved". Use this method,
+	 * if the army was moved from one country to another country.
 	 * 
 	 * @param wasMoved
+	 * 
 	 */
 	public void moved(boolean wasMoved) {
 		this.moved = wasMoved;
 	}
 
 	/**
-	 * Was this army moved from one
-	 * country to another country?
-	 * 
-	 * @return
+	 * Was this army moved from one country to another country?
+	 *
+	 * @return true / false
+	 *
 	 */
 	public boolean wasMoved() {
 		return this.moved;

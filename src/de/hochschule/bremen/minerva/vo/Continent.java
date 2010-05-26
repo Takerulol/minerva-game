@@ -29,6 +29,10 @@
  */
 package de.hochschule.bremen.minerva.vo;
 
+/**
+ * Represents a country value object.
+ *
+ */
 public class Continent extends ValueObject {
 
 	private int id = DEFAULT_ID;
@@ -44,9 +48,9 @@ public class Continent extends ValueObject {
 	}
 
 	/**
-	 * Returns the id.
+	 * Returns the continent id.
 	 * 
-	 * @return
+	 * @return The continent id.
 	 */
 	public int getId() {
 		return this.id;
@@ -64,20 +68,19 @@ public class Continent extends ValueObject {
 	/**
 	 * Returns the name.
 	 * 
-	 * @return
+	 * @return The continent name.
 	 */
 	public String getName() {
 		return this.name;
 	}
 
 	/**
-	 * Made out of all attributes one string
+	 * Returns a string with all object attributes.
 	 * 
-	 * @return
+	 * @return All object attributes.
+	 * 
 	 */
 	public String toString() {
 		return getClass().getName() + "[id=" + id + ",name=" + name + "]";
 	}
-	
-
 }
