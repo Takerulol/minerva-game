@@ -374,6 +374,8 @@ public class MinervaCUI implements UserInterface {
 		this.outln(true, "- '"+turn.getCurrentPlayer().getUsername()+"' möchten Sie Einheiten verschieben [J/N]?");
 		answer = this.readBoolean();
 		
+		World world = turn.getWorld();
+		
 		// Step 3: Relocate your armies!
 		if (answer) {
 			boolean nextMove = false;
@@ -383,11 +385,11 @@ public class MinervaCUI implements UserInterface {
 				
 				// Choose own country
 				this.outln(true, "- Wählen Sie das Ausgangsland: ");
-				Country source = turn.getWorld().getCountry(this.readInt());
+				Country source = world.getCountry(this.readInt());
 				
 				// Choose second own country
 				this.outln(true, "- Wählen Sie das Ziel-Land: ");
-				Country destination = turn.getWorld().getCountry(this.readInt());
+				Country destination = world.getCountry(this.readInt());
 				
 				// Choose army-count to move (one must remain)
 				this.outln(true, "- Bitte geben Sie die Anzahl der Einheiten an, die verschoben werden sollen (max: "+(source.getArmyCount()-1)+"): ");
@@ -419,6 +421,8 @@ public class MinervaCUI implements UserInterface {
 		this.outln(true, "- '"+turn.getCurrentPlayer().getUsername()+"' möchten Sie angreifen [J/N]?");
 		boolean answer = this.readBoolean();
 		
+		World world = turn.getWorld();
+		
 		// Step 2: Attack!
 		if (answer) {
 			boolean nextAttack = false;
@@ -428,11 +432,11 @@ public class MinervaCUI implements UserInterface {
 				
 				// Choose own country
 				this.outln(true, "- Wählen Sie ihr Land, von dem Sie angreifen möchten: ");
-				Country attacker = turn.getWorld().getCountry(this.readInt());
+				Country attacker = world.getCountry(this.readInt());
 				
 				// Choose enemy country
 				this.outln(true, "- Wählen Sie ein Land, das Sie angreifen möchten: ");
-				Country defender = turn.getWorld().getCountry(this.readInt());
+				Country defender = world.getCountry(this.readInt());
 				
 				// Choose 1 to max 3 armies to attack
 				this.outln(true, "- Bitte geben Sie die Anzahl der angreifenden Einheiten ein (max: "+turn.calcMaxAttackCount(attacker)+"): ");
@@ -461,11 +465,14 @@ public class MinervaCUI implements UserInterface {
 	private void allocateNewArmies(Turn turn) {
 		int armyCount = turn.getAllocatableArmyCount();
 
+		World world = turn.getWorld();
+		Player currentPlayer = turn.getCurrentPlayer();
+		
 		for (int x = 0; x < armyCount; x++) {				
 			this.printCountryList();
 
-			this.outln("["+ turn.getCurrentPlayer().getUsername() +"]: "+ (x+1)+ ". Einheit setzen. Eingabe der [Id] des Landes: ");
-			Country country = this.game.getWorld().getCountry(this.readInt());
+			this.outln("["+ currentPlayer.getUsername() +"]: "+ (x+1)+ ". Einheit setzen. Eingabe der [Id] des Landes: ");
+			Country country = world.getCountry(this.readInt());
 
 			turn.allocateArmy(country);
 		}
