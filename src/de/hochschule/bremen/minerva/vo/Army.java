@@ -31,6 +31,9 @@ package de.hochschule.bremen.minerva.vo;
 
 /**
  * The army value object
+ * 
+ * @version $Id$
+ * @since 1.0
  *
  */
 public class Army extends ValueObject {
