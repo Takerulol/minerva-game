@@ -32,6 +32,14 @@ package de.hochschule.bremen.minerva.core;
 
 import de.hochschule.bremen.minerva.vo.Player;
 
+
+/**
+ * Result of one attack saving the attacker, defender, armies lost and if the attack was
+ * a success.
+ * 
+ * @author cbollmann
+ *
+ */
 public class AttackResult {
 	private Player attacker;
 	private Player defender;
@@ -41,12 +49,13 @@ public class AttackResult {
 	
 
 	/**
-	 * DOCME
-	 * @param attacker
-	 * @param defender
-	 * @param lostArmies
-	 * @param defeatedArmies
-	 * @param win
+	 * Constructor of the AttackResult.
+	 * 
+	 * @param attacker Attacking player.
+	 * @param defender Defending player.
+	 * @param lostArmies Armies lost by the attacker.
+	 * @param defeatedArmies Armies lost by the defender.
+	 * @param win Was the attack a success?
 	 */
 	public AttackResult(Player attacker, Player defender, int lostArmies, int defeatedArmies, boolean win) {
 		setAttacker(attacker);
@@ -57,88 +66,99 @@ public class AttackResult {
 	}
 	
 	/**
+	 * Sets lost armies of the attacker.
 	 * 
-	 * @param lostAttackerArmies
+	 * @param lostAttackerArmies Number of lost armies.
 	 */
 	private void setLostAttackerArmies(int lostAttackerArmies) {
 		this.lostAttackerArmies = lostAttackerArmies;
 	}
 	
 	/**
+	 * Gets lost armies of the attacker.
 	 * 
-	 * @return
+	 * @return Number of lost armies.
 	 */
 	public int getLostAttackerArmies() {
 		return lostAttackerArmies;
 	}
 	
 	/**
+	 * Sets lost armies of the defender.
 	 * 
-	 * @param lostDefenderArmies
+	 * @param lostDefenderArmies Number of lost armies.
 	 */
 	private void setLostDefenderArmies(int lostDefenderArmies) {
 		this.lostDefenderArmies = lostDefenderArmies;
 	}
 	
 	/**
+	 * Gets lost armies of the defender.
 	 * 
-	 * @return
+	 * @return Number of lost armies.
 	 */
 	public int getLostDefenderArmies() {
 		return lostDefenderArmies;
 	}
 	
 	/**
+	 * Sets success of the attack.
 	 * 
-	 * @param win
+	 * @param win Success yes/no?
 	 */
 	private void setWin(boolean win) {
 		this.win = win;
 	}
 	
 	/**
+	 * Returns success of the attack.
 	 * 
-	 * @return
+	 * @return Success yes/no?
 	 */
 	public boolean isWin() {
 		return win;
 	}
 
 	/**
-	 * 
-	 * @param attacker
+	 * Sets attacking player.
+	 *  
+	 * @param attacker Attacking player.
 	 */
 	private void setAttacker(Player attacker) {
 		this.attacker = attacker;
 	}
 
 	/**
+	 * Gets attacking player.
 	 * 
-	 * @return
+	 * @return Attacking player.
 	 */
 	public Player getAttacker() {
 		return attacker;
 	}
 
 	/**
+	 * Sets defending player.
 	 * 
-	 * @param defender
+	 * @param defender Defending player.
 	 */
 	private void setDefender(Player defender) {
 		this.defender = defender;
 	}
 
 	/**
+	 * Gets defending player.
 	 * 
-	 * @return
+	 * @return Defending player.
 	 */
 	public Player getDefender() {
 		return defender;
 	}
 	
 	/**
+	 * Gets the whole AttackResult as a string.
 	 * 
-	 * @return
+	 * @return String of AttackResult.
 	 */
 	public String toString() {
 		return (""+attacker.getUsername()+" attacked "+defender.getUsername()+", lost "+lostAttackerArmies+ ((lostAttackerArmies > 1)? " armies" : " army")+" and defeated "+lostDefenderArmies+((lostDefenderArmies > 1)? " armies. " : " army. ")+attacker.getUsername()+ ((win) ? " won" : " did not win")+ " the country.");
