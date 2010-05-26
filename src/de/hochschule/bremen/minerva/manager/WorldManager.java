@@ -136,7 +136,7 @@ public class WorldManager {
 
 		// We try to load the world by the given name to verify that
 		// it was already send through the persistence layer and have all
-		// generated ids. If it is possible to load the world, with the
+		// generated id's. If it is possible to load the world, with the
 		// storage engine, we are able to store also the country dependencies.
 		try {
 			World dummy = WorldService.getInstance().load(world.getName());
