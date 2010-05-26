@@ -33,6 +33,7 @@ package de.hochschule.bremen.minerva.core;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
+import de.hochschule.bremen.minerva.exceptions.IsOwnCountryException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughArmiesException;
 import de.hochschule.bremen.minerva.util.Die;
 import de.hochschule.bremen.minerva.vo.Army;
@@ -112,8 +113,10 @@ public class Turn {
 	 * @param armyCount
 	 * @return
 	 * @throws CountriesNotInRelationException
+	 * @throws IsOwnCountryException 
+	 * @throws NotEnoughArmiesException
 	 */
-	public void attack(Country attacker, Country defender, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException {
+	public void attack(Country attacker, Country defender, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException {
 
 		if (this.world.areNeighbours(attacker, defender)) {
 			if ((armyCount <= 3) && (armyCount>0) && (currentPlayer.hasCountry(attacker)) && (!currentPlayer.hasCountry(defender))) {
@@ -122,6 +125,12 @@ public class Turn {
 				if (!(armyCount <= attacker.getArmyCount())) {
 					throw new NotEnoughArmiesException("There are not enough armies to attack.");
 				}
+				
+				//Exception for attacking an own country
+				if (currentPlayer.hasCountry(defender)) {
+					throw new IsOwnCountryException("The owner of the denfending country is the attacker himself.");
+				}
+				
 				
 				Vector<Die> attackerDice = new Vector<Die>();
 				Vector<Die> defenderDice = new Vector<Die>();
