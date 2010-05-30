@@ -45,6 +45,10 @@ public class Player extends ValueObject {
 	// The countries, that the player won.
 	private Vector<Country> countries = new Vector<Country>();
 	
+	//private Vector<CountryCard> countryMaps = new Vector<CountryCard>();
+	
+	//private Vector<Mission> missions = new Vector<Mission>();
+	
 	/**
 	 * Sets the player id.
 	 * 
