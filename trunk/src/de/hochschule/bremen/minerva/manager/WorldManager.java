@@ -139,7 +139,7 @@ public class WorldManager {
 		// generated id's. If it is possible to load the world, with the
 		// storage engine, we are able to store also the country dependencies.
 		try {
-			World dummy = WorldService.getInstance().load(world.getName());
+			World dummy = WorldService.getInstance().find(world.getName());
 			world.setId(dummy.getId());
 		} catch (WorldNotFoundException e) {
 			dependencyStorage = false;
@@ -203,7 +203,7 @@ public class WorldManager {
 	 * 
 	 */
 	public Vector<World> getList() throws PersistenceIOException {
-		Vector<World> worlds = WorldService.getInstance().loadAll();
+		Vector<World> worlds = WorldService.getInstance().findAll();
 
 		for (World world : worlds) {
 			this.loadDependencies(world);
@@ -229,7 +229,7 @@ public class WorldManager {
 	 */
 	public Vector<World> getList(boolean lite) throws PersistenceIOException {
 		if (lite) {
-			return WorldService.getInstance().loadAll();
+			return WorldService.getInstance().findAll();
 		} else {
 			return this.getList();
 		}
@@ -264,7 +264,7 @@ public class WorldManager {
 	 * 
 	 */
 	public World get(World world) throws WorldNotFoundException, PersistenceIOException {
-		world = WorldService.getInstance().load(world.getId());
+		world = WorldService.getInstance().find(world.getId());
 		this.loadDependencies(world);
 
 		return world;
@@ -282,7 +282,7 @@ public class WorldManager {
 		Vector<Country> countries = CountryService.getInstance().loadAll(world);
 		
 		for (Country country : countries) {
-			country.setContinent(ContinentService.getInstance().load(country.getContinent().getId()));
+			country.setContinent(ContinentService.getInstance().find(country.getContinent().getId()));
 			
 			for (Neighbour neighbour : NeighbourService.getInstance().loadAll(country)) {
 				world.connectCountries(country, neighbour);

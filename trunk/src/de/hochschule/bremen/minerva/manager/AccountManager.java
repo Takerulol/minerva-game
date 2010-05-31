@@ -119,7 +119,7 @@ public class AccountManager {
 	 * @throws PersistenceIOException
 	 */
 	public Vector<Player> getPlayerList() throws PersistenceIOException {
-		Vector<Player> players = (Vector<Player>)service.loadAll();
+		Vector<Player> players = (Vector<Player>)service.findAll();
 		return players;
 	}
 	
@@ -132,7 +132,7 @@ public class AccountManager {
 	 */
 	@SuppressWarnings("unchecked")
 	public Vector<Player> getPlayerList(boolean loggedInPlayers) throws PersistenceIOException {
-		Vector<Player> players = (Vector<Player>)service.loadAll();
+		Vector<Player> players = (Vector<Player>)service.findAll();
 		if (loggedInPlayers && (players != null)) {
 			Vector<Player> temp = (Vector<Player>) players.clone();
 			for (Player player : players) {
@@ -154,7 +154,7 @@ public class AccountManager {
 	 */
 	public Player getPlayer(String username) throws PlayerDoesNotExistException, PersistenceIOException {
 		try {
-			return service.load(username);
+			return service.find(username);
 		} catch (PlayerNotFoundException e) {
 			throw new PlayerDoesNotExistException("A player with that username does not" +
 													" exist.");
@@ -170,7 +170,7 @@ public class AccountManager {
 	 */
 	public Player getPlayer(int id) throws PlayerDoesNotExistException, PersistenceIOException {
 		try {
-			return service.load(id);
+			return service.find(id);
 		} catch (PlayerNotFoundException e) {
 			throw new PlayerDoesNotExistException("A player with that id does not" +
 													" exist.");

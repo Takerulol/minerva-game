@@ -70,7 +70,7 @@ public class ContinentService extends PersistenceService {
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public Vector<Continent> loadAll() throws PersistenceIOException {
+	public Vector<Continent> findAll() throws PersistenceIOException {
 		Vector<Continent> continents = (Vector)handler.readAll();
 		return continents;
 	}
@@ -83,7 +83,7 @@ public class ContinentService extends PersistenceService {
 	 * @throws PersistenceIOException
 	 */
 	@Override
-	public Continent load(int id) throws ContinentNotFoundException, PersistenceIOException {
+	public Continent find(int id) throws ContinentNotFoundException, PersistenceIOException {
 		return (Continent)handler.read(id);
 	}
 
@@ -94,7 +94,7 @@ public class ContinentService extends PersistenceService {
 	 * @return
 	 * @throws PersistenceIOException
 	 */
-	public Continent load(String name) throws ContinentNotFoundException, PersistenceIOException {
+	public Continent find(String name) throws ContinentNotFoundException, PersistenceIOException {
 		return (Continent)handler.read(name);
 	}
 	

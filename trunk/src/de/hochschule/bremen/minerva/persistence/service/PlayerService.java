@@ -83,7 +83,7 @@ public class PlayerService extends PersistenceService {
 	 * @throws PlayerNotFoundException, PersistenceIOException
 	 */
 	@Override
-	public Player load(int id) throws PlayerNotFoundException, PersistenceIOException {
+	public Player find(int id) throws PlayerNotFoundException, PersistenceIOException {
 		return (Player)handler.read(id);
 	}
 
@@ -94,7 +94,7 @@ public class PlayerService extends PersistenceService {
 	 * @return
 	 * @throws PersistenceIOException
 	 */
-	public Player load(String username) throws PlayerNotFoundException, PersistenceIOException {
+	public Player find(String username) throws PlayerNotFoundException, PersistenceIOException {
 		return (Player)handler.read(username);
 	}
 	
@@ -106,7 +106,7 @@ public class PlayerService extends PersistenceService {
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public Vector<Player> loadAll() throws PersistenceIOException {
+	public Vector<Player> findAll() throws PersistenceIOException {
 		return (Vector)handler.readAll();
 	}
 
