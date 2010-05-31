@@ -57,6 +57,17 @@ public class Country extends ValueObject {
 	public Country() {
 		this.armies.add(new Army());
 	}
+
+	/**
+	 * Creates a new country with the given id.
+	 * 
+	 * @param id
+	 * 
+	 */
+	public Country(int id) {
+		this();
+		this.setId(id);
+	}
 	
 	/**
 	 * Sets the country id.
