@@ -43,6 +43,13 @@ import de.hochschule.bremen.minerva.persistence.db.handler.NeighbourHandler;
 import de.hochschule.bremen.minerva.persistence.db.handler.PlayerHandler;
 import de.hochschule.bremen.minerva.persistence.db.handler.WorldHandler;
 
+/**
+ * Database persistence handler creator.
+ * 
+ * @since 1.0
+ * @version $Id$
+ * 
+ */
 public class DatabasePersistence implements Persistence {
 
 	/**
