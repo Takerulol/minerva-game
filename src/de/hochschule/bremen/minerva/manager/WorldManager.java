@@ -155,16 +155,15 @@ public class WorldManager {
 		}
 
 		if (dependencyStorage) {
-			for (Country country : world.getCountries()) {
-				// TODO: Replace the following code with the new world.getNeighbours(country) method.
-				Vector<Integer> neighbours = world.getNeighbours(country.getId());
-
+			for (Country country : world.getCountries()) {				
 				if (world.hasNeighbours(country)) {
-					for (Integer id : neighbours) {
-						Neighbour neighbour = new Neighbour();
-						neighbour.setId(id);
-						neighbour.getReference().setId(country.getId());
-						NeighbourService.getInstance().save(neighbour);
+					Vector<Country> neighbours = world.getNeighbours(country);
+
+					for (Country neighbour : neighbours) {
+						Neighbour neighbourMapping = new Neighbour();
+						neighbourMapping.setId(neighbour.getId());
+						neighbourMapping.getReference().setId(country.getId());
+						NeighbourService.getInstance().save(neighbourMapping);
 					}
 				}
 			}

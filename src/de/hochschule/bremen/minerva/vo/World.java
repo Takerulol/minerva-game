@@ -244,9 +244,10 @@ public class World extends ValueObject {
 	 */
 	public Country getCountry(Country byCountry) {
 		Country searchedCountry = new Country();
-		for (Country country : this.getCountries()) {
+		search: for (Country country : this.getCountries()) {
 			if (country.getId() == byCountry.getId()) {
 				searchedCountry = country;
+				break search;
 			}
 		}
 		return searchedCountry;
@@ -325,14 +326,14 @@ public class World extends ValueObject {
 	 * @return
 	 */
 	public Vector<Country> getNeighbours(Country country) {
-		Vector<Integer> countries = this.countryGraph.getNeighbours(country.getId());
+		Vector<Integer> neighbours = this.countryGraph.getNeighbours(country.getId());
 		Vector<Country> selectedCountries = new Vector<Country>();
 
-		for (Integer countryId : countries) {
-			for (Country originCountry : this.getCountries()) {
-				if (country.getId() == countryId) {
+		for (Integer neighbourId : neighbours) {
+			search: for (Country originCountry : this.getCountries()) {
+				if (originCountry.getId() == neighbourId) {
 					selectedCountries.add(originCountry);
-					break;
+					break search;
 				}
 			}
 		}

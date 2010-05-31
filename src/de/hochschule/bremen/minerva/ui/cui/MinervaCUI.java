@@ -386,11 +386,11 @@ public class MinervaCUI implements UserInterface {
 				
 				// Choose own country
 				this.outln(true, "- Wählen Sie das Ausgangsland: ");
-				Country source = world.getCountry(this.readInt());
+				Country source = world.getCountry(new Country(this.readInt()));
 				
 				// Choose second own country
 				this.outln(true, "- Wählen Sie das Ziel-Land: ");
-				Country destination = world.getCountry(this.readInt());
+				Country destination = world.getCountry(new Country(this.readInt()));
 				
 				// Choose army-count to move (one must remain)
 				this.outln(true, "- Bitte geben Sie die Anzahl der Einheiten an, die verschoben werden sollen (max: "+(source.getArmyCount()-1)+"): ");
@@ -433,11 +433,11 @@ public class MinervaCUI implements UserInterface {
 				
 				// Choose own country
 				this.outln(true, "- Wählen Sie ihr Land, von dem Sie angreifen möchten: ");
-				Country attacker = world.getCountry(this.readInt());
+				Country attacker = world.getCountry(new Country(this.readInt()));
 				
 				// Choose enemy country
 				this.outln(true, "- Wählen Sie ein Land, das Sie angreifen möchten: ");
-				Country defender = world.getCountry(this.readInt());
+				Country defender = world.getCountry(new Country(this.readInt()));
 				
 				// Choose 1 to max 3 armies to attack
 				this.outln(true, "- Bitte geben Sie die Anzahl der angreifenden Einheiten ein (max: "+turn.calcMaxAttackCount(attacker)+"): ");
@@ -475,7 +475,7 @@ public class MinervaCUI implements UserInterface {
 			this.printCountryList();
 
 			this.outln("["+ currentPlayer.getUsername() +"]: "+ (x+1)+ ". Einheit setzen. Eingabe der [Id] des Landes: ");
-			Country country = world.getCountry(this.readInt());
+			Country country = world.getCountry(new Country(this.readInt()));
 
 			turn.allocateArmy(country);
 		}
