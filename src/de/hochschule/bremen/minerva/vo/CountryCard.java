@@ -29,14 +29,14 @@
  */
 package de.hochschule.bremen.minerva.vo;
 
-import java.util.Vector;
+//import java.util.Vector;
 
 public class CountryCard {
 
 	private boolean countryIsLiberated = false;
 	
 	private Country reference = new Country();
-	private Vector<CountryCard> countryCards = null;
+	//private Vector<CountryCard> countryCards = null;
 	private String tradingPlayer;
 	
 	
