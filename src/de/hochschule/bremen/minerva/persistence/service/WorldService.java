@@ -77,7 +77,7 @@ public class WorldService extends PersistenceService {
 	 * @throws PersistenceIOException 
 	 */
 	@SuppressWarnings("unchecked")
-	public Vector<World> loadAll() throws PersistenceIOException {
+	public Vector<World> findAll() throws PersistenceIOException {
 		return (Vector<World>)handler.readAll();
 	}
 
@@ -87,7 +87,7 @@ public class WorldService extends PersistenceService {
 	 * @param id
 	 * @return
 	 */
-	public World load(int id) throws WorldNotFoundException, PersistenceIOException {
+	public World find(int id) throws WorldNotFoundException, PersistenceIOException {
 		return (World)handler.read(id);
 	}
 
@@ -99,7 +99,7 @@ public class WorldService extends PersistenceService {
 	 * @throws WorldNotFoundException
 	 * @throws PersistenceIOException
 	 */
-	public World load(String name) throws WorldNotFoundException, PersistenceIOException {
+	public World find(String name) throws WorldNotFoundException, PersistenceIOException {
 		return (World)handler.read(name);
 	}
 	

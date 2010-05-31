@@ -77,7 +77,7 @@ public class CountryService extends PersistenceService {
 	 * @throws PersistenceIOException 
 	 */
 	@SuppressWarnings("unchecked")
-	public Vector<Country> loadAll() throws PersistenceIOException {
+	public Vector<Country> findAll() throws PersistenceIOException {
 		Vector<Country> countries = (Vector)handler.readAll();
 		return countries;
 	}
@@ -101,7 +101,7 @@ public class CountryService extends PersistenceService {
 	 * @param id
 	 * @return
 	 */
-	public Country load(int id) throws CountryNotFoundException, PersistenceIOException {
+	public Country find(int id) throws CountryNotFoundException, PersistenceIOException {
 		return (Country)handler.read(id);
 	}
 
@@ -113,7 +113,7 @@ public class CountryService extends PersistenceService {
 	 * @throws CountryNotFoundException
 	 * @throws PersistenceIOException
 	 */
-	public Country load(String name) throws CountryNotFoundException, PersistenceIOException {
+	public Country find(String name) throws CountryNotFoundException, PersistenceIOException {
 		return (Country)handler.read(name);
 	}
 	

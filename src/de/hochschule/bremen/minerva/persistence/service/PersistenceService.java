@@ -46,13 +46,13 @@ public abstract class PersistenceService {
 	protected static Persistence storage = new DatabasePersistence(); 
 	
 	// DOCME!!!
-	abstract public Vector<?> loadAll() throws PersistenceIOException;
+	abstract public Vector<?> findAll() throws PersistenceIOException;
 
 	// DOCME!!!
-	abstract public ValueObject load(int id) throws NotFoundException, PersistenceIOException;
+	abstract public ValueObject find(int id) throws NotFoundException, PersistenceIOException;
 
 	// DOCME !!!
-	abstract public ValueObject load(String name) throws NotFoundException, PersistenceIOException;
+	abstract public ValueObject find(String name) throws NotFoundException, PersistenceIOException;
 
 	// DOCME!!!
 	abstract public void save(ValueObject candidate) throws ExistsException, PersistenceIOException;

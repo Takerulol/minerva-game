@@ -93,18 +93,18 @@ public class NeighbourService extends PersistenceService {
 	}
 
 	@Override
-	public Neighbour load(int id) throws NeighbourNotFoundException, PersistenceIOException {
+	public Neighbour find(int id) throws NeighbourNotFoundException, PersistenceIOException {
 		return (Neighbour)handler.read(id);
 	}
 	
 	@Override
-	public Vector<?> loadAll() throws PersistenceIOException {
+	public Vector<?> findAll() throws PersistenceIOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ValueObject load(String name) throws NotFoundException,
+	public ValueObject find(String name) throws NotFoundException,
 			PersistenceIOException {
 		// TODO Auto-generated method stub
 		return null;
