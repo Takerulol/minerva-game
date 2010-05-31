@@ -36,6 +36,7 @@ import java.util.Vector;
 //import java.util.logging.Level;
 //import java.util.logging.Logger;
 
+import de.hochschule.bremen.minerva.util.ColorTool;
 import de.hochschule.bremen.minerva.vo.Continent;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.World;
@@ -237,9 +238,6 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	 */
 	private Vector<Country> readAll(String sql, Object[] params) throws PersistenceIOException {
 		Vector<Country> countries = new Vector<Country>();
-
-		//LOGGER.log(Level.INFO, sql);
-		//LOGGER.log(Level.INFO, ""+params[0]);
 		
 		try {
 			ResultSet record = this.select(sql, params);
@@ -292,7 +290,7 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 				Object[] params = {
 					registrableCountry.getToken(),
 					registrableCountry.getName(),
-					"ffffffff", //Integer.toHexString(registrableCountry.getColor().getRGB()),
+					ColorTool.toHexCode(registrableCountry.getColor()),
 					registrableCountry.getContinent().getId(),
 					registrableCountry.getWorldId(),
 					registrableCountry.getId()
@@ -303,7 +301,7 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 				Object[] params = {
 					registrableCountry.getToken(),
 					registrableCountry.getName(),
-					"ffffffff", //Integer.toHexString(registrableCountry.getColor().getRGB()),
+					ColorTool.toHexCode(registrableCountry.getColor()),
 					registrableCountry.getContinent().getId(),
 					registrableCountry.getWorldId()
 				};
@@ -335,9 +333,7 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 		country.setId(current.getInt(1));
 		country.setToken(current.getString(2));
 		country.setName(current.getString(3));
-
-		// TODO:  Issue 5: Datenbankzugriff: Problem mit dem Hexcode für die Farben ()
-		// country.setColor(Color.decode(current.getString(4)));
+		country.setColor(ColorTool.fromHexCode(current.getString(4)));
 		
 		// Note that we only save the continent id.
 		// Please verify that you will load the continent

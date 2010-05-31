@@ -29,7 +29,6 @@
  */
 package de.hochschule.bremen.minerva.util;
 
-import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -261,7 +260,7 @@ public class WorldFile extends World {
 			country.setName(dataSourceCountry.getNamedItem("name").getNodeValue());
 
 			// TODO: Get the color from the file
-			country.setColor(Color.BLACK);//node.getNamedItem("color").getNodeValue());
+			country.setColor(ColorTool.fromHexCode(dataSourceCountry.getNamedItem("color").getNodeValue()));
 
 			int continentId = Integer.parseInt(dataSourceCountry.getNamedItem("continent").getNodeValue());
 			country.setContinent(this.extractedContinents.get(continentId));
