@@ -42,6 +42,20 @@ import de.hochschule.bremen.minerva.persistence.exceptions.PlayerNotFoundExcepti
 import de.hochschule.bremen.minerva.persistence.service.PlayerService;
 import de.hochschule.bremen.minerva.vo.Player;
 
+/**
+ * The login and registration subsystem.
+ *
+ * <br />
+ * Usage:
+ * 
+ * <pre>
+ * AccountManager.getInstance().<theMethod>
+ * </pre>
+ * 
+ * @since 1.0
+ * @version $Id$
+ * 
+ */
 public class AccountManager {
 
 	private static AccountManager instance = null;

@@ -32,9 +32,14 @@ package de.hochschule.bremen.minerva;
 import de.hochschule.bremen.minerva.ui.UserInterface;
 import de.hochschule.bremen.minerva.ui.cui.MinervaCUI;
 
-public class App {
-
-	
+/**
+ * The starter class with the main method.
+ *
+ * @since 1.0
+ * @version $Id$
+ * 
+ */
+public class App {	
 	public static void main(String[] args) {
 		UserInterface ui = new MinervaCUI();
 		ui.run();
