@@ -31,6 +31,14 @@ package de.hochschule.bremen.minerva.util;
 
 import java.awt.Color;
 
+/**
+ * Some color tools ;)
+ * Converting color to hexcodes for example.
+ *
+ * @since 1.0
+ * @version $Id$
+ * 
+ */
 public class ColorTool {
 
 	/**
