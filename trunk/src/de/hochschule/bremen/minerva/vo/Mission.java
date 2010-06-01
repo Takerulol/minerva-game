@@ -30,16 +30,15 @@
 package de.hochschule.bremen.minerva.vo;
 
 public class Mission extends ValueObject {
-	
-	private boolean fulfilled = false;
 
-	/**
-	 * DOCME
-	 * 
-	 * @param fulfilled
-	 */
-	public void setFulfilled(boolean fulfilled) {
-		this.fulfilled = fulfilled;
+	private Player missionOwner = null;
+	
+	public Mission(Player missionOwner){
+		this.missionOwner = missionOwner;
+	}
+	
+	public Player getMissionOwner(){
+		return missionOwner;
 	}
 
 	/**
@@ -47,6 +46,6 @@ public class Mission extends ValueObject {
 	 * @return
 	 */
 	public boolean isFulfilled() {
-		return fulfilled;
+		return false;
 	}	
 }

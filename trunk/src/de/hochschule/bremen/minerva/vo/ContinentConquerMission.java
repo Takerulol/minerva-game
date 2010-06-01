@@ -29,7 +29,30 @@
  */
 package de.hochschule.bremen.minerva.vo;
 
+import java.util.Vector;
+
 
 public class ContinentConquerMission extends Mission {
 
+	Vector<Country> countriesOfContinent = new Vector<Country>();
+	
+	public ContinentConquerMission(Vector<Country> countriesOfContinent, Player missionOwner ){
+		super(missionOwner);
+		this.countriesOfContinent = countriesOfContinent;
+	}
+	
+	public Vector<Country> getCountriesOfContinent(){
+		return this.countriesOfContinent;
+	}
+	
+	public boolean isFulfilled() {
+		Boolean check = true;
+		for (Country country : countriesOfContinent) {
+			if (check) {
+				check = this.getMissionOwner().hasCountry(country);
+			}
+		}
+		return check;
+	}	
+	
 }

@@ -45,9 +45,8 @@ public class Player extends ValueObject {
 	// The countries, that the player won.
 	private Vector<Country> countries = new Vector<Country>();
 	
-	//private Vector<CountryCard> countryCards = new Vector<CountryCard>();
+	private Vector<CountryCard> countryCards = new Vector<CountryCard>();
 	
-	//private Vector<Mission> missions = new Vector<Mission>();
 	
 	/**
 	 * Sets the player id.
@@ -247,6 +246,32 @@ public class Player extends ValueObject {
 	}
 	
 	/**
+	 * Adds country card to players card stack.
+	 * 
+	 * @param countryCard
+	 */
+	public void addCountryCard(CountryCard countryCard) {
+		this.countryCards.add(countryCard);
+	}
+	
+	/**
+	 * Removes country card from players card stack.
+	 * 
+	 * @param countryCard
+	 */
+	public void removeCountryCard(CountryCard countryCard) {
+		this.countryCards.remove(countryCard);
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public Vector<CountryCard> getCountryCards() {
+		return countryCards;
+	}
+	
+	/**
 	 * Made out of all attributes one string
 	 * 
 	 * @return
@@ -254,4 +279,6 @@ public class Player extends ValueObject {
 	public String toString() {
 		return getClass().getName() + "[id=" + this.id + ",username=" + this.username + ",last_name=" + this.lastName + ",first_name=" + this.firstName + ",email=" + this.email + ", loggedIn=" + this.loggedIn + "]";
 	}
+
+	
 }

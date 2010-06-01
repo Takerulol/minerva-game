@@ -33,19 +33,22 @@ package de.hochschule.bremen.minerva.vo;
 
 public class CountryCard {
 
-	private boolean countryIsLiberated = false;
-	
 	private Country reference = new Country();
-	//private Vector<CountryCard> countryCards = null;
-	private String tradingPlayer;
 	
+	/**
+	 * 
+	 * @param country
+	 */
+	public CountryCard(Country country){
+		setReference (country);
+	}
 	
 	/**
 	 * Sets the referenced country.
 	 * 
 	 * @param country
 	 */
-	public void setReference(Country country) {
+	private void setReference(Country country) {
 		this.reference = country;
 	}
 	
@@ -57,92 +60,4 @@ public class CountryCard {
 	public Country getReference() {
 		return this.reference;
 	}
-	
-	/**
-	 * DOCME
-	 * 
-	 * @param tradingPlayer
-	 */
-	public void setTradingPlayer(String tradingPlayer) {
-		this.tradingPlayer = tradingPlayer;
-	}
-
-	/**
-	 * DOCME
-	 * 
-	 * @return
-	 */
-	public String getTradingPlayer() {
-		return tradingPlayer;
-	}
-	
-	/**
-	 * Request if the Country is liberated.
-	 */
-	public void liberateCountry(){
-		if(countryIsLiberated){
-			//The currentPlayer get CountryCard.
-		}else{
-			//The currentPlayer get nothing.
-		}
-	}
-	/**
-	 * This method is appropriate to change automatically the Cards of the player 
-	 * if he has three or more cards.
-	 */
-	
-	public void cardChange(){
-	//	if(countryCards >= 3){
-			//Change Cards into armies (and bring them into the play).
-	//	}else{
-			//Change nothing.
-	}
-
-	
-	
-	/**
-	 * This method has to find out if the currentPlayer is a tradingPlayer 
-	 * and where did he/she come in the ranking (algorithm-method).
-	 * 
-	 * @param currentPlayer
-	 */
-	public void tradingPlayer(Player currentPlayer){
-		/*
-		if(currentPlayer make cardChange = true){
-			currentPlayer = tradingPlayer;			
-		}
-		*/
-	}
-	
-	/**
-	 * This method describes the algorithm:
-	 * which player get how many armies for his/her CountryCards.
-	 * 
-	 * @param tradingPlayer
-	 */
-	public void tradingAlgorithm(Player tradingPlayer){
-	/*	
-		if(tradingPlayer = 1){
-			// currentPlayer get 4 armies.
-		}else if(tradingPlayer = 2){
-			// currentPlayer get 6 armies.
-		}else if(tradingPlayer = 3){
-			// currentPlayer get 8 armies.
-		}else if(tradingPlayer = 4){
-			// currentPlayer get 10 armies.
-		}else if(tradingPlayer = 5){
-			// currentPlayer get 12 armies.
-		}else if(tradingPlayer = 6){
-			// currentPlayer get 15 armies.
-		}else if(tradingPlayer = 7){
-			// currentPlayer get 20 armies.
-		}else if(tradingPlayer = 8){
-			// currentPlayer get 25 armies.
-		}else if(tradingPlayer > 8){
-			// currentPlayer get (lastArmyCountStand+5armis).
-		}
-	*/
-	}
-
-		
 }
