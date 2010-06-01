@@ -111,27 +111,27 @@ public class Turn {
 	/**
 	 * Attacker country attacks defender country and chooses how many armies he uses.
 	 * 
-	 * @param attacker Country where to attack from.
-	 * @param defender Country which will be attacked.
+	 * @param attackerCountry Country where to attack from.
+	 * @param defenderCountry Country which will be attacked.
 	 * @param armyCount Number of armies used. max: 1 <= armies available <= 3 ; min: 1. Minimum one army must remain on the country.
 	 * @throws CountriesNotInRelationException The countries are not connected.
 	 * @throws IsOwnCountryException Trying to attack an own country.
 	 * @throws NotEnoughArmiesException Too little or too many armies used.
 	 */
-	public void attack(Country attacker, Country defender, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException {
+	public void attack(Country attackerCountry, Country defenderCountry, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException {
 
-		if (this.world.areNeighbours(attacker, defender)) {
+		if (this.world.areNeighbours(attackerCountry, defenderCountry)) {
 			
 			//Exception for attacking an own country
-			if (currentPlayer.hasCountry(defender)) {
+			if (currentPlayer.hasCountry(defenderCountry)) {
 				throw new IsOwnCountryException("The owner of the denfending country is " +
 													"the attacker himself.");
 			}
 			
-			if ((armyCount <= 3) && (armyCount>0) && (currentPlayer.hasCountry(attacker))) {
+			if ((armyCount <= 3) && (armyCount>0) && (currentPlayer.hasCountry(attackerCountry))) {
 				
 				//Exception for not enough armies on the attacker country
-				if (!(armyCount <= attacker.getArmyCount())) {
+				if (!(armyCount <= attackerCountry.getArmyCount())) {
 					throw new NotEnoughArmiesException("There are not enough armies to attack.");
 				}
 				
@@ -140,7 +140,7 @@ public class Turn {
 				
 				Vector<Die> attackerDice = new Vector<Die>();
 				Vector<Die> defenderDice = new Vector<Die>();
-				int defenderCount = this.calcMaxDefenderCount(defender, armyCount);
+				int defenderCount = this.calcMaxDefenderCount(defenderCountry, armyCount);
 				int[] lostArmies = {0,0};
 				boolean won = false;
 				
@@ -164,10 +164,10 @@ public class Turn {
 					Die highestAttacker = Die.getLargest(attackerDice);
 					Die highestDefender = Die.getLargest(defenderDice);
 					if (highestAttacker.getNumber() > highestDefender.getNumber()) {
-						defender.removeArmy();
+						defenderCountry.removeArmy();
 						lostArmies[1]++;
 					} else {
-						attacker.removeArmy();
+						attackerCountry.removeArmy();
 						lostArmies[0]++;
 					}
 					attackerDice.remove(highestAttacker);
@@ -175,20 +175,20 @@ public class Turn {
 				}
 				
 				// If attacker won, he gets the country and moves his attacking armies there.
-				if (defender.getArmies().isEmpty()) {
-					Player loser = findPlayerToCountry(defender);
-					loser.removeCountry(defender);
-					currentPlayer.addCountry(defender);
+				if (defenderCountry.getArmies().isEmpty()) {
+					Player loser = findPlayerToCountry(defenderCountry);
+					loser.removeCountry(defenderCountry);
+					currentPlayer.addCountry(defenderCountry);
 					for (int i = 0; i < armyCount-lostArmies[0]; i++) {
-						defender.addArmy();
-						attacker.removeArmy();
+						defenderCountry.addArmy();
+						attackerCountry.removeArmy();
 					}
 					won = true;
 				}
 				
 				
 				//Creating new AttackResult
-				this.attackResults.add(new AttackResult(currentPlayer,findPlayerToCountry(defender), lostArmies[0], lostArmies[1], won));
+				this.attackResults.add(new AttackResult(currentPlayer,findPlayerToCountry(defenderCountry), lostArmies[0], lostArmies[1], won));
 				
 			}
 			
