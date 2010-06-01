@@ -32,6 +32,7 @@ package de.hochschule.bremen.minerva.core;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.vo.Country;
+import de.hochschule.bremen.minerva.vo.Mission;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.World;
 
@@ -47,7 +48,9 @@ public class Game {
 	private World world = null;
 	private Vector<Player> players = null;
 	private Vector<Turn> turns = new Vector<Turn>();
+	private Vector<Mission> missions = new Vector<Mission>();
 	private boolean finished = false;
+	private Player winner;
 
 	/**
 	 * DOCME
@@ -124,7 +127,24 @@ public class Game {
 	 */
 	public boolean isFinished() {
 		if (turns.lastElement().getCurrentPlayer().getCountryCount() == world.getCountryCount()) {
+			this.winner = turns.lastElement().getCurrentPlayer();
 			finished = true;
+		} else {
+			Vector<Player> winners = new Vector<Player>();
+			for(Mission mission : this.missions) {
+				if (mission.isFulfilled()) {
+					winners.add(mission.getMissionOwner());
+				}
+			}
+			if (!winners.isEmpty()) {
+				if (winners.contains(turns.lastElement().getCurrentPlayer())) {
+					//TODO: write wrapper method for turns.lastElement()
+					winner = turns.lastElement().getCurrentPlayer();
+				} else {
+					winner = winners.firstElement();
+				}
+				finished = true;
+			}
 		}
 
 		return finished;
@@ -178,5 +198,20 @@ public class Game {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * TODO: implementieren !!!
+	 */
+	private void allocateMissions() {
+		
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Player getWinner() {
+		return this.winner;
 	}
 }
