@@ -41,16 +41,9 @@ public class WorldFileNotFoundException extends FileNotFoundException {
 
 	/**
 	 * DOCME
+	 * 
 	 */
 	public WorldFileNotFoundException(File worldFile) {
 		super("Die World-Datei: '"+worldFile.getAbsolutePath()+"' wurde nicht gefunden.");
-	}
-	
-	/**
-	 * DOCME
-	 * @param message
-	 */
-	public WorldFileNotFoundException(String message) {
-		super(message);
 	}
 }

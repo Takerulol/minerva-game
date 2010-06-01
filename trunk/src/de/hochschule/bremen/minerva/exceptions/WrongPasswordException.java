@@ -30,26 +30,21 @@
 
 package de.hochschule.bremen.minerva.exceptions;
 
+import de.hochschule.bremen.minerva.vo.Player;
+
 public class WrongPasswordException extends Exception {
 	
 	/**
+	 * DOCME
 	 * 
 	 */
 	private static final long serialVersionUID = -1230371904260038828L;
 
 	/**
 	 * DOCME
+	 * 
 	 */
-	public WrongPasswordException() {
-		super();
+	public WrongPasswordException(Player player) {
+		super("Das angegebene Passwort für den Spieler '"+player.getUsername()+"' ist nicht korrekt.");
 	}
-	
-	/**
-	 * DOCME
-	 * @param message
-	 */
-	public WrongPasswordException(String message) {
-		super(message);
-	}
-
 }

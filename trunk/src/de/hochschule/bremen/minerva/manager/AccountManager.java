@@ -107,8 +107,7 @@ public class AccountManager {
 		try {
 			service.save(player);
 		} catch (de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException e) {
-			throw new PlayerExistsException("There is already a player with that username" +
-												" and/or email.");
+			throw new PlayerExistsException(player);
 		} 
 	}
 	
@@ -156,8 +155,7 @@ public class AccountManager {
 		try {
 			return service.find(username);
 		} catch (PlayerNotFoundException e) {
-			throw new PlayerDoesNotExistException("A player with that username does not" +
-													" exist.");
+			throw new PlayerDoesNotExistException(username);
 		}
 	}
 	
@@ -172,8 +170,7 @@ public class AccountManager {
 		try {
 			return service.find(id);
 		} catch (PlayerNotFoundException e) {
-			throw new PlayerDoesNotExistException("A player with that id does not" +
-													" exist.");
+			throw new PlayerDoesNotExistException(id);
 		}
 	}
 	
@@ -244,7 +241,7 @@ public class AccountManager {
 			player.setLoggedIn(temp.isLoggedIn());
 			
 		} else {
-			throw new WrongPasswordException("The password you typed in is wrong.");
+			throw new WrongPasswordException(player);
 		}
 		
 		
