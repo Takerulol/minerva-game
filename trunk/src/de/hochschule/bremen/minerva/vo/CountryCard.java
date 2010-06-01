@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id: Player.java 224 2010-05-18 18:18:40Z andre.koenig $
+ * $Id$
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
