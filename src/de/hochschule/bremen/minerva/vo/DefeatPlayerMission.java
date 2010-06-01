@@ -29,20 +29,43 @@
  */
 package de.hochschule.bremen.minerva.vo;
 
-
+/**
+ * The DefeatPlayerMission is a sub class of Mission.
+ * It will be check if a player get all countries of an other 
+ * player who is after that out of the game.
+ * Then the mission is fulfilled. 
+ * 
+ * @since 1.0
+ * @version $Id$
+ * 
+ */
 public class DefeatPlayerMission extends Mission {
 
 	private Player enemy;
 	
-	public DefeatPlayerMission(Player enemy, Player missionOwner){
+	/**
+	 * The constructor gets the missionOwner and an enemy Player.
+	 * 
+	 * @param enemy
+	 * @param missionOwner
+	 */
+	public DefeatPlayerMission(Player enemy, Player missionOwner) {
 		super(missionOwner);
 		this.enemy = enemy;
 	}
 	
-	public Player getEnemy(){
+	/**
+	 * Returns the enemy.
+	 * 
+	 * @return enemy
+	 */
+	public Player getEnemy() {
 		return this.enemy;
 	}
 	
+	/**
+	 * The player wins if he gets all countries of the enemy-Player, who is after that dead.
+	 */
 	public boolean isFulfilled() {
 		return (!enemy.hasCountries());
 	}

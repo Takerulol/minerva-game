@@ -29,17 +29,23 @@
  */
 package de.hochschule.bremen.minerva.vo;
 
-//import java.util.Vector;
-
-public class CountryCard {
+/**
+ * The CountryCard.class is the upper class of the three sub classes. 
+ * 
+ * @since 1.0
+ * @version $Id$
+ *
+ */
+public class CountryCard extends ValueObject {
 
 	private Country reference = new Country();
 	
 	/**
+	 * The constructor gets a country.
 	 * 
 	 * @param country
 	 */
-	public CountryCard(Country country){
+	public CountryCard(Country country) {
 		setReference (country);
 	}
 	

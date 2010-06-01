@@ -29,22 +29,43 @@
  */
 package de.hochschule.bremen.minerva.vo;
 
-
-public class CountryConquerMission extends Mission{
+/**
+ * The CountryConquerMission is a sub class of Mission.
+ * It will be check if a player get all countries.
+ * Then the mission is fulfilled. 
+ * 
+ * @since 1.0
+ * @version $Id$
+ * 
+ */
+public class CountryConquerMission extends Mission  {
 	
 	short countOfCountriesToConquer;
 	
-	public CountryConquerMission(short countOfCountriesToConquer, Player missionOwner){
+	/**
+	 * The constructor gets the missionOwner and a count of the countries.
+	 * 
+	 * @param countOfCountriesToConquer
+	 * @param missionOwner
+	 */
+	public CountryConquerMission(short countOfCountriesToConquer, Player missionOwner) {
 		super(missionOwner);
 		this.countOfCountriesToConquer = countOfCountriesToConquer;
 	}
 
-	public short getCountOfCountriesToConquer(){
+	/**
+	 * Returns the Countries which should be conquer for this mission.
+	 * 
+	 * @return countOfCountriesToConquer
+	 */
+	public short getCountOfCountriesToConquer() {
 		return countOfCountriesToConquer;
 	}
 	
+	/**
+	 * The player wins if he gets all countries he has to conquer to fulfill the mission.
+	 */
 	public boolean isFulfilled() {
 		return (this.countOfCountriesToConquer <= getMissionOwner().getCountryCount());
 	}	
-	
 }
