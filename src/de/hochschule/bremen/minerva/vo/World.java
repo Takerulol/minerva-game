@@ -33,6 +33,7 @@ package de.hochschule.bremen.minerva.vo;
 import java.awt.Color;
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.util.ColorTool;
 import de.hochschule.bremen.minerva.util.CountryGraph;
 
 /**
@@ -212,6 +213,27 @@ public class World extends ValueObject {
 	}
 
 	/**
+	 * Returns a country vector by an given continent
+	 * 
+	 * @param byContinent The @see continent that represents the filter parameter.
+	 * @return A country vector with countries. Each country belongs to the given continent.
+	 * 
+	 */
+	public Vector<Country> getCountries(Continent byContinent) {
+		Vector<Country> countries = new Vector<Country>();
+
+		for (Country country : this.getCountries()) {
+			Continent continent = country.getContinent();
+			
+			if (continent.getName().equals(byContinent.getName())) {
+				countries.add(country);
+			}
+		}
+
+		return countries;
+	}
+
+	/**
 	 * Wrapper method, which returns the country count.
 	 * 
 	 * @return The country count.
@@ -265,9 +287,7 @@ public class World extends ValueObject {
 		Country foundCountry = new Country();
 		
 		search: for (Country country : this.getCountries()) {
-			if (country.getColor().getRed() == byColor.getRed() &&
-				country.getColor().getGreen() == byColor.getGreen() &&
-				country.getColor().getBlue() == byColor.getBlue()) {
+			if (ColorTool.toHexCode(byColor).equals(ColorTool.toHexCode(country.getColor()))) {
 				foundCountry = country;
 				break search;
 			}
@@ -275,7 +295,7 @@ public class World extends ValueObject {
 		
 		return foundCountry;
 	}
-	
+
 	/**
 	 * Returns the country graph, which contains the country-neighbour-relation.
 	 * 
