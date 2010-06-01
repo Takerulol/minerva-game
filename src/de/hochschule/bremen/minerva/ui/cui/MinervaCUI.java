@@ -146,7 +146,7 @@ public class MinervaCUI implements UserInterface {
 				this.error("Die angegebene WorldImport-Datei wurde nicht gefunden. Bitte überprüfen Sie den Pfad.");
 				this.importWorld(false);
 			} catch (WorldFileExtensionException e) {
-				this.error("Die angegebene WorldImport-Datei besitzt nicht die richtige Dateierweiterung (*.world).");
+				this.error(e.getMessage());
 				this.importWorld(false);
 			} catch (WorldFileParseException e) {
 				this.error("Die angegebene WorldImport-Datei ist nicht 'wohlgeformt': "+e.getMessage());

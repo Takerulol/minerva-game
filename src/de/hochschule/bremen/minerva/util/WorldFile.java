@@ -63,8 +63,11 @@ import de.hochschule.bremen.minerva.vo.World;
  */
 public class WorldFile extends World {
 	// TODO: If the country/neighbour mapping is not valid -> throw Exception (at the moment "NullPointerException" ); ).
-	
+
+	// TODO: Replace by the new WorldFileParseException.
 	private static final String MESSAGE_FILE_NOT_WELLFORMED = "The world import file is not well-formed. ";
+	
+	private static final String WORLD_FILE_EXTENSION = ".world";
 
 	private File worldFile = null;
 
@@ -178,33 +181,38 @@ public class WorldFile extends World {
 	 */
 	private void extractMeta(Element dataSource) throws WorldFileParseException {
 		// The worlds token
-		this.setToken(this.extractText(dataSource, "token"));
+		String node = "token";
+		this.setToken(this.extractText(dataSource, node));
 		if (this.getToken().isEmpty()) {
-			throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'token'.");
+			throw new WorldFileParseException(this.worldFile, node);
 		}
 
 		// The worlds name
-		this.setName(this.extractText(dataSource, "name"));
+		node = "name";
+		this.setName(this.extractText(dataSource, node));
 		if (this.getName().isEmpty()) {
-			throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'name'.");
+			throw new WorldFileParseException(this.worldFile, node);
 		}
 
 		// The worlds description
-		this.setDescription(this.extractText(dataSource, "description"));
+		node = "description";
+		this.setDescription(this.extractText(dataSource, node));
 		if (this.getDescription().isEmpty()) {
-			throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'description'.");
+			throw new WorldFileParseException(this.worldFile, node);
 		}
 		
 		// The author
-		this.setAuthor(this.extractText(dataSource, "author"));
+		node = "author";
+		this.setAuthor(this.extractText(dataSource, node));
 		if (this.getAuthor().isEmpty()) {
-			throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'author'.");
+			throw new WorldFileParseException(this.worldFile, node);
 		}
 
 		// The version
-		this.setVersion(this.extractText(dataSource, "version"));
+		node = "version";
+		this.setVersion(this.extractText(dataSource, node));
 		if (this.getVersion().isEmpty()) {
-			throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'version'.");
+			throw new WorldFileParseException(this.worldFile, node);
 		}
 	}
 	
@@ -292,10 +300,8 @@ public class WorldFile extends World {
 	 * @throws WorldFileExtensionException
 	 */
 	private void validate() throws WorldFileExtensionException {
-		if (!this.worldFile.getName().endsWith(".world")) {
-			throw new WorldFileExtensionException("The file '"+this.worldFile.getName() +
-					  "' does not have the correct extension. Please verify to import a valid "
-					+ "world import file (*.world).");
+		if (!this.worldFile.getName().endsWith(WORLD_FILE_EXTENSION)) {
+			throw new WorldFileExtensionException(this.worldFile, WORLD_FILE_EXTENSION);
 		}
 	}
 	

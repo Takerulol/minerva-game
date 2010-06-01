@@ -29,6 +29,8 @@
  */
 package de.hochschule.bremen.minerva.exceptions;
 
+import java.io.File;
+
 public class WorldFileParseException extends Exception {
 
 	/**
@@ -41,6 +43,10 @@ public class WorldFileParseException extends Exception {
 	 */
 	public WorldFileParseException() {
 		super();
+	}
+
+	public WorldFileParseException(File worldFile, String node) {
+		super("Die Datei '"+worldFile.getAbsolutePath()+"' ist nicht wohlgeformt. ");
 	}
 	
 	/**
