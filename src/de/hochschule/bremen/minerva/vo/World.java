@@ -274,7 +274,6 @@ public class World extends ValueObject {
 				break search;
 			}
 		}
-
 		return searchedCountry;
 	}
 

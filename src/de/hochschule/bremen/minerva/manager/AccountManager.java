@@ -34,6 +34,8 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Vector;
+
+import de.hochschule.bremen.minerva.exceptions.PlayerAlreadyLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
@@ -209,8 +211,7 @@ public class AccountManager {
 	 * @throws PlayerDoesNotExistException Player you want to login doesn't exist.
 	 * @throws PersistenceIOException
 	 */
-	public void login(Player player) throws WrongPasswordException, PlayerDoesNotExistException, PersistenceIOException {
-		
+	public void login(Player player) throws PlayerAlreadyLoggedInException, WrongPasswordException, PlayerDoesNotExistException, PersistenceIOException {
 		MessageDigest m = null;
 		try {
 			m = MessageDigest.getInstance(PASSWORD_HASH_ALGORITHM);
@@ -221,6 +222,9 @@ public class AccountManager {
 		Player temp = null;
 		try {
 			temp = this.getPlayer(player);
+			if (temp.isLoggedIn()) {
+				throw new PlayerAlreadyLoggedInException(temp);
+			}
 		} catch (PlayerNotFoundException e) {
 			throw new PlayerDoesNotExistException(player);
 		}
@@ -275,5 +279,4 @@ public class AccountManager {
 			service.save(player);
 		}
 	}
-	
 }

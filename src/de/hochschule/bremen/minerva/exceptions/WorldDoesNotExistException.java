@@ -31,6 +31,13 @@ package de.hochschule.bremen.minerva.exceptions;
 
 import de.hochschule.bremen.minerva.vo.World;
 
+/**
+ * DOCME
+ *
+ * @since 1.0
+ * @version $Id$
+ * 
+ */
 public class WorldDoesNotExistException extends Exception {
 
 	/**

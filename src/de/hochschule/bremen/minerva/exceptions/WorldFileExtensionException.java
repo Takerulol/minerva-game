@@ -27,11 +27,17 @@
  *     http://minerva.idira.de
  * 
  */
-
 package de.hochschule.bremen.minerva.exceptions;
 
 import java.io.File;
 
+/**
+ * DOCME
+ *
+ * @since 1.0
+ * @version $Id$
+ * 
+ */
 public class WorldFileExtensionException extends Exception {
 	
 	/**

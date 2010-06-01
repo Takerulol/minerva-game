@@ -29,6 +29,8 @@
  */
 package de.hochschule.bremen.minerva.exceptions;
 
+import java.util.Vector;
+
 import de.hochschule.bremen.minerva.vo.Player;
 
 /**
@@ -38,37 +40,20 @@ import de.hochschule.bremen.minerva.vo.Player;
  * @version $Id$
  * 
  */
-public class PlayerDoesNotExistException extends Exception {
-
-	private static final String MESSAGE_VERIFY_YOUR_INPUT = "Bitte überprüfen Sie Ihre Angaben.";
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6034698563212835072L;
-
-	/**
-	 * DOCME
-	 */
-	public PlayerDoesNotExistException(Player player) {
-		super("Der Spieler '"+player.getUsername()+"' existiert nicht. "+MESSAGE_VERIFY_YOUR_INPUT);
-	}
+public class NotEnoughPlayersLoggedInException extends Exception {
 
 	/**
 	 * DOCME
 	 * 
-	 * @param id
 	 */
-	public PlayerDoesNotExistException(int id) {
-		super("Der Spieler mit der ID '"+id+"' existiert nicht. "+MESSAGE_VERIFY_YOUR_INPUT);
-	}
+	private static final long serialVersionUID = 7058149089226110325L;
 
 	/**
 	 * DOCME
 	 * 
-	 * @param username
+	 * @param players
 	 */
-	public PlayerDoesNotExistException(String username) {
-		super("Der Spieler mit dem Benutzernamen '"+username+"' existiert nicht. "+MESSAGE_VERIFY_YOUR_INPUT);
+	public NotEnoughPlayersLoggedInException(Vector<Player> players) {
+		super("Es wird mehr als ein Spieler benötigt, um das Spiel starten zu können.");
 	}
 }

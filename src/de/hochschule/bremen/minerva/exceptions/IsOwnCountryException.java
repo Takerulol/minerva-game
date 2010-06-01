@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id: PlayerExistsException.java 224 2010-05-18 18:18:40Z andre.koenig $
+ * $Id$
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,9 +27,18 @@
  *     http://minerva.idira.de
  * 
  */
-
 package de.hochschule.bremen.minerva.exceptions;
 
+import de.hochschule.bremen.minerva.vo.Country;
+import de.hochschule.bremen.minerva.vo.Player;
+
+/**
+ * DOCME
+ *
+ * @since 1.0
+ * @version $Id$
+ * 
+ */
 public class IsOwnCountryException extends Exception{
 
 	/**
@@ -37,12 +46,14 @@ public class IsOwnCountryException extends Exception{
 	 */
 	private static final long serialVersionUID = 7190313840475162965L;
 	
-	public IsOwnCountryException() {
-		super();
-	}
 
-	public IsOwnCountryException(String message) {
-		super(message);
+	/**
+	 * DOCME
+	 * 
+	 * @param message
+	 */
+	public IsOwnCountryException(Player player, Country country) {
+		super("Das Land: '"+country.getName()+"' gehört dem Spieler '"+player.getUsername()+"' selbst und kann somit nicht angegriffen werden.");
 	}
 
 }

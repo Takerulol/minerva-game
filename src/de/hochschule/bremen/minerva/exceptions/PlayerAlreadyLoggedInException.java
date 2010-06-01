@@ -38,37 +38,21 @@ import de.hochschule.bremen.minerva.vo.Player;
  * @version $Id$
  * 
  */
-public class PlayerDoesNotExistException extends Exception {
+public class PlayerAlreadyLoggedInException extends Exception {
 
-	private static final String MESSAGE_VERIFY_YOUR_INPUT = "Bitte überprüfen Sie Ihre Angaben.";
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2986054247353082420L;
+
+	/**
+	 * DOCME
+	 * 
+	 * @param player
+	 * 
+	 */
+	public PlayerAlreadyLoggedInException(Player player) {
+		super("Der Spieler '"+player.getUsername()+"' ist bereits eingeloggt.");
+	}
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6034698563212835072L;
-
-	/**
-	 * DOCME
-	 */
-	public PlayerDoesNotExistException(Player player) {
-		super("Der Spieler '"+player.getUsername()+"' existiert nicht. "+MESSAGE_VERIFY_YOUR_INPUT);
-	}
-
-	/**
-	 * DOCME
-	 * 
-	 * @param id
-	 */
-	public PlayerDoesNotExistException(int id) {
-		super("Der Spieler mit der ID '"+id+"' existiert nicht. "+MESSAGE_VERIFY_YOUR_INPUT);
-	}
-
-	/**
-	 * DOCME
-	 * 
-	 * @param username
-	 */
-	public PlayerDoesNotExistException(String username) {
-		super("Der Spieler mit dem Benutzernamen '"+username+"' existiert nicht. "+MESSAGE_VERIFY_YOUR_INPUT);
-	}
 }

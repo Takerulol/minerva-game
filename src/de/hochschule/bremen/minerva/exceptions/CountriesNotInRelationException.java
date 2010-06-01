@@ -27,9 +27,17 @@
  *     http://minerva.idira.de
  * 
  */
-
 package de.hochschule.bremen.minerva.exceptions;
 
+import de.hochschule.bremen.minerva.vo.Country;
+
+/**
+ * DOCME
+ *
+ * @since 1.0
+ * @version $Id$
+ * 
+ */
 public class CountriesNotInRelationException extends Exception {
 	
 	/**
@@ -39,17 +47,12 @@ public class CountriesNotInRelationException extends Exception {
 
 	/**
 	 * DOCME
+	 * 
+	 * @param one
+	 * @param two
+	 * 
 	 */
-	public CountriesNotInRelationException() {
-		super();
+	public CountriesNotInRelationException(Country one, Country two) {
+		super("Die Länder '"+one.getName()+"' und '"+two.getName()+"' sind nicht benachbart.");
 	}
-	
-	/**
-	 * DOCME
-	 * @param message
-	 */
-	public CountriesNotInRelationException(String message) {
-		super(message);
-	}
-
 }

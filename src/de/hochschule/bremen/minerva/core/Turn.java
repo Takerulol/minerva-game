@@ -33,6 +33,7 @@ package de.hochschule.bremen.minerva.core;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
+import de.hochschule.bremen.minerva.exceptions.CountryOwnerException;
 import de.hochschule.bremen.minerva.exceptions.IsOwnCountryException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughArmiesException;
 import de.hochschule.bremen.minerva.util.Die;
@@ -100,11 +101,19 @@ public class Turn {
 	 * Allocates a single allocatable army into a country.
 	 * 
 	 * @param country The country where to put an army.
+	 * @throws NotEnoughArmiesException 
+	 * @throws CountryOwnerException 
 	 */
-	public void allocateArmy(Country country) {
-		if ((currentPlayer.hasCountry(country)) && (getAllocatableArmies().size() > 0)) {
-			country.addArmy();
-			getAllocatableArmies().remove(getAllocatableArmies().size() - 1);
+	public void allocateArmy(Country country) throws NotEnoughArmiesException, CountryOwnerException {
+		if (currentPlayer.hasCountry(country)) {
+			if (this.getAllocatableArmyCount() > 0) {
+				country.addArmy();
+				getAllocatableArmies().remove(getAllocatableArmies().size() - 1);				
+			} else {
+				throw new NotEnoughArmiesException(country, this.getAllocatableArmyCount(), true);
+			}
+		} else {
+			throw new CountryOwnerException(country, currentPlayer);
 		}
 	}
 	
@@ -117,6 +126,9 @@ public class Turn {
 	 * @throws CountriesNotInRelationException The countries are not connected.
 	 * @throws IsOwnCountryException Trying to attack an own country.
 	 * @throws NotEnoughArmiesException Too little or too many armies used.
+	 * 
+	 * TODO: Implement feedback (won / lost).
+	 * 
 	 */
 	public void attack(Country attackerCountry, Country defenderCountry, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException {
 
@@ -124,19 +136,15 @@ public class Turn {
 			
 			//Exception for attacking an own country
 			if (currentPlayer.hasCountry(defenderCountry)) {
-				throw new IsOwnCountryException("The owner of the denfending country is " +
-													"the attacker himself.");
+				throw new IsOwnCountryException(currentPlayer, defenderCountry);
 			}
 			
 			if ((armyCount <= 3) && (armyCount>0) && (currentPlayer.hasCountry(attackerCountry))) {
 				
 				//Exception for not enough armies on the attacker country
 				if (!(armyCount <= attackerCountry.getArmyCount())) {
-					throw new NotEnoughArmiesException("There are not enough armies to attack.");
+					throw new NotEnoughArmiesException(attackerCountry, defenderCountry);
 				}
-				
-				
-				
 				
 				Vector<Die> attackerDice = new Vector<Die>();
 				Vector<Die> defenderDice = new Vector<Die>();
@@ -193,7 +201,7 @@ public class Turn {
 			}
 			
 		} else {
-			throw new CountriesNotInRelationException("Countries are not connected.");
+			throw new CountriesNotInRelationException(attackerCountry, defenderCountry);
 		}
 	}
 	
@@ -205,26 +213,35 @@ public class Turn {
 	 * @param armyCount Number of armies you want to move.
 	 * @throws CountriesNotInRelationException Countries are not connected.
 	 * @throws NotEnoughArmiesException Not enough armies on the country to move.
+	 * @throws CountryOwnerException 
 	 */
-	public void moveArmies(Country from, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException {
-		if ((currentPlayer.hasCountry(from)) && (currentPlayer.hasCountry(destination))) {
+	public void moveArmies(Country from, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, CountryOwnerException {
+		if (currentPlayer.hasCountry(from)) {
 			
-			//Exception for not enough armies on the country to be moved from
-			if (!(world.areNeighbours(from, destination))) {
-				throw new CountriesNotInRelationException("Countries are not connected.");
-			}
-			if (from.getArmyCount() <= armyCount) {
-				throw new NotEnoughArmiesException("There are not enough armies to move.");
-			}
+			if (currentPlayer.hasCountry(destination)) {
 			
-			//TODO: abfrage ob armee schon bewegt wurde
-			//actually moving armies
-			for (int i = 0; i < armyCount; i++) {
-				from.removeArmy();
-				Army newArmy = new Army();
-				newArmy.moved(true);
-				destination.addArmy(newArmy);
+				//Exception for not enough armies on the country to be moved from
+				if (!(world.areNeighbours(from, destination))) {
+					throw new CountriesNotInRelationException(from, destination);
+				}
+	
+				if (from.getArmyCount() <= armyCount) {
+					throw new NotEnoughArmiesException(from, armyCount, true);
+				}
+				
+				//TODO: abfrage ob armee schon bewegt wurde
+				//actually moving armies
+				for (int i = 0; i < armyCount; i++) {
+					from.removeArmy();
+					Army newArmy = new Army();
+					newArmy.moved(true);
+					destination.addArmy(newArmy);
+				}
+			} else {
+				throw new CountryOwnerException(destination, currentPlayer);
 			}
+		} else {
+			throw new CountryOwnerException(destination, currentPlayer);
 		}
 	}
 	
