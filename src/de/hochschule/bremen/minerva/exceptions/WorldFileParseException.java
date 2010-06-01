@@ -45,10 +45,16 @@ public class WorldFileParseException extends Exception {
 		super();
 	}
 
-	public WorldFileParseException(File worldFile, String node) {
-		super("Die Datei '"+worldFile.getAbsolutePath()+"' ist nicht wohlgeformt. ");
+	/**
+	 * 
+	 * @param worldFile
+	 * @param node
+	 * 
+	 */
+	public WorldFileParseException(File worldFile, String missingNode) {
+		super("Die Datei '"+worldFile.getAbsolutePath()+"' ist nicht wohlgeformt. Die Konfiguration '"+missingNode+"' wurde nicht gefunden.");
 	}
-	
+
 	/**
 	 * DOCME
 	 * @param message

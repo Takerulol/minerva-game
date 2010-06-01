@@ -64,8 +64,7 @@ import de.hochschule.bremen.minerva.vo.World;
 public class WorldFile extends World {
 	// TODO: If the country/neighbour mapping is not valid -> throw Exception (at the moment "NullPointerException" ); ).
 
-	// TODO: Replace by the new WorldFileParseException.
-	private static final String MESSAGE_FILE_NOT_WELLFORMED = "The world import file is not well-formed. ";
+	// TODO: Test exception handling.
 	
 	private static final String WORLD_FILE_EXTENSION = ".world";
 
@@ -122,10 +121,12 @@ public class WorldFile extends World {
 			this.extractCountries(dataSource);
 
 		} catch (IOException e) {
-			throw new WorldFileNotFoundException(e.getMessage());
+			throw new WorldFileNotFoundException(this.worldFile);
 		} catch (SAXException e) {
+			// TODO: Allgemeine Exception deklarieren
 			throw new WorldFileParseException(e.getMessage());
 		} catch (ParserConfigurationException e) {
+			// TODO: Allgemeine Exception deklarieren
 			throw new WorldFileParseException(e.getMessage());
 		}
 	}
@@ -225,7 +226,8 @@ public class WorldFile extends World {
 	 * 
 	 */
 	private void extractContinents(Element dataSource) throws WorldFileParseException {
-		NodeList continents = dataSource.getElementsByTagName("continent");
+		String continentNode = "continent";
+		NodeList continents = dataSource.getElementsByTagName(continentNode);
 		
 		for (int i = 0; i < continents.getLength(); i++) {
 			NamedNodeMap node = continents.item(i).getAttributes();
@@ -235,9 +237,9 @@ public class WorldFile extends World {
 			int id = Integer.parseInt(node.getNamedItem("id").getNodeValue());
 			this.extractedContinents.put(id, continent);
 		}
-		
+
 		if (this.extractedContinents.isEmpty()) {
-			throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'continents' data.");
+			throw new WorldFileParseException(this.worldFile, continentNode);
 		}
 	}
 
@@ -258,7 +260,8 @@ public class WorldFile extends World {
 	 * 
 	 */
 	private void extractCountries(Element dataSource) throws WorldFileParseException {
-		NodeList dataSourceCountries = dataSource.getElementsByTagName("country");
+		String countryNode = "country";
+		NodeList dataSourceCountries = dataSource.getElementsByTagName(countryNode);
 		
 		for (int i = 0; i < dataSourceCountries.getLength(); i++) {
 			NamedNodeMap dataSourceCountry = dataSourceCountries.item(i).getAttributes();
@@ -290,7 +293,7 @@ public class WorldFile extends World {
 		}
 
 		if (this.extractedCountries.isEmpty()) {
-			throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'country' data.");
+			throw new WorldFileParseException(this.worldFile, countryNode);
 		}
 	}
 
@@ -314,19 +317,22 @@ public class WorldFile extends World {
 	 *
 	 */
 	private void validate(Element dataSource) throws WorldFileParseException {
-		Node node = dataSource.getElementsByTagName("meta").item(0);
+		String nodeName = "meta";
+		Node node = dataSource.getElementsByTagName(nodeName).item(0);
 		if (node == null || node.getChildNodes().getLength() <= 0) {
-			throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'meta' section.");
+			throw new WorldFileParseException(this.worldFile, nodeName);
 		}
 		
-		node = dataSource.getElementsByTagName("continents").item(0);
+		nodeName = "continents";
+		node = dataSource.getElementsByTagName(nodeName).item(0);
 		if (node == null || node.getChildNodes().getLength() <= 0) {
-			throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'continents' section.");
+			throw new WorldFileParseException(this.worldFile, nodeName);
 		}
 
-		node = dataSource.getElementsByTagName("countries").item(0);
+		nodeName = "countries";
+		node = dataSource.getElementsByTagName(nodeName).item(0);
 		if (node == null || node.getChildNodes().getLength() <= 0) {
-			throw new WorldFileParseException(MESSAGE_FILE_NOT_WELLFORMED + "Missing 'countries' section.");
+			throw new WorldFileParseException(this.worldFile, nodeName);
 		}
 	}
 

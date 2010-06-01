@@ -29,6 +29,7 @@
  */
 package de.hochschule.bremen.minerva.exceptions;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 
 public class WorldFileNotFoundException extends FileNotFoundException {
@@ -41,8 +42,8 @@ public class WorldFileNotFoundException extends FileNotFoundException {
 	/**
 	 * DOCME
 	 */
-	public WorldFileNotFoundException() {
-		super();
+	public WorldFileNotFoundException(File worldFile) {
+		super("Die World-Datei: '"+worldFile.getAbsolutePath()+"' wurde nicht gefunden.");
 	}
 	
 	/**
