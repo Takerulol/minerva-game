@@ -143,13 +143,13 @@ public class MinervaCUI implements UserInterface {
 				WorldManager.getInstance().store(new File(input));
 				this.outln(true, "Die Welt wurde erfolgreich importiert ...");
 			} catch (WorldFileNotFoundException e) {
-				this.error("Die angegebene WorldImport-Datei wurde nicht gefunden. Bitte überprüfen Sie den Pfad.");
+				this.error(e.getMessage());
 				this.importWorld(false);
 			} catch (WorldFileExtensionException e) {
 				this.error(e.getMessage());
 				this.importWorld(false);
 			} catch (WorldFileParseException e) {
-				this.error("Die angegebene WorldImport-Datei ist nicht 'wohlgeformt': "+e.getMessage());
+				this.error(e.getMessage());
 				this.importWorld(false);
 			} catch (PersistenceIOException e) {
 				this.error("Es ist ein allgemeiner Persistenzfehler aufgetreten: "+e.getMessage());
