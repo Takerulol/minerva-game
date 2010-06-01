@@ -28,21 +28,39 @@
  * 
  */
 package de.hochschule.bremen.minerva.vo;
-
+/**
+ * The Mission.class is the upper class of the three sub classes and 
+ * contains the method isFulfilled. 
+ * 
+ * @since 1.0
+ * @version $Id$
+ *
+ */
 public class Mission extends ValueObject {
 
 	private Player missionOwner = null;
 	
-	public Mission(Player missionOwner){
+	/**
+	 * The constructor gets the Player missionOwner.
+	 * 
+	 * @param missionOwner
+	 */
+	public Mission(Player missionOwner) {
 		this.missionOwner = missionOwner;
 	}
 	
-	public Player getMissionOwner(){
+	/**
+	 * Returns the missionOwner.
+	 * 
+	 * @return
+	 */
+	public Player getMissionOwner() {
 		return missionOwner;
 	}
 
 	/**
-	 * DOCME
+	 * Checks if a mission is fulfilled.
+	 * 
 	 * @return
 	 */
 	public boolean isFulfilled() {
