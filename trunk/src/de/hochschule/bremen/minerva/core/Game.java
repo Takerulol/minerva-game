@@ -36,13 +36,13 @@ import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.World;
 
 /**
- * DOCME 
+ * The core game class.
  * 
+ * @since 1.0
+ * @version $Id$
  *
  */
 public class Game {
-
-	//private static Logger LOGGER = Logger.getLogger(Game.class.getName());
 
 	private World world = null;
 	private Vector<Player> players = null;
@@ -174,9 +174,6 @@ public class Game {
 				if (!(allocatableCountries.size() == 0)) {
 					int index = (int) (Math.random() * allocatableCountries.size());
 					player.addCountry(allocatableCountries.get(index));
-
-					//LOGGER.log(Level.INFO, allocatableCountries.get(index).getName() + " gehört jetzt dem Spieler '" + player.getUsername() + "'");
-
 					allocatableCountries.remove(index);
 				}
 			}
