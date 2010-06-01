@@ -29,15 +29,21 @@
  */
 package de.hochschule.bremen.minerva.vo;
 
-
-public class CanonCard extends CountryCard{
+/**
+ * The CanonCard is a sub class of CountryCard.
+ * 
+ * @since 1.0
+ * @version $Id$
+ *
+ */
+public class CanonCard extends CountryCard {
 
 	/**
+	 * The constructor gets a country.
 	 * 
 	 * @param country
 	 */
-	public CanonCard(Country country){
+	public CanonCard(Country country) {
 		super(country);
 	}
-	
 }

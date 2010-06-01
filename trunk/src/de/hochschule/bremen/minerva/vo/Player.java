@@ -264,8 +264,9 @@ public class Player extends ValueObject {
 	}
 
 	/**
+	 * Returns the countryCards.
 	 * 
-	 * @return
+	 * @return countryCards
 	 */
 	public Vector<CountryCard> getCountryCards() {
 		return countryCards;

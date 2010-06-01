@@ -29,15 +29,21 @@
  */
 package de.hochschule.bremen.minerva.vo;
 
-
+/**
+ * The CavalerieCard is a sub class of CountryCard.
+ * 
+ * @since 1.0
+ * @version $Id$
+ *
+ */
 public class CavalerieCard extends CountryCard {
 
 	/**
+	 * The constructor gets a country.
 	 * 
 	 * @param country
 	 */
-	public CavalerieCard(Country country){
+	public CavalerieCard(Country country) {
 		super(country);
 	}
-	
 }

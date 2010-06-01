@@ -29,15 +29,21 @@
  */
 package de.hochschule.bremen.minerva.vo;
 
-
+/**
+ * The SoldierCard is a sub class of CountryCard.
+ * 
+ * @since 1.0
+ * @version $Id$
+ *
+ */
 public class SoldierCard extends CountryCard {
 
 	/**
+	 * The constructor gets a country.
 	 * 
 	 * @param country
 	 */
-	public SoldierCard(Country country){
+	public SoldierCard(Country country) {
 		super(country);
-	}
-	
+	}	
 }

@@ -31,20 +31,44 @@ package de.hochschule.bremen.minerva.vo;
 
 import java.util.Vector;
 
-
+/**
+ * The ContinentConquerMission is a sub class of Mission.
+ * It will be check if a player get all countries of a continent.
+ * Then the mission is fulfilled. 
+ * 
+ * @since 1.0
+ * @version $Id$
+ *
+ */
 public class ContinentConquerMission extends Mission {
 
 	Vector<Country> countriesOfContinent = new Vector<Country>();
 	
-	public ContinentConquerMission(Vector<Country> countriesOfContinent, Player missionOwner ){
+	/**
+	 * The constructor gets the missionOwner and all countries of a continent.
+	 * 
+	 * @param countriesOfContinent
+	 * @param missionOwner
+	 */
+	public ContinentConquerMission(Vector<Country> countriesOfContinent, Player missionOwner ) {
 		super(missionOwner);
 		this.countriesOfContinent = countriesOfContinent;
 	}
 	
-	public Vector<Country> getCountriesOfContinent(){
+	/**
+	 * Returns the countries of a continent.
+	 * 
+	 * @return countriesOfContinent
+	 */
+	public Vector<Country> getCountriesOfContinent() {
 		return this.countriesOfContinent;
 	}
 	
+	/**
+	 * The mission is fulfilled if a player get all countries of a continent.
+	 *
+	 * @return check
+	 */
 	public boolean isFulfilled() {
 		Boolean check = true;
 		for (Country country : countriesOfContinent) {
@@ -54,5 +78,4 @@ public class ContinentConquerMission extends Mission {
 		}
 		return check;
 	}	
-	
 }

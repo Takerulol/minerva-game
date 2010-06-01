@@ -52,7 +52,7 @@ public class Mission extends ValueObject {
 	/**
 	 * Returns the missionOwner.
 	 * 
-	 * @return
+	 * @return missionOwner
 	 */
 	public Player getMissionOwner() {
 		return missionOwner;
@@ -61,7 +61,7 @@ public class Mission extends ValueObject {
 	/**
 	 * Checks if a mission is fulfilled.
 	 * 
-	 * @return
+	 * @return false
 	 */
 	public boolean isFulfilled() {
 		return false;
