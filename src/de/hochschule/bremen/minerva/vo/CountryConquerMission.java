@@ -31,5 +31,20 @@ package de.hochschule.bremen.minerva.vo;
 
 
 public class CountryConquerMission extends Mission{
+	
+	short countOfCountriesToConquer;
+	
+	public CountryConquerMission(short countOfCountriesToConquer, Player missionOwner){
+		super(missionOwner);
+		this.countOfCountriesToConquer = countOfCountriesToConquer;
+	}
 
+	public short getCountOfCountriesToConquer(){
+		return countOfCountriesToConquer;
+	}
+	
+	public boolean isFulfilled() {
+		return (this.countOfCountriesToConquer <= getMissionOwner().getCountryCount());
+	}	
+	
 }

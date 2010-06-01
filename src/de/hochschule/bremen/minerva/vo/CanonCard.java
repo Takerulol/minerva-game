@@ -32,4 +32,12 @@ package de.hochschule.bremen.minerva.vo;
 
 public class CanonCard extends CountryCard{
 
+	/**
+	 * 
+	 * @param country
+	 */
+	public CanonCard(Country country){
+		super(country);
+	}
+	
 }

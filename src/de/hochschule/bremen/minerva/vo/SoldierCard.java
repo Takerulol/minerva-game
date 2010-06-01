@@ -32,4 +32,12 @@ package de.hochschule.bremen.minerva.vo;
 
 public class SoldierCard extends CountryCard {
 
+	/**
+	 * 
+	 * @param country
+	 */
+	public SoldierCard(Country country){
+		super(country);
+	}
+	
 }

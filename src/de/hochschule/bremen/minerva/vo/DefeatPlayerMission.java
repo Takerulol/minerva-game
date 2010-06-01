@@ -32,4 +32,18 @@ package de.hochschule.bremen.minerva.vo;
 
 public class DefeatPlayerMission extends Mission {
 
+	private Player enemy;
+	
+	public DefeatPlayerMission(Player enemy, Player missionOwner){
+		super(missionOwner);
+		this.enemy = enemy;
+	}
+	
+	public Player getEnemy(){
+		return this.enemy;
+	}
+	
+	public boolean isFulfilled() {
+		return (!enemy.hasCountries());
+	}
 }
