@@ -38,10 +38,15 @@ import java.util.Vector;
 import de.hochschule.bremen.minerva.core.Game;
 import de.hochschule.bremen.minerva.core.Turn;
 import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
+import de.hochschule.bremen.minerva.exceptions.CountryOwnerException;
 import de.hochschule.bremen.minerva.exceptions.IsOwnCountryException;
+import de.hochschule.bremen.minerva.exceptions.NoPlayerLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughArmiesException;
+import de.hochschule.bremen.minerva.exceptions.NotEnoughPlayersLoggedInException;
+import de.hochschule.bremen.minerva.exceptions.PlayerAlreadyLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.exceptions.PlayerExistsException;
+import de.hochschule.bremen.minerva.exceptions.WorldDoesNotExistException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileExtensionException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileParseException;
@@ -52,7 +57,6 @@ import de.hochschule.bremen.minerva.vo.World;
 import de.hochschule.bremen.minerva.manager.AccountManager;
 import de.hochschule.bremen.minerva.manager.WorldManager;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
-import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
 import de.hochschule.bremen.minerva.ui.UserInterface;
 
 public class MinervaCUI implements UserInterface {
@@ -167,6 +171,12 @@ public class MinervaCUI implements UserInterface {
 
 		// Player initialization
 		Vector<Player> players = new Vector<Player>();
+		try {
+			players = AccountManager.getInstance().getPlayerList(true);
+		} catch (PersistenceIOException e) {
+			e.printStackTrace();
+		}
+		
 		this.initPlayers(players);
 
 		// World initialization
@@ -174,33 +184,36 @@ public class MinervaCUI implements UserInterface {
 		
 		try {
 			selectedWorld = this.initWorld();
-		} catch (WorldNotFoundException e) {
-			this.error("Die ausgewählte Welt wurde nicht gefunden. Grund: "+e.getMessage());
+			this.game = new Game(selectedWorld, players);
+
+			do {
+				this.outln(true, "## Neue Runde ##");
+				
+				Turn turn = game.nextTurn();			
+				this.outln(true, "Spieler '"+turn.getCurrentPlayer().getUsername() + "' ist am Zug und hat " + turn.getAllocatableArmyCount() + " Einheiten bekommen, die verteilt werden müssen.");
+				
+				this.outln(true, "### Verteilung der Einheiten ###");
+				
+				// Step 1: Allocate new armies
+				this.allocateNewArmies(turn);
+				
+				// Step 2: Attack
+				this.attack(turn);
+				
+				// Step 3: Relocate your armies
+				this.moveArmies(turn);
+			} while (!game.isFinished());
+
+		} catch (WorldDoesNotExistException e) {
+			this.error(e.getMessage());
+		} catch (NoPlayerLoggedInException e) {
+			this.error(e.getMessage());
+		} catch (NotEnoughPlayersLoggedInException e) {
+			this.error(e.getMessage());
 		} catch (PersistenceIOException e) {
 			this.error("Es ist ein allgemeiner Persistenzfehler aufgetreten. Beende die Anwendung. Grund: "+e.getMessage());
 		}
 
-		this.game = new Game(selectedWorld, players);
-
-		do {
-			this.outln(true, "## Neue Runde ##");
-
-			Turn turn = game.nextTurn();			
-			this.outln(true, "Spieler '"+turn.getCurrentPlayer().getUsername() + "' ist am Zug und hat " + turn.getAllocatableArmyCount() + " Einheiten bekommen, die verteilt werden müssen.");
-			
-			this.outln(true, "### Verteilung der Einheiten ###");
-			
-			// Step 1: Allocate new armies
-			this.allocateNewArmies(turn);
-			
-			// Step 2: Attack
-			this.attack(turn);
-
-			// Step 3: Relocate your armies
-			this.moveArmies(turn);
-			
-			
-		} while (!game.isFinished());
 	}
 
 	/**
@@ -210,7 +223,7 @@ public class MinervaCUI implements UserInterface {
 	 */
 	private void initPlayers(Vector<Player> players) {
 		this.outln(true, "### Initialisierung der Spieler  ###");
-
+		
 		this.outln(true, "[1] Login");
 		this.outln("[2] Registrierung");
 		this.outln("[3] Registrierte Spieler anzeigen");
@@ -218,12 +231,16 @@ public class MinervaCUI implements UserInterface {
 		this.outln("[5] Alle Spieler ausloggen");
 		this.outln("[6] Initialisierung beenden");
 		this.outln();
+		this.outln("Derzeit sind "+players.size()+" Spieler eingeloggt.");
 
 		int input = this.readInt();
 
 		switch (input) {
 			case 1:
-				players.add(this.loginPlayer());
+				Player player = this.loginPlayer();
+				if (player.isLoggedIn()) {
+					players.add(player);
+				}
 				this.initPlayers(players);
 			break;
 
@@ -241,7 +258,7 @@ public class MinervaCUI implements UserInterface {
 			try {
 				AccountManager.getInstance().logout();
 				this.outln(true, "Es wurden alle Spieler ausgeloggt.");
-				this.initPlayers(players);
+				this.initPlayers(new Vector<Player>());
 			} catch (PersistenceIOException e) {
 				this.error("Es ist ein allgemeiner Persistenzfehler aufgetreten: "+e.getMessage());
 				Runtime.getRuntime().exit(0);
@@ -277,16 +294,16 @@ public class MinervaCUI implements UserInterface {
 			AccountManager.getInstance().login(player);
 			this.outln("Hallo "+player.getFirstName()+", schön dich zu sehen :)");
 		} catch (WrongPasswordException e) {
-			this.error("Login fehlgeschlagen.");
+			this.error(e.getMessage());
 			return this.loginPlayer();
-
 		} catch (PlayerDoesNotExistException e) {
-			this.error("Der eingegebene Spieler existiert nicht.");
+			this.error(e.getMessage());
 			return this.loginPlayer();
-
 		} catch (PersistenceIOException e) {
 			this.error("Allgemeiner Persistenzfehler: "+e.getMessage());
 			Runtime.getRuntime().exit(0);
+		} catch (PlayerAlreadyLoggedInException e) {
+			this.error(e.getMessage());
 		}
 
 		return player;
@@ -341,10 +358,10 @@ public class MinervaCUI implements UserInterface {
 	/**
 	 * DOCME
 	 * @throws PersistenceIOException 
-	 * @throws WorldNotFoundException 
+	 * @throws WorldDoesNotExistException 
 	 * 
 	 */
-	private World initWorld() throws WorldNotFoundException, PersistenceIOException {
+	private World initWorld() throws WorldDoesNotExistException, PersistenceIOException {
 		this.outln(true, "### Initialisierung der Welt ###");
 
 		Vector<World> worlds = WorldManager.getInstance().getList(true);
@@ -383,14 +400,19 @@ public class MinervaCUI implements UserInterface {
 			do {
 				//
 				this.printCountryList();
+
+				// We need to get the reference because there is no possibility
+				// for getting a country by vector index (see depreciated method in world).
+				// So this problem is not relevant in the GUI (see world.getCountry(byColor).
+				Vector<Country> countries = world.getCountries();
 				
 				// Choose own country
 				this.outln(true, "- Wählen Sie das Ausgangsland: ");
-				Country source = world.getCountry(new Country(this.readInt()));
+				Country source = countries.get(this.readInt());
 				
 				// Choose second own country
 				this.outln(true, "- Wählen Sie das Ziel-Land: ");
-				Country destination = world.getCountry(new Country(this.readInt()));
+				Country destination = countries.get(this.readInt());
 				
 				// Choose army-count to move (one must remain)
 				this.outln(true, "- Bitte geben Sie die Anzahl der Einheiten an, die verschoben werden sollen (max: "+(source.getArmyCount()-1)+"): ");
@@ -400,11 +422,15 @@ public class MinervaCUI implements UserInterface {
 				try {
 					turn.moveArmies(source, destination, movingArmies);
 				} catch (CountriesNotInRelationException e) {
-					this.error("Länder sind nicht benachbart. Grund: "+e.getMessage());
+					this.error(e.getMessage());
 				} catch (NotEnoughArmiesException e) {
-					this.error("Sie haben nicht genug Einheiten.");
+					this.error(e.getMessage());
+				} catch (CountryOwnerException e) {
+					this.error(e.getMessage());
 				}
-				
+
+				this.printCountryList();
+
 				this.outln(true, "- '"+turn.getCurrentPlayer().getUsername()+"' möchten Sie weiter Einheiten verschieben [J/N]?");
 				nextMove = this.readBoolean();
 			} while (nextMove);
@@ -428,16 +454,20 @@ public class MinervaCUI implements UserInterface {
 		if (answer) {
 			boolean nextAttack = false;
 			do {
-				//
 				this.printCountryList();
+
+				// We need to get the reference because there is no possibility
+				// for getting a country by vector index (see depreciated method in world).
+				// So this problem is not relevant in the GUI (see world.getCountry(byColor).
+				Vector<Country> countries = world.getCountries();
 				
 				// Choose own country
 				this.outln(true, "- Wählen Sie ihr Land, von dem Sie angreifen möchten: ");
-				Country attacker = world.getCountry(new Country(this.readInt()));
+				Country attacker = countries.get(this.readInt());
 				
 				// Choose enemy country
 				this.outln(true, "- Wählen Sie ein Land, das Sie angreifen möchten: ");
-				Country defender = world.getCountry(new Country(this.readInt()));
+				Country defender = countries.get(this.readInt());
 				
 				// Choose 1 to max 3 armies to attack
 				this.outln(true, "- Bitte geben Sie die Anzahl der angreifenden Einheiten ein (max: "+turn.calcMaxAttackCount(attacker)+"): ");
@@ -447,12 +477,14 @@ public class MinervaCUI implements UserInterface {
 				try {
 					turn.attack(attacker, defender, attackingArmies);
 				} catch (CountriesNotInRelationException e) {
-					this.error("Länder sind nicht benachbart. Grund: "+e.getMessage());
+					this.error(e.getMessage());
 				} catch (NotEnoughArmiesException e) {
-					this.error("Sie haben nicht genug Einheiten, um diesen Zug auszuführen");
+					this.error(e.getMessage());
 				} catch (IsOwnCountryException e) {
-					this.error("Das anzugreifende Land gehört Ihnen.");
+					this.error(e.getMessage());
 				}
+
+				this.printCountryList();
 				
 				this.outln("- '"+turn.getCurrentPlayer().getUsername()+"' möchten Sie weiter angreifen [J/N]?");
 				nextAttack = this.readBoolean();
@@ -471,13 +503,26 @@ public class MinervaCUI implements UserInterface {
 		World world = turn.getWorld();
 		Player currentPlayer = turn.getCurrentPlayer();
 		
+		// We need to get the reference because there is no possibility
+		// for getting a country by vector index (see depreciated method in world).
+		// So this problem is not relevant in the GUI (see world.getCountry(byColor).
+		Vector<Country> countries = world.getCountries();
+		
 		for (int x = 0; x < armyCount; x++) {				
 			this.printCountryList();
 
 			this.outln("["+ currentPlayer.getUsername() +"]: "+ (x+1)+ ". Einheit setzen. Eingabe der [Id] des Landes: ");
-			Country country = world.getCountry(new Country(this.readInt()));
+			Country country = world.getCountry(countries.get(this.readInt()));
 
-			turn.allocateArmy(country);
+			try {
+				turn.allocateArmy(country);
+			} catch (NotEnoughArmiesException e) {
+				this.error(e.getMessage());
+				x--; // Not so nice. But there is no other solution. It's the CUI. No problem in the GUI.
+			} catch (CountryOwnerException e) {
+				this.error(e.getMessage());
+				x--; // Not so nice. But there is no other solution. It's the CUI. No problem in the GUI.
+			}
 		}
 	}
 
@@ -596,7 +641,7 @@ public class MinervaCUI implements UserInterface {
 			Player currentPlayer = turn.getCurrentPlayer();
 			boolean hasCountry = currentPlayer.hasCountry(country);
 			
-			this.outln("["+i+"]: Name: "+country.getName() + " - Einheiten: "+country.getArmyCount() + ((hasCountry) ? " - Dein Land!" : ""));
+			this.outln("["+i+"]: Name: "+country.getName() + " - Einheiten: "+country.getArmyCount() + ((hasCountry) ? " - Von dir besetzt!" : ""));
 			i++;
 		}
 		this.outln("-- \n");
