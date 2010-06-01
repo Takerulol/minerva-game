@@ -267,12 +267,14 @@ public class World extends ValueObject {
 	 */
 	public Country getCountry(Country byCountry) {
 		Country searchedCountry = new Country();
+
 		search: for (Country country : this.getCountries()) {
 			if (country.getId() == byCountry.getId()) {
 				searchedCountry = country;
 				break search;
 			}
 		}
+
 		return searchedCountry;
 	}
 
