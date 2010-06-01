@@ -33,6 +33,7 @@ package de.hochschule.bremen.minerva.manager;
 import java.io.File;
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.exceptions.WorldDoesNotExistException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileExtensionException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileParseException;
@@ -244,11 +245,15 @@ public class WorldManager {
 	 * @throws WorldNotFoundException If the world wasn't found.
 	 * 
 	 */
-	public World get(int id) throws WorldNotFoundException, PersistenceIOException {
-		World world = new World();
-		world.setId(id);
+	public World get(int id) throws WorldDoesNotExistException, PersistenceIOException {
+		try {
+			World world = new World();
+			world.setId(id);
 		
-		return this.get(world);
+			return this.get(world);
+		} catch (WorldNotFoundException e) {
+			throw new WorldDoesNotExistException(id);
+		}
 	}
 
 	/**

@@ -222,7 +222,7 @@ public class AccountManager {
 		try {
 			temp = this.getPlayer(player);
 		} catch (PlayerNotFoundException e) {
-			throw new PlayerDoesNotExistException("A player with that username does not exist.");
+			throw new PlayerDoesNotExistException(player);
 		}
 		
 		m.update(player.getPassword().getBytes(),0,player.getPassword().length());
