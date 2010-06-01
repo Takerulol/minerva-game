@@ -44,14 +44,12 @@ import de.hochschule.bremen.minerva.vo.World;
 /**
  * This represents a single turn by the current player inside a game/match.
  * 
+ * @since 1.0
+ * @version $Id$
  * 
- * @author cbollmann
- *
  */
 public class Turn {
-	
-	//private static Logger LOGGER = Logger.getLogger(Turn.class.getName());
-	
+
 	private World world = null;
 	private Vector<Player> players = null;
 	private Player currentPlayer = null;

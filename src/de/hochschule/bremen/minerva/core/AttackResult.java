@@ -32,12 +32,12 @@ package de.hochschule.bremen.minerva.core;
 
 import de.hochschule.bremen.minerva.vo.Player;
 
-
 /**
  * Result of one attack saving the attacker, defender, armies lost and if the attack was
  * a success.
  * 
- * @author cbollmann
+ * @since 1.0
+ * @version $Id$
  *
  */
 public class AttackResult {
