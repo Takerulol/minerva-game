@@ -30,6 +30,7 @@
 
 package de.hochschule.bremen.minerva.vo;
 
+import java.awt.Color;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.util.CountryGraph;
@@ -251,6 +252,28 @@ public class World extends ValueObject {
 			}
 		}
 		return searchedCountry;
+	}
+
+	/**
+	 * Returns a country by an given color.
+	 * 
+	 * @param byColor @see java.awt.Color
+	 * @return The country reference. If no country was found with the given color, then the country is empty.
+	 * 
+	 */
+	public Country getCountry(Color byColor) {
+		Country foundCountry = new Country();
+		
+		search: for (Country country : this.getCountries()) {
+			if (country.getColor().getRed() == byColor.getRed() &&
+				country.getColor().getGreen() == byColor.getGreen() &&
+				country.getColor().getBlue() == byColor.getBlue()) {
+				foundCountry = country;
+				break search;
+			}
+		}
+		
+		return foundCountry;
 	}
 	
 	/**
