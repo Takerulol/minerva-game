@@ -30,6 +30,8 @@
 
 package de.hochschule.bremen.minerva.exceptions;
 
+import java.io.File;
+
 public class WorldFileExtensionException extends Exception {
 	
 	/**
@@ -40,8 +42,10 @@ public class WorldFileExtensionException extends Exception {
 	/**
 	 * DOCME
 	 */
-	public WorldFileExtensionException() {
-		super();
+	public WorldFileExtensionException(File worldFile, String worldFileExtension) {
+		super("Die Datei '"+worldFile.getAbsolutePath() +
+		      "' ist nicht vom richtigen Typ. " +
+		      "Bitte verifizieren Sie, dass die Datei, die richtige Endung besitzt (*"+worldFileExtension+").");
 	}
 	
 	/**
