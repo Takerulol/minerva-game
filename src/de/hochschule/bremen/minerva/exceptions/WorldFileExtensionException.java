@@ -47,12 +47,4 @@ public class WorldFileExtensionException extends Exception {
 		      "' ist nicht vom richtigen Typ. " +
 		      "Bitte verifizieren Sie, dass die Datei, die richtige Endung besitzt (*"+worldFileExtension+").");
 	}
-	
-	/**
-	 * DOCME
-	 * @param message
-	 */
-	public WorldFileExtensionException(String message) {
-		super(message);
-	}
 }

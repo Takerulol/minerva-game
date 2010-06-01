@@ -30,6 +30,8 @@
 
 package de.hochschule.bremen.minerva.exceptions;
 
+import de.hochschule.bremen.minerva.vo.Player;
+
 public class PlayerExistsException extends Exception {
 
 	/**
@@ -39,17 +41,9 @@ public class PlayerExistsException extends Exception {
 
 	/**
 	 * DOCME
+	 * 
 	 */
-	public PlayerExistsException() {
-		super();
+	public PlayerExistsException(Player player) {
+		super("Der Spieler '"+player.getUsername()+"' existiert bereits und kann nicht erneut erstellt werden.");
 	}
-	
-	/**
-	 * DOCME
-	 * @param message
-	 */
-	public PlayerExistsException(String message) {
-		super(message);
-	}
-	
 }

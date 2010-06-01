@@ -29,6 +29,8 @@
  */
 package de.hochschule.bremen.minerva.exceptions;
 
+import de.hochschule.bremen.minerva.vo.World;
+
 public class WorldExistsException extends Exception {
 
 	/**
@@ -39,15 +41,7 @@ public class WorldExistsException extends Exception {
 	/**
 	 * DOCME
 	 */
-	public WorldExistsException() {
-		super();
-	}
-	
-	/**
-	 * DOCME
-	 * @param message
-	 */
-	public WorldExistsException(String message) {
-		super(message);
+	public WorldExistsException(World world) {
+		super("Die Welt '"+world.getName()+"' existiert bereits.");
 	}
 }

@@ -39,13 +39,6 @@ public class WorldFileParseException extends Exception {
 	private static final long serialVersionUID = 530495849894359920L;
 
 	/**
-	 * DOCME
-	 */
-	public WorldFileParseException() {
-		super();
-	}
-
-	/**
 	 * 
 	 * @param worldFile
 	 * @param node
@@ -60,6 +53,6 @@ public class WorldFileParseException extends Exception {
 	 * @param message
 	 */
 	public WorldFileParseException(String message) {
-		super(message);
+		super("Beim Auslesen der World-Datei ist ein technisches Problem aufgetreten: "+message);
 	}
 }
