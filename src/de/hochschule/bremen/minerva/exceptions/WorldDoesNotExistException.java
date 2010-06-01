@@ -44,4 +44,8 @@ public class WorldDoesNotExistException extends Exception {
 	public WorldDoesNotExistException(World world) {
 		super("Die Welt '"+world.getName()+"' existiert nicht.");
 	}
+
+	public WorldDoesNotExistException(int id) {
+		super("Die Welt mit der ID '"+id+"' existiert nicht.");
+	}
 }
