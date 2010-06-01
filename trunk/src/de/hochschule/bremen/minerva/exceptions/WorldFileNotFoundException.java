@@ -32,6 +32,13 @@ package de.hochschule.bremen.minerva.exceptions;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+/**
+ * DOCME
+ *
+ * @since 1.0
+ * @version $Id$
+ * 
+ */
 public class WorldFileNotFoundException extends FileNotFoundException {
 
 	/**

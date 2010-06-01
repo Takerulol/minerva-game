@@ -242,7 +242,7 @@ public class WorldManager {
 	 * @param id The world id.
 	 * @return The filled world object.
 	 * @throws PersistenceIOException Common exception from the persistence layer.
-	 * @throws WorldNotFoundException If the world wasn't found.
+	 * @throws WorldDoesNotExistException If the world wasn't found.
 	 * 
 	 */
 	public World get(int id) throws WorldDoesNotExistException, PersistenceIOException {
@@ -264,15 +264,20 @@ public class WorldManager {
 	 * 
 	 * @param world
 	 * @return The "complete" world object.
-	 * @throws WorldNotFoundException If the world wasn't found.
+	 * @throws WorldDoesNotExistException If the world wasn't found.
 	 * @throws PersistenceIOException Common exception from the persistence layer.
 	 * 
 	 */
-	public World get(World world) throws WorldNotFoundException, PersistenceIOException {
-		world = WorldService.getInstance().find(world.getId());
-		this.loadDependencies(world);
+	public World get(World world) throws WorldDoesNotExistException, PersistenceIOException {
+		
+		try {
+			world = WorldService.getInstance().find(world.getId());
+			this.loadDependencies(world);
 
-		return world;
+			return world;
+		} catch (WorldNotFoundException e) {
+			throw new WorldDoesNotExistException(world);
+		}
 	}
 
 	/**

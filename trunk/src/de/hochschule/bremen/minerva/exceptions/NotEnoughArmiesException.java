@@ -27,9 +27,17 @@
  *     http://minerva.idira.de
  * 
  */
-
 package de.hochschule.bremen.minerva.exceptions;
 
+import de.hochschule.bremen.minerva.vo.Country;
+
+/**
+ * DOCME
+ *
+ * @since 1.0
+ * @version $Id$
+ * 
+ */
 public class NotEnoughArmiesException extends Exception{
 
 	/**
@@ -48,7 +56,19 @@ public class NotEnoughArmiesException extends Exception{
 	 * DOCME
 	 * @param message
 	 */
-	public NotEnoughArmiesException(String message) {
-		super(message);
+	public NotEnoughArmiesException(Country attackerCountry, Country defenderCountry) {
+		super("Das Land '"+attackerCountry.getName()+"' besitzt nur noch "+attackerCountry.getArmyCount()+" Einheiten und kann das Land '"+defenderCountry.getName()+"' somit nicht angreifen.");
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param from
+	 * @param armyCount
+	 * @param move
+	 * 
+	 */
+	public NotEnoughArmiesException(Country from, int armyCount, boolean move) {
+		super(armyCount+" Einheite(n) sind nicht auf dem Land '"+from.getName()+"' zum Verschieben verfügbar.");
 	}
 }

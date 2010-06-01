@@ -27,11 +27,17 @@
  *     http://minerva.idira.de
  * 
  */
-
 package de.hochschule.bremen.minerva.exceptions;
 
 import de.hochschule.bremen.minerva.vo.Player;
 
+/**
+ * DOCME
+ *
+ * @since 1.0
+ * @version $Id$
+ * 
+ */
 public class PlayerExistsException extends Exception {
 
 	/**

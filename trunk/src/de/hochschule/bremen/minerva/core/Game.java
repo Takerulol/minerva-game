@@ -31,6 +31,8 @@ package de.hochschule.bremen.minerva.core;
 
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.exceptions.NoPlayerLoggedInException;
+import de.hochschule.bremen.minerva.exceptions.NotEnoughPlayersLoggedInException;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Mission;
 import de.hochschule.bremen.minerva.vo.Player;
@@ -46,21 +48,29 @@ import de.hochschule.bremen.minerva.vo.World;
 public class Game {
 
 	private World world = null;
-	private Vector<Player> players = null;
+	private Vector<Player> players = new Vector<Player>();
 	private Vector<Turn> turns = new Vector<Turn>();
 	private Vector<Mission> missions = new Vector<Mission>();
 	private boolean finished = false;
-	private Player winner;
+	private Player winner = null;;
 
 	/**
 	 * DOCME
 	 * 
 	 * @param world
-	 * @param player
+	 * @param players
+	 * @throws NoPlayerLoggedInException 
+	 * @throws NotEnoughPlayersLoggedInException
+	 *  
 	 */
-	public Game(World world, Vector<Player> player) {
+	public Game(World world, Vector<Player> players) throws NoPlayerLoggedInException, NotEnoughPlayersLoggedInException {
+		if (players.size() == 0) {
+			throw new NoPlayerLoggedInException();
+		} else if (players.size() == 1) {
+			throw new NotEnoughPlayersLoggedInException(players);
+		}
 		this.setWorld(world);
-		this.setPlayer(player);
+		this.setPlayer(players);
 		
 		this.allocateCountries();
 	}
