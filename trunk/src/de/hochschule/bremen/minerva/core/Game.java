@@ -33,7 +33,9 @@ import java.util.Vector;
 
 import de.hochschule.bremen.minerva.exceptions.NoPlayerLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughPlayersLoggedInException;
+import de.hochschule.bremen.minerva.vo.CardSeriesCounter;
 import de.hochschule.bremen.minerva.vo.Country;
+import de.hochschule.bremen.minerva.vo.CountryCard;
 import de.hochschule.bremen.minerva.vo.Mission;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.World;
@@ -51,8 +53,11 @@ public class Game {
 	private Vector<Player> players = new Vector<Player>();
 	private Vector<Turn> turns = new Vector<Turn>();
 	private Vector<Mission> missions = new Vector<Mission>();
+	private Vector<CountryCard> countryCards = new Vector<CountryCard>();
+	private Vector<CountryCard> usedCountryCards = new Vector<CountryCard>();
+	private CardSeriesCounter seriesCounter = new CardSeriesCounter();
 	private boolean finished = false;
-	private Player winner = null;;
+	private Player winner = null;
 
 	/**
 	 * DOCME
@@ -73,7 +78,10 @@ public class Game {
 		this.setPlayer(players);
 		
 		this.allocateCountries();
+		this.allocateMissions();
+		this.generateCountryCards();
 	}
+
 	
 	/**
 	 * Sets the next player and creates a new
@@ -84,7 +92,7 @@ public class Game {
 	 * 
 	 */
 	public Turn nextTurn() {
-		this.turns.add(new Turn(this.nextPlayer(), this.world, this.players));
+		this.turns.add(new Turn(this.nextPlayer(), this.world, this.players, this.countryCards, this.usedCountryCards, this.seriesCounter));
 		return this.turns.lastElement();
 	}
 
@@ -214,6 +222,13 @@ public class Game {
 	 * TODO: implementieren !!!
 	 */
 	private void allocateMissions() {
+		
+	}
+	
+	/**
+	 * TODO: implementieren !!!
+	 */
+	private void generateCountryCards() {
 		
 	}
 	
