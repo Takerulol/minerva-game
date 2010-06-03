@@ -37,6 +37,8 @@ import de.hochschule.bremen.minerva.exceptions.NotEnoughPlayersLoggedInException
 import de.hochschule.bremen.minerva.vo.CanonCard;
 import de.hochschule.bremen.minerva.vo.CardSeriesCounter;
 import de.hochschule.bremen.minerva.vo.CavalerieCard;
+import de.hochschule.bremen.minerva.vo.Continent;
+import de.hochschule.bremen.minerva.vo.ContinentConquerMission;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.CountryCard;
 import de.hochschule.bremen.minerva.vo.CountryConquerMission;
@@ -231,6 +233,7 @@ public class Game {
 	@SuppressWarnings("unchecked")
 	private void allocateMissions() {
 		Vector<Player> playerShuffle = (Vector<Player>) this.players.clone();
+		Vector<Continent> continentShuffle = (Vector<Continent>) this.world.getContinents().clone();
 		int missionGet;
 		Mission mission;
 		
@@ -242,14 +245,16 @@ public class Game {
 				mission = new CountryConquerMission(countryGet, player);
 				this.missions.add(mission);
 			} else if (missionGet == 1) {
-				//TODO: needs continent construct
-				//mission = new ContinentConquerMission();
-				//this.missions.add(mission);
+				Collections.shuffle(continentShuffle);
+				Vector<Country> continentOne = this.world.getCountries(continentShuffle.get(0));
+				Vector<Country> continentTwo = this.world.getCountries(continentShuffle.get(1));
+				mission = new ContinentConquerMission(continentOne,continentTwo,player);
+				this.missions.add(mission);
 			} else {
 				Collections.shuffle(playerShuffle);
 				mission = new DefeatPlayerMission(playerShuffle.firstElement(),player);
 				playerShuffle.remove(0);
-				//this.missions.add(mission);
+				this.missions.add(mission);
 			}
 		}
 		
