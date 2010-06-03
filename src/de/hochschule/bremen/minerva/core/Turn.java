@@ -449,7 +449,9 @@ public class Turn {
 	 * Sets allocatable armies, usually the one created with createArmies.
 	 * 
 	 * @param allocatableArmies The armies which can be allocated by the player.
+	 * @deprecated
 	 */
+	@SuppressWarnings("unused") //old
 	private void setAllocatableArmies(Vector<Army> allocatableArmies) {
 		this.allocatableArmies = allocatableArmies;
 	}
