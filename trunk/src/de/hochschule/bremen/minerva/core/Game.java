@@ -29,15 +29,21 @@
  */
 package de.hochschule.bremen.minerva.core;
 
+import java.util.Collections;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.exceptions.NoPlayerLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughPlayersLoggedInException;
+import de.hochschule.bremen.minerva.vo.CanonCard;
 import de.hochschule.bremen.minerva.vo.CardSeriesCounter;
+import de.hochschule.bremen.minerva.vo.CavalerieCard;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.CountryCard;
+import de.hochschule.bremen.minerva.vo.CountryConquerMission;
+import de.hochschule.bremen.minerva.vo.DefeatPlayerMission;
 import de.hochschule.bremen.minerva.vo.Mission;
 import de.hochschule.bremen.minerva.vo.Player;
+import de.hochschule.bremen.minerva.vo.SoldierCard;
 import de.hochschule.bremen.minerva.vo.World;
 
 /**
@@ -218,18 +224,58 @@ public class Game {
 		}
 	}
 	
+	//TODO: ContinentConquer Mission implementieren
 	/**
-	 * TODO: implementieren !!!
+	 * Generates missions randomly for all players in the game.
 	 */
+	@SuppressWarnings("unchecked")
 	private void allocateMissions() {
+		Vector<Player> playerShuffle = (Vector<Player>) this.players.clone();
+		int missionGet;
+		Mission mission;
+		
+		for (Player player : this.players) {
+			mission = null;
+			missionGet = (int) (Math.random() * 3);
+			if (missionGet == 0) {
+				short countryGet = (short) (this.world.getCountryCount() * 4 / 7);
+				mission = new CountryConquerMission(countryGet, player);
+				this.missions.add(mission);
+			} else if (missionGet == 1) {
+				//TODO: needs continent construct
+				//mission = new ContinentConquerMission();
+				//this.missions.add(mission);
+			} else {
+				Collections.shuffle(playerShuffle);
+				mission = new DefeatPlayerMission(playerShuffle.firstElement(),player);
+				playerShuffle.remove(0);
+				//this.missions.add(mission);
+			}
+		}
 		
 	}
 	
+	//TODO:	maybe shuffle country vector without creating temp
 	/**
-	 * TODO: implementieren !!!
+	 * Generates full stack of country cards according to the number country list with
+	 * a random symbol.
 	 */
+	@SuppressWarnings("unchecked")
 	private void generateCountryCards() {
+		Vector<Country> temp = (Vector<Country>) this.world.getCountries().clone();
+		Collections.shuffle(temp);
 		
+		for (int countryNumber = 0; countryNumber < this.world.getCountryCount(); countryNumber++) {
+			CountryCard card;
+			if ((countryNumber % 3) == 0) {
+				card = new SoldierCard(temp.elementAt(countryNumber));
+			} else if ((countryNumber % 3) == 1) {
+				card = new CanonCard(temp.elementAt(countryNumber));
+			} else {
+				card = new CavalerieCard(temp.elementAt(countryNumber));
+			}
+			this.countryCards.add(card);
+		}
 	}
 	
 	/**
