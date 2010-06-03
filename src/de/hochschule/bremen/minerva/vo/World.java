@@ -180,6 +180,20 @@ public class World extends ValueObject {
 	}
 
 	/**
+	 * Returns all continents of this world.
+	 * 
+	 * @return Vector of continents
+	 */
+	public Vector<Continent> getContinents() {
+		Vector<Continent> continents = new Vector<Continent>();
+		for (Country country : this.countries) {
+			if (!(continents.contains(country.getContinent()))) {
+				continents.add(country.getContinent());
+			}
+		}
+		return continents;
+	}
+	/**
 	 * Add a country to this world.
 	 * 
 	 * @param country
