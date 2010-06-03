@@ -42,7 +42,8 @@ import java.util.Vector;
  */
 public class ContinentConquerMission extends Mission {
 
-	Vector<Country> countriesOfContinent = new Vector<Country>();
+	Vector<Country> countriesOfContinentOne = new Vector<Country>();
+	Vector<Country> countriesOfContinentTwo = new Vector<Country>();
 	
 	/**
 	 * The constructor gets the missionOwner and all countries of a continent.
@@ -50,18 +51,28 @@ public class ContinentConquerMission extends Mission {
 	 * @param countriesOfContinent
 	 * @param missionOwner
 	 */
-	public ContinentConquerMission(Vector<Country> countriesOfContinent, Player missionOwner ) {
+	public ContinentConquerMission(Vector<Country> countriesOfContinentOne, Vector<Country> countriesOfContinentTwo, Player missionOwner ) {
 		super(missionOwner);
-		this.countriesOfContinent = countriesOfContinent;
+		this.countriesOfContinentOne = countriesOfContinentOne;
+		this.countriesOfContinentTwo = countriesOfContinentTwo;
 	}
 	
 	/**
-	 * Returns the countries of a continent.
+	 * Returns the countries of the first continent.
 	 * 
 	 * @return countriesOfContinent
 	 */
-	public Vector<Country> getCountriesOfContinent() {
-		return this.countriesOfContinent;
+	public Vector<Country> getCountriesOfContinentOne() {
+		return this.countriesOfContinentOne;
+	}
+	
+	/**
+	 * Returns the countries of the second continent.
+	 * 
+	 * @return countriesOfContinent
+	 */
+	public Vector<Country> getCountriesOfContinentTwo() {
+		return this.countriesOfContinentTwo;
 	}
 	
 	/**
@@ -71,7 +82,12 @@ public class ContinentConquerMission extends Mission {
 	 */
 	public boolean isFulfilled() {
 		Boolean check = true;
-		for (Country country : countriesOfContinent) {
+		for (Country country : countriesOfContinentOne) {
+			if (check) {
+				check = this.getMissionOwner().hasCountry(country);
+			}
+		}
+		for (Country country : countriesOfContinentTwo) {
 			if (check) {
 				check = this.getMissionOwner().hasCountry(country);
 			}
