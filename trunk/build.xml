@@ -14,7 +14,7 @@
 	<target name="install-database" depends="clean-database">
     	<java fork="true" classname="org.apache.derby.tools.ij" classpathref="libraries">
       		<sysproperty key="ij.connection.myDB" value="jdbc:derby:${db.dir};create=true" />
-      		<arg value="${sql.dir}/myscript.sql"/>
+      		<arg value="${sql.dir}/databasemodel.sql"/>
 		</java>
   	</target>
 </project>
