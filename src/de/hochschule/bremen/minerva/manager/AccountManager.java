@@ -30,9 +30,6 @@
 
 package de.hochschule.bremen.minerva.manager;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.exceptions.PlayerAlreadyLoggedInException;
@@ -42,6 +39,7 @@ import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerNotFoundException;
 import de.hochschule.bremen.minerva.persistence.service.PlayerService;
+import de.hochschule.bremen.minerva.util.HashTool;
 import de.hochschule.bremen.minerva.vo.Player;
 
 /**
@@ -60,9 +58,7 @@ import de.hochschule.bremen.minerva.vo.Player;
  */
 public class AccountManager {
 
-	private static AccountManager instance = null;
-	private static String PASSWORD_HASH_ALGORITHM = "MD5";
-	
+	private static AccountManager instance = null;	
 	
 	private PlayerService service = PlayerService.getInstance();
 
@@ -95,17 +91,8 @@ public class AccountManager {
 	 * @throws PersistenceIOException
 	 */
 	public void createPlayer(Player player) throws PlayerExistsException, PersistenceIOException {
-		
-		MessageDigest m = null;
-		try {
-			m = MessageDigest.getInstance(PASSWORD_HASH_ALGORITHM);
-		} catch (NoSuchAlgorithmException e) {
-			
-		}
-		m.update(player.getPassword().getBytes(), 0, player.getPassword().length() );
-		player.setPassword(new BigInteger(1,m.digest()).toString(16));
-		
-		
+		player.setPassword(HashTool.md5(player.getPassword()));
+
 		try {
 			service.save(player);
 		} catch (de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException e) {
@@ -212,13 +199,6 @@ public class AccountManager {
 	 * @throws PersistenceIOException
 	 */
 	public void login(Player player) throws PlayerAlreadyLoggedInException, WrongPasswordException, PlayerDoesNotExistException, PersistenceIOException {
-		MessageDigest m = null;
-		try {
-			m = MessageDigest.getInstance(PASSWORD_HASH_ALGORITHM);
-		} catch (NoSuchAlgorithmException e) {
-			
-		}
-		
 		Player temp = null;
 		try {
 			temp = this.getPlayer(player);
@@ -228,11 +208,10 @@ public class AccountManager {
 		} catch (PlayerNotFoundException e) {
 			throw new PlayerDoesNotExistException(player);
 		}
-		
-		m.update(player.getPassword().getBytes(),0,player.getPassword().length());
-		String pwTemp = new BigInteger(1,m.digest()).toString(16);
-		
-		if (pwTemp.equals(temp.getPassword())) {
+
+		String hashedPassword = HashTool.md5(player.getPassword());
+
+		if (hashedPassword.equals(temp.getPassword())) {
 			temp.setLoggedIn(true);
 			service.save(temp);
 			
