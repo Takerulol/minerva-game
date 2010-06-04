@@ -34,7 +34,7 @@ import java.util.Vector;
 import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerNotFoundException;
-import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
@@ -70,10 +70,10 @@ public class PlayerService extends PersistenceService {
 	/**
 	 * Method that deletes the player.
 	 * 
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 */
 	@Override
-	public void delete(ValueObject candidate) throws PersistenceIOException {
+	public void delete(ValueObject candidate) throws DataAccessException {
 		handler.remove((Player)candidate);
 	}
 
@@ -83,7 +83,7 @@ public class PlayerService extends PersistenceService {
 	 * @throws PlayerNotFoundException, PersistenceIOException
 	 */
 	@Override
-	public Player find(int id) throws PlayerNotFoundException, PersistenceIOException {
+	public Player find(int id) throws PlayerNotFoundException, DataAccessException {
 		return (Player)handler.read(id);
 	}
 
@@ -92,31 +92,31 @@ public class PlayerService extends PersistenceService {
 	 * 
 	 * @param username
 	 * @return
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 */
-	public Player find(String username) throws PlayerNotFoundException, PersistenceIOException {
+	public Player find(String username) throws PlayerNotFoundException, DataAccessException {
 		return (Player)handler.read(username);
 	}
 	
 	/**
 	 * DOCME
 	 * 
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 * @return players
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public Vector<Player> findAll() throws PersistenceIOException {
+	public Vector<Player> findAll() throws DataAccessException {
 		return (Vector)handler.readAll();
 	}
 
 	/**
 	 * Method that save the object.
 	 * 
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 */
 	@Override
-	public void save(ValueObject candidate) throws PlayerExistsException, PersistenceIOException {
+	public void save(ValueObject candidate) throws PlayerExistsException, DataAccessException {
 		handler.save((Player)candidate);
 	}
 }

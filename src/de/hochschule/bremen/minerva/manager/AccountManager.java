@@ -36,7 +36,7 @@ import de.hochschule.bremen.minerva.exceptions.PlayerAlreadyLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
-import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerNotFoundException;
 import de.hochschule.bremen.minerva.persistence.service.PlayerService;
 import de.hochschule.bremen.minerva.util.HashTool;
@@ -88,9 +88,9 @@ public class AccountManager {
 	 * 
 	 * @param player Player object to create an entry in the database with.
 	 * @throws PlayerExistsException Thrown if the player or email already exists.
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 */
-	public void createPlayer(Player player) throws PlayerExistsException, PersistenceIOException {
+	public void createPlayer(Player player) throws PlayerExistsException, DataAccessException {
 		player.setPassword(HashTool.md5(player.getPassword()));
 
 		try {
@@ -104,9 +104,9 @@ public class AccountManager {
 	 * Gets all players in database
 	 * 
 	 * @return Vector of all registered players in the database.
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 */
-	public Vector<Player> getPlayerList() throws PersistenceIOException {
+	public Vector<Player> getPlayerList() throws DataAccessException {
 		Vector<Player> players = (Vector<Player>)service.findAll();
 		return players;
 	}
@@ -116,10 +116,10 @@ public class AccountManager {
 	 * 
 	 * @param loggedInPlayers True if you want to get all logged in players.
 	 * @return Vector of all registered players in the database. If loggedInPlayers == true you will only get the logged in players.
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 */
 	@SuppressWarnings("unchecked")
-	public Vector<Player> getPlayerList(boolean loggedInPlayers) throws PersistenceIOException {
+	public Vector<Player> getPlayerList(boolean loggedInPlayers) throws DataAccessException {
 		Vector<Player> players = (Vector<Player>)service.findAll();
 		if (loggedInPlayers && (players != null)) {
 			Vector<Player> temp = (Vector<Player>) players.clone();
@@ -140,7 +140,7 @@ public class AccountManager {
 	 * @return Player object of the desired player.
 	 * @throws PlayerDoesNotExistException, PersistenceIOException
 	 */
-	public Player getPlayer(String username) throws PlayerDoesNotExistException, PersistenceIOException {
+	public Player getPlayer(String username) throws PlayerDoesNotExistException, DataAccessException {
 		try {
 			return service.find(username);
 		} catch (PlayerNotFoundException e) {
@@ -155,7 +155,7 @@ public class AccountManager {
 	 * @return Player object of the desired player.
 	 * @throws PlayerDoesNotExistException, PersistenceIOException
 	 */
-	public Player getPlayer(int id) throws PlayerDoesNotExistException, PersistenceIOException {
+	public Player getPlayer(int id) throws PlayerDoesNotExistException, DataAccessException {
 		try {
 			return service.find(id);
 		} catch (PlayerNotFoundException e) {
@@ -168,9 +168,9 @@ public class AccountManager {
 	 * 
 	 * @param player Player object you want to fully get out of database.
 	 * @return Player object of the desired player.
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 */
-	public Player getPlayer(Player player) throws PersistenceIOException, PlayerDoesNotExistException {
+	public Player getPlayer(Player player) throws DataAccessException, PlayerDoesNotExistException {
 		
 		if (player.getUsername() != null) {
 			player = this.getPlayer(player.getUsername());
@@ -196,9 +196,9 @@ public class AccountManager {
 	 * @param player Player you want to login.
 	 * @throws WrongPasswordException Password typed in didn't match.
 	 * @throws PlayerDoesNotExistException Player you want to login doesn't exist.
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 */
-	public void login(Player player) throws PlayerAlreadyLoggedInException, WrongPasswordException, PlayerDoesNotExistException, PersistenceIOException {
+	public void login(Player player) throws PlayerAlreadyLoggedInException, WrongPasswordException, PlayerDoesNotExistException, DataAccessException {
 		Player temp = null;
 		try {
 			temp = this.getPlayer(player);
@@ -234,9 +234,9 @@ public class AccountManager {
 	 * This will logout the desired player, regardless if he is logged in or not.
 	 * 
 	 * @throws PlayerDoesNotExistException Player you want to logout doesn't exist.
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 */
-	public void logout(Player player) throws PlayerDoesNotExistException, PersistenceIOException {
+	public void logout(Player player) throws PlayerDoesNotExistException, DataAccessException {
 		try {
 			player = this.getPlayer(player);
 		} catch (PlayerDoesNotExistException e) {
@@ -249,9 +249,9 @@ public class AccountManager {
 	/**
 	 * All logged in players will be logged out.
 	 * 
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 */
-	public void logout() throws PersistenceIOException {
+	public void logout() throws DataAccessException {
 		Vector<Player> loggedInPlayers = this.getPlayerList(true);
 		for (Player player : loggedInPlayers) {
 			player.setLoggedIn(false);

@@ -40,7 +40,7 @@ import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateR
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerNotFoundException;
-import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
@@ -72,7 +72,7 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 	 * 
 	 */
 	@Override
-	public Player read(int id) throws PersistenceIOException {
+	public Player read(int id) throws DataAccessException {
 		Player player = null;
 		Object[] params = {id};
 
@@ -81,7 +81,7 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 		} catch (PlayerNotFoundException e) {
 			throw new PlayerNotFoundException("The player with the id '"+id+"' wasn't found.");
 		} catch (DatabaseIOException e) {
-			throw new PersistenceIOException("Error occurred while reading "
+			throw new DataAccessException("Error occurred while reading "
 					                       + "the player (id=" + id +") "
 					                       + "from the database. Reason: "+e.getMessage());
 		}
@@ -95,7 +95,7 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 	 * @param name - The username.
 	 * @return Player object from the database.
 	 */
-	public Player read(String name) throws PersistenceIOException {
+	public Player read(String name) throws DataAccessException {
 		Player player = null;
 		Object[] params = {name};
 
@@ -104,7 +104,7 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 		} catch (PlayerNotFoundException e) {
 			throw new PlayerNotFoundException("The player with the username '"+name+"' wasn't found.");
 		} catch (DatabaseIOException e) {
-			throw new PersistenceIOException("Error occurred while reading "
+			throw new DataAccessException("Error occurred while reading "
 					                       + "the player (username=" + name +") "
 					                       + "from the database. Reason: "+e.getMessage());
 		}
@@ -142,10 +142,10 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 	 * Reads ALL player from the database.
 	 * 
 	 * @return player
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 */
 	@Override
-	public Vector<Player> readAll() throws PersistenceIOException {
+	public Vector<Player> readAll() throws DataAccessException {
 		Vector<Player> players = new Vector<Player>();
 
 		try {
@@ -157,9 +157,9 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 
 			record.close();
 		} catch (DatabaseIOException e) {
-			throw new PersistenceIOException(e.getMessage());
+			throw new DataAccessException(e.getMessage());
 		} catch (SQLException e) {
-			throw new PersistenceIOException("Error occurred while receiving a player list from the database: "
+			throw new DataAccessException("Error occurred while receiving a player list from the database: "
 											 +e.getMessage()+" - "+e.getErrorCode());
 		}
 		
@@ -171,17 +171,17 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 	 * Method remove to delete attributes of the player in the database.
 	 * 
 	 * @param candidate
-	 * @throws PersistenceIOException 
+	 * @throws DataAccessException 
 	 */
 	@Override
-	public void remove(ValueObject candidate) throws PersistenceIOException {
+	public void remove(ValueObject candidate) throws DataAccessException {
 		Player deletablePlayer = (Player)candidate;
 		Object[] params = {deletablePlayer.getId()};
 
 		try {
 			this.delete(sql.get("delete"), params);
 		} catch (DatabaseIOException e) {
-			throw new PersistenceIOException(e.getMessage());
+			throw new DataAccessException(e.getMessage());
 		}
 		
 	}
@@ -195,7 +195,7 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 	 * @throws PlayerExistsException, PersistenceIOException
 	 */
 	@Override
-	public void save(ValueObject player) throws PersistenceIOException {
+	public void save(ValueObject player) throws DataAccessException {
 		Player registrablePlayer = (Player)player;
 
 		try {
@@ -232,7 +232,7 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 					+"player: '"+registrablePlayer.getUsername()+"'. There is already "
 					+"a similar one.");
 		} catch (DatabaseIOException e) {
-			throw new PersistenceIOException("Unable to serialize the player: '"+registrablePlayer.getUsername()+"'. Reason: "+e.getMessage());			
+			throw new DataAccessException("Unable to serialize the player: '"+registrablePlayer.getUsername()+"'. Reason: "+e.getMessage());			
 		}
 
 		// The player does not have a player id.
@@ -268,11 +268,11 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 	 * DOCME
 	 *
 	 * @param reference
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 * @return null
 	 */
 	@Override
-	public Vector<Player> readAll(ValueObject reference) throws PersistenceIOException {
+	public Vector<Player> readAll(ValueObject reference) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -31,7 +31,7 @@ package de.hochschule.bremen.minerva.persistence;
 
 import java.util.Vector;
 
-import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
 /**
@@ -55,26 +55,26 @@ public interface Handler {
 	 * 
 	 * @param id
 	 * @return
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 */
-	public ValueObject read(int id) throws PersistenceIOException;
+	public ValueObject read(int id) throws DataAccessException;
 
 	/**
 	 * Read a object by name
 	 * 
 	 * @param name
 	 * @return
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 */
-	public ValueObject read(String name) throws PersistenceIOException;
+	public ValueObject read(String name) throws DataAccessException;
 
 	/**
 	 * DOCME
 	 * 
 	 * @return
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 */
-	public Vector<? extends ValueObject> readAll() throws PersistenceIOException;
+	public Vector<? extends ValueObject> readAll() throws DataAccessException;
 
 	/**
 	 * Note: The reference parameter is optional. We use it if
@@ -87,23 +87,23 @@ public interface Handler {
 	 * 
 	 * @param reference
 	 * @return
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 */
-	public Vector<? extends ValueObject> readAll(ValueObject reference) throws PersistenceIOException;
+	public Vector<? extends ValueObject> readAll(ValueObject reference) throws DataAccessException;
 
 	/**
 	 * DOCME
 	 * 
 	 * @param candidate
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 */
-	public void remove(ValueObject candidate) throws PersistenceIOException;
+	public void remove(ValueObject candidate) throws DataAccessException;
 
 	/**
 	 * Save combines the "CRUD" operations: create and update
 	 * 
 	 * @param registrable
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 */
-	public void save(ValueObject registrable) throws PersistenceIOException;
+	public void save(ValueObject registrable) throws DataAccessException;
 }

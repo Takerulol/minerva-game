@@ -32,7 +32,7 @@ package de.hochschule.bremen.minerva.persistence.service;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Handler;
-import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
 import de.hochschule.bremen.minerva.vo.ValueObject;
@@ -74,10 +74,10 @@ public class WorldService extends PersistenceService {
 	 * DOCME
 	 * 
 	 * @return
-	 * @throws PersistenceIOException 
+	 * @throws DataAccessException 
 	 */
 	@SuppressWarnings("unchecked")
-	public Vector<World> findAll() throws PersistenceIOException {
+	public Vector<World> findAll() throws DataAccessException {
 		return (Vector<World>)handler.readAll();
 	}
 
@@ -87,7 +87,7 @@ public class WorldService extends PersistenceService {
 	 * @param id
 	 * @return
 	 */
-	public World find(int id) throws WorldNotFoundException, PersistenceIOException {
+	public World find(int id) throws WorldNotFoundException, DataAccessException {
 		return (World)handler.read(id);
 	}
 
@@ -97,9 +97,9 @@ public class WorldService extends PersistenceService {
 	 * @param name
 	 * @return
 	 * @throws WorldNotFoundException
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 */
-	public World find(String name) throws WorldNotFoundException, PersistenceIOException {
+	public World find(String name) throws WorldNotFoundException, DataAccessException {
 		return (World)handler.read(name);
 	}
 	
@@ -108,7 +108,7 @@ public class WorldService extends PersistenceService {
 	 * 
 	 */
 	@Override
-	public void save(ValueObject candidate) throws WorldExistsException, PersistenceIOException {
+	public void save(ValueObject candidate) throws WorldExistsException, DataAccessException {
 		handler.save((World)candidate);
 	}
 
@@ -117,7 +117,7 @@ public class WorldService extends PersistenceService {
 	 * 
 	 */
 	@Override
-	public void delete(ValueObject candidate) throws PersistenceIOException {
+	public void delete(ValueObject candidate) throws DataAccessException {
 		World deletableWorld = (World)candidate;
 		
 		handler.remove(deletableWorld);

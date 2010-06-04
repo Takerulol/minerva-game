@@ -56,7 +56,7 @@ import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.World;
 import de.hochschule.bremen.minerva.manager.AccountManager;
 import de.hochschule.bremen.minerva.manager.WorldManager;
-import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.ui.UserInterface;
 
 public class MinervaCUI implements UserInterface {
@@ -155,7 +155,7 @@ public class MinervaCUI implements UserInterface {
 			} catch (WorldFileParseException e) {
 				this.error(e.getMessage());
 				this.importWorld(false);
-			} catch (PersistenceIOException e) {
+			} catch (DataAccessException e) {
 				this.error("Es ist ein allgemeiner Persistenzfehler aufgetreten: "+e.getMessage());
 				Runtime.getRuntime().exit(0);
 			}
@@ -173,7 +173,7 @@ public class MinervaCUI implements UserInterface {
 		Vector<Player> players = new Vector<Player>();
 		try {
 			players = AccountManager.getInstance().getPlayerList(true);
-		} catch (PersistenceIOException e) {
+		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}
 		
@@ -210,7 +210,7 @@ public class MinervaCUI implements UserInterface {
 			this.error(e.getMessage());
 		} catch (NotEnoughPlayersLoggedInException e) {
 			this.error(e.getMessage());
-		} catch (PersistenceIOException e) {
+		} catch (DataAccessException e) {
 			this.error("Es ist ein allgemeiner Persistenzfehler aufgetreten. Beende die Anwendung. Grund: "+e.getMessage());
 		}
 
@@ -259,7 +259,7 @@ public class MinervaCUI implements UserInterface {
 				AccountManager.getInstance().logout();
 				this.outln(true, "Es wurden alle Spieler ausgeloggt.");
 				this.initPlayers(new Vector<Player>());
-			} catch (PersistenceIOException e) {
+			} catch (DataAccessException e) {
 				this.error("Es ist ein allgemeiner Persistenzfehler aufgetreten: "+e.getMessage());
 				Runtime.getRuntime().exit(0);
 			}
@@ -299,7 +299,7 @@ public class MinervaCUI implements UserInterface {
 		} catch (PlayerDoesNotExistException e) {
 			this.error(e.getMessage());
 			return this.loginPlayer();
-		} catch (PersistenceIOException e) {
+		} catch (DataAccessException e) {
 			this.error("Allgemeiner Persistenzfehler: "+e.getMessage());
 			Runtime.getRuntime().exit(0);
 		} catch (PlayerAlreadyLoggedInException e) {
@@ -347,7 +347,7 @@ public class MinervaCUI implements UserInterface {
 		} catch (PlayerExistsException e) {
 			this.error("Der eingegebene Spieler existiert bereits. Legen Sie bitte einen neuen an (anderer Benutzername/E-Mail).");
 			return this.registerPlayer();
-		} catch (PersistenceIOException e) {
+		} catch (DataAccessException e) {
 			this.error("Allgemeiner Persistenzfehler: "+e.getMessage());
 			Runtime.getRuntime().exit(0);
 		}
@@ -357,11 +357,11 @@ public class MinervaCUI implements UserInterface {
 
 	/**
 	 * DOCME
-	 * @throws PersistenceIOException 
+	 * @throws DataAccessException 
 	 * @throws WorldDoesNotExistException 
 	 * 
 	 */
-	private World initWorld() throws WorldDoesNotExistException, PersistenceIOException {
+	private World initWorld() throws WorldDoesNotExistException, DataAccessException {
 		this.outln(true, "### Initialisierung der Welt ###");
 
 		Vector<World> worlds = WorldManager.getInstance().getList(true);
@@ -662,7 +662,7 @@ public class MinervaCUI implements UserInterface {
 			} else {
 				this.outln("Keine Spieler gefunden ...");
 			}
-		} catch (PersistenceIOException e) {
+		} catch (DataAccessException e) {
 			this.error("Es ist ein allgemeiner Persistenzfehler aufgetreten. Grund: "+ e.getMessage());
 			Runtime.getRuntime().exit(0);
 		}
@@ -678,7 +678,7 @@ public class MinervaCUI implements UserInterface {
 			for (World world : WorldManager.getInstance().getList(true)) {
 				this.outln(world.getName() + " - " + world.getDescription());
 			}
-		} catch (PersistenceIOException e) {
+		} catch (DataAccessException e) {
 			this.error("Es ist ein allgemeiner Persistenzfehler aufgetreten. Grund: "+ e.getMessage());
 			Runtime.getRuntime().exit(0);
 		}
