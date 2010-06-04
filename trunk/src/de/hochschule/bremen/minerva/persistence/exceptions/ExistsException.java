@@ -29,7 +29,7 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
-public class ExistsException extends PersistenceIOException {
+public class ExistsException extends DataAccessException {
 
 	/**
 	 * 

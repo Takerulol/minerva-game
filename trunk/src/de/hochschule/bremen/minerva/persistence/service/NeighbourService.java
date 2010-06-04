@@ -34,7 +34,7 @@ import java.util.Vector;
 import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.exceptions.NeighbourNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.NotFoundException;
-import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Neighbour;
 import de.hochschule.bremen.minerva.vo.ValueObject;
@@ -70,10 +70,10 @@ public class NeighbourService extends PersistenceService {
 	 * 
 	 * @param byCountry
 	 * @return
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 */
 	@SuppressWarnings("unchecked")
-	public Vector<Neighbour> loadAll(Country byCountry) throws PersistenceIOException {
+	public Vector<Neighbour> loadAll(Country byCountry) throws DataAccessException {
 		return (Vector)handler.readAll(byCountry);
 	}
 
@@ -82,30 +82,30 @@ public class NeighbourService extends PersistenceService {
 	 * 
 	 */
 	@Override
-	public void save(ValueObject candidate) throws PersistenceIOException {
+	public void save(ValueObject candidate) throws DataAccessException {
 		handler.save((Neighbour)candidate);
 	}
 
 	@Override
-	public void delete(ValueObject candidate) throws PersistenceIOException {
+	public void delete(ValueObject candidate) throws DataAccessException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public Neighbour find(int id) throws NeighbourNotFoundException, PersistenceIOException {
+	public Neighbour find(int id) throws NeighbourNotFoundException, DataAccessException {
 		return (Neighbour)handler.read(id);
 	}
 	
 	@Override
-	public Vector<?> findAll() throws PersistenceIOException {
+	public Vector<?> findAll() throws DataAccessException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ValueObject find(String name) throws NotFoundException,
-			PersistenceIOException {
+			DataAccessException {
 		// TODO Auto-generated method stub
 		return null;
 	}

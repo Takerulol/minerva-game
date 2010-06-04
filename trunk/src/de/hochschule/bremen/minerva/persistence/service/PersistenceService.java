@@ -35,7 +35,7 @@ import de.hochschule.bremen.minerva.persistence.Persistence;
 import de.hochschule.bremen.minerva.persistence.db.DatabasePersistence;
 import de.hochschule.bremen.minerva.persistence.exceptions.ExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.NotFoundException;
-import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.persistence.file.FilebasedPersistence;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
@@ -46,19 +46,19 @@ public abstract class PersistenceService {
 	protected static Persistence storage = new DatabasePersistence(); 
 	
 	// DOCME!!!
-	abstract public Vector<?> findAll() throws PersistenceIOException;
+	abstract public Vector<?> findAll() throws DataAccessException;
 
 	// DOCME!!!
-	abstract public ValueObject find(int id) throws NotFoundException, PersistenceIOException;
+	abstract public ValueObject find(int id) throws NotFoundException, DataAccessException;
 
 	// DOCME !!!
-	abstract public ValueObject find(String name) throws NotFoundException, PersistenceIOException;
+	abstract public ValueObject find(String name) throws NotFoundException, DataAccessException;
 
 	// DOCME!!!
-	abstract public void save(ValueObject candidate) throws ExistsException, PersistenceIOException;
+	abstract public void save(ValueObject candidate) throws ExistsException, DataAccessException;
 
 	// DOCME!!!
-	abstract public void delete(ValueObject candidate) throws PersistenceIOException;
+	abstract public void delete(ValueObject candidate) throws DataAccessException;
 
 	/**
 	 * Possibility to switch the persistence engine.

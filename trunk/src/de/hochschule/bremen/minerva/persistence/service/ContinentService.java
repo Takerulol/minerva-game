@@ -34,7 +34,7 @@ import java.util.Vector;
 import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.exceptions.ContinentExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.ContinentNotFoundException;
-import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceIOException;
+import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.vo.Continent;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
@@ -70,7 +70,7 @@ public class ContinentService extends PersistenceService {
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public Vector<Continent> findAll() throws PersistenceIOException {
+	public Vector<Continent> findAll() throws DataAccessException {
 		Vector<Continent> continents = (Vector)handler.readAll();
 		return continents;
 	}
@@ -80,10 +80,10 @@ public class ContinentService extends PersistenceService {
 	 * 
 	 * @param name
 	 * @return
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 */
 	@Override
-	public Continent find(int id) throws ContinentNotFoundException, PersistenceIOException {
+	public Continent find(int id) throws ContinentNotFoundException, DataAccessException {
 		return (Continent)handler.read(id);
 	}
 
@@ -92,9 +92,9 @@ public class ContinentService extends PersistenceService {
 	 * 
 	 * @param name
 	 * @return
-	 * @throws PersistenceIOException
+	 * @throws DataAccessException
 	 */
-	public Continent find(String name) throws ContinentNotFoundException, PersistenceIOException {
+	public Continent find(String name) throws ContinentNotFoundException, DataAccessException {
 		return (Continent)handler.read(name);
 	}
 	
@@ -104,7 +104,7 @@ public class ContinentService extends PersistenceService {
 	 * 
 	 */
 	@Override
-	public void save(ValueObject candidate) throws ContinentExistsException, PersistenceIOException {
+	public void save(ValueObject candidate) throws ContinentExistsException, DataAccessException {
 		handler.save((Continent)candidate);
 	}
 
@@ -113,7 +113,7 @@ public class ContinentService extends PersistenceService {
 	 * 
 	 */
 	@Override
-	public void delete(ValueObject candidate) throws PersistenceIOException {
+	public void delete(ValueObject candidate) throws DataAccessException {
 		Continent continent = (Continent)candidate;
 		handler.remove(continent);
 	}
