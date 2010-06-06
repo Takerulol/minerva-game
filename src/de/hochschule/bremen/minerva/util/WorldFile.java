@@ -29,11 +29,18 @@
  */
 package de.hochschule.bremen.minerva.util;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Vector;
 import java.util.Map.Entry;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -46,9 +53,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotFoundException;
+import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotReadableException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileExtensionException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileParseException;
+import de.hochschule.bremen.minerva.manager.AppConfigurationManager;
 import de.hochschule.bremen.minerva.vo.Continent;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.World;
@@ -63,13 +73,26 @@ import de.hochschule.bremen.minerva.vo.World;
  */
 public class WorldFile extends World {
 	// TODO: If the country/neighbour mapping is not valid -> throw Exception (at the moment "NullPointerException" ); ).
-
-	// TODO: Test exception handling.
 	
 	private static final String WORLD_FILE_EXTENSION = ".world";
+	private static final String WORLD_FILE_XML = "data.xml";
+	private static final File TEMP_DIR = new File("importer-workspace");
 
-	private File worldFile = null;
+	// The "Importable" represents at the very beginning the "*.world file", but while the import process is running
+	// and all the data was extracted into the workspace directory, this object represents the xml import file (data.xml)
+	// which is encapsulated in the "*.world file".
+	private File importable = null;
 
+	// The workspace directory for this world import file. While the extraction process is running, all the
+	// stuff will be copied into this directory. After the import process has finished the directory will
+	// be deleted.
+	private File workspace = new File(TEMP_DIR.getAbsolutePath() + File.separator + (System.currentTimeMillis()/10) + File.separator);
+
+	// The assets directory is the place where all the stuff from the world import file will be placed after
+	// the import process has finished. Stuff means all the images and non-textual data (which will stored
+	// via the persistence layer.
+	private File assetsDirectory = null;
+	
 	// We define an internal HashMap which contains the continent objects from the
 	// world import file. It is necessary to save it temporally because of the different
 	// id mapping structure in the world import file. It differs from the auto generated
@@ -91,7 +114,18 @@ public class WorldFile extends World {
 	 * 
 	 */
 	public WorldFile(File worldFile) {
-		this.worldFile = worldFile;
+		this.importable = worldFile;
+		
+		// TODO: MOVE THIS CODE OUT OF THIS CLASS
+		try {
+			this.assetsDirectory = new File(AppConfigurationManager.load().getWorldsAssetsDirectory() + File.separator);
+		} catch (AppConfigurationNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (AppConfigurationNotReadableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -109,8 +143,10 @@ public class WorldFile extends World {
 			// Initial file validation.
 			// Is this the correct file type? ...
 			this.validate();
+
+			this.extract();
 			
-			Element dataSource = this.open();
+			Element dataSource = this.openDataXml();
 
 			// Data source validation.
 			// Is the world import file valid?
@@ -119,14 +155,13 @@ public class WorldFile extends World {
 			this.extractMeta(dataSource);
 			this.extractContinents(dataSource);
 			this.extractCountries(dataSource);
-
+		} catch (FileNotFoundException e) {
+			throw new WorldFileNotFoundException(this.importable);
 		} catch (IOException e) {
-			throw new WorldFileNotFoundException(this.worldFile);
+			throw new WorldFileNotFoundException(this.importable);
 		} catch (SAXException e) {
-			// TODO: Allgemeine Exception deklarieren
 			throw new WorldFileParseException(e.getMessage());
 		} catch (ParserConfigurationException e) {
-			// TODO: Allgemeine Exception deklarieren
 			throw new WorldFileParseException(e.getMessage());
 		}
 	}
@@ -156,7 +191,27 @@ public class WorldFile extends World {
 			}
 		}
 	}
-	
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	public void moveAssets() {
+		String workspacePath = this.getWorkspace() + File.separator;
+
+		File asset = new File(workspacePath + this.getThumbnail());
+		File moveTo = new File(this.getAssetsDirectory() + File.separator + asset.getName());
+		asset.renameTo(moveTo);
+
+		asset = new File(workspacePath + this.getMap());
+		moveTo = new File(this.getAssetsDirectory() + File.separator + asset.getName());
+		asset.renameTo(moveTo);
+
+		asset = new File(workspacePath + this.getMapUnderlay());
+		moveTo = new File(this.getAssetsDirectory() + File.separator + asset.getName());
+		asset.renameTo(moveTo);
+	}
+
 	/**
 	 * Opens the world import file and returns the document root.
 	 * 
@@ -165,13 +220,65 @@ public class WorldFile extends World {
 	 * @throws SAXException Parser engine exception.
 	 * @throws IOException File not found.
 	 */
-	private Element open() throws ParserConfigurationException, SAXException, IOException {
+	private Element openDataXml() throws ParserConfigurationException, SAXException, IOException {
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-		Document doc = docBuilder.parse(this.getWorldFile().toURI().toString());
+		Document doc = docBuilder.parse(this.getImportable().toURI().toString());
 		return doc.getDocumentElement();
 	}
 
+	/**
+	 * Extracts the encapsulated data from the "Importable" into
+	 * the workspace directory.
+	 * 
+	 * @throws WorldFileParseException 
+	 * @throws FileNotFoundException 
+	 * @throws FileNotFoundException 
+	 * 
+	 */
+	private void extract() throws WorldFileParseException, FileNotFoundException {
+		this.getWorkspace().mkdirs();
+
+		final int BUFFER = 2048;
+
+		BufferedOutputStream extractor = null;
+		ZipInputStream zip = new ZipInputStream(new BufferedInputStream(new FileInputStream(this.getImportable())));
+
+		int spointer = 0; // spointer = stream pointer ;)
+
+		try {
+			ZipEntry zipEntry;
+			while ((zipEntry = zip.getNextEntry()) != null) {
+				spointer = 0;
+				byte data[] = new byte[BUFFER];
+				extractor = new BufferedOutputStream(new FileOutputStream(this.getWorkspace().getAbsolutePath() + File.separator + zipEntry.getName()));
+
+				while ((spointer = zip.read(data, 0, BUFFER)) != -1) {
+					extractor.write(data, 0, spointer);
+				}
+
+				extractor.flush();
+				extractor.close();
+			}
+			zip.close();
+		} catch (IOException e) {
+			throw new WorldFileParseException(e.getMessage());
+		}
+		
+		this.setImportable(new File(this.getWorkspace().getAbsolutePath() + File.separator + WORLD_FILE_XML));
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	public void clean() {
+		for (File file : this.getWorkspace().listFiles()) {
+			file.delete();
+		}
+		this.getWorkspace().delete();
+	}
+	
 	/**
 	 * Extracts the meta data from the world import file
 	 * and pushs the data into the object attributes.
@@ -185,56 +292,56 @@ public class WorldFile extends World {
 		String node = "token";
 		this.setToken(this.extractText(dataSource, node));
 		if (this.getToken().isEmpty()) {
-			throw new WorldFileParseException(this.worldFile, node);
+			throw new WorldFileParseException(this.importable, node);
 		}
 
 		// The worlds name
 		node = "name";
 		this.setName(this.extractText(dataSource, node));
 		if (this.getName().isEmpty()) {
-			throw new WorldFileParseException(this.worldFile, node);
+			throw new WorldFileParseException(this.importable, node);
 		}
 
 		// The worlds description
 		node = "description";
 		this.setDescription(this.extractText(dataSource, node));
 		if (this.getDescription().isEmpty()) {
-			throw new WorldFileParseException(this.worldFile, node);
+			throw new WorldFileParseException(this.importable, node);
 		}
 		
 		// The author
 		node = "author";
 		this.setAuthor(this.extractText(dataSource, node));
 		if (this.getAuthor().isEmpty()) {
-			throw new WorldFileParseException(this.worldFile, node);
+			throw new WorldFileParseException(this.importable, node);
 		}
 
 		// The version
 		node = "version";
 		this.setVersion(this.extractText(dataSource, node));
 		if (this.getVersion().isEmpty()) {
-			throw new WorldFileParseException(this.worldFile, node);
+			throw new WorldFileParseException(this.importable, node);
 		}
 
 		// The map
 		node = "map";
 		this.setMap(this.extractText(dataSource, node));
 		if (this.getMap().isEmpty()) {
-			throw new WorldFileParseException(this.worldFile, node);
+			throw new WorldFileParseException(this.importable, node);
 		}
 
 		// The map underlay
 		node = "map-underlay";
 		this.setMapUnderlay(this.extractText(dataSource, node));
 		if (this.getMapUnderlay().isEmpty()) {
-			throw new WorldFileParseException(this.worldFile, node);
+			throw new WorldFileParseException(this.importable, node);
 		}
 		
 		// The thumbnail
 		node = "thumbnail";
 		this.setThumbnail(this.extractText(dataSource, node));
 		if (this.getThumbnail().isEmpty()) {
-			throw new WorldFileParseException(this.worldFile, node);
+			throw new WorldFileParseException(this.importable, node);
 		}
 	}
 	
@@ -260,7 +367,7 @@ public class WorldFile extends World {
 		}
 
 		if (this.extractedContinents.isEmpty()) {
-			throw new WorldFileParseException(this.worldFile, continentNode);
+			throw new WorldFileParseException(this.importable, continentNode);
 		}
 	}
 
@@ -314,18 +421,18 @@ public class WorldFile extends World {
 		}
 
 		if (this.extractedCountries.isEmpty()) {
-			throw new WorldFileParseException(this.worldFile, countryNode);
+			throw new WorldFileParseException(this.importable, countryNode);
 		}
 	}
-
+	
 	/**
 	 * Common file validation.
 	 * 
 	 * @throws WorldFileExtensionException
 	 */
 	private void validate() throws WorldFileExtensionException {
-		if (!this.worldFile.getName().endsWith(WORLD_FILE_EXTENSION)) {
-			throw new WorldFileExtensionException(this.worldFile, WORLD_FILE_EXTENSION);
+		if (!this.importable.getName().endsWith(WORLD_FILE_EXTENSION)) {
+			throw new WorldFileExtensionException(this.importable, WORLD_FILE_EXTENSION);
 		}
 	}
 	
@@ -341,19 +448,19 @@ public class WorldFile extends World {
 		String nodeName = "meta";
 		Node node = dataSource.getElementsByTagName(nodeName).item(0);
 		if (node == null || node.getChildNodes().getLength() <= 0) {
-			throw new WorldFileParseException(this.worldFile, nodeName);
+			throw new WorldFileParseException(this.importable, nodeName);
 		}
 		
 		nodeName = "continents";
 		node = dataSource.getElementsByTagName(nodeName).item(0);
 		if (node == null || node.getChildNodes().getLength() <= 0) {
-			throw new WorldFileParseException(this.worldFile, nodeName);
+			throw new WorldFileParseException(this.importable, nodeName);
 		}
 
 		nodeName = "countries";
 		node = dataSource.getElementsByTagName(nodeName).item(0);
 		if (node == null || node.getChildNodes().getLength() <= 0) {
-			throw new WorldFileParseException(this.worldFile, nodeName);
+			throw new WorldFileParseException(this.importable, nodeName);
 		}
 	}
 
@@ -371,12 +478,42 @@ public class WorldFile extends World {
 	}
 
 	/**
+	 * Sets the importable file.
+	 * 
+	 * @param importable The world import file.
+	 * 
+	 */
+	private void setImportable(File importable) {
+		this.importable = importable;
+	}
+
+	/**
 	 * The world import file object.
 	 * 
 	 * @return The world import file.
 	 * 
 	 */
-	public File getWorldFile() {
-		return this.worldFile;
+	private File getImportable() {
+		return this.importable;
+	}
+	
+	/**
+	 * Returns the assets directory where the world images will be placed.
+	 * 
+	 * @return A File represents the assets directory.
+	 * 
+	 */
+	private File getAssetsDirectory() {
+		return this.assetsDirectory;
+	}
+
+	/**
+	 * Returns the workspace directory.
+	 * 
+	 * @return A File object, which represents the workspace directory.
+	 * 
+	 */
+	private File getWorkspace() {
+		return this.workspace;
 	}
 }
