@@ -57,7 +57,7 @@ import de.hochschule.bremen.minerva.vo.AppConfiguration;
  * @since 1.0
  *
  */
-public class AppConfigurationManager {
+public class ApplicationConfigManager {
 
 	// The expected file in which the application configuration will be stored.
 	private static final String APPCONFIGURATION_FILENAME = "app.configuration";
@@ -91,7 +91,7 @@ public class AppConfigurationManager {
 	}
 
 	// The manager instance
-	private static AppConfigurationManager manager = null;
+	private static ApplicationConfigManager manager = null;
 
 	// The cached application configuration. We do not need to parse application
 	// configuration file a second time if it was done before.
@@ -103,7 +103,7 @@ public class AppConfigurationManager {
 	 * So this constructor is private.
 	 * 
 	 */
-	private AppConfigurationManager() {}
+	private ApplicationConfigManager() {}
 
 	/**
 	 * Reads the application configuration from the file
@@ -116,12 +116,12 @@ public class AppConfigurationManager {
 	 * 
 	 */
 	public static AppConfiguration load() throws AppConfigurationNotFoundException, AppConfigurationNotReadableException {
-		if (AppConfigurationManager.manager == null || AppConfigurationManager.cachedConfiguration == null) {
-			AppConfigurationManager.manager = new AppConfigurationManager();
-			AppConfigurationManager.manager.parse();
+		if (ApplicationConfigManager.manager == null || ApplicationConfigManager.cachedConfiguration == null) {
+			ApplicationConfigManager.manager = new ApplicationConfigManager();
+			ApplicationConfigManager.manager.parse();
 		}
 		
-		return AppConfigurationManager.cachedConfiguration;
+		return ApplicationConfigManager.cachedConfiguration;
 	}
 
 	/**
@@ -136,7 +136,7 @@ public class AppConfigurationManager {
 		Set<Entry<String, String>> invokableEntries = voStoreMethodInvocationMapping.entrySet();
 		
 		try {
-			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(AppConfigurationManager.APPCONFIGURATION_FILENAME)));
+			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(ApplicationConfigManager.APPCONFIGURATION_FILENAME)));
 
 			for (Entry<String, String> entry : invokableEntries) {
 				String method = entry.getValue(); // The method which should invoked on the storableConfiguration object.
@@ -176,7 +176,7 @@ public class AppConfigurationManager {
 	
 	/**
 	 * Parses the application configuration file and pushs the data into the
-	 * defined configuration object. Uses the @see {@link AppConfigurationManager#fill(String, String)}
+	 * defined configuration object. Uses the @see {@link ApplicationConfigManager#fill(String, String)}
 	 * for method invokation on the configuration object.
 	 * 
 	 * @throws AppConfigurationNotFoundException The application configuration was not found in the application root. 
@@ -185,7 +185,7 @@ public class AppConfigurationManager {
 	 */
 	private void parse() throws AppConfigurationNotFoundException, AppConfigurationNotReadableException {
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(AppConfigurationManager.APPCONFIGURATION_FILENAME));
+			BufferedReader reader = new BufferedReader(new FileReader(ApplicationConfigManager.APPCONFIGURATION_FILENAME));
 			String line = "";
 
 			while (!(line = reader.readLine()).isEmpty()) {
@@ -206,9 +206,9 @@ public class AppConfigurationManager {
 
 			reader.close();
 		} catch (FileNotFoundException e) {
-			throw new AppConfigurationNotFoundException(AppConfigurationManager.APPCONFIGURATION_FILENAME);
+			throw new AppConfigurationNotFoundException(ApplicationConfigManager.APPCONFIGURATION_FILENAME);
 		} catch (IOException e) {
-			throw new AppConfigurationNotReadableException(AppConfigurationManager.APPCONFIGURATION_FILENAME, e.getMessage());
+			throw new AppConfigurationNotReadableException(ApplicationConfigManager.APPCONFIGURATION_FILENAME, e.getMessage());
 		}
 	}
 
