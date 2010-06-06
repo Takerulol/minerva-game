@@ -41,7 +41,18 @@ package de.hochschule.bremen.minerva.vo;
  * 
  */
 public class AppConfiguration extends ValueObject {
-	
+
+	// #########################################################
+	// #
+	// # DON'T FORGET TO MODIFY THE MANAGER
+	// # IF YOU ADD NEW ATTRIBUTES AND GETTER-/SETTER-METHODS
+	// # TO THIS CLASS. OTHERWISE THEY WILL NOT READ-/STORABLE!
+	// #
+	// # A nice but time-consuming solution is described in the
+	// # AppConfigurationManager (see: NICE SOLUTION).
+	// #
+	// #########################################################
+
 	private String worldsAssetsDirectory = null;
 
 	private String userInterfaceAssetsDirectory = null;
