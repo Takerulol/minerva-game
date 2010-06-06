@@ -260,7 +260,7 @@ public class MinervaCUI implements UserInterface {
 			break;
 
 			case 2:
-				players.add(this.registerPlayer());
+				this.registerPlayer();
 				this.initPlayers(players);
 			break;
 			
@@ -329,7 +329,7 @@ public class MinervaCUI implements UserInterface {
 	 * 
 	 * @return
 	 */
-	private Player registerPlayer() {
+	private void registerPlayer() {
 		this.outln(true, "#### Registrierung ####");
 		this.outln("");
 
@@ -361,13 +361,11 @@ public class MinervaCUI implements UserInterface {
 			this.outln("Der Spieler '"+player.getUsername()+"' wurde registriert.");
 		} catch (PlayerExistsException e) {
 			this.error("Der eingegebene Spieler existiert bereits. Legen Sie bitte einen neuen an (anderer Benutzername/E-Mail).");
-			return this.registerPlayer();
+			this.registerPlayer();
 		} catch (DataAccessException e) {
 			this.error("Allgemeiner Persistenzfehler: "+e.getMessage());
 			Runtime.getRuntime().exit(0);
 		}
-		
-		return player;
 	}
 
 	/**
