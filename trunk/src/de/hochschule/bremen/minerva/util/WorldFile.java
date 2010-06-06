@@ -66,7 +66,10 @@ import de.hochschule.bremen.minerva.vo.World;
 /**
  * Represents a physical file that contains the data structure to describe
  * a world with it's countries and country dependencies. It is possible to
- * parse this file and store the information in the world value object attributes.
+ * parse this file and store the information in the world value object attributes.<br /><br />
+ * 
+ * Note that some methods use the {@link ApplicationConfigManager}. Read the documentation for
+ * further usage notes.
  * 
  * @version $Id$
  *
@@ -115,17 +118,7 @@ public class WorldFile extends World {
 	 */
 	public WorldFile(File worldFile) {
 		this.importable = worldFile;
-		
-		// TODO: MOVE THIS CODE OUT OF THIS CLASS
-		try {
-			this.assetsDirectory = new File(ApplicationConfigManager.load().getWorldsAssetsDirectory() + File.separator);
-		} catch (AppConfigurationNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (AppConfigurationNotReadableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.assetsDirectory = new File(ApplicationConfigManager.get().getWorldsAssetsDirectory() + File.separator);
 	}
 
 	/**

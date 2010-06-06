@@ -106,21 +106,28 @@ public class ApplicationConfigManager {
 	private ApplicationConfigManager() {}
 
 	/**
-	 * Reads the application configuration from the file
-	 * and returns the object.
+	 * Setups the application configuration singleton.<br />
+	 * <b>NOTE</b>: Please make sure that you have called this method in the application´
+	 * initialization stage. Otherwise the application configuration will be empty.
 	 * 
-	 * @see AppConfiguration
-	 * @return The application configuration object
-	 * @throws AppConfigurationNotFoundException 
-	 * @throws AppConfigurationNotReadableException 
+	 * @throws AppConfigurationNotFoundException If the application configuration file wasn't found.
+	 * @throws AppConfigurationNotReadableException If the application configuration file is not readable for some reasons.
 	 * 
 	 */
-	public static AppConfiguration load() throws AppConfigurationNotFoundException, AppConfigurationNotReadableException {
+	public static void setup() throws AppConfigurationNotFoundException, AppConfigurationNotReadableException {
 		if (ApplicationConfigManager.manager == null || ApplicationConfigManager.cachedConfiguration == null) {
 			ApplicationConfigManager.manager = new ApplicationConfigManager();
 			ApplicationConfigManager.manager.parse();
 		}
-		
+	}
+	
+	/**
+	 * Return the application configuration
+	 *  
+	 * @see AppConfiguration
+	 * 
+	 */
+	public static AppConfiguration get() {
 		return ApplicationConfigManager.cachedConfiguration;
 	}
 
