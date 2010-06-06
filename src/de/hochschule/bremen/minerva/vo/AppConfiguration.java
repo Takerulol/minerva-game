@@ -35,7 +35,7 @@ package de.hochschule.bremen.minerva.vo;
  * 
  * This object will be instantiated by the ApplicationConfigurationManager.
  *
- * @see AppConfigurationManager
+ * @see ApplicationConfigManager
  * @version $Id$
  * @since 1.0
  * 

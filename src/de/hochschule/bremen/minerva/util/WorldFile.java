@@ -58,7 +58,7 @@ import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotReadableExcept
 import de.hochschule.bremen.minerva.exceptions.WorldFileExtensionException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileParseException;
-import de.hochschule.bremen.minerva.manager.AppConfigurationManager;
+import de.hochschule.bremen.minerva.manager.ApplicationConfigManager;
 import de.hochschule.bremen.minerva.vo.Continent;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.World;
@@ -118,7 +118,7 @@ public class WorldFile extends World {
 		
 		// TODO: MOVE THIS CODE OUT OF THIS CLASS
 		try {
-			this.assetsDirectory = new File(AppConfigurationManager.load().getWorldsAssetsDirectory() + File.separator);
+			this.assetsDirectory = new File(ApplicationConfigManager.load().getWorldsAssetsDirectory() + File.separator);
 		} catch (AppConfigurationNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
