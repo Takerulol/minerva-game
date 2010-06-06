@@ -80,6 +80,8 @@ public class MinervaCUI implements UserInterface {
 	public void run() {
 		int input = this.menue();
 		
+		
+		
 		switch (input) {
 
 			// Import new world from world import file.

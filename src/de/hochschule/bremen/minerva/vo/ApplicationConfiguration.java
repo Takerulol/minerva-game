@@ -35,12 +35,12 @@ package de.hochschule.bremen.minerva.vo;
  * 
  * This object will be instantiated by the ApplicationConfigurationManager.
  *
- * @see ApplicationConfigManager
+ * @see ApplicationConfigurationManager
  * @version $Id$
  * @since 1.0
  * 
  */
-public class AppConfiguration extends ValueObject {
+public class ApplicationConfiguration extends ValueObject {
 
 	// #########################################################
 	// #

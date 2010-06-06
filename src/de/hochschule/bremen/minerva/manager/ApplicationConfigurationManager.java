@@ -45,7 +45,7 @@ import java.util.Map.Entry;
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotReadableException;
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotWritableException;
-import de.hochschule.bremen.minerva.vo.AppConfiguration;
+import de.hochschule.bremen.minerva.vo.ApplicationConfiguration;
 
 /**
  * The application configuration manager.
@@ -57,7 +57,7 @@ import de.hochschule.bremen.minerva.vo.AppConfiguration;
  * @since 1.0
  *
  */
-public class ApplicationConfigManager {
+public class ApplicationConfigurationManager {
 
 	// The expected file in which the application configuration will be stored.
 	private static final String APPCONFIGURATION_FILENAME = "app.configuration";
@@ -91,11 +91,11 @@ public class ApplicationConfigManager {
 	}
 
 	// The manager instance
-	private static ApplicationConfigManager manager = null;
+	private static ApplicationConfigurationManager manager = null;
 
 	// The cached application configuration. We do not need to parse application
 	// configuration file a second time if it was done before.
-	private static AppConfiguration cachedConfiguration = new AppConfiguration();
+	private static ApplicationConfiguration cachedConfiguration = new ApplicationConfiguration();
 
 	/**
 	 * Singleton pattern. It is not possible
@@ -103,7 +103,7 @@ public class ApplicationConfigManager {
 	 * So this constructor is private.
 	 * 
 	 */
-	private ApplicationConfigManager() {}
+	private ApplicationConfigurationManager() {}
 
 	/**
 	 * Setups the application configuration singleton.<br />
@@ -115,20 +115,20 @@ public class ApplicationConfigManager {
 	 * 
 	 */
 	public static void setup() throws AppConfigurationNotFoundException, AppConfigurationNotReadableException {
-		if (ApplicationConfigManager.manager == null || ApplicationConfigManager.cachedConfiguration == null) {
-			ApplicationConfigManager.manager = new ApplicationConfigManager();
-			ApplicationConfigManager.manager.parse();
+		if (ApplicationConfigurationManager.manager == null || ApplicationConfigurationManager.cachedConfiguration == null) {
+			ApplicationConfigurationManager.manager = new ApplicationConfigurationManager();
+			ApplicationConfigurationManager.manager.parse();
 		}
 	}
 	
 	/**
 	 * Return the application configuration
 	 *  
-	 * @see AppConfiguration
+	 * @see ApplicationConfiguration
 	 * 
 	 */
-	public static AppConfiguration get() {
-		return ApplicationConfigManager.cachedConfiguration;
+	public static ApplicationConfiguration get() {
+		return ApplicationConfigurationManager.cachedConfiguration;
 	}
 
 	/**
@@ -139,11 +139,11 @@ public class ApplicationConfigManager {
 	 * @throws AppConfigurationNotWritableException If the app configuration is not writable
 	 * 
 	 */
-	public static void store(AppConfiguration storableConfiguration) throws AppConfigurationNotWritableException {
+	public static void store(ApplicationConfiguration storableConfiguration) throws AppConfigurationNotWritableException {
 		Set<Entry<String, String>> invokableEntries = voStoreMethodInvocationMapping.entrySet();
 		
 		try {
-			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(ApplicationConfigManager.APPCONFIGURATION_FILENAME)));
+			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(ApplicationConfigurationManager.APPCONFIGURATION_FILENAME)));
 
 			for (Entry<String, String> entry : invokableEntries) {
 				String method = entry.getValue(); // The method which should invoked on the storableConfiguration object.
@@ -183,7 +183,7 @@ public class ApplicationConfigManager {
 	
 	/**
 	 * Parses the application configuration file and pushs the data into the
-	 * defined configuration object. Uses the @see {@link ApplicationConfigManager#fill(String, String)}
+	 * defined configuration object. Uses the @see {@link ApplicationConfigurationManager#fill(String, String)}
 	 * for method invokation on the configuration object.
 	 * 
 	 * @throws AppConfigurationNotFoundException The application configuration was not found in the application root. 
@@ -192,7 +192,7 @@ public class ApplicationConfigManager {
 	 */
 	private void parse() throws AppConfigurationNotFoundException, AppConfigurationNotReadableException {
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(ApplicationConfigManager.APPCONFIGURATION_FILENAME));
+			BufferedReader reader = new BufferedReader(new FileReader(ApplicationConfigurationManager.APPCONFIGURATION_FILENAME));
 			String line = "";
 
 			while (!(line = reader.readLine()).isEmpty()) {
@@ -213,9 +213,9 @@ public class ApplicationConfigManager {
 
 			reader.close();
 		} catch (FileNotFoundException e) {
-			throw new AppConfigurationNotFoundException(ApplicationConfigManager.APPCONFIGURATION_FILENAME);
+			throw new AppConfigurationNotFoundException(ApplicationConfigurationManager.APPCONFIGURATION_FILENAME);
 		} catch (IOException e) {
-			throw new AppConfigurationNotReadableException(ApplicationConfigManager.APPCONFIGURATION_FILENAME, e.getMessage());
+			throw new AppConfigurationNotReadableException(ApplicationConfigurationManager.APPCONFIGURATION_FILENAME, e.getMessage());
 		}
 	}
 
