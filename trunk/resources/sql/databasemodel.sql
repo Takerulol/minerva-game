@@ -3,9 +3,9 @@ CREATE TABLE world (
 	"token" VARCHAR(10) UNIQUE NOT NULL,
 	"name" VARCHAR(64) UNIQUE NOT NULL,
 	"description" VARCHAR(1024) NOT NULL,
-	"map" VARCHAR(20) NOT NULL,
-	"map_underlay" VARCHAR(20) NOT NULL,
-	"thumbnail" VARCHAR(20) NOT NULL,
+	"map" VARCHAR(37) NOT NULL,
+	"map_underlay" VARCHAR(37) NOT NULL,
+	"thumbnail" VARCHAR(37) NOT NULL,
 	"author" VARCHAR(256) NOT NULL,
 	"version" VARCHAR(10) NOT NULL,
 	PRIMARY KEY ("id")

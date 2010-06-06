@@ -194,6 +194,9 @@ public class WorldManager {
 		world.createCountryDependencies();
 
 		this.store(world);
+		
+		world.moveAssets();
+		world.clean();
 	}
 
 	/**
