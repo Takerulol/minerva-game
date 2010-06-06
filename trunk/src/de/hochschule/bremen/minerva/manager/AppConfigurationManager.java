@@ -169,7 +169,6 @@ public class AppConfigurationManager {
 		String methodName = voMethodInvocationMapping.get(key);
 
 		try {
-			System.out.println(key);
 			Method method = cachedConfiguration.getClass().getDeclaredMethod(methodName, String.class);
 			method.invoke(cachedConfiguration, value);
 		} catch (SecurityException e) {
