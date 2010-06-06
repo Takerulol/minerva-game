@@ -1,6 +1,0 @@
--- Directory configuration
-directory.assets.worlds=assets/worlds/
-directory.assets.userinterface=assets/userinterface/
-
--- Server configuration
-server.port=9090
