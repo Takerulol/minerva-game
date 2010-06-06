@@ -30,17 +30,21 @@
 package de.hochschule.bremen.minerva.manager;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
-
-import org.omg.CORBA.portable.ApplicationException;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotReadableException;
+import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotWritableException;
 import de.hochschule.bremen.minerva.vo.AppConfiguration;
 
 /**
@@ -67,12 +71,23 @@ public class AppConfigurationManager {
 	// Method invocation mapping. This hash map tells if a specific key was found, which method on the
 	// AppConfiguration object should be invoked (AppConfigurationManager#fill).
 	// The value (notation: key=value) will be passed to this invoked method.
-	private static final HashMap<String, String> voMethodInvocationMapping = new HashMap<String, String>();
+	//
+	// NICE SOLUTION:
+	// In the next releases it would be nice to remove this mapping and read all getter and
+	// setter methods from the AppConfiguration value object and use the method names as keys
+	// (convention over configuration). Yeah I (akoenig) know: In the next releases :)
+	//
+	private static final HashMap<String, String> voReadMethodInvocationMapping = new HashMap<String, String>();
 
+	private static final HashMap<String, String> voStoreMethodInvocationMapping = new HashMap<String, String>();
+	
 	// Method/Key initialization.
 	static {
-		voMethodInvocationMapping.put("directory.assets.worlds", "setWorldsAssetsDirectory");
-		voMethodInvocationMapping.put("directory.assets.userinterface", "setUserInterfaceAssetsDirectory");
+		voReadMethodInvocationMapping.put ("directory.assets.worlds", "setWorldsAssetsDirectory");
+		voStoreMethodInvocationMapping.put("directory.assets.worlds", "getWorldsAssetsDirectory");
+		
+		voReadMethodInvocationMapping.put ("directory.assets.userinterface", "setUserInterfaceAssetsDirectory");
+		voStoreMethodInvocationMapping.put("directory.assets.userinterface", "getUserInterfaceAssetsDirectory");
 	}
 
 	// The manager instance
@@ -110,13 +125,51 @@ public class AppConfigurationManager {
 	}
 
 	/**
-	 * Stores a application configuration.
+	 * Stores a application configuration into a file in the app root.
+	 * Please note that a existing file will be overwritten.
 	 * 
 	 * @param storableConfiguration The configuration which should be stored.
+	 * @throws AppConfigurationNotWritableException If the app configuration is not writable
 	 * 
 	 */
-	public static void store(AppConfiguration storableConfiguration) {
-		// TODO: It is not necessary at the moment. Implement in later releases. It is just for api demonstration.
+	public static void store(AppConfiguration storableConfiguration) throws AppConfigurationNotWritableException {
+		Set<Entry<String, String>> invokableEntries = voStoreMethodInvocationMapping.entrySet();
+		
+		try {
+			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(AppConfigurationManager.APPCONFIGURATION_FILENAME)));
+
+			for (Entry<String, String> entry : invokableEntries) {
+				String method = entry.getValue(); // The method which should invoked on the storableConfiguration object.
+				
+				try {
+					String key = entry.getKey(); // The writable key.
+					String value = (String)cachedConfiguration.getClass().getDeclaredMethod(method).invoke(storableConfiguration);
+
+
+					writer.println(key+SPLIT_IDENTIFIER+value);
+
+				} catch (IllegalArgumentException e) {
+					// TRASH! If this problem occurs, the developer missed to fill the "methods" hash map correctly.
+					e.printStackTrace();
+				} catch (SecurityException e) {
+					// TRASH! If this problem occurs, the developer missed to fill the "methods" hash map correctly.
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TRASH! If this problem occurs, the developer missed to fill the "methods" hash map correctly.
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TRASH! If this problem occurs, the developer missed to fill the "methods" hash map correctly.
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					// TRASH! If this problem occurs, the developer missed to fill the "methods" hash map correctly.
+					e.printStackTrace();
+				}				
+			}
+
+			writer.close();
+		} catch (IOException ex) {
+			throw new AppConfigurationNotWritableException(APPCONFIGURATION_FILENAME, ex.getMessage());
+		}
 		
 		cachedConfiguration = storableConfiguration;
 	}
@@ -141,7 +194,10 @@ public class AppConfigurationManager {
 				if (!this.isCommentLine(line)) {
 					if (!line.isEmpty()) {
 						
-						// DOCME line
+						// A single configuration line has the format "key<SPLIT_IDENTIFIER>value"
+						// Here we use the String#split(<SPLIT_IDENTIFIER>) method to generate a
+						// array with the key (array[0]) and the value (array[1]). So the method
+						// splits at the position where the <SPLIT_IDENTIFIER> is defined.
 						String[] keyValue = line.split(SPLIT_IDENTIFIER);
 						this.fill(keyValue[0], keyValue[1]);
 					}
@@ -166,7 +222,7 @@ public class AppConfigurationManager {
 	 * 
 	 */
 	private void fill(String key, String value) {
-		String methodName = voMethodInvocationMapping.get(key);
+		String methodName = voReadMethodInvocationMapping.get(key);
 
 		try {
 			Method method = cachedConfiguration.getClass().getDeclaredMethod(methodName, String.class);
