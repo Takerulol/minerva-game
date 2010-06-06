@@ -3,6 +3,9 @@ CREATE TABLE world (
 	"token" VARCHAR(10) UNIQUE NOT NULL,
 	"name" VARCHAR(64) UNIQUE NOT NULL,
 	"description" VARCHAR(1024) NOT NULL,
+	"map" VARCHAR(20) NOT NULL,
+	"map_underlay" VARCHAR(20) NOT NULL,
+	"thumbnail" VARCHAR(20) NOT NULL,
 	"author" VARCHAR(256) NOT NULL,
 	"version" VARCHAR(10) NOT NULL,
 	PRIMARY KEY ("id")
@@ -52,7 +55,7 @@ insert into player ("username", "password", "last_name", "first_name", "email") 
 insert into player ("username", "password", "last_name", "first_name", "email") values ('akoenig', 'efa6b55c68d17951c6991e9ce277b809', 'König', 'André', 'akoenig@stud.hs-bremen.de');
 
 -- ## Erde #################################################
-insert into world ("token", "name", "description", "author", "version") values ('earth', 'Die Erde', 'Die Erde als Risiko-Map', 'André König', '1.0 beta');
+insert into world ("token", "name", "description", "map", "map_underlay", "thumbnail", "author", "version") values ('earth', 'Die Erde', 'Die Erde als Risiko-Map', 'a1234567890qwert.jpg', 'a0123456789zuibg.jpg', 'a45789452dlvhmew.jpg', 'André König', '1.0 beta');
 
 insert into continent ("name") values ('Mittel-Europa');
 
@@ -93,7 +96,7 @@ insert into neighbour ("country", "neighbour_country") values (7, 6);
 insert into neighbour ("country", "neighbour_country") values (7, 5); 
 
 -- ## Jupiter #################################################
-insert into world ("token", "name", "description", "author", "version") values ('jupiter', 'Der Jupiter', 'Der Jupiter mit seinen Monden.', 'Carina Strempel', '1.0 beta');
+insert into world ("token", "name", "description", "map", "map_underlay", "thumbnail", "author", "version") values ('jupiter', 'Der Jupiter', 'Der Jupiter mit seinen Monden.', 'azjhfgbdg567439g.jpg', 'bsko73645297fghb.jpg', 'a9090jnghnbdt12j.jpg', 'Carina Strempel', '1.0 beta');
 
 insert into continent ("name") values ('Section 1');
 insert into continent ("name") values ('Section 2');
