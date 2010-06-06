@@ -52,11 +52,12 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 	private final static HashMap<String, String> sql = new HashMap<String, String>();
 
 	static {
-		sql.put("selectById", "select \"id\", \"token\", \"name\", \"description\", \"author\", \"version\" from world where \"id\" = ?");
-		sql.put("selectByName", "select \"id\", \"token\", \"name\", \"description\", \"author\", \"version\" from world where \"name\" = ?");
-		sql.put("selectAll", "select \"id\", \"token\", \"name\", \"description\", \"author\", \"version\" from world order by \"name\"");
-		sql.put("insert", "insert into world (\"token\", \"name\", \"description\", \"author\", \"version\") values (?, ?, ?, ?, ?)");
-		sql.put("update", "update world set \"token\" = ?, \"name\" = ?, \"description\" = ?, \"author\" = ?, \"version\" = ? where \"id\" = ?");
+		// 		// select \"id\", \"token\", \"name\", \"description\",  \"author\", \"version\"
+		sql.put("selectById", "select \"id\", \"token\", \"name\", \"description\", \"author\", \"version\", \"map\", \"map_underlay\", \"thumbnail\" from world where \"id\" = ?");
+		sql.put("selectByName", "select \"id\", \"token\", \"name\", \"description\", \"author\", \"version\", \"map\", \"map_underlay\", \"thumbnail\" from world where \"name\" = ?");
+		sql.put("selectAll", "select \"id\", \"token\", \"name\", \"description\", \"author\", \"version\", \"map\", \"map_underlay\", \"thumbnail\" from world order by \"name\"");
+		sql.put("insert", "insert into world (\"token\", \"name\", \"description\", \"author\", \"version\", \"map\", \"map_underlay\", \"thumbnail\") values (?, ?, ?, ?, ?, ?, ?, ?)");
+		sql.put("update", "update world set \"token\" = ?, \"name\" = ?, \"description\" = ?, \"author\" = ?, \"version\" = ?, \"map\" = ?, \"map_underlay\" = ?, \"thumbnail\" = ? where \"id\" = ?");
 		sql.put("delete", "delete from world where \"id\" = ?");
 	}
 
@@ -177,6 +178,9 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 					registrableWorld.getDescription(),
 					registrableWorld.getAuthor(),
 					registrableWorld.getVersion(),
+					registrableWorld.getMap(),
+					registrableWorld.getMapUnderlay(),
+					registrableWorld.getThumbnail(),
 					registrableWorld.getId()
 				};
 				this.update(sql.get("update"), params);
@@ -186,7 +190,10 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 					registrableWorld.getName(),
 					registrableWorld.getDescription(),
 					registrableWorld.getAuthor(),
-					registrableWorld.getVersion()
+					registrableWorld.getVersion(),
+					registrableWorld.getMap(),
+					registrableWorld.getMapUnderlay(),
+					registrableWorld.getThumbnail()
 				};
 
 				this.insert(sql.get("insert"), params);
@@ -232,13 +239,15 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 	protected World resultSetToObject(ResultSet current) throws SQLException {
 		World world = new World();
 
-		// TODO: Replace trim. Use correct database datatype.
 		world.setId(current.getInt(1));
 		world.setToken(current.getString(2));
 		world.setName(current.getString(3));
 		world.setDescription(current.getString(4));
 		world.setAuthor(current.getString(5));
 		world.setVersion(current.getString(6));
+		world.setMap(current.getString(7));
+		world.setMapUnderlay(current.getString(8));
+		world.setThumbnail(current.getString(9));
 
 		return world;
 	}

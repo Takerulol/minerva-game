@@ -56,6 +56,10 @@ public class World extends ValueObject {
 	private String author = null;
 	private String version = null;
 
+	private String map = null;
+	private String mapUnderlay = null;
+	private String thumbnail = null;
+
 	private Vector<Country> countries = new Vector<Country>();
 	private CountryGraph countryGraph = new CountryGraph();
 	
@@ -177,6 +181,69 @@ public class World extends ValueObject {
 	 */
 	public String getVersion() {
 		return this.version;
+	}
+
+	/**
+	 * Sets the worlds map filename.
+	 * 
+	 * @param filename The map filename.
+	 * 
+	 */
+	public void setMap(String filename) {
+		this.map = filename;
+	}
+
+	/**
+	 * Returns the worlds map filename.
+	 * 
+	 * @return The map filename.
+	 * 
+	 */
+	public String getMap() {
+		return this.map;
+	}
+
+	/**
+	 * Sets the map underlay filename.
+	 * The map underlay is the second image, which represents
+	 * the country colors. This map is necessary for the recognition
+	 * which country the player has selected.
+	 * 
+	 * @param filename The map underlay filename.
+	 * 
+	 */
+	public void setMapUnderlay(String filename) {
+		this.mapUnderlay = filename;
+	}
+
+	/**
+	 * Returns the map underlay filename.
+	 * 
+	 * @return The map underlay filename.
+	 * 
+	 */
+	public String getMapUnderlay() {
+		return this.mapUnderlay;
+	}
+
+	/**
+	 * Sets the thumbnail filename.
+	 * 
+	 * @param filename The thumbnails filename.
+	 * 
+	 */
+	public void setThumbnail(String filename) {
+		this.thumbnail = filename;
+	}
+
+	/**
+	 * Returns the thumbnails filename.
+	 * 
+	 * @return The thumbnails filename.
+	 * 
+	 */
+	public String getThumbnail() {
+		return this.thumbnail;
 	}
 
 	/**
@@ -407,6 +474,6 @@ public class World extends ValueObject {
 	 * 
 	 */
 	public String toString() {
-		return getClass().getName() + ": [id=" + id + ", token=" +token + ", name=" + name + ", description=" + description + ", author=" + author + ", version=" + version + ", countries=" + countries +"]";
+		return getClass().getName() + ": [id=" + this.getId() + ", token=" + this.getToken() + ", name=" + this.getName() + ", description=" + this.getDescription() + ", author=" + this.getAuthor() + ", version=" + this.getVersion() + ", map=" + this.getMap() + ", mapUnderlay=" + this.getMapUnderlay() + ", thumbnail=" + this.getThumbnail() + ", countries=" + this.getCountries() +"]";
 	}
 }
