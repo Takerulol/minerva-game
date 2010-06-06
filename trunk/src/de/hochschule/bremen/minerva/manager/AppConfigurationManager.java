@@ -60,7 +60,7 @@ import de.hochschule.bremen.minerva.vo.AppConfiguration;
 public class AppConfigurationManager {
 
 	// The expected file in which the application configuration will be stored.
-	private static final String APPCONFIGURATION_FILENAME = "application.configuration";
+	private static final String APPCONFIGURATION_FILENAME = "app.configuration";
 
 	// Value that identifies a "comment line"
 	private static final String COMMENT_IDENTIFIER = "--";
