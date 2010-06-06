@@ -56,7 +56,9 @@ public class ApplicationConfiguration extends ValueObject {
 	private String worldsAssetsDirectory = null;
 
 	private String userInterfaceAssetsDirectory = null;
-	
+
+	private int serverPort = 0;
+
 	/**
 	 * Sets the worlds assets directory path.
 	 * This directory contains all the worlds related resources (e. g. map images, thumbnail, etc.)
@@ -100,6 +102,25 @@ public class ApplicationConfiguration extends ValueObject {
 	}
 
 	/**
+	 * Sets the socket server port.
+	 * 
+	 * @param serverPort The socket port
+	 * 
+	 */
+	public void setServerPort(String serverPort) {
+		this.serverPort = Integer.parseInt(serverPort);
+	}
+
+	/**
+	 * Returns the socket port.
+	 * 
+	 * @return
+	 */
+	public String getServerPort() {
+		return (String.valueOf(this.serverPort));
+	}
+
+	/**
 	 * Returns the application configuration in a single string.
 	 * 
 	 * @return The application configuration in a single string.
@@ -107,6 +128,6 @@ public class ApplicationConfiguration extends ValueObject {
 	 */
 	@Override
 	public String toString() {
-		return this.getClass().getName() + ": [worldAssetsDir="+this.getWorldsAssetsDirectory()+ ", uiAssetsDir="+this.getUserInterfaceAssetsDirectory()+"]";
+		return this.getClass().getName() + ": [worldAssetsDir="+this.getWorldsAssetsDirectory()+ ", uiAssetsDir="+this.getUserInterfaceAssetsDirectory()+", serverPort="+this.getServerPort()+"]";
 	}
 }

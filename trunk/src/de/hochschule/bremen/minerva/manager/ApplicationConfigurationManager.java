@@ -83,11 +83,14 @@ public class ApplicationConfigurationManager {
 	
 	// Method/Key initialization.
 	static {
-		voReadMethodInvocationMapping.put ("directory.assets.worlds", "setWorldsAssetsDirectory");
+		voReadMethodInvocationMapping.put("directory.assets.worlds", "setWorldsAssetsDirectory");
 		voStoreMethodInvocationMapping.put("directory.assets.worlds", "getWorldsAssetsDirectory");
 		
-		voReadMethodInvocationMapping.put ("directory.assets.userinterface", "setUserInterfaceAssetsDirectory");
+		voReadMethodInvocationMapping.put("directory.assets.userinterface", "setUserInterfaceAssetsDirectory");
 		voStoreMethodInvocationMapping.put("directory.assets.userinterface", "getUserInterfaceAssetsDirectory");
+
+		voReadMethodInvocationMapping.put("server.port", "setServerPort");
+		voStoreMethodInvocationMapping.put("server.port", "getServerPort");
 	}
 
 	// The manager instance
@@ -170,7 +173,9 @@ public class ApplicationConfigurationManager {
 				} catch (NoSuchMethodException e) {
 					// TRASH! If this problem occurs, the developer missed to fill the "methods" hash map correctly.
 					e.printStackTrace();
-				}				
+				} catch (NullPointerException e) {
+					// TRASH! If a line was configured and no attributes exists in the application configuration object.
+				}
 			}
 
 			writer.close();
@@ -242,6 +247,8 @@ public class ApplicationConfigurationManager {
 			// TRASH! If this problem occurs, the developer missed to fill the "methods" hash map correctly.
 		} catch (InvocationTargetException e) {
 			// TRASH! If this problem occurs, the developer missed to fill the "methods" hash map correctly.
+		} catch (NullPointerException e) {
+			// TRASH! If a line was configured and no attributes exists in the application configuration object.
 		}
 	}
 
