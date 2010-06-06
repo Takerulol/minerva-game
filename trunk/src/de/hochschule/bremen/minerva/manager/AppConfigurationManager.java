@@ -37,11 +37,17 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
+import org.omg.CORBA.portable.ApplicationException;
+
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotReadableException;
 import de.hochschule.bremen.minerva.vo.AppConfiguration;
 
 /**
+ * The application configuration manager.
+ * Provides methods to store the fundamental configurations to a file in the application
+ * root. This data is necessary for the application to run. So further game relevant data
+ * will be stored via the persistence layer of course.
  * 
  * @version $Id$
  * @since 1.0
@@ -116,10 +122,12 @@ public class AppConfigurationManager {
 	}
 	
 	/**
-	 * DOCME
+	 * Parses the application configuration file and pushs the data into the
+	 * defined configuration object. Uses the @see {@link AppConfigurationManager#fill(String, String)}
+	 * for method invokation on the configuration object.
 	 * 
 	 * @throws AppConfigurationNotFoundException The application configuration was not found in the application root. 
-	 * @throws AppConfigurationNotReadableException 
+	 * @throws AppConfigurationNotReadableException If the application configuration file is not readable (e. g. another process reads from the file, etc.).
 	 * 
 	 */
 	private void parse() throws AppConfigurationNotFoundException, AppConfigurationNotReadableException {
@@ -149,11 +157,12 @@ public class AppConfigurationManager {
 	}
 
 	/**
-	 * DOCME
+	 * Pushs the given value to the configuration object. <br /><br />
 	 * 
-	 * @param configuration
-	 * @param key
-	 * @param value
+	 * Note that you have to define the "key-method-mapping".
+	 * 
+	 * @param key The key from the app configuration file.
+	 * @param value The value for the key from the app configuration file.
 	 * 
 	 */
 	private void fill(String key, String value) {
