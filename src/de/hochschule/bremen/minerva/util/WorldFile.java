@@ -215,6 +215,27 @@ public class WorldFile extends World {
 		if (this.getVersion().isEmpty()) {
 			throw new WorldFileParseException(this.worldFile, node);
 		}
+
+		// The map
+		node = "map";
+		this.setMap(this.extractText(dataSource, node));
+		if (this.getMap().isEmpty()) {
+			throw new WorldFileParseException(this.worldFile, node);
+		}
+
+		// The map underlay
+		node = "map-underlay";
+		this.setMapUnderlay(this.extractText(dataSource, node));
+		if (this.getMapUnderlay().isEmpty()) {
+			throw new WorldFileParseException(this.worldFile, node);
+		}
+		
+		// The thumbnail
+		node = "thumbnail";
+		this.setThumbnail(this.extractText(dataSource, node));
+		if (this.getThumbnail().isEmpty()) {
+			throw new WorldFileParseException(this.worldFile, node);
+		}
 	}
 	
 	/**
