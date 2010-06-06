@@ -81,10 +81,11 @@ public class MinervaCUI implements UserInterface {
 	 * 
 	 */
 	public void run() {
-		int input = this.menue();
 		
 		try {
 			ApplicationConfigurationManager.setup();
+
+			int input = this.menue();
 
 			switch (input) {
 			
