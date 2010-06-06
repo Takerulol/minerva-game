@@ -194,13 +194,12 @@ public class ApplicationConfigurationManager {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(ApplicationConfigurationManager.APPCONFIGURATION_FILENAME));
 			String line = "";
-
-			while (!(line = reader.readLine()).isEmpty()) {
+			while ((line = reader.readLine()) != null) {
 				
 				// Ignore comments and "whitespace" lines.
 				if (!this.isCommentLine(line)) {
 					if (!line.isEmpty()) {
-						
+
 						// A single configuration line has the format "key<SPLIT_IDENTIFIER>value"
 						// Here we use the String#split(<SPLIT_IDENTIFIER>) method to generate a
 						// array with the key (array[0]) and the value (array[1]). So the method
@@ -210,7 +209,6 @@ public class ApplicationConfigurationManager {
 					}
 				}
 			}
-
 			reader.close();
 		} catch (FileNotFoundException e) {
 			throw new AppConfigurationNotFoundException(ApplicationConfigurationManager.APPCONFIGURATION_FILENAME);
