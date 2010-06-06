@@ -47,7 +47,7 @@ public abstract class AbstractDatabaseHandler {
 	private static Connection connection = null;
 
 	// TODO: Move this data to the 'config.ini'
-	private static String databaseName = "minervaDB";
+	private static String databaseName = "database";
 	private static String databaseDriver = "org.apache.derby.jdbc.EmbeddedDriver";
 	
 	/**
