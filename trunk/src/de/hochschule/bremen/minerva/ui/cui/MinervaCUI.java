@@ -37,6 +37,8 @@ import java.util.Vector;
 
 import de.hochschule.bremen.minerva.core.Game;
 import de.hochschule.bremen.minerva.core.Turn;
+import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotFoundException;
+import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotReadableException;
 import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
 import de.hochschule.bremen.minerva.exceptions.CountryOwnerException;
 import de.hochschule.bremen.minerva.exceptions.IsOwnCountryException;
@@ -55,6 +57,7 @@ import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.World;
 import de.hochschule.bremen.minerva.manager.AccountManager;
+import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.manager.WorldManager;
 import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.ui.UserInterface;
@@ -80,32 +83,41 @@ public class MinervaCUI implements UserInterface {
 	public void run() {
 		int input = this.menue();
 		
-		
-		
-		switch (input) {
+		try {
+			ApplicationConfigurationManager.setup();
 
+			switch (input) {
+			
 			// Import new world from world import file.
 			case 1:
 				this.importWorld();
 				this.run();
-			break;
-
-			// Print the world list
+				break;
+				
+				// Print the world list
 			case 2:
 				this.printWorldList();
 				this.run();
-			break;
-			
-			// Start a new game
+				break;
+				
+				// Start a new game
 			case 3:
 				this.startGame();
-			break;
-			
+				break;
+				
 			default:
 				this.error("Ungültige Eingabe ...");
 				this.run();
-			break;
+				break;
+			}
+		} catch (AppConfigurationNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (AppConfigurationNotReadableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
 	}
 
 	/**
