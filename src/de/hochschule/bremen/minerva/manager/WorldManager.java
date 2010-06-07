@@ -62,6 +62,9 @@ import de.hochschule.bremen.minerva.vo.World;
  * WorldManager.getInstance().<theMethod>
  * </pre>
  *
+ * Note that some methods use the {@link ApplicationConfigurationManager}.
+ * Read the class documentation for further usage notes.
+ *
  * @since 1.0
  * @version $Id$
  *
@@ -186,7 +189,7 @@ public class WorldManager {
 	 * 
 	 */
 	public void store(File worldFile) throws WorldFileExtensionException, WorldFileNotFoundException, WorldFileParseException, DataAccessException  {
-		WorldFile world = new WorldFile(worldFile);
+		WorldFile world = new WorldFile(worldFile, ApplicationConfigurationManager.get().getWorldsAssetsDirectory());
 		world.parse();
 
 		this.store(world);

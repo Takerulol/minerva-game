@@ -56,7 +56,6 @@ import org.xml.sax.SAXException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileExtensionException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileParseException;
-import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.vo.Continent;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.World;
@@ -65,9 +64,6 @@ import de.hochschule.bremen.minerva.vo.World;
  * Represents a physical file that contains the data structure to describe
  * a world with it's countries and country dependencies. It is possible to
  * parse this file and store the information in the world value object attributes.<br /><br />
- * 
- * Note that some methods use the {@link ApplicationConfigurationManager}. Read the documentation for
- * further usage notes.
  * 
  * @version $Id$
  *
@@ -114,9 +110,9 @@ public class WorldFile extends World {
 	 * @see File
 	 * 
 	 */
-	public WorldFile(File worldFile) {
+	public WorldFile(File worldFile, String assetsDirectory) {
 		this.importable = worldFile;
-		this.assetsDirectory = new File(ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + File.separator);
+		this.assetsDirectory = new File(assetsDirectory + File.separator);
 	}
 
 	/**
