@@ -65,7 +65,7 @@ public class Turn {
 	private Vector<CountryCard> countryCards = null;
 	private Vector<CountryCard> usedCountryCards = null;
 	private CardSeriesCounter seriesCounter = null;
-	private Boolean cardGet = false;
+	private Boolean cardGet = true;
 	
 	/**
 	 * Constructs a new turn.
