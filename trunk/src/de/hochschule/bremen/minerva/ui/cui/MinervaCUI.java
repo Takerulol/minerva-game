@@ -55,6 +55,7 @@ import de.hochschule.bremen.minerva.exceptions.WorldFileNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileParseException;
 import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.vo.Country;
+import de.hochschule.bremen.minerva.vo.CountryCard;
 import de.hochschule.bremen.minerva.vo.Mission;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.World;
@@ -216,6 +217,9 @@ public class MinervaCUI implements UserInterface {
 				this.outln(true, "Spieler »"+turn.getCurrentPlayer().getUsername() + "« ist am Zug und hat " + turn.getAllocatableArmyCount() + " Einheiten bekommen, die verteilt werden müssen.");
 				
 				this.outln(true, "### Verteilung der Einheiten ###");
+				
+				// Step 0: Turn cards in
+				this.turnCardsIn(turn);
 				
 				// Step 1: Allocate new armies
 				this.allocateNewArmies(turn);
@@ -581,6 +585,49 @@ public class MinervaCUI implements UserInterface {
 			}
 		}
 	}
+	
+	private void turnCardsIn(Turn turn) {
+		boolean turnIn = true;
+		int oldArmyCount = turn.getAllocatableArmyCount();
+		Vector<CountryCard> cards = turn.getCurrentPlayer().getCountryCards();
+		
+		this.outln(true, "#### Resultat des Angriffs ####");
+		this.outln();
+		
+		if (cards.isEmpty()) {
+			this.outln("Sie haben keine Karten.");
+			turnIn = false;
+		} else {
+			this.outln("Sie besitzen folgende Karten:");
+			this.printCardList(turn);
+			
+			this.outln(true, "- '"+turn.getCurrentPlayer().getUsername()+"' möchten Sie Karten eintauschen [J/N]?");
+			turnIn = this.readBoolean();
+		}
+		
+		if (turnIn) {
+			boolean cardTurnIn = true;
+			
+			do {
+				//actual card turn in
+				if (cards.size() == 5) {
+					this.outln("Sie haben 5 Länderkarten, es wird zwangsweise eine Serie abgegeben.");
+					turn.releaseCardSeries();
+				} else {
+					
+				}
+				
+				if (oldArmyCount < turn.getAllocatableArmyCount()) {
+					this.outln("Sie haben "+(turn.getAllocatableArmyCount()-oldArmyCount)+" neue Armeen erhalten.");
+				}
+				//card stack empty
+				if (cards.isEmpty()) {
+					this.outln("Sie haben nun keine Karten mehr.");
+					cardTurnIn = false;
+				}
+			} while (cardTurnIn);
+		}
+	}
 
 	/**
 	 * DOCME
@@ -737,6 +784,21 @@ public class MinervaCUI implements UserInterface {
 		} catch (DataAccessException e) {
 			this.error("Es ist ein allgemeiner Persistenzfehler aufgetreten. Grund: "+ e.getMessage());
 			Runtime.getRuntime().exit(0);
+		}
+	}
+	
+	/**
+	 * DOCME
+	 * @param turn
+	 */
+	private void printCardList(Turn turn) {
+		this.outln();
+		int i = 0;
+		for (CountryCard card : turn.getCurrentPlayer().getCountryCards()) {
+			this.outln("["+i+"] Symbol: "+card.getClass()+", Land der Karte: "
+					+card.getReference().getName()+", Ihr Land: "
+					+(turn.getCurrentPlayer().hasCountry(card.getReference()) ? "Ja" : "Nein"));
+			i++;
 		}
 	}
 	
