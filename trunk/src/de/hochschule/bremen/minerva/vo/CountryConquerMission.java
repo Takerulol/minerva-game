@@ -40,7 +40,7 @@ package de.hochschule.bremen.minerva.vo;
  */
 public class CountryConquerMission extends Mission  {
 	
-	short countOfCountriesToConquer;
+	private short countOfCountriesToConquer;
 	
 	/**
 	 * The constructor gets the missionOwner and a count of the countries.
@@ -50,7 +50,10 @@ public class CountryConquerMission extends Mission  {
 	 */
 	public CountryConquerMission(short countOfCountriesToConquer, Player missionOwner) {
 		super(missionOwner);
-		this.countOfCountriesToConquer = countOfCountriesToConquer;
+		this.setCountOfCountriesToConquer(countOfCountriesToConquer);
+		
+		this.setTitle("Nehme schnell "+this.getCountOfCountriesToConquer()+" Länder ein!");
+		this.setDescription("Der Spieler '"+this.getOwner().getUsername()+"' hat das Ziel "+this.getCountOfCountriesToConquer()+" Länder einzunehmen.");
 	}
 
 	/**
@@ -59,13 +62,24 @@ public class CountryConquerMission extends Mission  {
 	 * @return countOfCountriesToConquer
 	 */
 	public short getCountOfCountriesToConquer() {
-		return countOfCountriesToConquer;
+		return this.countOfCountriesToConquer;
+	}
+
+	/**
+	 * Sets the count of countries the mission owner
+	 * has to conquer.
+	 * 
+	 * @param countOfCountriesToConquer int The country count to conque.
+	 * 
+	 */
+	private void setCountOfCountriesToConquer(short countOfCountriesToConquer) {
+		this.countOfCountriesToConquer = countOfCountriesToConquer;
 	}
 	
 	/**
 	 * The player wins if he gets all countries he has to conquer to fulfill the mission.
 	 */
 	public boolean isFulfilled() {
-		return (this.countOfCountriesToConquer <= getMissionOwner().getCountryCount());
+		return (this.countOfCountriesToConquer <= this.getOwner().getCountryCount());
 	}	
 }

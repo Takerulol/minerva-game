@@ -159,7 +159,7 @@ public class Game {
 			Vector<Player> winners = new Vector<Player>();
 			for(Mission mission : this.missions) {
 				if (mission.isFulfilled()) {
-					winners.add(mission.getMissionOwner());
+					winners.add(mission.getOwner());
 				}
 			}
 			if (!winners.isEmpty()) {
@@ -226,48 +226,63 @@ public class Game {
 		}
 	}
 	
-	//TODO: ContinentConquer Mission implementieren
 	/**
 	 * Generates missions randomly for all players in the game.
+	 * 
 	 */
-	@SuppressWarnings("unchecked")
 	private void allocateMissions() {
-		Vector<Player> playerShuffle = (Vector<Player>) this.players.clone();
-		Vector<Continent> continentShuffle = (Vector<Continent>) this.world.getContinents().clone();
-		int missionGet;
-		Mission mission;
+		Vector<Player> defeatablePlayers = new Vector<Player>(this.getPlayer());
+		Vector<Continent> conquerableContinents = new Vector<Continent>(this.world.getContinents());
 		
+		int missionType = 0;
+
 		for (Player player : this.players) {
-			mission = null;
-			missionGet = (int) (Math.random() * 3);
-			if (missionGet == 0) {
-				short countryGet = (short) (this.world.getCountryCount() * 4 / 7);
-				mission = new CountryConquerMission(countryGet, player);
-				this.missions.add(mission);
-			} else if (missionGet == 1) {
-				Collections.shuffle(continentShuffle);
-				Vector<Country> continentOne = this.world.getCountries(continentShuffle.get(0));
-				Vector<Country> continentTwo = this.world.getCountries(continentShuffle.get(1));
-				mission = new ContinentConquerMission(continentOne,continentTwo,player);
-				this.missions.add(mission);
-			} else {
-				Collections.shuffle(playerShuffle);
-				mission = new DefeatPlayerMission(playerShuffle.firstElement(),player);
-				playerShuffle.remove(0);
-				this.missions.add(mission);
+			missionType = (int)(Math.random()*3);
+			
+			switch (missionType) {
+				
+				// Conquer country mission
+				case 0:
+					// DOCME: The calculation!
+					short conquerableCountryCount = (short)((this.world.getCountryCount()*4)/7);
+					this.missions.add(new CountryConquerMission(conquerableCountryCount, player));
+				break;
+
+				// Conquer continent mission
+				case 1:
+					Collections.shuffle(conquerableContinents);
+					Vector<Country> firstContinent = this.world.getCountries(conquerableContinents.get(0));
+					Vector<Country> secondContinent = this.world.getCountries(conquerableContinents.get(1));
+					this.missions.add(new ContinentConquerMission(firstContinent, secondContinent, player));
+				break;
+
+				// Defeat player mission
+				default:
+					// Creates a copy of the defeatable players vector and removes the mission owner.
+					// So that the mission owner has no possibility to be the enemy.
+					Vector<Player> shuffableDefeatablePlayer = new Vector<Player>(defeatablePlayers);
+					shuffableDefeatablePlayer.remove(player);
+
+					Collections.shuffle(shuffableDefeatablePlayer);
+					Player enemy = shuffableDefeatablePlayer.firstElement();
+					this.missions.add(new DefeatPlayerMission(enemy, player));
+					
+					// Remove the enemy from the vector with defeatable player. So that the enemy can
+					// no be the enemy in another defeat player mission.
+					defeatablePlayers.remove(enemy);
+				break;
 			}
 		}
-		
 	}
 	
 	//TODO:	maybe shuffle country vector without creating temp
 	/**
 	 * Generates full stack of country cards according to the number country list with
 	 * a random symbol.
+	 * 
 	 */
-	@SuppressWarnings("unchecked")
 	private void generateCountryCards() {
-		Vector<Country> temp = (Vector<Country>) this.world.getCountries().clone();
+		Vector<Country> temp = new Vector<Country>(this.world.getCountries());
 		Collections.shuffle(temp);
 		
 		for (int countryNumber = 0; countryNumber < this.world.getCountryCount(); countryNumber++) {
@@ -281,6 +296,16 @@ public class Game {
 			}
 			this.countryCards.add(card);
 		}
+	}
+
+	/**
+	 * Returns the generated mission vector.
+	 * 
+	 * @return Vector<Mission> The missions.
+	 * 
+	 */
+	public Vector<Mission> getMissions() {
+		return this.missions;
 	}
 	
 	/**

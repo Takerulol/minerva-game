@@ -53,8 +53,15 @@ public class ContinentConquerMission extends Mission {
 	 */
 	public ContinentConquerMission(Vector<Country> countriesOfContinentOne, Vector<Country> countriesOfContinentTwo, Player missionOwner ) {
 		super(missionOwner);
-		this.countriesOfContinentOne = countriesOfContinentOne;
-		this.countriesOfContinentTwo = countriesOfContinentTwo;
+		
+		this.setCountriesOfContinentOne(countriesOfContinentOne);
+		this.setCountriesOfContinentTwo(countriesOfContinentTwo);
+
+		Continent one = this.getCountriesOfContinentOne().get(0).getContinent();
+		Continent two = this.getCountriesOfContinentTwo().get(0).getContinent();
+		
+		this.setTitle("Nehme die Kontinente '"+one.getName()+"' und '"+two.getName()+"' ein.");
+		this.setDescription("Setze deine Einheiten auf alle Länder der beiden Kontinente.");
 	}
 	
 	/**
@@ -65,6 +72,17 @@ public class ContinentConquerMission extends Mission {
 	public Vector<Country> getCountriesOfContinentOne() {
 		return this.countriesOfContinentOne;
 	}
+
+	/**
+	 * Sets the countries of the first continent, which the
+	 * player has to conquer.
+	 * 
+	 * @param Vector<Country> All "continent one" countries.
+	 * 
+	 */
+	private void setCountriesOfContinentOne(Vector<Country> countriesOfContinentOne) {
+		this.countriesOfContinentOne = countriesOfContinentOne;
+	}
 	
 	/**
 	 * Returns the countries of the second continent.
@@ -73,6 +91,17 @@ public class ContinentConquerMission extends Mission {
 	 */
 	public Vector<Country> getCountriesOfContinentTwo() {
 		return this.countriesOfContinentTwo;
+	}
+
+	/**
+	 * Sets the countries of the second continent, which the
+	 * player has to conquer.
+	 * 
+	 * @param Vector<Country> All "continent two" countries.
+	 * 
+	 */
+	private void setCountriesOfContinentTwo(Vector<Country> countriesOfContinentTwo) {
+		this.countriesOfContinentTwo = countriesOfContinentTwo;
 	}
 	
 	/**
@@ -84,12 +113,12 @@ public class ContinentConquerMission extends Mission {
 		Boolean check = true;
 		for (Country country : countriesOfContinentOne) {
 			if (check) {
-				check = this.getMissionOwner().hasCountry(country);
+				check = this.getOwner().hasCountry(country);
 			}
 		}
 		for (Country country : countriesOfContinentTwo) {
 			if (check) {
-				check = this.getMissionOwner().hasCountry(country);
+				check = this.getOwner().hasCountry(country);
 			}
 		}
 		return check;
