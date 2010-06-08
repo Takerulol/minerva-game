@@ -73,6 +73,9 @@ public class Turn {
 	 * @param currentPlayer This is the new current player.
 	 * @param world The world object played on.
 	 * @param players The player vector inheriting all players to this match.
+	 * @param Vector<CountryCard> countryCards Vector with country card obtainable after a succesful attack.
+	 * @param Vector<CountryCard> usedCountryCards Vector with turned in country cards.
+	 * @param CardSeriesCounter seriesCounter Counter of turned in series in the game.
 	 */
 	public Turn(Player currentPlayer, World world, Vector<Player> players,
 			Vector<CountryCard> countryCards, Vector<CountryCard> usedCountryCards,
