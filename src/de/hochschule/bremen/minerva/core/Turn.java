@@ -229,9 +229,11 @@ public class Turn {
 				
 				// If attacker won, he gets the country and moves his attacking armies there.
 				if (defenderCountry.getArmies().isEmpty()) {
-					Player loser = findPlayerToCountry(defenderCountry);
+					Player loser = this.findPlayerToCountry(defenderCountry);
 					loser.removeCountry(defenderCountry);
+
 					currentPlayer.addCountry(defenderCountry);
+
 					for (int i = 0; i < armyCount-lostArmies[0]; i++) {
 						defenderCountry.addArmy();
 						attackerCountry.removeArmy();
@@ -257,7 +259,7 @@ public class Turn {
 				
 				
 				//Creating new AttackResult
-				this.attackResults.add(new AttackResult(currentPlayer,findPlayerToCountry(defenderCountry), lostArmies[0], lostArmies[1], won));
+				this.attackResults.add(new AttackResult(currentPlayer, this.findPlayerToCountry(defenderCountry), lostArmies[0], lostArmies[1], won));
 				
 			}
 			
