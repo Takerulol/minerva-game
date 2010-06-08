@@ -198,7 +198,7 @@ public class WorldFile extends World {
 	/**
 	 * Move the world assets to the defined directory.<br /><br />
 	 * 
-	 * If the world import file wasn' extracted before, this method
+	 * If the world import file wasn't extracted before, this method
 	 * will call the parse method.
 	 * 
 	 * @throws WorldFileParseException If the parse method fails. 
