@@ -54,10 +54,12 @@ import de.hochschule.bremen.minerva.exceptions.WorldFileExtensionException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileParseException;
 import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
+import de.hochschule.bremen.minerva.vo.CavalerieCard;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.CountryCard;
 import de.hochschule.bremen.minerva.vo.Mission;
 import de.hochschule.bremen.minerva.vo.Player;
+import de.hochschule.bremen.minerva.vo.SoldierCard;
 import de.hochschule.bremen.minerva.vo.World;
 import de.hochschule.bremen.minerva.manager.AccountManager;
 import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
@@ -848,7 +850,16 @@ public class MinervaCUI implements UserInterface {
 		this.outln();
 		int i = 0;
 		for (CountryCard card : turn.getCurrentPlayer().getCountryCards()) {
-			this.outln("["+i+"] Symbol: "+card.getClass()+", Land der Karte: "
+			String name;
+			if (card instanceof SoldierCard) {
+				name = "Soldier Card";
+			} else if (card instanceof CavalerieCard) {
+				name = "Cavalerie Card";
+			} else {
+				name = "Canon Card";
+			}
+			
+			this.outln("["+i+"] Symbol: "+name+", Land der Karte: "
 					+card.getReference().getName()+", Ihr Land: "
 					+(turn.getCurrentPlayer().hasCountry(card.getReference()) ? "Ja" : "Nein"));
 			i++;
