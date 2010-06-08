@@ -175,7 +175,8 @@ public class Turn {
 	 * 		- put dice into attack result (is it changed yet?)
 	 * 
 	 */
-	public void attack(Country attackerCountry, Country defenderCountry, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException {
+	public AttackResult attack(Country attackerCountry, Country defenderCountry, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException {
+		AttackResult result = null;
 
 		if (this.world.areNeighbours(attackerCountry, defenderCountry)) {
 			
@@ -257,15 +258,17 @@ public class Turn {
 					won = true;
 				}
 				
-				
+				result = new AttackResult(currentPlayer, this.findPlayerToCountry(defenderCountry), lostArmies[0], lostArmies[1], won);
 				//Creating new AttackResult
-				this.attackResults.add(new AttackResult(currentPlayer, this.findPlayerToCountry(defenderCountry), lostArmies[0], lostArmies[1], won));
+				this.attackResults.add(result);
 				
 			}
 			
 		} else {
 			throw new CountriesNotInRelationException(attackerCountry, defenderCountry);
 		}
+		
+		return result;
 	}
 	
 	/**
