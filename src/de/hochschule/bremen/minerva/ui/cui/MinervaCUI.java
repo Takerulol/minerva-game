@@ -227,6 +227,12 @@ public class MinervaCUI implements UserInterface {
 				this.moveArmies(turn);
 			} while (!game.isFinished());
 
+			Player champ = this.game.getWinner();
+			this.outln("--");
+			this.outln("Das Spiel wurde beendet.");
+			
+			this.outln("Der Gewinner ist: "+ champ.getFirstName() + " " + champ.getLastName() + ". Herzlichen Glückwunsch!");
+
 		} catch (WorldDoesNotExistException e) {
 			this.error(e.getMessage());
 		} catch (NoPlayerLoggedInException e) {
@@ -236,7 +242,6 @@ public class MinervaCUI implements UserInterface {
 		} catch (DataAccessException e) {
 			this.error("Es ist ein allgemeiner Persistenzfehler aufgetreten. Beende die Anwendung. Grund: "+e.getMessage());
 		}
-
 	}
 
 	/**
