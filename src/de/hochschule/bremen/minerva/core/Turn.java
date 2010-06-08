@@ -183,12 +183,14 @@ public class Turn {
 
 		if (this.world.areNeighbours(attackerCountry, defenderCountry)) {
 			
+			Player defenderPlayer = this.findPlayerToCountry(defenderCountry);
+			
 			//Exception for attacking an own country
-			if (currentPlayer.hasCountry(defenderCountry)) {
-				throw new IsOwnCountryException(currentPlayer, defenderCountry);
+			if (this.currentPlayer.hasCountry(defenderCountry)) {
+				throw new IsOwnCountryException(this.currentPlayer, defenderCountry);
 			}
 			
-			if ((armyCount <= 3) && (armyCount>0) && (currentPlayer.hasCountry(attackerCountry))) {
+			if ((armyCount <= 3) && (armyCount>0) && (this.currentPlayer.hasCountry(attackerCountry))) {
 				
 				//Exception for not enough armies on the attacker country
 				if (!(armyCount <= attackerCountry.getArmyCount())) {
@@ -201,7 +203,6 @@ public class Turn {
 				int[] lostArmies = {0,0};
 				boolean won = false;
 				
-				
 				// Attacker and defender roll as much dice as they are allowed to.
 				for (int i = 0; i < armyCount; i++) {
 					Die die = new Die();
@@ -213,14 +214,17 @@ public class Turn {
 					die.dice();
 					defenderDice.add(die);
 				}
-				 							
+
 				
+				Vector<Die> rawAttackerDice = new Vector<Die>(attackerDice);				
+				Vector<Die> rawDefenderDice = new Vector<Die>(defenderDice);
+
 				// Dice are compared and armies removed.
 				int def = defenderDice.size();
 				for (int i = 0; i < def; i++) {
 					Die highestAttacker = Die.getLargest(attackerDice);
 					Die highestDefender = Die.getLargest(defenderDice);
-					if (highestAttacker.getNumber() > highestDefender.getNumber()) {
+					if (highestAttacker.getRollResult() > highestDefender.getRollResult()) {
 						defenderCountry.removeArmy();
 						lostArmies[1]++;
 					} else {
@@ -236,7 +240,7 @@ public class Turn {
 					Player loser = this.findPlayerToCountry(defenderCountry);
 					loser.removeCountry(defenderCountry);
 
-					currentPlayer.addCountry(defenderCountry);
+					this.currentPlayer.addCountry(defenderCountry);
 
 					for (int i = 0; i < armyCount-lostArmies[0]; i++) {
 						defenderCountry.addArmy();
@@ -247,21 +251,21 @@ public class Turn {
 					if (cardGet) {
 						cardGet = false;
 						if (this.countryCards.size() > 0) {
-							currentPlayer.addCountryCard(this.countryCards.firstElement());
+							this.currentPlayer.addCountryCard(this.countryCards.firstElement());
 							this.countryCards.removeElementAt(0);
 						} else {
 							//turning used card stack into the new card stack and shuffle it
 							this.countryCards.addAll(this.usedCountryCards);
 							Collections.shuffle(this.countryCards);
 							this.usedCountryCards.clear();
-							currentPlayer.addCountryCard(countryCards.firstElement());
+							this.currentPlayer.addCountryCard(countryCards.firstElement());
 							this.countryCards.removeElementAt(0);
 						}
 					}
 					won = true;
 				}
 				
-				result = new AttackResult(currentPlayer, this.findPlayerToCountry(defenderCountry), lostArmies[0], lostArmies[1], won);
+				result = new AttackResult(this.currentPlayer, defenderPlayer, lostArmies[0], lostArmies[1], rawAttackerDice, rawDefenderDice, won);
 				//Creating new AttackResult
 				this.attackResults.add(result);
 				
@@ -528,7 +532,7 @@ public class Turn {
 	 * @param country Country where you want to find the owner.
 	 * @return Owner of the country.
 	 */
-	public Player findPlayerToCountry(Country country) { // private
+	private Player findPlayerToCountry(Country country) { // private
 		for (Player player : players) {
 			if (player.hasCountry(country)) {
 				return player;
