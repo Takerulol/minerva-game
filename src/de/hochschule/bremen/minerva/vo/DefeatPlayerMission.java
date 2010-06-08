@@ -53,8 +53,8 @@ public class DefeatPlayerMission extends Mission {
 		super(missionOwner);
 		this.setEnemy(enemy);
 
-		this.setTitle("Besiege den Spieler '"+this.enemy.getUsername()+"'!");
-		this.setDescription("Nehme alle Länder des Spielers '"+this.enemy.getUsername()+"' ein!");
+		this.setTitle("Besiege den Spieler "+this.enemy.getUsername()+"!");
+		this.setDescription("Nehme alle Länder des Spielers "+this.enemy.getUsername()+" ein!");
 	}
 
 	/**
