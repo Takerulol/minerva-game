@@ -45,12 +45,12 @@ public class Die {
 
 	/**
 	 * 
-	 * Return number.
+	 * Returns the roll result.
 	 * 
 	 * @return
 	 */
-	public int getNumber() {
-		return number;
+	public int getRollResult() {
+		return this.number;
 	}
 
 	/**
@@ -63,8 +63,8 @@ public class Die {
 		Die output = new Die();
 		int largest = 0;
 		for (Die die : dice) {
-			if (die.getNumber() > largest) {
-				largest = die.getNumber();
+			if (die.getRollResult() > largest) {
+				largest = die.getRollResult();
 				output = die;
 			}
 		}

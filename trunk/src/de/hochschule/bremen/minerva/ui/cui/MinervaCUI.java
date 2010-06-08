@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.core.AttackResult;
 import de.hochschule.bremen.minerva.core.Game;
 import de.hochschule.bremen.minerva.core.Turn;
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotFoundException;
@@ -61,6 +62,7 @@ import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.manager.WorldManager;
 import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.ui.UserInterface;
+import de.hochschule.bremen.minerva.util.Die;
 
 public class MinervaCUI implements UserInterface {
 
@@ -112,11 +114,9 @@ public class MinervaCUI implements UserInterface {
 				break;
 			}
 		} catch (AppConfigurationNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.error(e.getMessage());
 		} catch (AppConfigurationNotReadableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.error(e.getMessage());
 		}
 		
 	}
@@ -214,7 +214,7 @@ public class MinervaCUI implements UserInterface {
 				
 				// Step 2: Attack
 				this.attack(turn);
-				
+
 				// Step 3: Relocate your armies
 				this.moveArmies(turn);
 			} while (!game.isFinished());
@@ -435,10 +435,13 @@ public class MinervaCUI implements UserInterface {
 				try {
 					turn.moveArmies(source, destination, movingArmies);
 				} catch (CountriesNotInRelationException e) {
+					this.outln();
 					this.error(e.getMessage());
 				} catch (NotEnoughArmiesException e) {
+					this.outln();
 					this.error(e.getMessage());
 				} catch (CountryOwnerException e) {
+					this.outln();
 					this.error(e.getMessage());
 				}
 
@@ -456,6 +459,8 @@ public class MinervaCUI implements UserInterface {
 	 * @param turn
 	 */
 	private void attack(Turn turn) {
+		AttackResult result = null;
+
 		this.outln(true, "### Angriff ###");
 		
 		this.outln(true, "- '"+turn.getCurrentPlayer().getUsername()+"' möchten Sie angreifen [J/N]?");
@@ -488,7 +493,32 @@ public class MinervaCUI implements UserInterface {
 				
 				// Attack
 				try {
-					turn.attack(attacker, defender, attackingArmies);
+					result = turn.attack(attacker, defender, attackingArmies);
+
+					this.outln(true, "#### Resultat des Angriffs ####");
+					this.outln(true, result.getAttacker().getFirstName() + " hat " + result.getDefender().getFirstName() + " angegriffen.");
+					this.outln(result.getAttacker().getFirstName() + " hat dabei " + result.getLostAttackerArmies() + " Einheiten verloren.");
+					this.outln(result.getDefender().getFirstName() + " hat dabei " + result.getLostDefenderArmies() + " Einheiten verloren.");
+
+					this.out(result.getAttacker().getFirstName() + " hat folgende Augenzahlen gewürfelt: ");
+					for (Die die : result.getAttackerDice()) {
+						this.out(String.valueOf(die.getRollResult())+ " ");
+					}
+					this.outln();
+
+					this.out(result.getDefender().getFirstName() + " hat folgende Augenzahlen gewürfelt: ");
+					for (Die die : result.getDefenderDice()) {
+						this.out(String.valueOf(die.getRollResult()) + " ");
+					}
+
+					if (result.isWin()) {
+						this.outln();
+						this.outln(true, "Glückwunsch " + result.getAttacker().getFirstName() + ", du hast diesen Angriff gewonnen.");
+					} else {
+						this.outln();
+						this.outln(true, "Cool, "+result.getDefender().getFirstName() + ". Du hast dein Land erfolgreich verteidigen können.");
+					}
+
 				} catch (CountriesNotInRelationException e) {
 					this.error(e.getMessage());
 				} catch (NotEnoughArmiesException e) {

@@ -30,6 +30,9 @@
 
 package de.hochschule.bremen.minerva.core;
 
+import java.util.Vector;
+
+import de.hochschule.bremen.minerva.util.Die;
 import de.hochschule.bremen.minerva.vo.Player;
 
 /**
@@ -41,11 +44,16 @@ import de.hochschule.bremen.minerva.vo.Player;
  *
  */
 public class AttackResult {
-	private Player attacker;
-	private Player defender;
-	private int lostAttackerArmies;
-	private int lostDefenderArmies;
-	private boolean win;
+
+	private Player attacker = null;
+	private Player defender = null;
+	private int lostAttackerArmies = 0;
+	private int lostDefenderArmies = 0;
+	
+	private Vector<Die> attackerDice = null;
+	private Vector<Die> defenderDice = null;
+	
+	private boolean win = false;
 	
 
 	/**
@@ -57,12 +65,15 @@ public class AttackResult {
 	 * @param defeatedArmies Armies lost by the defender.
 	 * @param win Was the attack a success?
 	 */
-	public AttackResult(Player attacker, Player defender, int lostArmies, int defeatedArmies, boolean win) {
-		setAttacker(attacker);
-		setDefender(defender);
-		setLostAttackerArmies(lostArmies);
-		setLostDefenderArmies(defeatedArmies);
-		setWin(win);
+	public AttackResult(Player attacker, Player defender, int lostArmies, int defeatedArmies, Vector<Die> attackerDice, Vector<Die> defenderDice, boolean win) {
+		this.setAttacker(attacker);
+		this.setDefender(defender);
+		this.setLostAttackerArmies(lostArmies);
+		this.setLostDefenderArmies(defeatedArmies);
+		this.setWin(win);
+		
+		this.setAttackerDice(attackerDice);
+		this.setDefenderDice(defenderDice);
 	}
 	
 	/**
@@ -154,14 +165,53 @@ public class AttackResult {
 	public Player getDefender() {
 		return defender;
 	}
-	
+
+	/**
+	 * Sets the attacker die.
+	 * 
+	 * @param Die attackerDie The attacker die.
+	 * 
+	 */
+	private void setAttackerDice(Vector<Die> attackerDice) {
+		this.attackerDice = attackerDice;
+	}
+
+	/**
+	 * Returns the attacker die.
+	 * 
+	 * @return Die
+	 * 
+	 */
+	public Vector<Die> getAttackerDice() {
+		return this.attackerDice;
+	}
+
+	/**
+	 * Sets the defender die.
+	 * 
+	 * @param Die defenderDie The defender die.
+	 * 
+	 */
+	private void setDefenderDice(Vector<Die> defenderDice) {
+		this.defenderDice = defenderDice;
+	}
+
+	/**
+	 * Returns the defender die
+	 * 
+	 * @return Die The defender die.
+	 * 
+	 */
+	public Vector<Die> getDefenderDice() {
+		return this.defenderDice;
+	}
+
 	/**
 	 * Gets the whole AttackResult as a string.
 	 * 
 	 * @return String of AttackResult.
 	 */
 	public String toString() {
-		return (""+attacker.getUsername()+" attacked "+defender.getUsername()+", lost "+lostAttackerArmies+ ((lostAttackerArmies > 1)? " armies" : " army")+" and defeated "+lostDefenderArmies+((lostDefenderArmies > 1)? " armies. " : " army. ")+attacker.getUsername()+ ((win) ? " won" : " did not win")+ " the country.");
+		return (""+this.attacker.getUsername()+" attacked "+this.defender.getUsername()+", lost "+this.lostAttackerArmies+ ((this.lostAttackerArmies > 1)? " armies" : " army")+" and defeated " + this.lostDefenderArmies +((this.lostDefenderArmies > 1)? " armies. " : " army. ")+this.attacker.getUsername()+ ((this.win) ? " won" : " did not win")+ " the country.");
 	}
-
 }
