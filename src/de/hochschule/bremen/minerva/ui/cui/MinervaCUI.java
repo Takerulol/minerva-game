@@ -609,21 +609,74 @@ public class MinervaCUI implements UserInterface {
 			boolean cardTurnIn = true;
 			
 			do {
+				//show cards
+				this.outln("Sie besitzen folgende Karten:");
+				this.printCardList(turn);
+				
 				//actual card turn in
 				if (cards.size() == 5) {
 					this.outln("Sie haben 5 Länderkarten, es wird zwangsweise eine Serie abgegeben.");
 					turn.releaseCardSeries();
 				} else {
 					
+					this.outln(true, "Bitte wählen sie:");
+					this.outln("[0] Serie eintauschen");
+					this.outln("[1] Karte eintauschen");
+					int choise = this.readInt();
+					
+					if (choise == 0) {
+						if (cards.size() >= 3) {
+							Vector<CountryCard> series = new Vector<CountryCard>();
+							//TODO: check index
+							
+							this.outln(true, "Erste Karte: ");
+							int first = this.readInt();
+							this.outln("Zweite Karte: ");
+							int second = this.readInt();
+							this.outln("Dritte Karte: ");
+							int third = this.readInt();
+							
+							series.add(cards.elementAt(first));
+							series.add(cards.elementAt(second));
+							series.add(cards.elementAt(third));
+							
+							turn.releaseCardSeries(series);
+							
+							if (!(oldArmyCount < turn.getAllocatableArmyCount())) {
+								this.error("Falsche Eingabe.");
+							}
+						} else {
+							this.error("Es sind nicht genug Karten für eine Serie vorhanden.");
+						}
+						
+					} else if (choise == 1) {
+						this.outln(true,"Bitte wählen sie eine Karte: ");
+						int cardChoise = this.readInt();
+						if (turn.getCurrentPlayer().hasCountry(cards.elementAt(cardChoise).getReference())) {
+							turn.releaseCard(cards.elementAt(cardChoise));
+						} else {
+							this.error("Sie besitzen das dazugehörige Land nicht.");
+						}
+							
+					} else {
+						this.error("Falsche Eingabe.");
+					}
 				}
 				
 				if (oldArmyCount < turn.getAllocatableArmyCount()) {
 					this.outln("Sie haben "+(turn.getAllocatableArmyCount()-oldArmyCount)+" neue Armeen erhalten.");
 				}
-				//card stack empty
+				//again ? and card stack empty
 				if (cards.isEmpty()) {
 					this.outln("Sie haben nun keine Karten mehr.");
 					cardTurnIn = false;
+				} else {
+					this.outln("- '"+turn.getCurrentPlayer().getUsername()+"' möchten Sie weiter Karten eintauschen [J/N]?");
+					cardTurnIn = this.readBoolean();
+					if (cardTurnIn) {
+						this.outln(true,"Sie besitzen folgende Karten:");
+						this.printCardList(turn);
+					}
 				}
 			} while (cardTurnIn);
 		}
