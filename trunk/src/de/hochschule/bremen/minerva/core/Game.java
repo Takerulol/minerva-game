@@ -148,6 +148,16 @@ public class Game {
 	}
 
 	/**
+	 * Returns the turn count.
+	 * 
+	 * @return int The turn count.
+	 *  
+	 */
+	public int getTurnCount() {
+		return this.turns.size();
+	}
+	
+	/**
 	 * DOCME
 	 * @return Game finished?
 	 */
