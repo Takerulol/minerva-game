@@ -55,6 +55,7 @@ import de.hochschule.bremen.minerva.exceptions.WorldFileNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileParseException;
 import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.vo.Country;
+import de.hochschule.bremen.minerva.vo.Mission;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.World;
 import de.hochschule.bremen.minerva.manager.AccountManager;
@@ -201,11 +202,18 @@ public class MinervaCUI implements UserInterface {
 			selectedWorld = this.initWorld();
 			this.game = new Game(selectedWorld, players);
 
+			this.outln(true, "## Missionen ##");
+			this.outln();
+
+			for (Mission mission : game.getMissions()) {
+				this.outln("- "+mission.getOwner().getUsername()+", du hast die Mission »"+mission.getTitle()+"« ("+mission.getDescription()+") erhalten. Viel Erfolg ;)");
+			}
+
 			do {
 				this.outln(true, "## Neue Runde ##");
 				
 				Turn turn = game.nextTurn();			
-				this.outln(true, "Spieler '"+turn.getCurrentPlayer().getUsername() + "' ist am Zug und hat " + turn.getAllocatableArmyCount() + " Einheiten bekommen, die verteilt werden müssen.");
+				this.outln(true, "Spieler »"+turn.getCurrentPlayer().getUsername() + "« ist am Zug und hat " + turn.getAllocatableArmyCount() + " Einheiten bekommen, die verteilt werden müssen.");
 				
 				this.outln(true, "### Verteilung der Einheiten ###");
 				
@@ -496,27 +504,27 @@ public class MinervaCUI implements UserInterface {
 					result = turn.attack(attacker, defender, attackingArmies);
 
 					this.outln(true, "#### Resultat des Angriffs ####");
-					this.outln(true, result.getAttacker().getFirstName() + " hat " + result.getDefender().getFirstName() + " angegriffen.");
-					this.outln(result.getAttacker().getFirstName() + " hat dabei " + result.getLostAttackerArmies() + " Einheiten verloren.");
-					this.outln(result.getDefender().getFirstName() + " hat dabei " + result.getLostDefenderArmies() + " Einheiten verloren.");
+					this.outln(true, result.getAttacker().getUsername() + " hat " + result.getDefender().getUsername() + " angegriffen.");
+					this.outln(result.getAttacker().getUsername() + " hat dabei " + result.getLostAttackerArmies() + " Einheiten verloren.");
+					this.outln(result.getDefender().getUsername() + " hat dabei " + result.getLostDefenderArmies() + " Einheiten verloren.");
 
-					this.out(result.getAttacker().getFirstName() + " hat folgende Augenzahlen gewürfelt: ");
+					this.out(result.getAttacker().getUsername() + " hat folgende Augenzahlen gewürfelt: ");
 					for (Die die : result.getAttackerDice()) {
 						this.out(String.valueOf(die.getRollResult())+ " ");
 					}
 					this.outln();
 
-					this.out(result.getDefender().getFirstName() + " hat folgende Augenzahlen gewürfelt: ");
+					this.out(result.getDefender().getUsername() + " hat folgende Augenzahlen gewürfelt: ");
 					for (Die die : result.getDefenderDice()) {
 						this.out(String.valueOf(die.getRollResult()) + " ");
 					}
 
 					if (result.isWin()) {
 						this.outln();
-						this.outln(true, "Glückwunsch " + result.getAttacker().getFirstName() + ", du hast diesen Angriff gewonnen.");
+						this.outln(true, "Glückwunsch " + result.getAttacker().getUsername() + ", du hast diesen Angriff gewonnen.");
 					} else {
 						this.outln();
-						this.outln(true, "Cool, "+result.getDefender().getFirstName() + ". Du hast dein Land erfolgreich verteidigen können.");
+						this.outln(true, "Cool, "+result.getDefender().getUsername() + ". Du hast dein Land erfolgreich verteidigen können.");
 					}
 
 				} catch (CountriesNotInRelationException e) {

@@ -39,6 +39,10 @@ package de.hochschule.bremen.minerva.vo;
 public class Mission extends ValueObject {
 
 	private Player missionOwner = null;
+
+	protected String title = null;
+
+	protected String description = null;
 	
 	/**
 	 * The constructor gets the Player missionOwner.
@@ -54,7 +58,7 @@ public class Mission extends ValueObject {
 	 * 
 	 * @return missionOwner
 	 */
-	public Player getMissionOwner() {
+	public Player getOwner() {
 		return missionOwner;
 	}
 
@@ -65,5 +69,45 @@ public class Mission extends ValueObject {
 	 */
 	public boolean isFulfilled() {
 		return false;
-	}	
+	}
+
+	/**
+	 * Returns the title.
+	 * 
+	 * @return String The mission title.
+	 * 
+	 */
+	public String getTitle() {
+		return this.title;
+	}
+
+	/**
+	 * Sets the mission title.
+	 * 
+	 * @param title String The mission title.
+	 * 
+	 */
+	protected void setTitle(String title) {
+		this.title = title;
+	}
+
+	/**
+	 * Returns the mission description.
+	 * 
+	 * @return String the mission description.
+	 * 
+	 */
+	public String getDescription() {
+		return this.description;
+	}
+
+	/**
+	 * Sets the mission description.
+	 * 
+	 * @param description String The mission description.
+	 * 
+	 */
+	protected void setDescription(String description) {
+		this.description = description;
+	}
 }

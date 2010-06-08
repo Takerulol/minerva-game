@@ -51,9 +51,12 @@ public class DefeatPlayerMission extends Mission {
 	 */
 	public DefeatPlayerMission(Player enemy, Player missionOwner) {
 		super(missionOwner);
-		this.enemy = enemy;
+		this.setEnemy(enemy);
+
+		this.setTitle("Besiege den Spieler '"+this.enemy.getUsername()+"'!");
+		this.setDescription("Nehme alle Länder des Spielers '"+this.enemy.getUsername()+"' ein!");
 	}
-	
+
 	/**
 	 * Returns the enemy.
 	 * 
@@ -61,6 +64,16 @@ public class DefeatPlayerMission extends Mission {
 	 */
 	public Player getEnemy() {
 		return this.enemy;
+	}
+
+	/**
+	 * Sets the enemy to defeat.
+	 * 
+	 * @param enemy The defeatable enemy.
+	 * 
+	 */
+	private void setEnemy(Player enemy) {
+		this.enemy = enemy;
 	}
 	
 	/**
