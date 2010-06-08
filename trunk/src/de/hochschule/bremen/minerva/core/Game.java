@@ -153,7 +153,7 @@ public class Game {
 	 */
 	public boolean isFinished() {
 		if (turns.lastElement().getCurrentPlayer().getCountryCount() == world.getCountryCount()) {
-			this.winner = turns.lastElement().getCurrentPlayer();
+			this.setWinner(turns.lastElement().getCurrentPlayer());
 			finished = true;
 		} else {
 			Vector<Player> winners = new Vector<Player>();
@@ -165,9 +165,9 @@ public class Game {
 			if (!winners.isEmpty()) {
 				if (winners.contains(turns.lastElement().getCurrentPlayer())) {
 					//TODO: write wrapper method for turns.lastElement()
-					winner = turns.lastElement().getCurrentPlayer();
+					this.setWinner(turns.lastElement().getCurrentPlayer());
 				} else {
-					winner = winners.firstElement();
+					this.setWinner(winners.firstElement());
 				}
 				finished = true;
 			}
@@ -314,5 +314,15 @@ public class Game {
 	 */
 	public Player getWinner() {
 		return this.winner;
+	}
+
+	/**
+	 * Sets the champ.
+	 * 
+	 * @param champ Player The winner
+	 * 
+	 */
+	private void setWinner(Player champ) {
+		this.winner = champ;
 	}
 }
