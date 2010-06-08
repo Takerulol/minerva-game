@@ -89,6 +89,9 @@ public class WorldFile extends World {
 	// the import process has finished. Stuff means all the images and non-textual data (which will stored
 	// via the persistence layer.
 	private File assetsDirectory = null;
+
+	// Unzipped the world file?
+	private boolean extracted = false;
 	
 	// We define an internal HashMap which contains the continent objects from the
 	// world import file. It is necessary to save it temporally because of the different
@@ -166,8 +169,21 @@ public class WorldFile extends World {
 	 * dependencies to instruct the persistence layer to store this country
 	 * relations.
 	 * 
+	 * <br />
+	 * <b>NOTE2</b>: If the world import file wasn' extracted before, this method
+	 * will call the parse method.
+	 * 
+	 * @throws WorldFileParseException If the parse method fails. 
+	 * @throws WorldFileExtensionException If the parse method fails. 
+	 * @throws WorldFileNotFoundException If the parse method fails.
+	 * @see WorldFile#parse()
+	 * 
 	 */
-	public void createCountryDependencies() {
+	public void createCountryDependencies() throws WorldFileNotFoundException, WorldFileExtensionException, WorldFileParseException {
+		if (!this.isExtracted()) {
+			this.parse();
+		}
+
 		for (Entry<Integer, Vector<Integer>> entry : this.neighbourMapping.entrySet()) {
 			Country country = this.extractedCountries.get(entry.getKey());
 
@@ -180,10 +196,22 @@ public class WorldFile extends World {
 	}
 
 	/**
-	 * DOCME
+	 * Move the world assets to the defined directory.<br /><br />
+	 * 
+	 * If the world import file wasn' extracted before, this method
+	 * will call the parse method.
+	 * 
+	 * @throws WorldFileParseException If the parse method fails. 
+	 * @throws WorldFileExtensionException If the parse method fails. 
+	 * @throws WorldFileNotFoundException If the parse method fails.
+	 * @see WorldFile#parse()
 	 * 
 	 */
-	public void moveAssets() {
+	public void moveAssets() throws WorldFileNotFoundException, WorldFileExtensionException, WorldFileParseException {
+		if (!this.isExtracted()) {
+			this.parse();
+		}
+		
 		String workspacePath = this.getWorkspace() + File.separator;
 
 		File asset = new File(workspacePath + this.getThumbnail());
@@ -253,6 +281,8 @@ public class WorldFile extends World {
 		}
 		
 		this.setImportable(new File(this.getWorkspace().getAbsolutePath() + File.separator + WORLD_FILE_XML));
+		
+		this.setExtracted(true);
 	}
 
 	/**
@@ -502,5 +532,25 @@ public class WorldFile extends World {
 	 */
 	private File getWorkspace() {
 		return this.workspace;
+	}
+
+	/**
+	 * Notify that the file was extracted.
+	 * 
+	 * @param extracted boolean
+	 * 
+	 */
+	private void setExtracted(boolean extracted) {
+		this.extracted = extracted;
+	}
+
+	/**
+	 * Was the world file extracted?
+	 * 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isExtracted() {
+		return extracted;
 	}
 }
