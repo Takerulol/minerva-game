@@ -292,7 +292,8 @@ public class MinervaCUI implements UserInterface {
 			try {
 				AccountManager.getInstance().logout();
 				this.outln(true, "Es wurden alle Spieler ausgeloggt.");
-				this.initPlayers(new Vector<Player>());
+				players.clear();
+				this.initPlayers(players);
 			} catch (DataAccessException e) {
 				this.error("Es ist ein allgemeiner Persistenzfehler aufgetreten: "+e.getMessage());
 				Runtime.getRuntime().exit(0);
