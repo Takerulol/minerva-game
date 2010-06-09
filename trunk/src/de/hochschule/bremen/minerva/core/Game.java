@@ -160,6 +160,9 @@ public class Game {
 	/**
 	 * DOCME
 	 * @return Game finished?
+	 * 
+	 * TODO: Mission aus dem Vector entfernen.
+	 * 
 	 */
 	public boolean isFinished() {
 		if (turns.lastElement().getCurrentPlayer().getCountryCount() == world.getCountryCount()) {
