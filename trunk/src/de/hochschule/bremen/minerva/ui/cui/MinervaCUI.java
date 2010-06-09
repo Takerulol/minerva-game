@@ -218,7 +218,7 @@ public class MinervaCUI implements UserInterface {
 				Turn turn = game.nextTurn();			
 				this.outln(true, "Spieler »"+turn.getCurrentPlayer().getUsername() + "« ist am Zug und hat " + turn.getAllocatableArmyCount() + " Einheiten bekommen, die verteilt werden müssen.");
 				
-				this.outln(true, "### Verteilung der Einheiten ###");
+				
 				
 				// Step 0: Turn cards in
 				this.turnCardsIn(turn);
@@ -569,6 +569,8 @@ public class MinervaCUI implements UserInterface {
 		// for getting a country by vector index (see depreciated method in world).
 		// So this problem is not relevant in the GUI (see world.getCountry(byColor).
 		Vector<Country> countries = world.getCountries();
+		
+		this.outln(true, "### Verteilung der Einheiten ###");
 		
 		for (int x = 0; x < armyCount; x++) {				
 			this.printCountryList();
