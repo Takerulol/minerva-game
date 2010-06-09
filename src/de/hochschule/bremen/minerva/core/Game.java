@@ -230,7 +230,7 @@ public class Game {
 		
 		for (int i = 0; i < ((this.world.getCountryCount() / this.players.size()) + 1); i++) {
 			for (Player player : this.players) {
-				if (!(allocatableCountries.size() == 0)) {
+				if (allocatableCountries.size() > 0) {
 					int index = (int) (Math.random() * allocatableCountries.size());
 					player.addCountry(allocatableCountries.get(index));
 					allocatableCountries.remove(index);
