@@ -593,7 +593,7 @@ public class MinervaCUI implements UserInterface {
 		int oldArmyCount = turn.getAllocatableArmyCount();
 		Vector<CountryCard> cards = turn.getCurrentPlayer().getCountryCards();
 		
-		this.outln(true, "#### Resultat des Angriffs ####");
+		this.outln(true, "#### Länderkarten Abgabe ####");
 		this.outln();
 		
 		if (cards.isEmpty()) {
@@ -611,9 +611,6 @@ public class MinervaCUI implements UserInterface {
 			boolean cardTurnIn = true;
 			
 			do {
-				//show cards
-				this.outln("Sie besitzen folgende Karten:");
-				this.printCardList(turn);
 				
 				//actual card turn in
 				if (cards.size() == 5) {
