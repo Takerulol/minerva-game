@@ -29,17 +29,28 @@
  */
 package de.hochschule.bremen.minerva.ui.gui.panels;
 
+import java.awt.BorderLayout;
+
+import javax.swing.BoxLayout;
 import javax.swing.JLayeredPane;
 
 
 public class StartPanel extends JLayeredPane {
 
+	private Background background;
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8815190687201347357L;
 
-		public StartPanel() {
-			
-		}
+	/**
+	 * 
+	 */
+	public StartPanel() {
+		super();
+		this.setLayout(new BorderLayout());
+		this.background = new Background(this.getClass());
+		this.add(this.background,BorderLayout.NORTH,DEFAULT_LAYER);
+	}
 }
