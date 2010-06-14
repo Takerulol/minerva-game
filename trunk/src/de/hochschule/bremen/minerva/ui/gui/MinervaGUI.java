@@ -32,6 +32,8 @@ package de.hochschule.bremen.minerva.ui.gui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
@@ -81,6 +83,13 @@ public class MinervaGUI extends JFrame implements UserInterface {
 		this.setVisible(true);
 		this.setTitle(ApplicationConfigurationManager.get().getAppName());
 	
+//		Timer timer = new Timer(2000,new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				MinervaGUI.this.currentPanel = new LoginPanel();
+//			}
+//		});
+//		timer.start();
+		
 		currentPanel = new StartPanel();
 	
 		this.add(currentPanel);
