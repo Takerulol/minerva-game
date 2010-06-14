@@ -109,8 +109,6 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	
 		//lets show the frame .. yeeeaaaahhh =D
 		this.setVisible(true);
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage(ApplicationConfigurationManager.get().getAppIconPath()));
-		this.setVisible(true);
 	}
 	
 	/**
