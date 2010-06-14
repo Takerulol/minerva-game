@@ -1,6 +1,11 @@
+-- Common configuration
+app.name=minerva - the game
+app.version=1.0 beta
+
 -- Directory configuration
 directory.assets.worlds=assets/worlds/
 directory.assets.userinterface=assets/userinterface/
 directory.assets.userinterface.fileextension=.jpg
+
 -- Server configuration
 server.port=9090
