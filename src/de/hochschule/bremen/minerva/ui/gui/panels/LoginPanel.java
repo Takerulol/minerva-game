@@ -29,9 +29,9 @@
  */
 package de.hochschule.bremen.minerva.ui.gui.panels;
 
-import javax.swing.JPanel;
+import javax.swing.JLayeredPane;
 
-public class LoginPanel extends JPanel {
+public class LoginPanel extends JLayeredPane {
 	
 	/**
 	 * 

@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
@@ -54,7 +55,7 @@ public class Background extends JPanel {
 	 * @param name
 	 * @param datatype
 	 */
-	public Background(Class<? extends JPanel> concernedPanel) {
+	public Background(Class<? extends JLayeredPane> concernedPanel) {
 		super();
 		
 		ApplicationConfiguration configuration = ApplicationConfigurationManager.get();
