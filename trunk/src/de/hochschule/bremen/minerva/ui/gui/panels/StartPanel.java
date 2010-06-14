@@ -29,52 +29,16 @@
  */
 package de.hochschule.bremen.minerva.ui.gui.panels;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
-import de.hochschule.bremen.minerva.vo.ApplicationConfiguration;
+public class StartPanel extends JPanel {
 
-public class Background extends JPanel {
-	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -2926270274740692246L;
+	private static final long serialVersionUID = -8815190687201347357L;
 
-	private Image image;
-	
-	/**
-	 * 
-	 * @param name
-	 * @param datatype
-	 */
-	public Background(Class<? extends JPanel> concernedPanel) {
-		super();
-		
-		ApplicationConfiguration configuration = ApplicationConfigurationManager.get();
-		File file = new File(configuration.getUIAssetsDirectory() + concernedPanel.getSimpleName() + configuration.getUIAssetsFileExtension());
-		
-		try {
-			this.image = ImageIO.read(file);
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
+		public StartPanel() {
+			
 		}
-		
-		this.repaint();
-	}
-	
-	/**
-	 * DOCME
-	 * 
-	 */
-	public void paint(Graphics g) {
-		g.drawImage(this.image, 0, 0, this.image.getWidth(this), this.image.getHeight(this), this);
-		this.setSize(this.image.getWidth(this), this.image.getHeight(this));
-	}
 }
