@@ -55,8 +55,10 @@ public class ApplicationConfiguration extends ValueObject {
 
 	private String worldsAssetsDirectory = null;
 
-	private String userInterfaceAssetsDirectory = null;
+	private String uiAssetsDirectory = null;
 
+	private String uiAssetsFileExtension = null;
+	
 	private int serverPort = 0;
 
 	/**
@@ -87,8 +89,8 @@ public class ApplicationConfiguration extends ValueObject {
 	 * @param path The string with the full path to the ui assets.
 	 * 
 	 */
-	public void setUserInterfaceAssetsDirectory(String path) {
-		this.userInterfaceAssetsDirectory = path;
+	public void setUIAssetsDirectory(String path) {
+		this.uiAssetsDirectory = path;
 	}
 
 	/**
@@ -97,10 +99,30 @@ public class ApplicationConfiguration extends ValueObject {
 	 * @return The path to the ui assets.
 	 * 
 	 */
-	public String getUserInterfaceAssetsDirectory() {
-		return userInterfaceAssetsDirectory;
+	public String getUIAssetsDirectory() {
+		return uiAssetsDirectory;
 	}
 
+	/**
+	 * Sets the user interface assets file extension.
+	 * 
+	 * @param fileExtension The ui assets file extension (e.g. ".jpg").
+	 * 
+	 */
+	public void setUIAssetsFileExtension(String fileExtension) {
+		this.uiAssetsFileExtension = fileExtension;
+	}
+
+	/**
+	 * Returns the user interface assets file extension.
+	 * 
+	 * @return The ui assets file extension.
+	 * 
+	 */
+	public String getUIAssetsFileExtension() {
+		return this.uiAssetsFileExtension;
+	}
+	
 	/**
 	 * Sets the socket server port.
 	 * 
@@ -128,6 +150,6 @@ public class ApplicationConfiguration extends ValueObject {
 	 */
 	@Override
 	public String toString() {
-		return this.getClass().getName() + ": [worldAssetsDir="+this.getWorldsAssetsDirectory()+ ", uiAssetsDir="+this.getUserInterfaceAssetsDirectory()+", serverPort="+this.getServerPort()+"]";
+		return this.getClass().getName() + ": [worldAssetsDir="+this.getWorldsAssetsDirectory()+ ", uiAssetsDir="+this.getUIAssetsDirectory()+", serverPort="+this.getServerPort()+"]";
 	}
 }
