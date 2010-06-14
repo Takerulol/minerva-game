@@ -62,7 +62,7 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	 * Initializing the Frame
 	 */
 	private void init() {
-		this.setSize(1000, 700);
+		//this.setSize(1000, 700);
 		//this.setResizable(false);
 		this.setVisible(true);
 		//this.setLayout(new BorderLayout());
@@ -92,7 +92,7 @@ public class MinervaGUI extends JFrame implements UserInterface {
 		this.add(currentPanel);
 
 		currentPanel.updateUI();
-		
+		this.pack();
 		
 		
 		// BEWARE: LOTS OF COMMENTS!
