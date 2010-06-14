@@ -210,6 +210,6 @@ public class ApplicationConfiguration extends ValueObject {
 	 */
 	@Override
 	public String toString() {
-		return this.getClass().getName() + ": [worldAssetsDir="+this.getWorldsAssetsDirectory()+ ", uiAssetsDir="+this.getUIAssetsDirectory()+", serverPort="+this.getServerPort()+"]";
+		return this.getClass().getName() + ": [appName="+this.getAppName() + ", appVersion="+this.getAppVersion() + ", appIconPath=" + this.getAppIconPath() +", worldAssetsDir="+this.getWorldsAssetsDirectory()+ ", uiAssetsDir="+this.getUIAssetsDirectory()+", serverPort="+this.getServerPort()+"]";
 	}
 }
