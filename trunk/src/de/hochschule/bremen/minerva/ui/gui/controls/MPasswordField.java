@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id$
+ * $Id: Background.java 380 2010-06-14 12:08:35Z andre.koenig $
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,36 +27,33 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.ui.gui.widgets;
+package de.hochschule.bremen.minerva.ui.gui.controls;
 
 import java.awt.Color;
-import java.awt.Font;
 
 import javax.swing.BorderFactory;
-import javax.swing.JTextField;
+import javax.swing.JPasswordField;
 
 import de.hochschule.bremen.minerva.util.ColorTool;
 
 /**
- * Our special MTextField. The "M" stands for Minerva ;)
+ * Our special MPasswordField. The "M" stands for Minerva ;)
  * 
- * @version $Id$
+ * @version $Id: MTextField.java 387 2010-06-14 13:10:44Z andre.koenig $
  * @since 1.0
  *
  */
-public class MTextField extends JTextField {
+public class MPasswordField extends JPasswordField {
 
-	private static final long serialVersionUID = -5024127729084675588L;
+	private static final long serialVersionUID = -4307631737327385357L;
 
 	private static String BORDER_COLOR = "01aefd";
-	
-	private static Font font = new Font("Tahoma", 0, 11);
-	
+
 	/**
 	 * Constructor
 	 * 
 	 */
-	public MTextField() {
+	public MPasswordField() {
 		super();
 		this.init();
 	}
@@ -65,20 +62,19 @@ public class MTextField extends JTextField {
 	 * Constructor with column param.
 	 * 
 	 * @param columns The visible columns.
-	 * @see JTextField
+	 * @see JPasswordField
 	 * 
 	 */
-	public MTextField(int columns) {
+	public MPasswordField(int columns) {
 		super(columns);
 		this.init();
 	}
 
 	/**
-	 * Sets the textfields border, padding and font.
+	 * Sets the textfields border and padding.
 	 * 
 	 */
 	private void init() {
-		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(ColorTool.fromHexCode(MTextField.BORDER_COLOR)), BorderFactory.createLineBorder(Color.WHITE, 5)));
-		this.setFont(MTextField.font);
+		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(ColorTool.fromHexCode(MPasswordField.BORDER_COLOR)), BorderFactory.createLineBorder(Color.WHITE, 5)));
 	}
 }
