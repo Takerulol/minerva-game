@@ -39,33 +39,36 @@ import javax.swing.JPanel;
 
 public class Background extends JPanel {
 	
-	private Image background;
-	private String path;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2926270274740692246L;
+
+	private Image image;
 	
 	/**
 	 * 
 	 * @param name
 	 * @param datatype
 	 */
-	public Background(String name, String datatype) {
+	public Background(String path, Class<? extends JPanel> concernedPanel, String datatype) {
 		super();
-		//path = "D:/workspace/minerva-game/assets/userinterface/"+name+"."+datatype;
-		path = "D:/workspace/minerva-game/assets/userinterface/login.jpg";
-		File file = new File(path);
 		
 		try {
-			background = ImageIO.read(file);
+			image = ImageIO.read(new File(path + concernedPanel.getName() + datatype));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Runtime.getRuntime().exit(ERROR);
 		}
+
 		this.repaint();
 	}
 	
 	/**
+	 * DOCME
 	 * 
 	 */
 	public void paint(Graphics g) {
-		g.drawImage(background, 0, 0, 1000, 700, this);
+		g.drawImage(this.image, 0, 0, this.image.getWidth(this), this.image.getHeight(this), this);
 	}
 }
