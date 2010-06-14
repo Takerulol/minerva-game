@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id: Background.java 380 2010-06-14 12:08:35Z andre.koenig $
+ * $Id$
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,6 +29,9 @@
  */
 package de.hochschule.bremen.minerva.ui.gui.widgets;
 
+import java.awt.Color;
+import java.awt.Font;
+
 import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 
@@ -37,7 +40,7 @@ import de.hochschule.bremen.minerva.util.ColorTool;
 /**
  * DOCME
  * 
- * @version $Id: ApplicationConfigurationManager.java 377 2010-06-14 11:46:53Z andre.koenig $
+ * @version $Id$
  * @since 1.0
  *
  */
@@ -50,6 +53,8 @@ public class MTextField extends JTextField {
 
 	// DOCME
 	private static String BORDER_COLOR = "01aefd";
+	
+	private static Font font = new Font("Tahoma", 0, 11);
 	
 	/**
 	 * DOCME
@@ -69,7 +74,8 @@ public class MTextField extends JTextField {
 	 * DOCME
 	 * 
 	 */
-	private void init() {		
-		this.setBorder(BorderFactory.createLineBorder(ColorTool.fromHexCode(MTextField.BORDER_COLOR)));
+	private void init() {
+		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(ColorTool.fromHexCode(MTextField.BORDER_COLOR)), BorderFactory.createLineBorder(Color.WHITE, 5)));
+		this.setFont(MTextField.font);
 	}
 }
