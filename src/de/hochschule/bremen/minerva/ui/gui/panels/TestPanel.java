@@ -19,7 +19,7 @@ import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.vo.ApplicationConfiguration;
 
 
-public class TestPanel extends JPanel {
+public class TestPanel extends JLayeredPane {
 	Image bgbild = null;
 	/**
 	 * 
