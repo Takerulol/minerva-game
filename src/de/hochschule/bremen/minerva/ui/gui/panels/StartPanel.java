@@ -33,6 +33,8 @@ import java.awt.BorderLayout;
 
 import javax.swing.JLayeredPane;
 
+import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
+
 
 public class StartPanel extends JLayeredPane {
 
@@ -51,5 +53,6 @@ public class StartPanel extends JLayeredPane {
 		this.setLayout(new BorderLayout());
 		this.background = new Background(this.getClass());
 		this.add(this.background,BorderLayout.NORTH,DEFAULT_LAYER);
+		this.setPreferredSize(MinervaGUI.WINDOW_SIZE);
 	}
 }

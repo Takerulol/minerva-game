@@ -47,6 +47,8 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	 */
 	private static final long serialVersionUID = 8038646974358166493L;
 	
+	public static final Dimension WINDOW_SIZE = new Dimension(1000,700);
+	
 	private JLayeredPane currentPanel;
 	
 
@@ -57,18 +59,6 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	public MinervaGUI() {
 	
 	}
-	
-	/**
-	 * Initializing the Frame
-	 */
-	private void init() {
-		//this.setSize(1000, 700);
-		//this.setResizable(false);
-		this.setVisible(true);
-		//this.setLayout(new BorderLayout());
-		
-	}
-	
 	
 	/**
 	 * 
@@ -83,11 +73,12 @@ public class MinervaGUI extends JFrame implements UserInterface {
 			System.out.println(e.getMessage());
 			Runtime.getRuntime().exit(ERROR);
 		}
-		this.init();
+
+		this.setResizable(false);
+		this.setVisible(true);
 	
 
 		currentPanel = new StartPanel();
-		currentPanel.setPreferredSize(new Dimension (1000,700));
 	
 		this.add(currentPanel);
 
