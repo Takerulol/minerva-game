@@ -101,7 +101,7 @@ public class MinervaGUI extends JFrame implements UserInterface {
 		
 		//centers frame on the screen
 		this.centerFrame();
-		
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage(ApplicationConfigurationManager.get().getAppIconPath()));
 	}
 	
 	/**
