@@ -32,8 +32,6 @@ package de.hochschule.bremen.minerva.ui.gui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
@@ -80,7 +78,6 @@ public class MinervaGUI extends JFrame implements UserInterface {
 
 		//initialization
 		this.setResizable(false);
-		this.setVisible(true);
 		this.setTitle(ApplicationConfigurationManager.get().getAppName());
 	
 //		Timer timer = new Timer(2000,new ActionListener() {
@@ -102,6 +99,7 @@ public class MinervaGUI extends JFrame implements UserInterface {
 		//centers frame on the screen
 		this.centerFrame();
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage(ApplicationConfigurationManager.get().getAppIconPath()));
+		this.setVisible(true);
 	}
 	
 	/**
