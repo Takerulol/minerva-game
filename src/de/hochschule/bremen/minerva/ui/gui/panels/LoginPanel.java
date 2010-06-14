@@ -29,9 +29,15 @@
  */
 package de.hochschule.bremen.minerva.ui.gui.panels;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JLayeredPane;
 
+import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
+
 public class LoginPanel extends JLayeredPane {
+	
+	private Background background;
 	
 	/**
 	 * 
@@ -39,6 +45,10 @@ public class LoginPanel extends JLayeredPane {
 	private static final long serialVersionUID = -6914010423171152967L;
 
 	public LoginPanel() {
-		
+		super();
+		this.setLayout(new BorderLayout());
+		this.background = new Background(this.getClass());
+		this.add(this.background,BorderLayout.NORTH,DEFAULT_LAYER);
+		this.setPreferredSize(MinervaGUI.WINDOW_SIZE);
 	}
 }
