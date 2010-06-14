@@ -86,8 +86,11 @@ public class ApplicationConfigurationManager {
 		voReadMethodInvocationMapping.put("directory.assets.worlds", "setWorldsAssetsDirectory");
 		voStoreMethodInvocationMapping.put("directory.assets.worlds", "getWorldsAssetsDirectory");
 		
-		voReadMethodInvocationMapping.put("directory.assets.userinterface", "setUserInterfaceAssetsDirectory");
-		voStoreMethodInvocationMapping.put("directory.assets.userinterface", "getUserInterfaceAssetsDirectory");
+		voReadMethodInvocationMapping.put("directory.assets.userinterface", "setUIAssetsDirectory");
+		voStoreMethodInvocationMapping.put("directory.assets.userinterface", "getUIAssetsDirectory");
+
+		voReadMethodInvocationMapping.put("directory.assets.userinterface.fileextension", "setUIAssetsFileExtension");
+		voStoreMethodInvocationMapping.put("directory.assets.userinterface.fileextension", "getUIAssetsFileExtension");
 
 		voReadMethodInvocationMapping.put("server.port", "setServerPort");
 		voStoreMethodInvocationMapping.put("server.port", "getServerPort");
