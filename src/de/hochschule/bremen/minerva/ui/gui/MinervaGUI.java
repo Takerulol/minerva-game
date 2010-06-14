@@ -32,14 +32,25 @@ package de.hochschule.bremen.minerva.ui.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotFoundException;
+import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotReadableException;
+import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.ui.UserInterface;
+import de.hochschule.bremen.minerva.ui.gui.panels.Background;
 import de.hochschule.bremen.minerva.ui.gui.panels.TestPanel;
+import de.hochschule.bremen.minerva.vo.ApplicationConfiguration;
 
 
 public class MinervaGUI extends JFrame implements UserInterface {
-
+	private Image image = null;
 	
 	/**
 	 * TODO: generated id
@@ -59,30 +70,66 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	 */
 	private void init() {
 		this.setSize(1000, 700);
+		//this.setResizable(false);
 		this.setVisible(true);
 		//this.setLayout(new BorderLayout());
 		
 	}
 	
+//	public void paint(Graphics g) {
+//		g.drawImage(bgbild, 0,0,1000,700,this);
+//	}
+	
 	/**
 	 * 
 	 */
 	public void run() {
+		try {
+			ApplicationConfigurationManager.setup();
+		} catch (AppConfigurationNotFoundException e) {
+			System.out.println(e.getMessage());
+			Runtime.getRuntime().exit(ERROR);
+		} catch (AppConfigurationNotReadableException e) {
+			System.out.println(e.getMessage());
+			Runtime.getRuntime().exit(ERROR);
+		}
 		this.init();
-		JMenu menu = new JMenu("Test");
-		JMenuItem mitem = new JMenuItem("Testor");
-		menu.add(mitem);
+//		JMenu menu = new JMenu("Test");
+//		JMenuItem mitem = new JMenuItem("Testor");
+//		menu.add(mitem);
 		
+//		String path = "D:/testbg2.png";
+//		File file = new File(path);
+//
+//		try {
+//			bgbild = ImageIO.read(file);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		//this.setJMenuBar(menu);
-		TestPanel test = new TestPanel();
-		test.setAlignmentX(LEFT_ALIGNMENT);
-		test.setAlignmentY(TOP_ALIGNMENT);
-		this.add(test);
-		this.pack();
 		
+		TestPanel test = new TestPanel();
+//		JPanel test1 = new JPanel();
+//		test1.setLayout(new FlowLayout());
+//		test1.setSize(1000, 700);
+//		
+		Background bg = new Background(TestPanel.class);
+		//bg.setSize(1000, 700);
+//		for (int i = 0; i < 20; i++)
+//		bg.add(new JLabel("Test"));
+		
+		this.add(bg);
+		//test1.add(new Background("",""));
+		//test.setAlignmentX(LEFT_ALIGNMENT);
+		//test.setAlignmentY(TOP_ALIGNMENT);
+		//this.setLayout(null);
+		//this.add(test);
+		//this.repaint();
+		this.pack();
+		//System.out.println(this.getBounds().height);
+		//System.out.println(this.getSize().height);
 		//,BorderLayout.NORTH
 	}
-	
-	
 
 }
