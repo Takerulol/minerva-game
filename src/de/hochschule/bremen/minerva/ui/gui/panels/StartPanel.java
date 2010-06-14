@@ -31,7 +31,6 @@ package de.hochschule.bremen.minerva.ui.gui.panels;
 
 import java.awt.BorderLayout;
 
-import javax.swing.BoxLayout;
 import javax.swing.JLayeredPane;
 
 
