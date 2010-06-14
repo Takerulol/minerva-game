@@ -34,7 +34,8 @@ import java.awt.BorderLayout;
 import javax.swing.JLayeredPane;
 
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
-import de.hochschule.bremen.minerva.ui.gui.widgets.*;
+import de.hochschule.bremen.minerva.ui.gui.controls.MPasswordField;
+import de.hochschule.bremen.minerva.ui.gui.controls.MTextField;
 
 public class LoginPanel extends JLayeredPane {
 	
