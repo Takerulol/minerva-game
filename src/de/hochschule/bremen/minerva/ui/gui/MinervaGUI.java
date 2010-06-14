@@ -30,39 +30,32 @@
 
 package de.hochschule.bremen.minerva.ui.gui;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import java.awt.Dimension;
 import javax.swing.*;
 
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotReadableException;
 import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.ui.UserInterface;
-import de.hochschule.bremen.minerva.ui.gui.panels.Background;
-import de.hochschule.bremen.minerva.ui.gui.panels.TestPanel;
-import de.hochschule.bremen.minerva.vo.ApplicationConfiguration;
+import de.hochschule.bremen.minerva.ui.gui.panels.*;
 
 
 public class MinervaGUI extends JFrame implements UserInterface {
-	private Image image = null;
 	
 	/**
-	 * TODO: generated id
+	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 8038646974358166493L;
+	
+	private JLayeredPane currentPanel;
+	
+
 
 	/**
 	 * 
 	 */
 	public MinervaGUI() {
-		//JFrame frame = new JFrame("Minerva");
-		
+	
 	}
 	
 	/**
@@ -76,9 +69,6 @@ public class MinervaGUI extends JFrame implements UserInterface {
 		
 	}
 	
-//	public void paint(Graphics g) {
-//		g.drawImage(bgbild, 0,0,1000,700,this);
-//	}
 	
 	/**
 	 * 
@@ -94,6 +84,19 @@ public class MinervaGUI extends JFrame implements UserInterface {
 			Runtime.getRuntime().exit(ERROR);
 		}
 		this.init();
+	
+
+		currentPanel = new StartPanel();
+		currentPanel.setPreferredSize(new Dimension (1000,700));
+	
+		this.add(currentPanel);
+
+		currentPanel.updateUI();
+		
+		
+		
+		// BEWARE: LOTS OF COMMENTS!
+		
 //		JMenu menu = new JMenu("Test");
 //		JMenuItem mitem = new JMenuItem("Testor");
 //		menu.add(mitem);
@@ -109,24 +112,24 @@ public class MinervaGUI extends JFrame implements UserInterface {
 //		}
 		//this.setJMenuBar(menu);
 		
-		TestPanel test = new TestPanel();
+//		TestPanel test = new TestPanel();
 //		JPanel test1 = new JPanel();
 //		test1.setLayout(new FlowLayout());
 //		test1.setSize(1000, 700);
 //		
-		Background bg = new Background(TestPanel.class);
+//		Background bg = new Background(TestPanel.class);
 		//bg.setSize(1000, 700);
 //		for (int i = 0; i < 20; i++)
 //		bg.add(new JLabel("Test"));
 		
-		this.add(bg);
+//		this.add(bg);
 		//test1.add(new Background("",""));
 		//test.setAlignmentX(LEFT_ALIGNMENT);
 		//test.setAlignmentY(TOP_ALIGNMENT);
 		//this.setLayout(null);
 		//this.add(test);
 		//this.repaint();
-		this.pack();
+		//this.pack();
 		//System.out.println(this.getBounds().height);
 		//System.out.println(this.getSize().height);
 		//,BorderLayout.NORTH
