@@ -55,6 +55,7 @@ public class ApplicationConfiguration extends ValueObject {
 
 	private String appName = null;
 	private String appVersion = null;
+	private String appIconPath = null;
 	private String worldsAssetsDirectory = null;
 	private String uiAssetsDirectory = null;
 	private String uiAssetsFileExtension = null;
@@ -98,6 +99,26 @@ public class ApplicationConfiguration extends ValueObject {
 	 */
 	public String getAppVersion() {
 		return this.appVersion;
+	}
+
+	/**
+	 * Sets the app icon path.
+	 * 
+	 * @param appIconPath The icon path.
+	 * 
+	 */
+	public void setAppIconPath(String appIconPath) {
+		this.appIconPath = appIconPath;
+	}
+
+	/**
+	 * Returns the app icon path.
+	 * 
+	 * @return The icon path.
+	 * 
+	 */
+	public String getAppIconPath() {
+		return this.appIconPath;
 	}
 	
 	/**

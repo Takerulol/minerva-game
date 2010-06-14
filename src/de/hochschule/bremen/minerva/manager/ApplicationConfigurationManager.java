@@ -80,7 +80,7 @@ public class ApplicationConfigurationManager {
 	private static final HashMap<String, String> voReadMethodInvocationMapping = new HashMap<String, String>();
 
 	private static final HashMap<String, String> voStoreMethodInvocationMapping = new HashMap<String, String>();
-	
+
 	// Method/Key initialization.
 	static {
 		voReadMethodInvocationMapping.put("app.name", "setAppName");
@@ -88,6 +88,9 @@ public class ApplicationConfigurationManager {
 
 		voReadMethodInvocationMapping.put("app.version", "setAppVersion");
 		voStoreMethodInvocationMapping.put("app.version", "getAppVersion");
+
+		voReadMethodInvocationMapping.put("app.icon.path", "setAppIconPath");
+		voStoreMethodInvocationMapping.put("app.icon.path", "getAppIconPath");
 
 		voReadMethodInvocationMapping.put("directory.assets.worlds", "setWorldsAssetsDirectory");
 		voStoreMethodInvocationMapping.put("directory.assets.worlds", "getWorldsAssetsDirectory");
