@@ -76,15 +76,21 @@ public class MinervaGUI extends JFrame implements UserInterface {
 			Runtime.getRuntime().exit(ERROR);
 		}
 
+		//initialization
 		this.setResizable(false);
 		this.setVisible(true);
+		this.setTitle(ApplicationConfigurationManager.get().getAppName());
 	
 		currentPanel = new StartPanel();
 	
 		this.add(currentPanel);
 
 		currentPanel.updateUI();
+		
+		//packs frame to the size of its panel
 		this.pack();
+		
+		//centers frame on the screen
 		this.centerFrame();
 		
 	}
