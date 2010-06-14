@@ -83,6 +83,12 @@ public class ApplicationConfigurationManager {
 	
 	// Method/Key initialization.
 	static {
+		voReadMethodInvocationMapping.put("app.name", "setAppName");
+		voStoreMethodInvocationMapping.put("app.name", "getAppName");
+
+		voReadMethodInvocationMapping.put("app.version", "setAppVersion");
+		voStoreMethodInvocationMapping.put("app.version", "getAppVersion");
+
 		voReadMethodInvocationMapping.put("directory.assets.worlds", "setWorldsAssetsDirectory");
 		voStoreMethodInvocationMapping.put("directory.assets.worlds", "getWorldsAssetsDirectory");
 		

@@ -53,14 +53,53 @@ public class ApplicationConfiguration extends ValueObject {
 	// #
 	// #########################################################
 
+	private String appName = null;
+	private String appVersion = null;
 	private String worldsAssetsDirectory = null;
-
 	private String uiAssetsDirectory = null;
-
 	private String uiAssetsFileExtension = null;
 	
 	private int serverPort = 0;
 
+	/**
+	 * Sets the minerva application name.
+	 * 
+	 * @param appName The minerva application name.
+	 * 
+	 */
+	public void setAppName(String appName) {
+		this.appName = appName;
+	}
+
+	/**
+	 * Returns the minerva application name.
+	 * 
+	 * @return The minerva application name.
+	 */
+	public String getAppName() {
+		return this.appName;
+	}
+
+	/**
+	 * Sets the minerva application version.
+	 * 
+	 * @param appVersion The minerva version.
+	 * 
+	 */
+	public void setAppVersion(String appVersion) {
+		this.appVersion = appVersion;
+	}
+
+	/**
+	 * Returns the minerva application version.
+	 * 
+	 * @return The minerva version.
+	 * 
+	 */
+	public String getAppVersion() {
+		return this.appVersion;
+	}
+	
 	/**
 	 * Sets the worlds assets directory path.
 	 * This directory contains all the worlds related resources (e. g. map images, thumbnail, etc.)
