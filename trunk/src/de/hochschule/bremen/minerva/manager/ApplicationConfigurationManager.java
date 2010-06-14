@@ -142,6 +142,7 @@ public class ApplicationConfigurationManager {
 	 * @see ApplicationConfiguration
 	 * 
 	 */
+	// TODO: Rename the method "e.g. get().getAppName()" is not so nice.
 	public static ApplicationConfiguration get() {
 		return ApplicationConfigurationManager.cachedConfiguration;
 	}
