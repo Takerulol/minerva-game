@@ -34,10 +34,13 @@ import java.awt.BorderLayout;
 import javax.swing.JLayeredPane;
 
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
+import de.hochschule.bremen.minerva.ui.gui.widgets.*;
 
 public class LoginPanel extends JLayeredPane {
 	
 	private Background background;
+	private MTextField username;
+	private MPasswordField password;
 	
 	/**
 	 * 
@@ -46,9 +49,18 @@ public class LoginPanel extends JLayeredPane {
 
 	public LoginPanel() {
 		super();
+		this.setPreferredSize(MinervaGUI.WINDOW_SIZE);
 		this.setLayout(new BorderLayout());
 		this.background = new Background(this.getClass());
 		this.add(this.background,BorderLayout.NORTH,DEFAULT_LAYER);
-		this.setPreferredSize(MinervaGUI.WINDOW_SIZE);
+		
+//		this.username = new MTextField();
+//		this.password = new MPasswordField();
+//		
+//		this.username.setLocation(500,500);
+//		this.password.setLocation(500,600);
+//		
+//		this.add(this.username,BorderLayout.NORTH,PALETTE_LAYER);
+//		this.add(this.password,BorderLayout.NORTH,PALETTE_LAYER);
 	}
 }
