@@ -32,14 +32,14 @@ package de.hochschule.bremen.minerva.ui.gui.panels;
 import javax.swing.JLayeredPane;
 
 
-public class RegisterPanel extends JLayeredPane {
+public class RegistrationPanel extends JLayeredPane {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6086001895310561512L;
 
-	public RegisterPanel() {
+	public RegistrationPanel() {
 		
 	}
 }
