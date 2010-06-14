@@ -37,6 +37,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
+import de.hochschule.bremen.minerva.vo.ApplicationConfiguration;
+
 public class Background extends JPanel {
 	
 	/**
@@ -51,11 +54,13 @@ public class Background extends JPanel {
 	 * @param name
 	 * @param datatype
 	 */
-	public Background(String path, Class<? extends JPanel> concernedPanel, String datatype) {
+	public Background(Class<? extends JPanel> concernedPanel) {
 		super();
 		
+		ApplicationConfiguration configuration = ApplicationConfigurationManager.get();
+		
 		try {
-			image = ImageIO.read(new File(path + concernedPanel.getName() + datatype));
+			image = ImageIO.read(new File(configuration.getUIAssetsDirectory() + concernedPanel.getName() + configuration.getUIAssetsFileExtension()));
 		} catch (IOException e) {
 			e.printStackTrace();
 			Runtime.getRuntime().exit(ERROR);
