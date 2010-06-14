@@ -30,8 +30,11 @@
 
 package de.hochschule.bremen.minerva.ui.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
@@ -77,27 +80,35 @@ public class MinervaGUI extends JFrame implements UserInterface {
 		}
 
 		//initialization
+		this.setBackground(Color.black);
 		this.setResizable(false);
 		this.setTitle(ApplicationConfigurationManager.get().getAppName());
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage(ApplicationConfigurationManager.get().getAppIconPath()));
 	
-//		Timer timer = new Timer(2000,new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				MinervaGUI.this.currentPanel = new LoginPanel();
-//			}
-//		});
-//		timer.start();
-		
+		//start screen
 		currentPanel = new StartPanel();
-	
 		this.add(currentPanel);
-
 		currentPanel.updateUI();
+		
+		//login screen after 5 seconds
+		Timer timer = new Timer(5000,new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() instanceof Timer) {
+					MinervaGUI.this.changePanel(new LoginPanel());
+					((Timer) e.getSource()).stop();
+				}
+			}
+		});
+		timer.start();
 		
 		//packs frame to the size of its panel
 		this.pack();
 		
 		//centers frame on the screen
 		this.centerFrame();
+	
+		//lets show the frame .. yeeeaaaahhh =D
+		this.setVisible(true);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage(ApplicationConfigurationManager.get().getAppIconPath()));
 		this.setVisible(true);
 	}
@@ -110,6 +121,15 @@ public class MinervaGUI extends JFrame implements UserInterface {
 		int X = (screen.width / 2) - (this.getWidth() / 2); // Center horizontally.
 		int Y = (screen.height / 2) - (this.getHeight() / 2); // Center vertically.
 		this.setBounds(X,Y , this.getWidth(),getHeight());
+	}
+	
+	private void changePanel(JLayeredPane newPanel) {
+		this.remove(currentPanel);
+		this.currentPanel = newPanel;
+		this.add(currentPanel);
+		this.currentPanel.updateUI();
+		this.setSize(this.getWidth(), this.getHeight()-1);
+		this.pack();
 	}
 
 }
