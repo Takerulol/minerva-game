@@ -31,6 +31,8 @@
 package de.hochschule.bremen.minerva.ui.gui;
 
 import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import javax.swing.*;
 
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotFoundException;
@@ -77,53 +79,24 @@ public class MinervaGUI extends JFrame implements UserInterface {
 		this.setResizable(false);
 		this.setVisible(true);
 	
-
 		currentPanel = new StartPanel();
 	
 		this.add(currentPanel);
 
 		currentPanel.updateUI();
 		this.pack();
+		this.centerFrame();
 		
-		
-		// BEWARE: LOTS OF COMMENTS!
-		
-//		JMenu menu = new JMenu("Test");
-//		JMenuItem mitem = new JMenuItem("Testor");
-//		menu.add(mitem);
-		
-//		String path = "D:/testbg2.png";
-//		File file = new File(path);
-//
-//		try {
-//			bgbild = ImageIO.read(file);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		//this.setJMenuBar(menu);
-		
-//		TestPanel test = new TestPanel();
-//		JPanel test1 = new JPanel();
-//		test1.setLayout(new FlowLayout());
-//		test1.setSize(1000, 700);
-//		
-//		Background bg = new Background(TestPanel.class);
-		//bg.setSize(1000, 700);
-//		for (int i = 0; i < 20; i++)
-//		bg.add(new JLabel("Test"));
-		
-//		this.add(bg);
-		//test1.add(new Background("",""));
-		//test.setAlignmentX(LEFT_ALIGNMENT);
-		//test.setAlignmentY(TOP_ALIGNMENT);
-		//this.setLayout(null);
-		//this.add(test);
-		//this.repaint();
-		//this.pack();
-		//System.out.println(this.getBounds().height);
-		//System.out.println(this.getSize().height);
-		//,BorderLayout.NORTH
+	}
+	
+	/**
+	 * Puts main frame in the center of the screen
+	 */
+	private void centerFrame() {
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+		int X = (screen.width / 2) - (this.getWidth() / 2); // Center horizontally.
+		int Y = (screen.height / 2) - (this.getHeight() / 2); // Center vertically.
+		this.setBounds(X,Y , this.getWidth(),getHeight());
 	}
 
 }
