@@ -33,6 +33,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -58,14 +59,14 @@ public class Background extends JPanel {
 		super();
 		
 		ApplicationConfiguration configuration = ApplicationConfigurationManager.get();
+		File file = new File(configuration.getUIAssetsDirectory() + concernedPanel.getSimpleName() + configuration.getUIAssetsFileExtension());
 		
 		try {
-			image = ImageIO.read(new File(configuration.getUIAssetsDirectory() + concernedPanel.getName() + configuration.getUIAssetsFileExtension()));
+			this.image = ImageIO.read(file);
 		} catch (IOException e) {
-			e.printStackTrace();
-			Runtime.getRuntime().exit(ERROR);
+			System.out.println(e.getMessage());
 		}
-
+		
 		this.repaint();
 	}
 	
@@ -75,5 +76,6 @@ public class Background extends JPanel {
 	 */
 	public void paint(Graphics g) {
 		g.drawImage(this.image, 0, 0, this.image.getWidth(this), this.image.getHeight(this), this);
+		this.setSize(this.image.getWidth(this), this.image.getHeight(this));
 	}
 }
