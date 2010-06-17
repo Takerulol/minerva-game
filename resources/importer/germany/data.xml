@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<world>
+	<meta>
+		<token></token>
+		<name></name>
+		<author>Carina Strempel</author>
+		<description></description>
+		<version>1.0</version>
+
+		<map></map>
+		<map-underlay></map-underlay>
+		<thumbnail></thumbnail>
+	</meta>
+
+	<continents>
+		<!-- TODO: Füge die Kontinente hier ein. -->
+	</continents>
+
+	<countries>
+		<!-- TODO: Füge die Länder hier ein ... -->
+	</countries>
+</world>
