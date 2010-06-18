@@ -80,6 +80,7 @@ public class MinervaGUI extends JFrame implements UserInterface {
 		}
 
 		//initialization
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBackground(Color.black);
 		this.setResizable(false);
 		this.setTitle(ApplicationConfigurationManager.get().getAppName());
@@ -91,7 +92,7 @@ public class MinervaGUI extends JFrame implements UserInterface {
 		currentPanel.updateUI();
 		
 		//login screen after 5 seconds
-		Timer timer = new Timer(5000,new ActionListener() {
+		Timer timer = new Timer(100,new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() instanceof Timer) {
 					MinervaGUI.this.changePanel(new LoginPanel());
