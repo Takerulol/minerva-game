@@ -202,9 +202,6 @@ public class AccountManager {
 		Player temp = null;
 		try {
 			temp = this.getPlayer(player);
-			if (temp.isLoggedIn()) {
-				throw new PlayerAlreadyLoggedInException(temp);
-			}
 		} catch (PlayerNotFoundException e) {
 			throw new PlayerDoesNotExistException(player);
 		}
@@ -212,6 +209,9 @@ public class AccountManager {
 		String hashedPassword = HashTool.md5(player.getPassword());
 
 		if (hashedPassword.equals(temp.getPassword())) {
+			if (temp.isLoggedIn()) {
+				throw new PlayerAlreadyLoggedInException(temp);
+			}
 			temp.setLoggedIn(true);
 			service.save(temp);
 			
