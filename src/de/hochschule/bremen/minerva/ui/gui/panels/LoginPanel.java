@@ -29,18 +29,8 @@
  */
 package de.hochschule.bremen.minerva.ui.gui.panels;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Point;
-
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MPasswordField;
@@ -49,8 +39,9 @@ import de.hochschule.bremen.minerva.ui.gui.controls.MTextField;
 public class LoginPanel extends JLayeredPane {
 	
 	private Background background;
-	private JPanel username;
+	private MTextField username;
 	private MPasswordField password;
+	private JButton loginButton;
 	
 	/**
 	 * 
@@ -80,37 +71,37 @@ public class LoginPanel extends JLayeredPane {
 //		
 //		this.add(this.username,BorderLayout.NORTH,1);
 //		//this.add(this.password,BorderLayout.NORTH,2);
-		this.setPreferredSize(new Dimension(1000,700));
+		
+		this.setPreferredSize(MinervaGUI.WINDOW_SIZE);
 		this.setOpaque(true);
-	
-		Background bg = new Background(this.getClass());
-		bg.setBounds(0, 0, 500, 500);
 		
+		//background
+		this.background = new Background(this.getClass());
+		this.background.setBounds(0, 0, 500, 500);
 		
-		MTextField mt = new MTextField();
-		//mt.setPreferredSize(new Dimension(200,50));
-		mt.setBounds(614, 212, 244, 25);
-		mt.setOpaque(true);
-		mt.setVisible(true);
+		//username field
+		this.username = new MTextField();
+		this.username.setBounds(614, 212, 244, 25);
+		this.username.setOpaque(true);
 		
-		MPasswordField mp = new MPasswordField();
-		//mp.setPreferredSize(new Dimension(200,50));
-		mp.setBounds(614, 281, 244, 25);
-		mp.setOpaque(true);
-		mp.setVisible(true);
+		//password field
+		this.password = new MPasswordField();
+		this.password.setBounds(614, 281, 244, 25);
+		this.password.setOpaque(true);
 		
-		JButton login = new JButton("Let's go!");
-		login.setBounds(793, 328, 65, 26);
-		//login.setFont(new Font("Arial",Font.BOLD,9));
+		//TODO: resizing font
+		//login button
+		this.loginButton = new JButton("Let's go!");
+		this.loginButton.setBounds(793, 328, 65, 26);
+		//this.loginButton.setFont(new Font("Arial",Font.BOLD,9));
 		
-		
-		this.add(login,20);
-		
-		
-		
-		this.add(mt,20);
-		this.add(mp,20);
-		this.add(bg,10);
+		//adding everything to panel
+		this.add(this.loginButton,20);
+		this.add(this.username,20);
+		this.add(this.password,20);
+		this.add(this.background,10);
 		this.updateUI();
+		
+		
 	}
 }
