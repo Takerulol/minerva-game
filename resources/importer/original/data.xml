@@ -25,7 +25,7 @@
 	<countries>
 		<!-- Europa -->
 		<country id="0" continent="0" color="30B3AD" token="sk" name="Skandinavien" neighbours="1, 2, 5, 6" />
-		<country id="1" continent="0" color="8A5B9D" token="ua" name="Ukraine" neighbours="0, 2, 3, 7, 18, 17" ></country>
+		<country id="1" continent="0" color="8A5B9D" token="ua" name="Ukraine" neighbours="0, 2, 3, 7, 18, 17" />
 		<country id="2" continent="0" color="478DC6" token="me" name="Mittel-Europa" neighbours="0, 1, 2, 3, 4, 6" />
 		<country id="3" continent="0" color="61569C" token="se" name="Süd-Europa" neighbours="1, 2, 4, 17, 23, 24" />
 		<country id="4" continent="0" color="5672B2" token="we" name="West-Europa" neighbours="2, 3, 5, 23" />
