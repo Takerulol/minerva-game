@@ -41,9 +41,10 @@ package de.hochschule.bremen.minerva.ui.gui.resources;
 public interface TextResources {
 
 	// Login panel
-	static final String LOGIN_PANEL_BUTTON                            = "Let's rock!";
-	static final String LOGIN_PANEL_STATUS_WHILE_LOGIN                = "Login ...";
-	static final String LOGIN_PANEL_MESSAGE_INPUT_INCOMPLETE          = "<html>User/Passwort Eingabe <br>ist unvollständig.";
-	static final String LOGIN_PANEL_MESSAGE_USER_INPUT_INCOMPLETE     = "<html>User Eingabe ist <br>unvollständig.";
-	static final String LOGIN_PANEL_MESSAGE_PASSWORD_INPUT_INCOMPLETE = "<html>Die Eingabe des Passworts ist <br>unvollständig.";
+	public static final String LOGIN_PANEL_BUTTON                            = "Let's rock!";
+	public static final String LOGIN_PANEL_STATUS_WHILE_LOGIN                = "Login ...";
+	public static final String LOGIN_PANEL_MESSAGE_INPUT_INCOMPLETE          = "Bitte geben Sie Ihre Zugangsdaten ein.";
+	public static final String LOGIN_PANEL_MESSAGE_USER_INPUT_INCOMPLETE     = "Bitte geben Sie einen Username ein.";
+	public static final String LOGIN_PANEL_MESSAGE_PASSWORD_INPUT_INCOMPLETE = "Bitte geben Sie ein Passwort ein.";
+
 }

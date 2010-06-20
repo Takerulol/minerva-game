@@ -175,7 +175,9 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 				} catch (PlayerDoesNotExistException e2) {
 					LoginPanel.this.setStatusText(e2.getMessage());
 				} catch (DataAccessException e2) {
-					this.setStatusText(e2.getMessage());
+					// TODO: Show MessageBox and exit the app.
+					e2.printStackTrace();
+					Runtime.getRuntime().exit(ERROR);
 				}
 				LoginPanel.this.setStatusText(e1.getMessage());
 			} catch (WrongPasswordException e1) {
@@ -183,9 +185,9 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 			} catch (PlayerDoesNotExistException e1) {
 				LoginPanel.this.setStatusText(e1.getMessage());
 			} catch (DataAccessException e1) {
-				//TODO: Show a message box and exit the app.
-				//LoginPanel.this.setStatusText(e1.getMessage());
-				LoginPanel.this.setStatusText("<html>Datenbankfehler");
+				// TODO: Show MessageBox and exit the app.
+				e1.printStackTrace();
+				Runtime.getRuntime().exit(ERROR);
 			}
 			
 			//panel swaping
