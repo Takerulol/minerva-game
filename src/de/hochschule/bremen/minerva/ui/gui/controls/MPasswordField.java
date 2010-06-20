@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id: Background.java 380 2010-06-14 12:08:35Z andre.koenig $
+ * $Id$
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -39,7 +39,7 @@ import de.hochschule.bremen.minerva.util.ColorTool;
 /**
  * Our special MPasswordField. The "M" stands for Minerva ;)
  * 
- * @version $Id: MTextField.java 387 2010-06-14 13:10:44Z andre.koenig $
+ * @version $Id$
  * @since 1.0
  *
  */

@@ -44,10 +44,11 @@ import de.hochschule.bremen.minerva.ui.gui.controls.MPasswordField;
 import de.hochschule.bremen.minerva.ui.gui.controls.MTextField;
 import de.hochschule.bremen.minerva.vo.Player;
 
-
 /**
  * Panel for user registration
- * @author cbollmann
+ * 
+ * @version $Id$
+ * @since 1.0
  *
  */
 public class RegistrationPanel extends JLayeredPane {

@@ -41,7 +41,9 @@ import de.hochschule.bremen.minerva.vo.Player;
 
 /**
  * Main panel for game initialization
- * @author Takeru
+ * 
+ * @version $Id$
+ * @since 1.0
  *
  */
 public class GameInitPanel extends JLayeredPane {

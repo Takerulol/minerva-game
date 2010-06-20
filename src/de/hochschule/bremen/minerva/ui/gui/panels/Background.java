@@ -41,6 +41,13 @@ import javax.swing.JPanel;
 import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.vo.ApplicationConfiguration;
 
+/**
+ * DOCME
+ * 
+ * @version $Id$
+ * @since 1.0
+ *
+ */
 public class Background extends JPanel {
 	
 	/**

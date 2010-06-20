@@ -45,7 +45,13 @@ import de.hochschule.bremen.minerva.ui.UserInterface;
 import de.hochschule.bremen.minerva.ui.gui.panels.*;
 import de.hochschule.bremen.minerva.vo.Player;
 
-
+/**
+ * DOCME
+ * 
+ * @version $Id$
+ * @since 1.0
+ *
+ */
 public class MinervaGUI extends JFrame implements UserInterface {
 	
 	/**
