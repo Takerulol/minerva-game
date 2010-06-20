@@ -37,6 +37,7 @@ import javax.swing.border.BevelBorder;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.panels.subpanels.PlayerInitPanel;
 import de.hochschule.bremen.minerva.ui.gui.panels.subpanels.WorldInitPanel;
+import de.hochschule.bremen.minerva.vo.Player;
 
 /**
  * Main panel for game initialization
@@ -45,8 +46,9 @@ import de.hochschule.bremen.minerva.ui.gui.panels.subpanels.WorldInitPanel;
  */
 public class GameInitPanel extends JLayeredPane {
 
+	private Player player;
 	private Background background;
-	private PlayerInitPanel players;
+	private PlayerInitPanel playerInit;
 	private WorldInitPanel worldInit;
 	
 	/**
@@ -65,9 +67,9 @@ public class GameInitPanel extends JLayeredPane {
 		this.background.setBounds(0, 0, 500, 500);
 		
 		//player list
-		this.players = new PlayerInitPanel();
-		this.players.setBounds(50, 200, 300, 300);
-		this.players.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+		this.playerInit = new PlayerInitPanel();
+		this.playerInit.setBounds(50, 200, 300, 300);
+		this.playerInit.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		
 		//game init
 		this.worldInit = new WorldInitPanel();
@@ -76,8 +78,16 @@ public class GameInitPanel extends JLayeredPane {
 		
 		
 		//adding panels to stage
-		this.add(this.players,20);
+		this.add(this.playerInit,20);
 		this.add(this.worldInit,20);
 		this.add(this.background,10);
+	}
+
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+	public Player getPlayer() {
+		return player;
 	}
 }

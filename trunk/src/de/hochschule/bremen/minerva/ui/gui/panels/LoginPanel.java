@@ -150,6 +150,8 @@ public class LoginPanel extends JLayeredPane {
 		player.setUsername(LoginPanel.this.getUsername());
 		player.setPassword(LoginPanel.this.getPassword());
 		
+		LoginPanel.this.setStatusText("Login...");
+		
 		if (player.getUsername().isEmpty()) {
 			if (player.getPassword().isEmpty()) {
 				LoginPanel.this.setStatusText("<html>User/Passwort Eingabe <br>ist unvollständig.");
@@ -183,7 +185,8 @@ public class LoginPanel extends JLayeredPane {
 			//panel swaping
 			if (player.isLoggedIn()) {
 				GameInitPanel gip = new GameInitPanel();
-				//TODO: setting needed parameters
+				//TODO: additional parameters ?
+				gip.setPlayer(player);
 				MinervaGUI.getInstance().changePanel(gip);
 			}
 		}

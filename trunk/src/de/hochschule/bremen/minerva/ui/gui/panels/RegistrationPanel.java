@@ -236,6 +236,8 @@ public class RegistrationPanel extends JLayeredPane {
 				player.setEmail(RegistrationPanel.this.email.getText());
 				String retypedPassword = String.copyValueOf(RegistrationPanel.this.passwordRetype.getPassword());
 				
+				RegistrationPanel.this.statusLabel.setText("Account wird erstellt...");
+				
 				String statusText ="<html>";
 				boolean check = true;
 				if (player.getUsername().isEmpty()) {
@@ -277,8 +279,11 @@ public class RegistrationPanel extends JLayeredPane {
 				} else {
 					RegistrationPanel.this.statusLabel.setText(statusText);
 				}
+				//switching back to login after successful account creation
 				if (check) {
-					MinervaGUI.getInstance().changePanel(new LoginPanel());
+					LoginPanel lp = new LoginPanel();
+					lp.setStatusText("Account erstellt.");
+					MinervaGUI.getInstance().changePanel(lp);
 				}
 			}
 		});
