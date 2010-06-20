@@ -27,7 +27,6 @@
  *     http://minerva.idira.de
  * 
  */
-
 package de.hochschule.bremen.minerva.ui.gui.listener;
 
 import java.awt.event.MouseEvent;

@@ -43,7 +43,7 @@ import de.hochschule.bremen.minerva.util.ColorTool;
  * @since 1.0
  *
  */
-public class MPasswordField extends JPasswordField {
+public class MPasswordField extends JPasswordField implements MControl {
 
 	private static final long serialVersionUID = -4307631737327385357L;
 
@@ -74,7 +74,7 @@ public class MPasswordField extends JPasswordField {
 	 * Sets the textfields border and padding.
 	 * 
 	 */
-	private void init() {
+	public void init() {
 		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(ColorTool.fromHexCode(MPasswordField.BORDER_COLOR)), BorderFactory.createLineBorder(Color.WHITE, 5)));
 	}
 }

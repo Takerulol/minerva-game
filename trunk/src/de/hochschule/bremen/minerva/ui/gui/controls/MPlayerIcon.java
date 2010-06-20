@@ -36,6 +36,12 @@ package de.hochschule.bremen.minerva.ui.gui.controls;
  * @since 1.0
  *
  */
-public class MPlayerIcon {
+public class MPlayerIcon implements MControl {
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
