@@ -54,7 +54,7 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	private static final long serialVersionUID = 8038646974358166493L;
 	
 	public static final Dimension WINDOW_SIZE = new Dimension(1000,700);
-	private final int INTRO_DELAY = 100;  
+	private final int INTRO_DELAY = 5000;  
 	
 	private JLayeredPane currentPanel;
 	private Player player = new Player();
@@ -160,53 +160,5 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
-	
-	
-	/**
-	 * Listener for all different panels
-	 */
-	/*
-	private void listenerAdder() {
-		//LoginPanel
-		if (this.currentPanel instanceof LoginPanel) {
-			this.currentPanel.addMouseListener(new MMouseListener() {
-				public void mouseClicked(MouseEvent e) {
-					int mx = e.getX();
-					int my = e.getY();
-					
-					//rectangle for "hier" area to be clicked
-					if ((mx < 777) && (mx > 749) && (my < 486) && (my > 469)) {
-						//750 470 26 15
-						MinervaGUI.this.changePanel(new RegistrationPanel());
-						
-						//example for getting informations out of the panel
-						System.out.println("Username: " + ((LoginPanel)e.getSource()).getUsername());
-						System.out.println("Password: " + ((LoginPanel)e.getSource()).getPassword());
-					}	
-				}
-			});
-			((LoginPanel) this.currentPanel).addLoginButtonListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					//TODO: actual login
-					try {
-						AccountManager.getInstance().login(MinervaGUI.this.player);
-					} catch (PlayerAlreadyLoggedInException e1) {
-						((LoginPanel)e.getSource()).setStatusText(e1.getMessage());
-					} catch (WrongPasswordException e1) {
-						((LoginPanel)e.getSource()).setStatusText(e1.getMessage());
-					} catch (PlayerDoesNotExistException e1) {
-						((LoginPanel)e.getSource()).setStatusText(e1.getMessage());
-					} catch (DataAccessException e1) {
-						((LoginPanel)e.getSource()).setStatusText(e1.getMessage());
-					}
-				}
-			});
-			
-		// Registration Panel
-		} else if (this.currentPanel instanceof RegistrationPanel) {
-			
-		}
-	}*/
 	
 }
