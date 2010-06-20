@@ -160,9 +160,23 @@ public class MinervaGUI extends JFrame implements UserInterface {
 		this.setSize(this.getWidth()-1, this.getHeight()-1);
 		this.pack();
 	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @return
+	 * 
+	 */
 	public Player getPlayer() {
 		return this.player;
 	}
+
+	/**
+	 * DOCME
+	 * 
+	 * @param
+	 * 
+	 */
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
