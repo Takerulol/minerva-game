@@ -59,8 +59,8 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	 */
 	private static final long serialVersionUID = 8038646974358166493L;
 	
-	public static final Dimension WINDOW_SIZE = new Dimension(1000,700);
-	private final int INTRO_DELAY = 5000;  
+	public static final Dimension WINDOW_SIZE = new Dimension(1000, 700);
+	private final int INTRO_DELAY = 2000;  
 	
 	private JLayeredPane currentPanel;
 	private Player player = new Player();
