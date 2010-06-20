@@ -35,7 +35,6 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
 
 import javax.swing.*;
 
@@ -43,8 +42,8 @@ import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotFoundException
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotReadableException;
 import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.ui.UserInterface;
-import de.hochschule.bremen.minerva.ui.gui.listener.MMouseListener;
 import de.hochschule.bremen.minerva.ui.gui.panels.*;
+import de.hochschule.bremen.minerva.vo.Player;
 
 
 public class MinervaGUI extends JFrame implements UserInterface {
@@ -55,23 +54,35 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	private static final long serialVersionUID = 8038646974358166493L;
 	
 	public static final Dimension WINDOW_SIZE = new Dimension(1000,700);
-	private final int INTRO_DELAY = 5000;  
+	private final int INTRO_DELAY = 100;  
 	
 	private JLayeredPane currentPanel;
+	private Player player = new Player();
+	private static MinervaGUI instance = null;
 	
 
 
 	/**
-	 * 
+	 * Sets the GUI instance
 	 */
-	public MinervaGUI() {
+	public MinervaGUI() { 
+		MinervaGUI.instance = this;
+	}
 	
+	/**
+	 * Gets an instance if the GUI already initialized
+	 * @return GUI instance
+	 */
+	public static MinervaGUI getInstance() {
+		return MinervaGUI.instance;
 	}
 	
 	/**
 	 * 
 	 */
 	public void run() {
+		
+		
 		try {
 			ApplicationConfigurationManager.setup();
 		} catch (AppConfigurationNotFoundException e) {
@@ -135,18 +146,26 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	public void changePanel(JLayeredPane newPanel) {
 		this.remove(currentPanel);
 		this.currentPanel = newPanel;
-		this.listenerAdder();
+		//this.listenerAdder();
 		
 		this.add(currentPanel);
 		//this.currentPanel.updateUI();
 		
-		this.setSize(this.getWidth(), this.getHeight()-1);
+		this.setSize(this.getWidth()-1, this.getHeight()-1);
 		this.pack();
 	}
+	public Player getPlayer() {
+		return this.player;
+	}
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+	
 	
 	/**
 	 * Listener for all different panels
 	 */
+	/*
 	private void listenerAdder() {
 		//LoginPanel
 		if (this.currentPanel instanceof LoginPanel) {
@@ -155,10 +174,32 @@ public class MinervaGUI extends JFrame implements UserInterface {
 					int mx = e.getX();
 					int my = e.getY();
 					
-					//750 470 26 15
+					//rectangle for "hier" area to be clicked
 					if ((mx < 777) && (mx > 749) && (my < 486) && (my > 469)) {
+						//750 470 26 15
 						MinervaGUI.this.changePanel(new RegistrationPanel());
+						
+						//example for getting informations out of the panel
+						System.out.println("Username: " + ((LoginPanel)e.getSource()).getUsername());
+						System.out.println("Password: " + ((LoginPanel)e.getSource()).getPassword());
 					}	
+				}
+			});
+			((LoginPanel) this.currentPanel).addLoginButtonListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					//TODO: actual login
+					try {
+						AccountManager.getInstance().login(MinervaGUI.this.player);
+					} catch (PlayerAlreadyLoggedInException e1) {
+						((LoginPanel)e.getSource()).setStatusText(e1.getMessage());
+					} catch (WrongPasswordException e1) {
+						((LoginPanel)e.getSource()).setStatusText(e1.getMessage());
+					} catch (PlayerDoesNotExistException e1) {
+						((LoginPanel)e.getSource()).setStatusText(e1.getMessage());
+					} catch (DataAccessException e1) {
+						((LoginPanel)e.getSource()).setStatusText(e1.getMessage());
+					}
 				}
 			});
 			
@@ -166,6 +207,6 @@ public class MinervaGUI extends JFrame implements UserInterface {
 		} else if (this.currentPanel instanceof RegistrationPanel) {
 			
 		}
-	}
-
+	}*/
+	
 }
