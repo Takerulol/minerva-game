@@ -29,11 +29,12 @@
  */
 package de.hochschule.bremen.minerva.ui.gui.panels;
 
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
@@ -43,9 +44,13 @@ import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.manager.AccountManager;
 import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
+import de.hochschule.bremen.minerva.ui.gui.controls.MButton;
 import de.hochschule.bremen.minerva.ui.gui.controls.MPasswordField;
 import de.hochschule.bremen.minerva.ui.gui.controls.MTextField;
+import de.hochschule.bremen.minerva.ui.gui.listener.MKeyListener;
 import de.hochschule.bremen.minerva.ui.gui.listener.MMouseListener;
+import de.hochschule.bremen.minerva.ui.gui.listener.MMouseMotionListener;
+import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
 import de.hochschule.bremen.minerva.vo.Player;
 
 /**
@@ -55,14 +60,14 @@ import de.hochschule.bremen.minerva.vo.Player;
  * @since 1.0
  *
  */
-public class LoginPanel extends JLayeredPane {
+public class LoginPanel extends JLayeredPane implements TextResources {
 	
 	private Background background;
 	private MTextField username;
 	private MPasswordField password;
-	private JButton loginButton;
+	private MButton loginButton;
 	private JLabel statusLabel;
-	
+
 	/**
 	 * 
 	 */
@@ -89,17 +94,15 @@ public class LoginPanel extends JLayeredPane {
 		this.password = new MPasswordField();
 		this.password.setBounds(614, 281, 244, 25);
 		this.password.setOpaque(true);
-		
-		//TODO: resizing font
+
 		//login button
-		this.loginButton = new JButton("Let's go!");
+		this.loginButton = new MButton(TextResources.LOGIN_PANEL_BUTTON);
 		this.loginButton.setBounds(793, 328, 65, 26);
-		//this.loginButton.setFont(new Font("Arial",Font.BOLD,9));
 		
 		//status label
 		this.statusLabel = new JLabel();
 		this.statusLabel.setBounds(614, 328, 160, 48);
-		
+
 		//adding everything to panel
 		this.add(this.loginButton,20);
 		this.add(this.username,20);
@@ -152,16 +155,16 @@ public class LoginPanel extends JLayeredPane {
 		player.setUsername(LoginPanel.this.getUsername());
 		player.setPassword(LoginPanel.this.getPassword());
 		
-		LoginPanel.this.setStatusText("Login...");
+		LoginPanel.this.setStatusText(TextResources.LOGIN_PANEL_STATUS_WHILE_LOGIN);
 		
 		if (player.getUsername().isEmpty()) {
 			if (player.getPassword().isEmpty()) {
-				LoginPanel.this.setStatusText("<html>User/Passwort Eingabe <br>ist unvollständig.");
+				this.setStatusText(TextResources.LOGIN_PANEL_MESSAGE_INPUT_INCOMPLETE);
 			} else {
-				LoginPanel.this.setStatusText("<html>User Eingabe ist <br>unvollständig.");
+				this.setStatusText(TextResources.LOGIN_PANEL_MESSAGE_USER_INPUT_INCOMPLETE);
 			}
 		} else if (player.getPassword().isEmpty()) {
-			LoginPanel.this.setStatusText("<html>Passwort Eingabe ist <br>unvollständig.");
+			this.setStatusText(LOGIN_PANEL_MESSAGE_PASSWORD_INPUT_INCOMPLETE);
 		} else {
 			try {
 				AccountManager.getInstance().login(player);
@@ -170,16 +173,17 @@ public class LoginPanel extends JLayeredPane {
 					AccountManager.getInstance().logout(player);
 					this.login();
 				} catch (PlayerDoesNotExistException e2) {
-				} catch (DataAccessException e2) {
 					LoginPanel.this.setStatusText(e2.getMessage());
+				} catch (DataAccessException e2) {
+					this.setStatusText(e2.getMessage());
 				}
-				LoginPanel.this.setStatusText("<html>Jemand ist bereits mit <br>diesem Namen eingeloggt. <br>Bitte warten...");
+				LoginPanel.this.setStatusText(e1.getMessage());
 			} catch (WrongPasswordException e1) {
-				LoginPanel.this.setStatusText("<html>Das eingegebene Passwort <br>ist falsch.");
+				LoginPanel.this.setStatusText(e1.getMessage());
 			} catch (PlayerDoesNotExistException e1) {
-				LoginPanel.this.setStatusText("<html>Es existiert kein Account <br>mit diesem Username.");
+				LoginPanel.this.setStatusText(e1.getMessage());
 			} catch (DataAccessException e1) {
-				//TODO: text handling
+				//TODO: Show a message box and exit the app.
 				//LoginPanel.this.setStatusText(e1.getMessage());
 				LoginPanel.this.setStatusText("<html>Datenbankfehler");
 			}
@@ -193,23 +197,69 @@ public class LoginPanel extends JLayeredPane {
 			}
 		}
 	}
-	
+
+	/**
+	 * Determines if the given coordinates are inside the
+	 * "registration link rectangle".
+	 * 
+	 * @param x The checkable x coordinate.
+	 * @param y The checkable y coordinate.
+	 * @return Is inside the "registration link rectangle"?
+	 * 
+	 */
+	private boolean isRegistrationLink(int x, int y) {
+		if ((x < 777) && (x > 749) && (y < 486) && (y > 469)) {
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * Adds all action listeners to this panel
+	 * 
 	 */
 	private void addListeners() {
-		this.addMouseListener(new MMouseListener() {
-			public void mouseClicked(MouseEvent e) {
-				int mx = e.getX();
-				int my = e.getY();
-				
-				//rectangle for "hier" area to be clicked
-				if ((mx < 777) && (mx > 749) && (my < 486) && (my > 469)) {
-					//750 470 26 15
-					MinervaGUI.getInstance().changePanel(new RegistrationPanel());
-				}	
+		
+		// MMouseMotionListener for sending a interaction feedback to the
+		// user if he move the mouse over the "registration link"
+		this.addMouseMotionListener(new MMouseMotionListener() {
+			public void mouseMoved(MouseEvent e) {
+				if (LoginPanel.this.isRegistrationLink(e.getX(), e.getY())) {
+					LoginPanel.this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				} else {
+					LoginPanel.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				}
 			}
 		});
+
+		// MMouseListener for handling the click on the "registration link".
+		this.addMouseListener(new MMouseListener() {
+			public void mouseClicked(MouseEvent e) {
+				if (LoginPanel.this.isRegistrationLink(e.getX(), e.getY())) {
+					MinervaGUI.getInstance().changePanel(new RegistrationPanel());					
+				}
+			}
+		});
+
+		// Check if the user pressed the ENTER key.
+		// If so the app tries to log in with the defined data.
+		this.username.addKeyListener(new MKeyListener() {
+			public void keyPressed(KeyEvent e) {
+		        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+		        	LoginPanel.this.login();
+		        }
+			}
+		});
+
+		this.password.addKeyListener(new MKeyListener() {
+			public void keyPressed(KeyEvent e) {
+		        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+		        	LoginPanel.this.login();
+		        }
+			}
+		});
+
+		// Handling the login event if the user pressed on the login button. 
 		this.addLoginButtonListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

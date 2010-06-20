@@ -29,53 +29,37 @@
  */
 package de.hochschule.bremen.minerva.ui.gui.controls;
 
-import java.awt.Color;
+import java.awt.Font;
 
-import javax.swing.BorderFactory;
-import javax.swing.JTextField;
-
-import de.hochschule.bremen.minerva.util.ColorTool;
+import javax.swing.JButton;
 
 /**
- * Our special MTextField. The "M" stands for Minerva ;)
+ * Our special MButton. The "M" stands for Minerva ;)
  * 
  * @version $Id$
  * @since 1.0
  *
  */
-public class MTextField extends JTextField implements MControl {
+public class MButton extends JButton implements MControl {
 
-	private static final long serialVersionUID = -5024127729084675588L;
+	private static final long serialVersionUID = -354154441855499481L;
 
-	private static String BORDER_COLOR = "01aefd";
-	
 	/**
 	 * Constructor
 	 * 
+	 * @param caption
 	 */
-	public MTextField() {
-		super();
+	public MButton(String caption) {
+		super(caption);
 		this.init();
 	}
 
 	/**
-	 * Constructor with column param.
-	 * 
-	 * @param columns The visible columns.
-	 * @see JTextField
+	 * DOCME
 	 * 
 	 */
-	public MTextField(int columns) {
-		super(columns);
-		this.init();
-	}
-
-	/**
-	 * Sets the textfields border, padding and font.
-	 * 
-	 */
+	@Override
 	public void init() {
-		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(ColorTool.fromHexCode(MTextField.BORDER_COLOR)), BorderFactory.createLineBorder(Color.WHITE, 5)));
-		this.setFont(FONT);
+		this.setFont(FONT.deriveFont(Font.BOLD));
 	}
 }

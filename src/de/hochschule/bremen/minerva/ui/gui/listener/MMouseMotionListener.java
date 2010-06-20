@@ -27,55 +27,23 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.ui.gui.controls;
+package de.hochschule.bremen.minerva.ui.gui.listener;
 
-import java.awt.Color;
-
-import javax.swing.BorderFactory;
-import javax.swing.JTextField;
-
-import de.hochschule.bremen.minerva.util.ColorTool;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 /**
- * Our special MTextField. The "M" stands for Minerva ;)
+ * Usual MouseMotionListener with empty methods for easier listener creation.
  * 
  * @version $Id$
  * @since 1.0
  *
  */
-public class MTextField extends JTextField implements MControl {
-
-	private static final long serialVersionUID = -5024127729084675588L;
-
-	private static String BORDER_COLOR = "01aefd";
+public class MMouseMotionListener implements MouseMotionListener {
 	
-	/**
-	 * Constructor
-	 * 
-	 */
-	public MTextField() {
-		super();
-		this.init();
-	}
-
-	/**
-	 * Constructor with column param.
-	 * 
-	 * @param columns The visible columns.
-	 * @see JTextField
-	 * 
-	 */
-	public MTextField(int columns) {
-		super(columns);
-		this.init();
-	}
-
-	/**
-	 * Sets the textfields border, padding and font.
-	 * 
-	 */
-	public void init() {
-		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(ColorTool.fromHexCode(MTextField.BORDER_COLOR)), BorderFactory.createLineBorder(Color.WHITE, 5)));
-		this.setFont(FONT);
-	}
+	@Override
+	public void mouseMoved(MouseEvent e) {}
+	
+	@Override
+	public void mouseDragged(MouseEvent e) {}
 }

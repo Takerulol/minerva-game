@@ -27,55 +27,23 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.ui.gui.controls;
-
-import java.awt.Color;
-
-import javax.swing.BorderFactory;
-import javax.swing.JTextField;
-
-import de.hochschule.bremen.minerva.util.ColorTool;
+package de.hochschule.bremen.minerva.ui.gui.resources;
 
 /**
- * Our special MTextField. The "M" stands for Minerva ;)
+ * GUI text resources.<br />
+ * Yeah. It's better to use resource bundles. But this is a lightweight
+ * solution. Not so nice, but it works :\
  * 
  * @version $Id$
  * @since 1.0
  *
  */
-public class MTextField extends JTextField implements MControl {
+public interface TextResources {
 
-	private static final long serialVersionUID = -5024127729084675588L;
-
-	private static String BORDER_COLOR = "01aefd";
-	
-	/**
-	 * Constructor
-	 * 
-	 */
-	public MTextField() {
-		super();
-		this.init();
-	}
-
-	/**
-	 * Constructor with column param.
-	 * 
-	 * @param columns The visible columns.
-	 * @see JTextField
-	 * 
-	 */
-	public MTextField(int columns) {
-		super(columns);
-		this.init();
-	}
-
-	/**
-	 * Sets the textfields border, padding and font.
-	 * 
-	 */
-	public void init() {
-		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(ColorTool.fromHexCode(MTextField.BORDER_COLOR)), BorderFactory.createLineBorder(Color.WHITE, 5)));
-		this.setFont(FONT);
-	}
+	// Login panel
+	static final String LOGIN_PANEL_BUTTON                            = "Let's rock!";
+	static final String LOGIN_PANEL_STATUS_WHILE_LOGIN                = "Login ...";
+	static final String LOGIN_PANEL_MESSAGE_INPUT_INCOMPLETE          = "<html>User/Passwort Eingabe <br>ist unvollständig.";
+	static final String LOGIN_PANEL_MESSAGE_USER_INPUT_INCOMPLETE     = "<html>User Eingabe ist <br>unvollständig.";
+	static final String LOGIN_PANEL_MESSAGE_PASSWORD_INPUT_INCOMPLETE = "<html>Die Eingabe des Passworts ist <br>unvollständig.";
 }
