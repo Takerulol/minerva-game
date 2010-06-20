@@ -36,7 +36,8 @@ import java.awt.event.MouseListener;
 /**
  * Usual MouseListener with empty methods for easier listener creation.
  * 
- * @author cbollmann
+ * @version $Id$
+ * @since 1.0
  *
  */
 public class MMouseListener implements MouseListener {

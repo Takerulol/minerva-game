@@ -32,6 +32,13 @@ package de.hochschule.bremen.minerva.ui.gui.panels.subpanels;
 
 import javax.swing.JPanel;
 
+/**
+ * DOCME
+ * 
+ * @version $Id$
+ * @since 1.0
+ *
+ */
 public class PlayerInitPanel extends JPanel {
 
 	/**

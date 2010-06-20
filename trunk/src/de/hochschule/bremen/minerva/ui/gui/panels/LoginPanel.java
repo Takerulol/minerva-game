@@ -50,7 +50,9 @@ import de.hochschule.bremen.minerva.vo.Player;
 
 /**
  * Panel for the login screen
- * @author cbollmann
+ * 
+ * @version $Id$
+ * @since 1.0
  *
  */
 public class LoginPanel extends JLayeredPane {

@@ -35,7 +35,13 @@ import javax.swing.JLayeredPane;
 
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 
-
+/**
+ * DOCME
+ * 
+ * @version $Id$
+ * @since 1.0
+ *
+ */
 public class StartPanel extends JLayeredPane {
 
 	private Background background;
