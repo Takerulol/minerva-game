@@ -5,7 +5,7 @@
 		<token>Deutschland</token>
 		<name>Die Deutschen Bundesländer</name>
 		<author>Carina Strempel</author>
-		<description>Die sechzehn Deutschen Bundesländer</description>
+		<description>Die sechzehn deutschen Bundesländer</description>
 		<version>1.0</version>
 
 		<map></map>
@@ -22,28 +22,27 @@
 
 	<countries>
 		<!-- Norddeutschland -->
-		<country id="0" continent="0" color="000000" token="HB" name="Bremen" neighbours="3" />
-		<country id="1" continent="0" color="000000" token="HH" name="Hamburg" neighbours="3, 4" />
-		<country id="2" continent="0" color="000000" token="MV" name="Mecklenburg-Vorpommern" neighbours="3, 4, 6" />
-		<country id="3" continent="0" color="000000" token="NI" name="Niedersachsen" neighbours="0, 1, 2, 4, 7, 9, 12, 13" />
-		<country id="4" continent="0" color="000000" token="SH" name="Schleswig-Holstein" neighbours="1, 2, 3" />
+		<country id="0" continent="0" color="000000" token="hb" name="Bremen" neighbours="3" />
+		<country id="1" continent="0" color="000000" token="hh" name="Hamburg" neighbours="3, 4" />
+		<country id="2" continent="0" color="000000" token="mv" name="Mecklenburg-Vorpommern" neighbours="3, 4, 6" />
+		<country id="3" continent="0" color="000000" token="ni" name="Niedersachsen" neighbours="0, 1, 2, 4, 7, 9, 12, 13" />
+		<country id="4" continent="0" color="000000" token="sh" name="Schleswig-Holstein" neighbours="1, 2, 3" />
 	
 		<!-- Ostdeutschland -->
-		<country id="5" continent="1" color="000000" token="BE" name="Berlin" neighbours="6" />
-		<country id="6" continent="1" color="000000" token="BB" name="Brandenburg" neighbours="2, 5, 7, 8" />
-		<country id="7" continent="1" color="000000" token="ST" name="Sachsen-Anhalt" neighbours="3, 6, 8, 9" />
-		<country id="8" continent="1" color="000000" token="SN" name="Sachen" neighbours="6, 7, 9, 10" />
-		<country id="9" continent="1" color="000000" token="TH" name="Thüringen" neighbours="3, 7, 8, 10, 13" />
+		<country id="5" continent="1" color="000000" token="be" name="Berlin" neighbours="6" />
+		<country id="6" continent="1" color="000000" token="bb" name="Brandenburg" neighbours="2, 5, 7, 8" />
+		<country id="7" continent="1" color="000000" token="st" name="Sachsen-Anhalt" neighbours="3, 6, 8, 9" />
+		<country id="8" continent="1" color="000000" token="sn" name="Sachen" neighbours="6, 7, 9, 10" />
+		<country id="9" continent="1" color="000000" token="th" name="Thüringen" neighbours="3, 7, 8, 10, 13" />
 		
 		<!-- Süddeutschland -->
-		<country id="10" continent="2" color="000000" token="BE" name="Bayern" neighbours="8, 9, 11, 13" />
-		<country id="11" continent="2" color="000000" token="BB" name="Baden-Württemberg" neighbours="10, 13, 14" />
+		<country id="10" continent="2" color="000000" token="by" name="Bayern" neighbours="8, 9, 11, 13" />
+		<country id="11" continent="2" color="000000" token="bw" name="Baden-Württemberg" neighbours="10, 13, 14" />
 		
 		<!-- Westdeutschland -->
-		<country id="12" continent="3" color="000000" token="NW" name="Nordrhein-Westfalen" neighbours="3, 13, 14" />
-		<country id="13" continent="3" color="000000" token="HE" name="Hessen" neighbours="3, 9, 10, 11, 12, 14" />
-		<country id="14" continent="3" color="000000" token="RP" name="Rheinland-Pfalz" neighbours="11, 12, 13, 15" />
-		<country id="15" continent="3" color="000000" token="SL" name="Saarland" neighbours="14" />
-	
+		<country id="12" continent="3" color="000000" token="nw" name="Nordrhein-Westfalen" neighbours="3, 13, 14" />
+		<country id="13" continent="3" color="000000" token="he" name="Hessen" neighbours="3, 9, 10, 11, 12, 14" />
+		<country id="14" continent="3" color="000000" token="rp" name="Rheinland-Pfalz" neighbours="11, 12, 13, 15" />
+		<country id="15" continent="3" color="000000" token="sl" name="Saarland" neighbours="14" />
 	</countries>
 </world>
