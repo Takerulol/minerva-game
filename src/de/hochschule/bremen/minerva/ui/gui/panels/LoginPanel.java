@@ -45,6 +45,7 @@ import de.hochschule.bremen.minerva.manager.AccountManager;
 import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MButton;
+import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
 import de.hochschule.bremen.minerva.ui.gui.controls.MPasswordField;
 import de.hochschule.bremen.minerva.ui.gui.controls.MTextField;
 import de.hochschule.bremen.minerva.ui.gui.listener.MKeyListener;
@@ -110,6 +111,7 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 		this.add(this.statusLabel,20);
 		this.add(this.background,10);
 		
+		
 		this.updateUI();
 		this.addListeners();
 	}
@@ -129,23 +131,27 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 	public String getPassword() {
 		return String.valueOf(this.password.getPassword());
 	}
+
 	/**
 	 * Adds a listener to login button
 	 * @param l ActionListener
 	 */
-	public void addLoginButtonListener(ActionListener l) {
+	private void addLoginButtonListener(ActionListener l) {
 		this.loginButton.addActionListener(l);
 	}
+
 	/**
 	 * Sets text for status label
 	 * @param text status 
+	 * 
 	 */
 	public void setStatusText(String text) {
 		this.statusLabel.setText(text);
 	}
 	
 	/**
-	 * logs player in username field in
+	 * Execute a login with the given login credentials.
+	 * 
 	 */
 	private void login() {
 		LoginPanel.this.setStatusText(null);
@@ -154,52 +160,57 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 		
 		player.setUsername(LoginPanel.this.getUsername());
 		player.setPassword(LoginPanel.this.getPassword());
-		
-		LoginPanel.this.setStatusText(TextResources.LOGIN_PANEL_STATUS_WHILE_LOGIN);
-		
-		if (player.getUsername().isEmpty()) {
-			if (player.getPassword().isEmpty()) {
-				this.setStatusText(TextResources.LOGIN_PANEL_MESSAGE_INPUT_INCOMPLETE);
-			} else {
-				this.setStatusText(TextResources.LOGIN_PANEL_MESSAGE_USER_INPUT_INCOMPLETE);
-			}
-		} else if (player.getPassword().isEmpty()) {
-			this.setStatusText(LOGIN_PANEL_MESSAGE_PASSWORD_INPUT_INCOMPLETE);
-		} else {
+
+		if (this.areLoginCredentialsValid(player)) {
+			LoginPanel.this.setStatusText(TextResources.LOGIN_PANEL_STATUS_WHILE_LOGIN);
+
 			try {
 				AccountManager.getInstance().login(player);
-			} catch (PlayerAlreadyLoggedInException e1) {
-				try {
-					AccountManager.getInstance().logout(player);
-					this.login();
-				} catch (PlayerDoesNotExistException e2) {
-					LoginPanel.this.setStatusText(e2.getMessage());
-				} catch (DataAccessException e2) {
-					// TODO: Show MessageBox and exit the app.
-					e2.printStackTrace();
-					Runtime.getRuntime().exit(ERROR);
-				}
-				LoginPanel.this.setStatusText(e1.getMessage());
-			} catch (WrongPasswordException e1) {
-				LoginPanel.this.setStatusText(e1.getMessage());
-			} catch (PlayerDoesNotExistException e1) {
-				LoginPanel.this.setStatusText(e1.getMessage());
-			} catch (DataAccessException e1) {
-				// TODO: Show MessageBox and exit the app.
-				e1.printStackTrace();
+			} catch (PlayerAlreadyLoggedInException e) {
+				// Nothing to do. Everything is fine. Recycle user object.
+				// The buddy is already logged in. Have a nice day dude ...
+			} catch (WrongPasswordException e) {
+				MMessageBox.show(e.getMessage());
+			} catch (PlayerDoesNotExistException e) {
+				MMessageBox.show(e.getMessage());
+			} catch (DataAccessException e) {
+				MMessageBox.show(e.getMessage());
 				Runtime.getRuntime().exit(ERROR);
 			}
-			
-			//panel swaping
+
 			if (player.isLoggedIn()) {
 				GameInitPanel gip = new GameInitPanel();
-				//TODO: additional parameters ?
 				gip.setPlayer(player);
 				MinervaGUI.getInstance().changePanel(gip);
 			}
+
+			LoginPanel.this.setStatusText(null);
 		}
 	}
 
+	/**
+	 * Check if the login credentials are valid.
+	 * Informs the user via message box if a error occurred.
+	 * 
+	 * @return
+	 * 
+	 */
+	private boolean areLoginCredentialsValid(Player player) {
+		boolean valid = false;
+
+		if (player.getUsername().isEmpty() && player.getPassword().isEmpty()) {
+			MMessageBox.show(LOGIN_PANEL_MESSAGE_INPUT_INCOMPLETE);
+		} else if (player.getUsername().isEmpty()) {
+			MMessageBox.show(LOGIN_PANEL_MESSAGE_USER_INPUT_INCOMPLETE);
+		} else if (player.getPassword().isEmpty()) {
+			MMessageBox.show(LOGIN_PANEL_MESSAGE_PASSWORD_INPUT_INCOMPLETE);
+		} else {
+			valid = true;
+		}
+
+		return valid;
+	}
+	
 	/**
 	 * Determines if the given coordinates are inside the
 	 * "registration link rectangle".
