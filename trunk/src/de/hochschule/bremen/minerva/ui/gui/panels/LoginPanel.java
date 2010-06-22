@@ -51,6 +51,7 @@ import de.hochschule.bremen.minerva.ui.gui.controls.MTextField;
 import de.hochschule.bremen.minerva.ui.gui.listener.MKeyListener;
 import de.hochschule.bremen.minerva.ui.gui.listener.MMouseListener;
 import de.hochschule.bremen.minerva.ui.gui.listener.MMouseMotionListener;
+import de.hochschule.bremen.minerva.ui.gui.panels.prototype.GamePanel;
 import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
 import de.hochschule.bremen.minerva.vo.Player;
 
@@ -179,8 +180,10 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 			}
 
 			if (player.isLoggedIn()) {
-				GameInitPanel gip = new GameInitPanel();
-				gip.setPlayer(player);
+				//TODO: needs to be changed back after the prototype
+				GamePanel gip = new GamePanel();
+				//GameInitPanel gip = new GameInitPanel();
+				//gip.setPlayer(player);
 				MinervaGUI.getInstance().changePanel(gip);
 			}
 
