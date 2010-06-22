@@ -8,9 +8,9 @@
 		<description>Die original Welt des Risiko-Spiels von Hasbro.</description>
 		<version>1.0 beta</version>
 
-		<map>1bc5b77f3e50b7fbe12c792ee438da45.jpg</map>
-		<map-underlay>b44a59383b3123a747d139bd0e71d2df.jpg</map-underlay>
-		<thumbnail>070cf6787aa56fbdaa1b2fd98708c34c.jpg</thumbnail>
+		<map>1bc5b77f3e50b7fbe12c792ee438da45.png</map>
+		<map-underlay>b44a59383b3123a747d139bd0e71d2df.png</map-underlay>
+		<thumbnail>070cf6787aa56fbdaa1b2fd98708c34c.png</thumbnail>
 	</meta>
 
 	<continents>
