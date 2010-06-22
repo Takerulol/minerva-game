@@ -209,12 +209,6 @@ public class AccountManager {
 		String hashedPassword = HashTool.md5(player.getPassword());
 
 		if (hashedPassword.equals(temp.getPassword())) {
-			if (temp.isLoggedIn()) {
-				throw new PlayerAlreadyLoggedInException(temp);
-			}
-			temp.setLoggedIn(true);
-			service.save(temp);
-			
 			// TODO: Refactor and move this to Player#copy(Player player)
 			player.setId(temp.getId());
 			player.setUsername(temp.getUsername());
@@ -222,12 +216,18 @@ public class AccountManager {
 			player.setLastName(temp.getLastName());
 			player.setEmail(temp.getEmail());
 			player.setLoggedIn(temp.isLoggedIn());
-			
+
+			if (temp.isLoggedIn()) {
+				throw new PlayerAlreadyLoggedInException(temp);
+			}
+
+			temp.setLoggedIn(true);
+			service.save(temp);
+
+			player.setLoggedIn(temp.isLoggedIn());
 		} else {
 			throw new WrongPasswordException(player);
 		}
-		
-		
 	}
 	
 	/**
