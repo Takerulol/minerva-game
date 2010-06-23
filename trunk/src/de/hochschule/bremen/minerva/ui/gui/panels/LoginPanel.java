@@ -30,6 +30,8 @@
 package de.hochschule.bremen.minerva.ui.gui.panels;
 
 import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -99,8 +101,16 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 
 		//login button
 		this.loginButton = new MButton(TextResources.LOGIN_PANEL_BUTTON);
-		this.loginButton.setBounds(793, 328, 65, 26);
+
 		
+		Rectangle buttonRectangle = new Rectangle();
+		buttonRectangle.height = (int)this.loginButton.getPreferredSize().getHeight();
+		buttonRectangle.width = (int)this.loginButton.getPreferredSize().getWidth();
+		buttonRectangle.x = ((this.username.getX() + this.username.getWidth()) - buttonRectangle.width);
+		buttonRectangle.y = 328;
+
+		this.loginButton.setBounds(buttonRectangle);
+
 		//status label
 		this.statusLabel = new JLabel();
 		this.statusLabel.setBounds(614, 328, 160, 48);
@@ -111,7 +121,7 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 		this.add(this.password,20);
 		this.add(this.statusLabel,20);
 		this.add(this.background,10);
-		
+				
 		
 		this.updateUI();
 		this.addListeners();
