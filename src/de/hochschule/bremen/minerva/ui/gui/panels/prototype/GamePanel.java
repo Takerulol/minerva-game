@@ -43,6 +43,7 @@ import de.hochschule.bremen.minerva.manager.WorldManager;
 import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.listener.MMouseListener;
+import de.hochschule.bremen.minerva.util.ColorTool;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.World;
 
@@ -93,12 +94,11 @@ public class GamePanel extends JLayeredPane {
 		
 		upperMap.addMouseListener(new MMouseListener() {
 			public void mouseClicked(MouseEvent e) {
-				int farbe = GamePanel.this.lowerMap.getMapImage().getRGB(e.getX(), e.getY());
-				String hex = Integer.toHexString(farbe);
-				Color color = new Color(farbe);
-				System.out.println(color);
+				Color color = ColorTool.fromInteger(GamePanel.this.lowerMap.getMapImage().getRGB(e.getX(), e.getY()));
+				String hexcode = ColorTool.toHexCode(color);
 				Country country = world.getCountry(color);
-				System.out.println("Farbe: "+hex+" "+country);
+
+				System.out.println("Farbe: "+hexcode+" "+country);
 			}
 		});
 		
