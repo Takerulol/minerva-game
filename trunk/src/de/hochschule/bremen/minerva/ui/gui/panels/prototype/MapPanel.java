@@ -38,6 +38,14 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+/**
+ * Plain map picture output panel with getter for its image.
+ * Meant for map overlay and underlay
+ * 
+ * @version
+ * @since 1.0
+ * 
+ */
 public class MapPanel extends JPanel {
 
 	private BufferedImage mapImage;
@@ -47,6 +55,10 @@ public class MapPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 8073669333884391243L;
 	
+	/**
+	 * Creates new MapPanel with designated map image
+	 * @param filepath path of map image file (overlay or underlay)
+	 */
 	public MapPanel(String filepath) {
 		File file = new File(filepath);
 		try {
@@ -63,8 +75,8 @@ public class MapPanel extends JPanel {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Gets the map image.
+	 * @return buffered image of map
 	 */
 	public BufferedImage getMapImage() {
 		return this.mapImage;

@@ -85,13 +85,13 @@ public class GamePanel extends JLayeredPane {
 		}
 		
 		String filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + world.getMapUnderlay();
-		//System.out.println(filepath);
-		
-		//String filepath = "resources/importer/original/b44a59383b3123a747d139bd0e71d2df.jpg";
 		lowerMap = new MapPanel(filepath);
-		this.add(lowerMap,BorderLayout.NORTH,0);
+		filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + world.getMap();
+		this.add(lowerMap,BorderLayout.NORTH,10);
+		MapPanel upperMap = new MapPanel(filepath);;
+		this.add(upperMap,BorderLayout.NORTH,20);
 		
-		lowerMap.addMouseListener(new MMouseListener() {
+		upperMap.addMouseListener(new MMouseListener() {
 			public void mouseClicked(MouseEvent e) {
 				int farbe = GamePanel.this.lowerMap.getMapImage().getRGB(e.getX(), e.getY());
 				String hex = Integer.toHexString(farbe);
