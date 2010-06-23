@@ -42,7 +42,7 @@ import javax.swing.JPanel;
  * Plain map picture output panel with getter for its image.
  * Meant for map overlay and underlay
  * 
- * @version $Id:
+ * @version $Id$
  * @since 1.0
  * 
  */
