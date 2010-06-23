@@ -50,7 +50,7 @@ CREATE TABLE player (
 -- Testdaten
 
 -- ## Player ############################################### (Password is: 1234)
-insert into player ("username", "password", "last_name", "first_name", "email") values ('Takero', 'dcfd7127776e1994fea695a7f31a6381', 'Bollmann', 'Christian', 'cbollmann@stud.hs-bremen.de');
+insert into player ("username", "password", "last_name", "first_name", "email") values ('Takeru', 'dcfd7127776e1994fea695a7f31a6381', 'Bollmann', 'Christian', 'cbollmann@stud.hs-bremen.de');
 insert into player ("username", "password", "last_name", "first_name", "email") values ('cstrempel', 'f144c9a649cb9abeb68e4323dc15e14c', 'Strempel', 'Carina', 'cstrempel@stud.hs-bremen.de');
 insert into player ("username", "password", "last_name", "first_name", "email") values ('akoenig', 'efa6b55c68d17951c6991e9ce277b809', 'König', 'André', 'akoenig@stud.hs-bremen.de');
 
