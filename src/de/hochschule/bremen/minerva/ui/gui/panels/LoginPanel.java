@@ -30,7 +30,6 @@
 package de.hochschule.bremen.minerva.ui.gui.panels;
 
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
