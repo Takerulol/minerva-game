@@ -47,4 +47,7 @@ public interface TextResources {
 	public static final String LOGIN_PANEL_MESSAGE_USER_INPUT_INCOMPLETE     = "Bitte geben Sie einen Username ein.";
 	public static final String LOGIN_PANEL_MESSAGE_PASSWORD_INPUT_INCOMPLETE = "Bitte geben Sie ein Passwort ein.";
 
+	// Registration panel
+	public static final String REGISTRATION_BUTTON_DONE = "Fertig!";
+	public static final String REGISTRATION_BUTTON_BACK = "Zurück";
 }
