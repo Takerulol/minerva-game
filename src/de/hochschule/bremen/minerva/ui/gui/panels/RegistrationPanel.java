@@ -29,6 +29,7 @@
  */
 package de.hochschule.bremen.minerva.ui.gui.panels;
 
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -42,6 +43,7 @@ import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MPasswordField;
 import de.hochschule.bremen.minerva.ui.gui.controls.MTextField;
+import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
 import de.hochschule.bremen.minerva.vo.Player;
 
 /**
@@ -51,7 +53,7 @@ import de.hochschule.bremen.minerva.vo.Player;
  * @since 1.0
  *
  */
-public class RegistrationPanel extends JLayeredPane {
+public class RegistrationPanel extends JLayeredPane implements TextResources {
 
 	private Background background;
 	
@@ -64,10 +66,6 @@ public class RegistrationPanel extends JLayeredPane {
 	private MTextField email;
 	
 	//labels
-//	private JLabel nameLabel;
-//	private JLabel usernameLabel;
-//	private JLabel passwordLabel;
-//	private JLabel emailLabel;
 	private JLabel statusLabel;
 	
 	//buttons
@@ -121,50 +119,37 @@ public class RegistrationPanel extends JLayeredPane {
 		//labels
 		this.statusLabel = new JLabel();
 		this.statusLabel.setBounds(614, 510, 244, 50);
+
+		Rectangle buttonRectangle = new Rectangle();
 		
-//		this.nameLabel = new JLabel();
-//		this.nameLabel.setBounds(868, 153, 120, 25);
-//		this.usernameLabel = new JLabel();
-//		this.usernameLabel.setBounds(868, 217, 120, 25);
-//		this.passwordLabel = new JLabel();
-//		this.passwordLabel.setBounds(868, 286, 120, 25);
-//		this.emailLabel = new JLabel();
-//		this.emailLabel.setBounds(868, 429, 120, 25);
-//		this.emailLabel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-//		this.nameLabel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-//		this.usernameLabel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-//		this.passwordLabel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-		
-		//TODO: resizing font
 		//login button
-		this.registerButton = new JButton("Fertig!");
-		this.registerButton.setBounds(793, 476, 65, 26);
-		//this.registerButton.setFont(new Font("Arial",Font.BOLD,9));
-		
-		//TODO: resizing font
+		this.registerButton = new JButton(REGISTRATION_BUTTON_DONE);
+		buttonRectangle.width = (int)this.registerButton.getPreferredSize().getWidth();
+		buttonRectangle.height = (int)this.registerButton.getPreferredSize().getHeight();
+		buttonRectangle.x = ((this.email.getX() + this.email.getWidth()) - buttonRectangle.width);
+		buttonRectangle.y = 476;
+		this.registerButton.setBounds(buttonRectangle);
+
 		//back button
-		this.backButton = new JButton("Zurück");
-		this.backButton.setBounds(614, 476, 65, 26);
-		//this.backButton.setFont(new Font("Arial",Font.BOLD,9));
-		
+		this.backButton = new JButton(REGISTRATION_BUTTON_BACK);
+
+		buttonRectangle.width = (int)this.backButton.getPreferredSize().getWidth();
+		buttonRectangle.height = (int)this.backButton.getPreferredSize().getHeight();
+		buttonRectangle.x = this.email.getX();
+		buttonRectangle.y = 476;
+		this.backButton.setBounds(buttonRectangle);
+
 		//adding everything to panel
 		//labels
-//		this.add(this.nameLabel,30);
-//		this.add(this.usernameLabel,30);
-//		this.add(this.passwordLabel,30);
-//		this.add(this.emailLabel,30);
 		this.add(this.statusLabel,30);
-		//text fields
 		this.add(this.firstName,20);
 		this.add(this.lastName,20);
 		this.add(this.username,20);
 		this.add(this.password,20);
 		this.add(this.passwordRetype,20);
 		this.add(this.email,20);
-		//buttons
 		this.add(this.registerButton,20);
 		this.add(this.backButton,30);
-		//background
 		this.add(this.background,10);
 		
 		this.addListeners();
