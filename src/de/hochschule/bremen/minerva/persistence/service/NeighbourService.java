@@ -74,7 +74,7 @@ public class NeighbourService extends PersistenceService {
 	 */
 	@SuppressWarnings("unchecked")
 	public Vector<Neighbour> loadAll(Country byCountry) throws DataAccessException {
-		return (Vector)handler.readAll(byCountry);
+		return (Vector<Neighbour>)handler.readAll(byCountry);
 	}
 
 	/**

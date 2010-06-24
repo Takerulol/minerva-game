@@ -71,7 +71,7 @@ public class ContinentService extends PersistenceService {
 	 */
 	@SuppressWarnings("unchecked")
 	public Vector<Continent> findAll() throws DataAccessException {
-		Vector<Continent> continents = (Vector)handler.readAll();
+		Vector<Continent> continents = (Vector<Continent>)handler.readAll();
 		return continents;
 	}
 
