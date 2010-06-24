@@ -50,4 +50,5 @@ public interface TextResources {
 	// Registration panel
 	public static final String REGISTRATION_BUTTON_DONE = "Fertig!";
 	public static final String REGISTRATION_BUTTON_BACK = "Zurück";
+	public static final String REGISTRATION_TOOLTIP_EMAIL = "Nein, du bekommst kein Spam. Versprochen ;)";
 }
