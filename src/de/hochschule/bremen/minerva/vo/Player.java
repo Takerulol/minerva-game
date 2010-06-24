@@ -41,6 +41,7 @@ public class Player extends ValueObject {
 	private String email = null;
 	private boolean loggedIn = false;
 	private boolean currentPlayer = false;
+	private boolean master = false;
 	
 	// The countries, that the player won.
 	private Vector<Country> countries = new Vector<Country>();
@@ -196,6 +197,25 @@ public class Player extends ValueObject {
 		return currentPlayer;
 	}
 
+	/**
+	 * Sets the player to the "gamemaster" state.
+	 * 
+	 * @param master
+	 */
+	public void setMaster(boolean master) {
+		this.master = master;
+	}
+
+	/**
+	 * Is the player the "gamemaster"?
+	 * 
+	 * @return boolean
+	 * 
+	 */
+	public boolean isMaster() {
+		return this.master;
+	}
+	
 	/**
 	 * The player has captured a new country.
 	 * Add this country to the players country
