@@ -210,15 +210,21 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 	private boolean areLoginCredentialsValid(Player player) {
 		boolean valid = false;
 
+		this.username.setValid(true);
+		this.password.setValid(true);
+		
 		if (player.getUsername().isEmpty() && player.getPassword().isEmpty()) {
 			MMessageBox.show(LOGIN_PANEL_MESSAGE_INPUT_INCOMPLETE);
+			this.username.setValid(valid);
+			this.password.setValid(valid);
+
 			this.username.requestFocus();
 		} else if (player.getUsername().isEmpty()) {
-			this.username.requestFocus();
 			MMessageBox.show(LOGIN_PANEL_MESSAGE_USER_INPUT_INCOMPLETE);
+			this.username.setValid(valid);
 		} else if (player.getPassword().isEmpty()) {
 			MMessageBox.show(LOGIN_PANEL_MESSAGE_PASSWORD_INPUT_INCOMPLETE);
-			this.password.requestFocus();
+			this.password.setValid(valid);
 		} else {
 			valid = true;
 		}
