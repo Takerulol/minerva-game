@@ -107,7 +107,7 @@ public class PlayerService extends PersistenceService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public Vector<Player> findAll() throws DataAccessException {
-		return (Vector)handler.readAll();
+		return (Vector<Player>)handler.readAll();
 	}
 
 	/**

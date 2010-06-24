@@ -78,7 +78,7 @@ public class CountryService extends PersistenceService {
 	 */
 	@SuppressWarnings("unchecked")
 	public Vector<Country> findAll() throws DataAccessException {
-		Vector<Country> countries = (Vector)handler.readAll();
+		Vector<Country> countries = (Vector<Country>)handler.readAll();
 		return countries;
 	}
 
@@ -91,7 +91,7 @@ public class CountryService extends PersistenceService {
 	 */
 	@SuppressWarnings("unchecked")
 	public Vector<Country> loadAll(ValueObject byVo) throws DataAccessException {
-		Vector<Country> countries = (Vector)handler.readAll(byVo);
+		Vector<Country> countries = (Vector<Country>)handler.readAll(byVo);
 		return countries;
 	}
 
