@@ -75,7 +75,6 @@ public class MSlidePanel extends JPanel {
 		if (this.isMinimized()) {
 			this.minimized = false;
 			Rectangle r = this.getBounds();
-			System.out.println(r.y);
 			this.setBounds(0, r.y - this.controlBar.getRelativeHeight(), this.getPreferredSize().width, this.getPreferredSize().height);
 		}
 	}
