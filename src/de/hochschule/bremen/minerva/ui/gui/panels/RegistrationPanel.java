@@ -41,6 +41,7 @@ import de.hochschule.bremen.minerva.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.manager.AccountManager;
 import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
+import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
 import de.hochschule.bremen.minerva.ui.gui.controls.MPasswordField;
 import de.hochschule.bremen.minerva.ui.gui.controls.MTextField;
 import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
@@ -206,71 +207,97 @@ public class RegistrationPanel extends JLayeredPane implements TextResources {
 	public void addRegisterButtonListener(ActionListener l) {
 		this.registerButton.addActionListener(l);
 	}
+
+	private boolean areRegistrationCredentialsValid(Player player, String retypedPassword) {
+		boolean valid = false;
+
+		if (player.getFirstName().isEmpty()) {
+			MMessageBox.show(REGISTRATION_FIRST_NAME_EMPTY);
+			this.firstName.setValid(valid);
+		} else if (player.getLastName().isEmpty()) {
+			MMessageBox.show(REGISTRATION_LAST_NAME_EMPTY);
+			this.lastName.setValid(valid);
+		} else if (player.getUsername().isEmpty()) {
+			MMessageBox.show(REGISTRATION_USERNAME_EMPTY);
+			this.username.setValid(valid);
+		} else if (player.getPassword().isEmpty()) {
+			MMessageBox.show(REGISTRATION_PASSWORD_EMPTY);
+			this.password.setValid(valid);
+		} else if (retypedPassword.isEmpty()) {
+			MMessageBox.show(REGISTRATION_PASSWORD_RETYPED_EMPTY);
+			this.passwordRetype.setValid(valid);
+		} else if (!player.getPassword().equals(retypedPassword)) {
+			MMessageBox.show(REGISTRATION_PASSWORD_RETYPED_INVALID);
+			this.passwordRetype.setValid(valid);
+		} else if (player.getEmail().isEmpty()) {
+			MMessageBox.show(REGISTRATION_EMAIL_EMPTY);
+			this.email.setValid(valid);
+		} else if (!this.isEmailValid(player.getEmail())) {
+			MMessageBox.show(REGISTRATION_EMAIL_IS_INVALID);
+			this.email.setValid(valid);
+		}
+		
+		return valid;
+	}
+
+	/**
+	 * Checks if an given email address is valid.
+	 * 
+	 * @param email The checkable email address.
+	 * @return boolean
+	 * 
+	 */
+	private boolean isEmailValid(String email) {
+		boolean valid = false;
+		// TODO: Implement!
+		return valid;
+	}
+
+	/**
+	 * Converts the form data to an player object.
+	 * 
+	 * @return The player object with the form data.
+	 * 
+	 */
+	private Player transformForm() {
+		Player player = new Player();
+		player.setUsername(RegistrationPanel.this.username.getText());
+		player.setFirstName(RegistrationPanel.this.firstName.getText());
+		player.setLastName(RegistrationPanel.this.lastName.getText());
+		player.setPassword(String.copyValueOf(RegistrationPanel.this.password.getPassword()));
+		player.setEmail(RegistrationPanel.this.email.getText());
+		
+		return player;
+	}
 	
 	/**
 	 * Adds all action listeners to this panel
 	 */
 	private void addListeners() {
-		//registration button
+
+		// Registration button event handler.
 		this.registerButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				Player player = new Player();
-				player.setUsername(RegistrationPanel.this.username.getText());
-				player.setFirstName(RegistrationPanel.this.firstName.getText());
-				player.setLastName(RegistrationPanel.this.lastName.getText());
-				player.setPassword(String.copyValueOf(RegistrationPanel.this.password.getPassword()));
-				player.setEmail(RegistrationPanel.this.email.getText());
+			public void actionPerformed(ActionEvent event) {
+
+				Player player = RegistrationPanel.this.transformForm();
 				String retypedPassword = String.copyValueOf(RegistrationPanel.this.passwordRetype.getPassword());
-				
-				RegistrationPanel.this.statusLabel.setText("Account wird erstellt...");
-				
-				String statusText ="<html>";
-				boolean check = true;
-				if (player.getUsername().isEmpty()) {
-					statusText = "<html>Angaben sind unvollständig";
-					check = false;
-				}
-				if (player.getFirstName().isEmpty()) {
-					statusText = "<html>Angaben sind unvollständig";
-					check = false;
-				}
-				if (player.getLastName().isEmpty()) {
-					statusText = "<html>Angaben sind unvollständig";
-					check = false;
-				}
-				if (player.getEmail().isEmpty()) {
-					statusText = "<html>Angaben sind unvollständig";
-					check = false;
-				}
-				if (player.getPassword().isEmpty()) {
-					statusText = "<html>Angaben sind unvollständig";
-					check = false;
-				} else if (!player.getPassword().equals(retypedPassword)){
-					statusText = statusText+"<br>Passwörter stimmen nicht überein";
-					check = false;
-				}
-				
-				//actual registration
-				if (check) {
+
+				if (RegistrationPanel.this.areRegistrationCredentialsValid(player, retypedPassword)) {
 					try {
 						AccountManager.getInstance().createPlayer(player);
-					} catch (PlayerExistsException e1) {
-						RegistrationPanel.this.statusLabel.setText("<html>Ein Account mit diesem Username <br>und/oder Email besteht bereit");
-						check = false;
-					} catch (DataAccessException e1) {
-						//TODO:exception handling
-						RegistrationPanel.this.statusLabel.setText("Datenbankfehler");
-						check = false;
+						
+						LoginPanel loginPanel = new LoginPanel();
+						loginPanel.setStatusText(REGISTRATION_ACCOUNT_CREATED);
+						MinervaGUI.getInstance().changePanel(loginPanel);
+
+					} catch (PlayerExistsException e) {
+						MMessageBox.show(e.getMessage());
+					} catch (DataAccessException e) {
+						// TODO: Handle this Exception.
+						MMessageBox.show(e.getMessage());
+						Runtime.getRuntime().exit(ERROR);
 					}
-				} else {
-					RegistrationPanel.this.statusLabel.setText(statusText);
-				}
-				//switching back to login after successful account creation
-				if (check) {
-					LoginPanel lp = new LoginPanel();
-					lp.setStatusText("Account erstellt.");
-					MinervaGUI.getInstance().changePanel(lp);
 				}
 			}
 		});
