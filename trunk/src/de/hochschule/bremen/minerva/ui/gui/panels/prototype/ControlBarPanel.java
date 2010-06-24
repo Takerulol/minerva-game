@@ -93,6 +93,7 @@ public class ControlBarPanel extends JPanel {
 		this.lowerHalf.add(new JButton("Test"));
 		this.lowerHalf.add(new JButton("Test"));
 		this.lowerHalf.add(new JButton("Test"));
+		this.lowerHalf.add(new JButton("Test"));
 		
 		
 		
@@ -123,10 +124,8 @@ public class ControlBarPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (ControlBarPanel.this.slidePanel.isMinimized()) {
 					ControlBarPanel.this.slidePanel.slideUp();
-					System.out.println("up");
 				} else {
 					ControlBarPanel.this.slidePanel.slideDown();
-					System.out.println("down");
 				}			
 			}
 		});

@@ -36,6 +36,7 @@ import java.util.Vector;
 
 import javax.swing.JLayeredPane;
 
+import de.hochschule.bremen.minerva.core.Game;
 import de.hochschule.bremen.minerva.exceptions.WorldDoesNotExistException;
 import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.manager.WorldManager;
@@ -55,7 +56,10 @@ import de.hochschule.bremen.minerva.vo.World;
  */
 public class GamePanel extends JLayeredPane {
 	public MapPanel lowerMap;
+	public MapPanel upperMap;
 	public World world;
+	public Game game;
+	public CountryAnchorMap countryAnchors;
 	
 	/**
 	 * 
@@ -65,9 +69,7 @@ public class GamePanel extends JLayeredPane {
 	public GamePanel() {
 		this.setPreferredSize(MinervaGUI.WINDOW_SIZE);
 		this.setOpaque(true);
-		
-		
-		//this.setLayout(new BorderLayout());
+		//this.setBackground(Color.LIGHT_GRAY);
 		
 		Vector<World> worlds;
 		try {
@@ -86,8 +88,8 @@ public class GamePanel extends JLayeredPane {
 		
 		String filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + world.getMapUnderlay();
 		
-		lowerMap = new MapPanel(filepath);
-		lowerMap.setBounds(0,0,500,500);
+		this.lowerMap = new MapPanel(filepath);
+		this.lowerMap.setBounds(0,0,500,500);
 		
 		
 		
@@ -95,8 +97,8 @@ public class GamePanel extends JLayeredPane {
 		
 		
 		
-		MapPanel upperMap = new MapPanel(filepath);
-		upperMap.setBounds(0,0,500,500);
+		this.upperMap = new MapPanel(filepath);
+		this.upperMap.setBounds(0,0,500,500);
 		
 		//control bar
 		MSlidePanel cbp = new MSlidePanel(new ControlBarPanel());
@@ -106,10 +108,10 @@ public class GamePanel extends JLayeredPane {
 		
 		//Adding everything up
 		this.add(cbp, 1000);
-		this.add(upperMap,-20000);
-		this.add(lowerMap,-30000);
+		this.add(this.upperMap,-20000);
+		this.add(this.lowerMap,-30000);
 		
-		upperMap.addMouseListener(new MMouseListener() {
+		this.upperMap.addMouseListener(new MMouseListener() {
 			public void mouseClicked(MouseEvent e) {
 				Color color = ColorTool.fromInteger(GamePanel.this.lowerMap.getMapImage().getRGB(e.getX(), e.getY()));
 				String hexcode = ColorTool.toHexCode(color);
@@ -119,9 +121,17 @@ public class GamePanel extends JLayeredPane {
 			}
 		});
 
-		
+		this.countryAnchors = new CountryAnchorMap(this.upperMap, this.lowerMap, this.world);
 		
 		this.updateUI();
 	}
 
+	/**
+	 * Updates whole panel, when something changed during the game
+	 */
+	public void updatePanel() {
+		//TODO:implementation
+		this.updateUI();
+	}
+	
 }

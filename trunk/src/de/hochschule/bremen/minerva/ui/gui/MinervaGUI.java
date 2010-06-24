@@ -107,9 +107,9 @@ public class MinervaGUI extends JFrame implements UserInterface {
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage(ApplicationConfigurationManager.get().getAppIconPath()));
 	
 		//start screen
-		currentPanel = new StartPanel();
-		this.add(currentPanel);
-		currentPanel.updateUI();
+		this.currentPanel = new StartPanel();
+		this.setContentPane(this.currentPanel);
+		this.currentPanel.updateUI();
 		
 		//login screen after 5 seconds
 		Timer timer = new Timer(this.INTRO_DELAY,new ActionListener() {
@@ -150,11 +150,8 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	 * @param newPanel Panel to change to
 	 */
 	public void changePanel(JLayeredPane newPanel) {
-		this.remove(currentPanel);
 		this.currentPanel = newPanel;
-		
-		this.add(currentPanel);
-		
+		this.setContentPane(this.currentPanel);
 		this.pack();
 	}
 
