@@ -115,6 +115,7 @@ public class RegistrationPanel extends JLayeredPane implements TextResources {
 		this.email = new MTextField();
 		this.email.setBounds(614, 429, 244, 25);
 		this.email.setOpaque(true);
+		this.email.setToolTipText(REGISTRATION_TOOLTIP_EMAIL);
 		
 		//labels
 		this.statusLabel = new JLabel();
