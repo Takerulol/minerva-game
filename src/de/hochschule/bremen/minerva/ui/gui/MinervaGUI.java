@@ -145,19 +145,16 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	
 	
 	/**
-	 * Changes main panel to another one and sets new listener
+	 * Changes main panel to another one
 	 * 
 	 * @param newPanel Panel to change to
 	 */
 	public void changePanel(JLayeredPane newPanel) {
 		this.remove(currentPanel);
 		this.currentPanel = newPanel;
-		//this.listenerAdder();
 		
 		this.add(currentPanel);
-		//this.currentPanel.updateUI();
 		
-		this.setSize(this.getWidth()-1, this.getHeight()-1);
 		this.pack();
 	}
 

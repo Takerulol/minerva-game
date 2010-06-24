@@ -30,7 +30,6 @@
 
 package de.hochschule.bremen.minerva.ui.gui.panels.prototype;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
@@ -68,13 +67,13 @@ public class GamePanel extends JLayeredPane {
 		this.setOpaque(true);
 		
 		
-		this.setLayout(new BorderLayout());
+		//this.setLayout(new BorderLayout());
 		
 		Vector<World> worlds;
 		try {
 			worlds = WorldManager.getInstance().getList(true);
 			try {
-				world = WorldManager.getInstance().get(worlds.get(2));
+				world = WorldManager.getInstance().get(worlds.get(3));
 			} catch (WorldDoesNotExistException e1) {
 			} catch (DataAccessException e1) {
 				// TODO Auto-generated catch block
@@ -86,11 +85,29 @@ public class GamePanel extends JLayeredPane {
 		}
 		
 		String filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + world.getMapUnderlay();
+		
 		lowerMap = new MapPanel(filepath);
+		lowerMap.setBounds(0,0,500,500);
+		
+		
+		
 		filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + world.getMap();
-		this.add(lowerMap,BorderLayout.NORTH,10);
-		MapPanel upperMap = new MapPanel(filepath);;
-		this.add(upperMap,BorderLayout.NORTH,20);
+		
+		
+		
+		MapPanel upperMap = new MapPanel(filepath);
+		upperMap.setBounds(0,0,500,500);
+		
+		//control bar
+		MSlidePanel cbp = new MSlidePanel(new ControlBarPanel());
+		cbp.setBounds(0, this.getPreferredSize().height - cbp.getRelativeHeight(), cbp.getPreferredSize().width,cbp.getPreferredSize().height);
+
+		System.out.println(cbp.getBounds());
+		
+		//Adding everything up
+		this.add(cbp, 1000);
+		this.add(upperMap,-20000);
+		this.add(lowerMap,-30000);
 		
 		upperMap.addMouseListener(new MMouseListener() {
 			public void mouseClicked(MouseEvent e) {
@@ -101,9 +118,7 @@ public class GamePanel extends JLayeredPane {
 				System.out.println("Farbe: "+hexcode+" "+country);
 			}
 		});
-		
-		
-		
+
 		
 		
 		this.updateUI();

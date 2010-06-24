@@ -69,6 +69,9 @@ public class MapPanel extends JPanel {
 		this.repaint();
 	}
 
+	/**
+	 * Typical panel paint method
+	 */
 	public void paint(Graphics g) {
 		g.drawImage(this.mapImage, 0, 0, this.mapImage.getWidth(this), this.mapImage.getHeight(this), this);
 		this.setSize(this.mapImage.getWidth(this), this.mapImage.getHeight(this));
