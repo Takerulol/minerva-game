@@ -48,6 +48,7 @@ public class MTextField extends JTextField implements MControl {
 	private static final long serialVersionUID = -5024127729084675588L;
 
 	private static String BORDER_COLOR = "01aefd";
+	private static String BORDER_COLOR_INVALID = "cc0000";
 	
 	/**
 	 * Constructor
@@ -75,7 +76,23 @@ public class MTextField extends JTextField implements MControl {
 	 * 
 	 */
 	public void init() {
-		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(ColorTool.fromHexCode(MTextField.BORDER_COLOR)), BorderFactory.createLineBorder(Color.WHITE, 5)));
+		this.setValid(true);
 		this.setFont(FONT);
+	}
+
+	/**
+	 * Sets the textfield invalid.
+	 * Border in a different color.
+	 * 
+	 * @param valid
+	 * 
+	 */
+	public void setValid(boolean valid) {
+		if (valid) {
+			this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(ColorTool.fromHexCode(MTextField.BORDER_COLOR)), BorderFactory.createLineBorder(Color.WHITE, 5)));
+		} else {
+			this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(ColorTool.fromHexCode(MTextField.BORDER_COLOR_INVALID)), BorderFactory.createLineBorder(Color.WHITE, 5)));
+			this.requestFocus();
+		}
 	}
 }
