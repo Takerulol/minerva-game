@@ -48,7 +48,16 @@ public interface TextResources {
 	public static final String LOGIN_PANEL_MESSAGE_PASSWORD_INPUT_INCOMPLETE = "Bitte geben Sie ein Passwort ein.";
 
 	// Registration panel
-	public static final String REGISTRATION_BUTTON_DONE = "Fertig!";
-	public static final String REGISTRATION_BUTTON_BACK = "Zurück";
-	public static final String REGISTRATION_TOOLTIP_EMAIL = "Nein, du bekommst kein Spam. Versprochen ;)";
+	public static final String REGISTRATION_BUTTON_DONE              = "Fertig!";
+	public static final String REGISTRATION_BUTTON_BACK              = "Zurück";
+	public static final String REGISTRATION_TOOLTIP_EMAIL            = "Nein, Sie bekommen kein Spam. Versprochen ;)";
+	public static final String REGISTRATION_USERNAME_EMPTY           = "Bitte geben Sie einen Usernamen an.";
+	public static final String REGISTRATION_FIRST_NAME_EMPTY         = "Bitte geben Sie Ihren Vorname an.";
+	public static final String REGISTRATION_LAST_NAME_EMPTY          = "Bitte geben Sie Ihren Nachnamen an.";
+	public static final String REGISTRATION_EMAIL_EMPTY              = "Bitte geben Sie eine E-Mail-Adresse an.";
+	public static final String REGISTRATION_EMAIL_IS_INVALID 	     = "Die angegebene E-Mail-Adresse ist ungültig (Gültig: name@host.de)";
+	public static final String REGISTRATION_PASSWORD_EMPTY           = "Bitte geben Sie ein Passwort an.";
+	public static final String REGISTRATION_PASSWORD_RETYPED_EMPTY   = "Bitte geben Sie ihr Passwort erneut ein.";
+	public static final String REGISTRATION_PASSWORD_RETYPED_INVALID = "Das erneut eingegebene Passwort stimmt nicht mit dem ursprünglichen Passwort überein.";
+	public static final String REGISTRATION_ACCOUNT_CREATED          = "Account erstellt ...";
 }
