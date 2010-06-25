@@ -29,6 +29,7 @@
  */
 package de.hochschule.bremen.minerva.vo;
 
+import java.awt.Color;
 import java.util.Vector;
 
 public class Player extends ValueObject {
@@ -42,6 +43,7 @@ public class Player extends ValueObject {
 	private boolean loggedIn = false;
 	private boolean currentPlayer = false;
 	private boolean master = false;
+	private Color color = Color.WHITE;
 	
 	// The countries, that the player won.
 	private Vector<Country> countries = new Vector<Country>();
@@ -299,6 +301,22 @@ public class Player extends ValueObject {
 	 */
 	public String toString() {
 		return getClass().getName() + "[id=" + this.id + ",username=" + this.username + ",last_name=" + this.lastName + ",first_name=" + this.firstName + ",email=" + this.email + ", loggedIn=" + this.loggedIn + "]";
+	}
+
+	/**
+	 * Sets color of the player
+	 * @param color Color
+	 */
+	public void setColor(Color color) {
+		this.color = color;
+	}
+	
+	/**
+	 * Gets Color of the player
+	 * @return Color
+	 */
+	public Color getColor() {
+		return color;
 	}
 
 	
