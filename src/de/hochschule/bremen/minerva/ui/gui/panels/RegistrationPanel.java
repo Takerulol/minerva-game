@@ -36,6 +36,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.SwingUtilities;
 
 import de.hochschule.bremen.minerva.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.manager.AccountManager;
@@ -155,6 +156,13 @@ public class RegistrationPanel extends JLayeredPane implements TextResources {
 		this.add(this.background,10);
 		
 		this.addListeners();
+		
+		// Set the focus on "first name" textfield.
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				RegistrationPanel.this.firstName.requestFocus();
+			}
+		});
 	}
 	
 	/**
