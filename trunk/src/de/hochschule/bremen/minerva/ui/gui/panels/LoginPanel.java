@@ -190,10 +190,11 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 
 			if (player.isLoggedIn()) {
 				//TODO: needs to be changed back after the prototype
+				MinervaGUI.getInstance().setPlayer(player);
+				
 				GamePanel gip = new GamePanel();
 				//GameInitPanel gip = new GameInitPanel();
 				//gip.setPlayer(player);
-				MinervaGUI.getInstance().setPlayer(player);
 				MinervaGUI.getInstance().changePanel(gip);
 			}
 

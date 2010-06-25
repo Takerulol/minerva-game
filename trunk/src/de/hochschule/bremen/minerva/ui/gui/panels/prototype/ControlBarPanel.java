@@ -36,6 +36,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -51,6 +52,7 @@ public class ControlBarPanel extends JPanel {
 	private JButton slideButton;
 	private JPanel upperHalf;
 	private JPanel lowerHalf;
+	private JLabel currentPlayerLabel;
 	
 	/**
 	 * 
@@ -73,6 +75,10 @@ public class ControlBarPanel extends JPanel {
 		//upper half
 		this.upperHalf = new JPanel();
 		this.upperHalf.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+		
+		this.currentPlayerLabel = new JLabel("Test");
+		//this.currentPlayerLabel.setSize(100, this.currentPlayerLabel.getHeight());
+		this.upperHalf.add(this.currentPlayerLabel);
 		this.upperHalf.add(new JButton("Test"));
 		this.upperHalf.add(new JButton("Test"));
 		this.upperHalf.add(new JButton("Test"));
@@ -124,5 +130,9 @@ public class ControlBarPanel extends JPanel {
 	 */
 	public int getRelativeHeight() {
 		return this.relativeHeight;	
+	}
+	
+	public void setCurrentPlayerLabel(String currentPlayer) {
+		this.currentPlayerLabel.setText(currentPlayer);
 	}
 }
