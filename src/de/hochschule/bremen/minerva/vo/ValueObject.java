@@ -31,4 +31,14 @@ package de.hochschule.bremen.minerva.vo;
 
 public abstract class ValueObject {
 	protected static final int DEFAULT_ID = -1;
+	
+	/**
+	 * Returns the default id.
+	 * 
+	 * @return int The default id.
+	 * 
+	 */
+	public static int getDefaultId() {
+		return DEFAULT_ID;
+	}
 }
