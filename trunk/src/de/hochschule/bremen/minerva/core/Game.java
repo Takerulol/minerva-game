@@ -29,6 +29,7 @@
  */
 package de.hochschule.bremen.minerva.core;
 
+import java.awt.Color;
 import java.util.Collections;
 import java.util.Vector;
 
@@ -84,6 +85,7 @@ public class Game {
 		}
 		this.setWorld(world);
 		this.setPlayer(players);
+		this.generateColors();
 		
 		this.allocateCountries();
 		this.allocateMissions();
@@ -337,5 +339,33 @@ public class Game {
 	 */
 	private void setWinner(Player champ) {
 		this.winner = champ;
+	}
+	
+	/**
+	 * Generates unique colors for each player
+	 */
+	private void generateColors() {
+		Vector<Color> colors = new Vector<Color>();
+		colors.add(Color.RED);
+		colors.add(Color.GREEN);
+		colors.add(Color.BLUE);
+		colors.add(Color.YELLOW);
+		colors.add(Color.WHITE);
+		colors.add(Color.ORANGE);
+		Collections.shuffle(colors);
+		
+		for (Player player : this.players) {
+			player.setColor(colors.firstElement());
+			colors.remove(0);
+		}
+	}
+	
+	public Player getPlayer(Country country) {
+		for (Player player : this.players) {
+			if (player.hasCountry(country)) {
+				return player;
+			}
+		}
+		return null;
 	}
 }
