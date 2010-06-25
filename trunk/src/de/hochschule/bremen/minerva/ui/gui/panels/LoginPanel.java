@@ -193,6 +193,7 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 				GamePanel gip = new GamePanel();
 				//GameInitPanel gip = new GameInitPanel();
 				//gip.setPlayer(player);
+				MinervaGUI.getInstance().setPlayer(player);
 				MinervaGUI.getInstance().changePanel(gip);
 			}
 
