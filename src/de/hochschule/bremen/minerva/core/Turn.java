@@ -532,7 +532,7 @@ public class Turn {
 	 * @param country Country where you want to find the owner.
 	 * @return Owner of the country.
 	 */
-	private Player findPlayerToCountry(Country country) { // private
+	private Player findPlayerToCountry(Country country) { 
 		for (Player player : players) {
 			if (player.hasCountry(country)) {
 				return player;
