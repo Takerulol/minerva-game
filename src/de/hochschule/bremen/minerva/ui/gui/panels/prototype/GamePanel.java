@@ -31,6 +31,7 @@
 package de.hochschule.bremen.minerva.ui.gui.panels.prototype;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -54,6 +55,7 @@ import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.listener.MMouseListener;
 import de.hochschule.bremen.minerva.util.ColorTool;
+import de.hochschule.bremen.minerva.util.MapTool;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.World;
@@ -66,13 +68,12 @@ import de.hochschule.bremen.minerva.vo.World;
  *
  */
 public class GamePanel extends JLayeredPane {
-	public MapPanel lowerMap;
-	public MapPanel upperMap;
+	public MapPanel map;
+	public MapPanel mapUnderlay;
 	public HashMap<Country, ArmyCountIcon> armyIcons = new HashMap<Country, ArmyCountIcon>();
 	public World world;
 	public Game game;
 	public Turn currentTurn;
-	public CountryAnchorMap countryAnchors;
 	
 	/**
 	 * 
@@ -113,7 +114,7 @@ public class GamePanel extends JLayeredPane {
 		try {
 			worlds = WorldManager.getInstance().getList(true);
 			try {
-				world = WorldManager.getInstance().get(worlds.get(3));
+				world = WorldManager.getInstance().get(worlds.get(2));
 			} catch (WorldDoesNotExistException e1) {
 			} catch (DataAccessException e1) {
 				e1.printStackTrace();
@@ -126,25 +127,25 @@ public class GamePanel extends JLayeredPane {
 		
 		//lower map
 		filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + world.getMapUnderlay();
-		this.lowerMap = new MapPanel(filepath);
-		this.lowerMap.setBounds(0,0,500,500);
+		this.mapUnderlay = new MapPanel(filepath);
+		this.mapUnderlay.setBounds(0,0,500,500);
 		
 		
 		//upper map
 		filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + world.getMap();
-		this.upperMap = new MapPanel(filepath);
-		this.upperMap.setBounds(0,0,500,500);
+		this.map = new MapPanel(filepath);
+		this.map.setBounds(0,0,500,500);
 		
 		//control bar
 		MSlidePanel cbp = new MSlidePanel(new ControlBarPanel());
 		cbp.setBounds(0, this.getPreferredSize().height - cbp.getRelativeHeight(), cbp.getPreferredSize().width,cbp.getPreferredSize().height);
 		
 		
-		this.upperMap.addMouseListener(new MMouseListener() {
+		this.map.addMouseListener(new MMouseListener() {
 			public void mouseClicked(MouseEvent e) {
 				GamePanel.this.unmarkAll();
 				
-				Color color = ColorTool.fromInteger(GamePanel.this.lowerMap.getMapImage().getRGB(e.getX(), e.getY()));
+				Color color = ColorTool.fromInteger(GamePanel.this.mapUnderlay.getMapImage().getRGB(e.getX(), e.getY()));
 				String hexcode = ColorTool.toHexCode(color);
 				Country country = world.getCountry(color);
 				GamePanel.this.armyIcons.get(country).mark(Color.RED);
@@ -158,10 +159,10 @@ public class GamePanel extends JLayeredPane {
 			}
 		});
 		
-		this.countryAnchors = new CountryAnchorMap(this.upperMap, this.lowerMap, this.world);
-		
+		HashMap<Country, Point> countryAnchors = MapTool.getCountryAnchors(this.map.getMapImage(), mapUnderlay.getMapImage(), this.world);
+
 		for (Country country : this.world.getCountries()) {
-			ArmyCountIcon aci = new ArmyCountIcon(Color.RED, this.countryAnchors.getCountryAnchorPosition(country));
+			ArmyCountIcon aci = new ArmyCountIcon(Color.RED, countryAnchors.get(country));
 			this.armyIcons.put(country,aci);
 			this.add(aci,100);
 		}
@@ -177,8 +178,8 @@ public class GamePanel extends JLayeredPane {
 		
 		//Adding everything up
 		this.add(cbp, 1000);
-		this.add(this.upperMap,-20000);
-		this.add(this.lowerMap,-30000);
+		this.add(this.map,-20000);
+		this.add(this.mapUnderlay,-30000);
 		this.validate();
 		
 		this.updateUI();
