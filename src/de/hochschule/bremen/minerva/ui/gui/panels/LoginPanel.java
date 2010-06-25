@@ -38,6 +38,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.SwingUtilities;
 
 import de.hochschule.bremen.minerva.exceptions.PlayerAlreadyLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
@@ -124,6 +125,11 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 		
 		this.updateUI();
 		this.addListeners();
+		
+		this.repaint();
+		
+		// Set the focus to the username textfield.
+		SwingUtilities.invokeLater(new Runnable() {public void run() {LoginPanel.this.username.requestFocus();}});
 	}
 
 	/**
