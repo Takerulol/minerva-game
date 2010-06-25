@@ -360,6 +360,11 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * Returns the owner of a country
+	 * @param country country
+	 * @return owner
+	 */
 	public Player getPlayer(Country country) {
 		for (Player player : this.players) {
 			if (player.hasCountry(country)) {
