@@ -139,21 +139,15 @@ public class GamePanel extends JLayeredPane {
 		MSlidePanel cbp = new MSlidePanel(new ControlBarPanel());
 		cbp.setBounds(0, this.getPreferredSize().height - cbp.getRelativeHeight(), cbp.getPreferredSize().width,cbp.getPreferredSize().height);
 		
-		//aci.setBounds(200, 200, 30, 30);
-		CountryGameOption ac = new CountryGameOption(new Country());
-		ac.setBounds(400,400,20,20);
-		//this.add(aci,100);
-		
-		
-		
 		
 		this.upperMap.addMouseListener(new MMouseListener() {
 			public void mouseClicked(MouseEvent e) {
 				Color color = ColorTool.fromInteger(GamePanel.this.lowerMap.getMapImage().getRGB(e.getX(), e.getY()));
 				String hexcode = ColorTool.toHexCode(color);
 				Country country = world.getCountry(color);
-
+				GamePanel.this.armyIcons.get(country).mark(Color.RED);
 				System.out.println("Farbe: "+hexcode+" "+country);
+				GamePanel.this.updatePanel();
 			}
 		});
 		
@@ -184,6 +178,10 @@ public class GamePanel extends JLayeredPane {
 	 */
 	public void updatePanel() {
 		//TODO:implementation
+		if (this.currentTurn.getCurrentPlayer() != MinervaGUI.getInstance().getPlayer()) {
+			//TODO:make buttons unavailable
+		}
+		this.repaint();
 		this.updateUI();
 	}
 	

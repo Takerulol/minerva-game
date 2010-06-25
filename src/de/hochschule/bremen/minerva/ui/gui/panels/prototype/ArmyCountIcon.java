@@ -44,6 +44,8 @@ public class ArmyCountIcon extends JPanel {
 	
 	private Color color;
 	private int armyCount = 0;
+	private boolean marked = false;
+	private Color markColor;
 	
 	/**
 	 * 
@@ -55,7 +57,7 @@ public class ArmyCountIcon extends JPanel {
 		this.color = color;
 		this.setSize(30,30);
 		
-		this.setBounds(p.x - 15, p.y - 15, 22, 22);
+		this.setBounds(p.x - 15, p.y - 15, 24, 24);
 		
 	}
 	
@@ -65,15 +67,32 @@ public class ArmyCountIcon extends JPanel {
 		this.repaint();
 	}
 	
+	public void mark(Color color) {
+		this.marked = true;
+		this.markColor = color;
+		this.repaint();
+	}
+	
+	public void disableMark() {
+		marked = false;
+		this.repaint();
+	}
+	
 	public void paint(Graphics g) {
 		g.setColor(this.color);
-		g.fillArc(0, 0, 20, 20, 0, 360);
+		g.fillArc(1, 1, 20, 20, 0, 360);
 		
 		
 		g.setColor(Color.black);
-		g.drawArc(0, 0, 20, 20, 0, 360);
+		g.drawArc(1, 1, 20, 20, 0, 360);
 	
 		g.drawString(String.valueOf(this.armyCount), 11 - 4 * String.valueOf(this.armyCount).length(), 15);
+		
+		if (marked) {
+			g.setColor(this.markColor);
+			g.drawArc(-1, -1, 24, 24, 0, 360);
+			g.drawArc(0, 0, 22, 22, 0, 360);
+		}
 	}
 
 }

@@ -65,14 +65,6 @@ public class ControlBarPanel extends JPanel {
 	}
 	
 	/**
-	 * 
-	 * @param slidePanel
-	 */
-	public ControlBarPanel(MSlidePanel slidePanel) {
-		this.init();
-	}
-	
-	/**
 	 * Initializes ControlBarPanel.
 	 */
 	private void init() {
@@ -109,11 +101,6 @@ public class ControlBarPanel extends JPanel {
 		this.upperHalf.add(this.slideButton);
 		this.addSlideListeners();
 	}
-	
-	
-	
-	
-	
 	
 	/**
 	 * Adds action listeners to
