@@ -142,10 +142,17 @@ public class GamePanel extends JLayeredPane {
 		
 		this.upperMap.addMouseListener(new MMouseListener() {
 			public void mouseClicked(MouseEvent e) {
+				GamePanel.this.unmarkAll();
+				
 				Color color = ColorTool.fromInteger(GamePanel.this.lowerMap.getMapImage().getRGB(e.getX(), e.getY()));
 				String hexcode = ColorTool.toHexCode(color);
 				Country country = world.getCountry(color);
 				GamePanel.this.armyIcons.get(country).mark(Color.RED);
+				
+				for (Country c : world.getNeighbours(country)) {
+					GamePanel.this.armyIcons.get(c).mark(Color.BLUE);
+				}
+				
 				System.out.println("Farbe: "+hexcode+" "+country);
 				GamePanel.this.updatePanel();
 			}
@@ -162,6 +169,10 @@ public class GamePanel extends JLayeredPane {
 		
 		this.testGame();
 		this.currentTurn = this.game.nextTurn();
+		
+		cbp.getControlBar().setCurrentPlayerLabel(this.currentTurn.getCurrentPlayer().getUsername());
+		this.repaint();
+		
 		this.refreshArmyCounts();
 		
 		//Adding everything up
@@ -194,6 +205,15 @@ public class GamePanel extends JLayeredPane {
 		while (iter.hasNext()) {
 			Map.Entry pairs = (Map.Entry)iter.next();
 			((ArmyCountIcon)pairs.getValue()).setPlayer(((Country)pairs.getKey()), this.game.getPlayer(((Country)pairs.getKey())));
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void unmarkAll() {
+		Iterator iter = this.armyIcons.entrySet().iterator();
+		while (iter.hasNext()) {
+			Map.Entry pairs = (Map.Entry)iter.next();
+			((ArmyCountIcon)pairs.getValue()).unmark();
 		}
 	}
 	

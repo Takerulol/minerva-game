@@ -73,7 +73,7 @@ public class ArmyCountIcon extends JPanel {
 		this.repaint();
 	}
 	
-	public void disableMark() {
+	public void unmark() {
 		marked = false;
 		this.repaint();
 	}
