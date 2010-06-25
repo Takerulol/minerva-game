@@ -235,6 +235,8 @@ public class RegistrationPanel extends JLayeredPane implements TextResources {
 		} else if (!this.isEmailValid(player.getEmail())) {
 			MMessageBox.show(REGISTRATION_EMAIL_IS_INVALID);
 			this.email.setValid(valid);
+		} else {
+			valid = true;
 		}
 		
 		return valid;
@@ -248,7 +250,7 @@ public class RegistrationPanel extends JLayeredPane implements TextResources {
 	 * 
 	 */
 	private boolean isEmailValid(String email) {
-		boolean valid = false;
+		boolean valid = true;//false;
 		// TODO: Implement!
 		return valid;
 	}
@@ -279,18 +281,16 @@ public class RegistrationPanel extends JLayeredPane implements TextResources {
 		this.registerButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-
 				Player player = RegistrationPanel.this.transformForm();
 				String retypedPassword = String.copyValueOf(RegistrationPanel.this.passwordRetype.getPassword());
 
 				if (RegistrationPanel.this.areRegistrationCredentialsValid(player, retypedPassword)) {
 					try {
 						AccountManager.getInstance().createPlayer(player);
-						
+
 						LoginPanel loginPanel = new LoginPanel();
 						loginPanel.setStatusText(REGISTRATION_ACCOUNT_CREATED);
 						MinervaGUI.getInstance().changePanel(loginPanel);
-
 					} catch (PlayerExistsException e) {
 						MMessageBox.show(e.getMessage());
 					} catch (DataAccessException e) {
@@ -310,5 +310,4 @@ public class RegistrationPanel extends JLayeredPane implements TextResources {
 			}
 		});
 	}
-	
 }
