@@ -35,6 +35,8 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
+import javax.jws.soap.SOAPBinding.Use;
+
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.World;
 
@@ -42,6 +44,7 @@ import de.hochschule.bremen.minerva.vo.World;
  * 
  * DOCME
  *
+ * @deprecated {@link Use MapTool instead.}
  */
 public class CountryAnchorMap {
 
@@ -79,17 +82,7 @@ public class CountryAnchorMap {
 	 * @param world
 	 */
 	private void createCountryAnchors(BufferedImage upperMap, BufferedImage lowerMap, World world) {
-		for (int x = 0; x < upperMap.getWidth(); x++) {
-			for (int y = 0; y < upperMap.getHeight(); y++) {
-				if (upperMap.getRGB(x, y) == 0xFF000000) {
-					Point point = new Point(x,y);
-					Country country = world.getCountry(new Color(lowerMap.getRGB(x, y)));
-					if (country.getId() > -1) {
-						this.countryAnchors.put(country, point);
-					}
-				}
-			}
-		}
+
 	}
 	
 	/**
