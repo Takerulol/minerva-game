@@ -365,9 +365,9 @@ public class Game {
 	 * @param country country
 	 * @return owner
 	 */
-	public Player getPlayer(Country country) {
+	public Player getPlayer(Country byCountry) {
 		for (Player player : this.players) {
-			if (player.hasCountry(country)) {
+			if (player.hasCountry(byCountry)) {
 				return player;
 			}
 		}
