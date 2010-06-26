@@ -33,12 +33,10 @@ package de.hochschule.bremen.minerva.ui.gui.panels;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.border.BevelBorder;
 
-import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
-import de.hochschule.bremen.minerva.manager.AccountManager;
+import de.hochschule.bremen.minerva.manager.WorldManager;
 import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
@@ -46,6 +44,7 @@ import de.hochschule.bremen.minerva.ui.gui.controls.MPlayerIcon;
 import de.hochschule.bremen.minerva.ui.gui.panels.subpanels.PlayerInitPanel;
 import de.hochschule.bremen.minerva.ui.gui.panels.subpanels.WorldInitPanel;
 import de.hochschule.bremen.minerva.vo.Player;
+import de.hochschule.bremen.minerva.vo.World;
 
 /**
  * Main panel for game initialization
@@ -90,7 +89,15 @@ public class GameInitPanel extends JLayeredPane {
 		this.playerInit.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		
 		//game init
-		this.worldInit = new WorldInitPanel();
+		Vector<World> worlds = new Vector<World>();
+		try {
+			worlds = WorldManager.getInstance().getList();
+		} catch (DataAccessException e) {
+			// TODO: Handle the DataAccessException in a correct way.
+			MMessageBox.show(e.getMessage());
+			Runtime.getRuntime().exit(ERROR);
+		}
+		this.worldInit = new WorldInitPanel(worlds);
 		this.worldInit.setBounds(600, 200, 300, 300);
 		this.worldInit.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		
