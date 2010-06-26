@@ -58,8 +58,7 @@ public class MButton extends JButton implements MControl {
 	 * DOCME
 	 * 
 	 */
-	@Override
-	public void init() {
+	private void init() {
 		this.setFont(FONT.deriveFont(Font.BOLD));
 	}
 }

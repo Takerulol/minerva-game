@@ -30,11 +30,19 @@
 
 package de.hochschule.bremen.minerva.ui.gui.panels;
 
+import java.util.Vector;
+
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.border.BevelBorder;
 
+import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
+import de.hochschule.bremen.minerva.manager.AccountManager;
+import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
+import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
+import de.hochschule.bremen.minerva.ui.gui.controls.MPlayerIcon;
 import de.hochschule.bremen.minerva.ui.gui.panels.subpanels.PlayerInitPanel;
 import de.hochschule.bremen.minerva.ui.gui.panels.subpanels.WorldInitPanel;
 import de.hochschule.bremen.minerva.vo.Player;
@@ -59,7 +67,8 @@ public class GameInitPanel extends JLayeredPane {
 	private static final long serialVersionUID = -8901679483780034723L;
 	
 	
-	public GameInitPanel() {
+	public GameInitPanel(Player player) {
+		this.player = player;
 		this.setPreferredSize(MinervaGUI.WINDOW_SIZE);
 		this.setOpaque(true);
 		
@@ -69,7 +78,14 @@ public class GameInitPanel extends JLayeredPane {
 		this.background.setBounds(0, 0, 500, 500);
 		
 		//player list
-		this.playerInit = new PlayerInitPanel();
+		// TODO: How to handle the player icons here???
+		// TODO: Set the gamemaster
+		Vector<MPlayerIcon> playerIcons = new Vector<MPlayerIcon>();
+		this.player.setMaster(true);
+		playerIcons.add(new MPlayerIcon(this.player));
+
+		this.playerInit = new PlayerInitPanel(playerIcons);
+		this.playerInit.setOpaque(true);
 		this.playerInit.setBounds(50, 200, 300, 300);
 		this.playerInit.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		
@@ -85,10 +101,10 @@ public class GameInitPanel extends JLayeredPane {
 		this.add(this.background,10);
 	}
 
-
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
+
 	public Player getPlayer() {
 		return player;
 	}
