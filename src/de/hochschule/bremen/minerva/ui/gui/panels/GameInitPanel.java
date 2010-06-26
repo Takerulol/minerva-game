@@ -40,7 +40,6 @@ import de.hochschule.bremen.minerva.manager.WorldManager;
 import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
-import de.hochschule.bremen.minerva.ui.gui.controls.MPlayerIcon;
 import de.hochschule.bremen.minerva.ui.gui.panels.subpanels.PlayerInitPanel;
 import de.hochschule.bremen.minerva.ui.gui.panels.subpanels.WorldInitPanel;
 import de.hochschule.bremen.minerva.vo.Player;
@@ -79,11 +78,12 @@ public class GameInitPanel extends JLayeredPane {
 		//player list
 		// TODO: How to handle the player icons here???
 		// TODO: Set the gamemaster
-		Vector<MPlayerIcon> playerIcons = new Vector<MPlayerIcon>();
+		
+		Vector<Player> players = new Vector<Player>();
 		this.player.setMaster(true);
-		playerIcons.add(new MPlayerIcon(this.player));
+		players.add(this.player);
 
-		this.playerInit = new PlayerInitPanel(playerIcons);
+		this.playerInit = new PlayerInitPanel(players);
 		this.playerInit.setOpaque(true);
 		this.playerInit.setBounds(50, 200, 300, 300);
 		this.playerInit.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
