@@ -29,8 +29,9 @@
  */
 package de.hochschule.bremen.minerva.ui.gui.controls;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
-
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -51,7 +52,10 @@ public class MPlayerIcon extends JPanel implements MControl, TextResources {
 	 * 
 	 */
 	private static final long serialVersionUID = -7238829407887665957L;
-
+	
+	private static final Color FONT_COLOR_DEFAULT = new Color(139, 140, 142);
+	private static final Color FONT_COLOR_GAMEMASTER = new Color(2, 175, 252);
+	
 	private Player player = null;
 
 	// UI elements
@@ -71,27 +75,33 @@ public class MPlayerIcon extends JPanel implements MControl, TextResources {
 	 */
 	public MPlayerIcon(Player player) {
 		this.player = player;
-		
-		this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+
+		this.setLayout(new BorderLayout());
+		this.setOpaque(false);
 		
 		this.iconArea = new JPanel();
-		// TODO: Add icon.
+		this.iconArea.setOpaque(false);
+		this.iconArea.add(new JLabel("ICON"));
 		
-		// The data area
 		this.dataArea = new JPanel();
 		this.dataArea.setLayout(new BoxLayout(this.dataArea, BoxLayout.PAGE_AXIS));
+		this.dataArea.setOpaque(false);
 		
 		this.name = new JLabel();
 		this.name.setFont(new Font(FONT.getName(), Font.BOLD, FONT.getSize()));
+		this.name.setForeground(Color.WHITE);
 
 		this.gamemaster = new JLabel();
 		this.gamemaster.setFont(FONT);
+		this.gamemaster.setForeground(FONT_COLOR_GAMEMASTER);
 
 		this.username = new JLabel();
 		this.username.setFont(FONT);
+		this.username.setForeground(FONT_COLOR_DEFAULT);
 
 		this.email = new JLabel();
 		this.email.setFont(FONT);
+		this.email.setForeground(FONT_COLOR_DEFAULT);
 		
 		this.gamemaster.setVisible(false);
 		
@@ -99,11 +109,10 @@ public class MPlayerIcon extends JPanel implements MControl, TextResources {
 		this.dataArea.add(this.gamemaster);
 		this.dataArea.add(this.username);
 		this.dataArea.add(this.email);
-		
-		// Adding the areas to the panel.
-		this.add(iconArea);
-		this.add(dataArea);
-		
+
+		this.add(this.iconArea, BorderLayout.WEST);
+		this.add(this.dataArea, BorderLayout.CENTER);
+
 		this.refresh();
 	}
 

@@ -60,6 +60,13 @@ public interface TextResources {
 	public static final String REGISTRATION_PASSWORD_RETYPED_EMPTY   = "Bitte geben Sie ihr Passwort erneut ein.";
 	public static final String REGISTRATION_PASSWORD_RETYPED_INVALID = "Das erneut eingegebene Passwort stimmt nicht mit dem ursprünglichen Passwort überein.";
 	public static final String REGISTRATION_ACCOUNT_CREATED          = "Account erstellt ...";
+
+	// PlayerInitPanel
+	public static final String PLAYER_INIT_PANEL_BUTTON_ADD_PLAYER = "Spieler hinzufügen";
+	
+	// WorldInitPanel
+	public static final String WORLD_INIT_PANEL_INTRODUCTION = "<html>{gm}, bitte wähle aus der unteren Liste eine Welt aus, auf der gespielt werden soll.</html>";
+	public static final String WORLD_INIT_PANEL_SELECTION    = "Auswahl:";
 	
 	// -- Controls
 	

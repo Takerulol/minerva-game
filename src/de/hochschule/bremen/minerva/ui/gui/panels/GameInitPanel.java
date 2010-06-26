@@ -34,8 +34,9 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLayeredPane;
-import javax.swing.border.BevelBorder;
 
+import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
+import de.hochschule.bremen.minerva.manager.AccountManager;
 import de.hochschule.bremen.minerva.manager.WorldManager;
 import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
@@ -56,8 +57,8 @@ public class GameInitPanel extends JLayeredPane {
 
 	private Player player;
 	private Background background;
-	private PlayerInitPanel playerInit;
-	private WorldInitPanel worldInit;
+	private PlayerInitPanel playerInitPanel;
+	private WorldInitPanel worldInitPanel;
 	
 	/**
 	 * 
@@ -82,12 +83,25 @@ public class GameInitPanel extends JLayeredPane {
 		Vector<Player> players = new Vector<Player>();
 		this.player.setMaster(true);
 		players.add(this.player);
-
-		this.playerInit = new PlayerInitPanel(players);
-		this.playerInit.setOpaque(true);
-		this.playerInit.setBounds(50, 200, 300, 300);
-		this.playerInit.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		
+		Player carina = null;
+		try {
+			carina = AccountManager.getInstance().getPlayer("cstrempel");
+		} catch (PlayerDoesNotExistException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (DataAccessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		players.add(carina);
+
+		this.playerInitPanel = new PlayerInitPanel(players);
+		this.playerInitPanel.setOpaque(false);
+		this.playerInitPanel.setBounds(90, 180, 350, 240);
+		this.playerInitPanel.setBorder(BorderFactory.createEmptyBorder());
+	
 		//game init
 		Vector<World> worlds = new Vector<World>();
 		try {
@@ -97,14 +111,17 @@ public class GameInitPanel extends JLayeredPane {
 			MMessageBox.show(e.getMessage());
 			Runtime.getRuntime().exit(ERROR);
 		}
-		this.worldInit = new WorldInitPanel(worlds);
-		this.worldInit.setBounds(600, 200, 300, 300);
-		this.worldInit.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+		
+		// TODO: Pass the gamemaster
+		this.worldInitPanel = new WorldInitPanel(players.get(1), worlds);
+		this.worldInitPanel.setOpaque(false);
+		this.worldInitPanel.setBounds(590, 160, 300, 300);
+		this.worldInitPanel.setBorder(BorderFactory.createEmptyBorder());
 		
 		
 		//adding panels to stage
-		this.add(this.playerInit,20);
-		this.add(this.worldInit,20);
+		this.add(this.playerInitPanel,20);
+		this.add(this.worldInitPanel,20);
 		this.add(this.background,10);
 	}
 

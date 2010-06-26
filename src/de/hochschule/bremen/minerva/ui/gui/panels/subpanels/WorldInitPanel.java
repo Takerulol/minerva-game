@@ -30,11 +30,20 @@
 
 package de.hochschule.bremen.minerva.ui.gui.panels.subpanels;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import de.hochschule.bremen.minerva.ui.gui.controls.MButton;
+import de.hochschule.bremen.minerva.ui.gui.controls.MControl;
+import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
+import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.World;
 
 /**
@@ -44,10 +53,14 @@ import de.hochschule.bremen.minerva.vo.World;
  * @since 1.0
  *
  */
-public class WorldInitPanel extends JPanel {
+public class WorldInitPanel extends JPanel implements MControl, TextResources {
 
 	private static final long serialVersionUID = -7818223033543151286L;
 
+	private static final Color FONT_COLOR_DEFAULT = new Color(139, 140, 142);
+	
+	private JLabel introduction;
+	
 	private JComboBox worldSelector; 
 	
 	/**
@@ -56,13 +69,56 @@ public class WorldInitPanel extends JPanel {
 	 * @param worlds
 	 * 
 	 */
-	public WorldInitPanel(Vector<World> worlds) {
+	public WorldInitPanel(Player gamemaster, Vector<World> worlds) {
+
+		this.setLayout(new BorderLayout(20, 20));
+		this.setOpaque(false);
+		
+		// introduction
+		this.introduction = new JLabel();
+		this.introduction.setText(WORLD_INIT_PANEL_INTRODUCTION.replace("{gm}", gamemaster.getFirstName()));
+		this.introduction.setFont(FONT);
+		this.introduction.setForeground(FONT_COLOR_DEFAULT);
+		this.add(this.introduction, BorderLayout.NORTH);
+
+		JLabel selectorLabel = new JLabel();
+		selectorLabel.setText(WORLD_INIT_PANEL_SELECTION);
+		selectorLabel.setFont(FONT);
+		selectorLabel.setForeground(FONT_COLOR_DEFAULT);
+		this.add(selectorLabel, BorderLayout.WEST);
+		
 		this.worldSelector = new JComboBox();
+		this.worldSelector.setFont(FONT);
+		this.worldSelector.setBounds(0, 0, (int)this.worldSelector.getPreferredSize().getWidth(), (int)this.worldSelector.getPreferredSize().getHeight());
 		
 		for (World world : worlds) {
 			this.worldSelector.addItem(world.getName());
 		}
+
+		this.add(this.worldSelector, BorderLayout.CENTER);
+
+		JPanel worldInfo = new JPanel();
+		worldInfo.setBorder(BorderFactory.createLineBorder(new Color(35, 36, 40), 1));
+		worldInfo.setBackground(new Color(14, 15, 16));
+		worldInfo.setOpaque(false);
+		worldInfo.setLayout(new BorderLayout(20, 20));
+		worldInfo.add(new JLabel("Thumbnail"), BorderLayout.WEST);
 		
-		this.add(worldSelector);
+		JPanel worldDetails = new JPanel();
+		worldDetails.setOpaque(false);
+		worldDetails.setLayout(new BoxLayout(worldDetails, BoxLayout.PAGE_AXIS));
+		
+		worldDetails.add(new JLabel("Title"));
+		worldDetails.add(new JLabel("<html>BeschreibungstextBeschreibungstextBeschreibungstextBeschreibungstextBeschreibungstext</html>"));
+		worldDetails.add(new JLabel("Version: 1.0"));
+		worldDetails.add(new JLabel("Autoren: ..."));
+		
+		worldInfo.add(worldDetails, BorderLayout.CENTER);
+
+		MButton buttonStartGame = new MButton("Spiel starten ...");
+		worldInfo.add(buttonStartGame, BorderLayout.SOUTH);
+		
+		this.add(worldInfo, BorderLayout.SOUTH);
+
 	}
 }
