@@ -42,7 +42,4 @@ public interface MControl {
 
 	// The common control font.
 	static final Font FONT = new Font("Tahoma", 0, 11);
-
-	// Init the ui control.
-	abstract void init();
 }

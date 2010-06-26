@@ -76,7 +76,7 @@ public class MPasswordField extends JPasswordField implements MControl {
 	 * Sets the textfields border and padding.
 	 * 
 	 */
-	public void init() {
+	private void init() {
 		this.setValid(true);
 	}
 

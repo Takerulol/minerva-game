@@ -75,7 +75,7 @@ public class MTextField extends JTextField implements MControl {
 	 * Sets the textfields border, padding and font.
 	 * 
 	 */
-	public void init() {
+	private void init() {
 		this.setValid(true);
 		this.setFont(FONT);
 	}

@@ -60,4 +60,11 @@ public interface TextResources {
 	public static final String REGISTRATION_PASSWORD_RETYPED_EMPTY   = "Bitte geben Sie ihr Passwort erneut ein.";
 	public static final String REGISTRATION_PASSWORD_RETYPED_INVALID = "Das erneut eingegebene Passwort stimmt nicht mit dem ursprünglichen Passwort überein.";
 	public static final String REGISTRATION_ACCOUNT_CREATED          = "Account erstellt ...";
+	
+	// -- Controls
+	
+	// MPlayerIcon
+	public static final String MPLAYERICON_USERNAME = "Benutzername:";
+	public static final String MPLAYERICON_EMAIL = "E-Mail:";
+	public static final String MPLAYERICON_GAMEMASTER = "Spielmaster";
 }

@@ -173,7 +173,6 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 		LoginPanel.this.setStatusText(null);
 		
 		Player player = new Player();
-		
 		player.setUsername(LoginPanel.this.getUsername());
 		player.setPassword(LoginPanel.this.getPassword());
 
@@ -198,9 +197,8 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 				//TODO: needs to be changed back after the prototype
 				MinervaGUI.getInstance().setPlayer(player);
 				
-				GamePanel gip = new GamePanel();
-				//GameInitPanel gip = new GameInitPanel();
-				//gip.setPlayer(player);
+				//GamePanel gip = new GamePanel();
+				GameInitPanel gip = new GameInitPanel(player);
 				MinervaGUI.getInstance().changePanel(gip);
 			}
 

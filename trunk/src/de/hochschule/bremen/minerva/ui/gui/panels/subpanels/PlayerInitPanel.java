@@ -30,7 +30,12 @@
 
 package de.hochschule.bremen.minerva.ui.gui.panels.subpanels;
 
+import java.util.Vector;
+
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+
+import de.hochschule.bremen.minerva.ui.gui.controls.MPlayerIcon;
 
 /**
  * DOCME
@@ -41,12 +46,19 @@ import javax.swing.JPanel;
  */
 public class PlayerInitPanel extends JPanel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -344922633298919424L;
 
-	public PlayerInitPanel() {
+	/**
+	 * DOCME
+	 * 
+	 * @param playerIcons
+	 */
+	public PlayerInitPanel(Vector<MPlayerIcon> playerIcons) {		
+		this.setOpaque(true);
+		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		
+		for (MPlayerIcon icon : playerIcons) {
+			this.add(icon);
+		}
 	}
 }
