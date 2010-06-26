@@ -35,7 +35,9 @@ import java.util.Vector;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
+import de.hochschule.bremen.minerva.ui.gui.controls.MButton;
 import de.hochschule.bremen.minerva.ui.gui.controls.MPlayerIcon;
+import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
 import de.hochschule.bremen.minerva.vo.Player;
 
 /**
@@ -45,11 +47,13 @@ import de.hochschule.bremen.minerva.vo.Player;
  * @since 1.0
  *
  */
-public class PlayerInitPanel extends JPanel {
+public class PlayerInitPanel extends JPanel implements TextResources {
 
 	private static final long serialVersionUID = -344922633298919424L;
 
 	private Vector<Player> players = new Vector<Player>();
+	
+	private MButton buttonAddPlayer;
 	
 	/**
 	 * DOCME
@@ -59,12 +63,16 @@ public class PlayerInitPanel extends JPanel {
 	public PlayerInitPanel(Vector<Player> players) {
 		this.players = players;
 
-		this.setOpaque(true);
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		this.setOpaque(false);
+
+		this.buttonAddPlayer = new MButton(PLAYER_INIT_PANEL_BUTTON_ADD_PLAYER);
 		
 		for (Player player : this.players) {
 			this.add(new MPlayerIcon(player));
 		}
+		
+		this.add(this.buttonAddPlayer);
 	}
 	
 	/**

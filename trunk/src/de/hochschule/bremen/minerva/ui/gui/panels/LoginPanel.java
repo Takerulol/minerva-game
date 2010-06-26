@@ -92,11 +92,13 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 		this.username = new MTextField();
 		this.username.setBounds(614, 212, 244, 25);
 		this.username.setOpaque(true);
+this.username.setText("akoenig");
 		
 		//password field
 		this.password = new MPasswordField();
 		this.password.setBounds(614, 281, 244, 25);
 		this.password.setOpaque(true);
+this.password.setText("akoenig");
 
 		//login button
 		this.loginButton = new MButton(TextResources.LOGIN_PANEL_BUTTON);
