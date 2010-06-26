@@ -36,6 +36,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import de.hochschule.bremen.minerva.ui.gui.controls.MPlayerIcon;
+import de.hochschule.bremen.minerva.vo.Player;
 
 /**
  * DOCME
@@ -48,17 +49,33 @@ public class PlayerInitPanel extends JPanel {
 
 	private static final long serialVersionUID = -344922633298919424L;
 
+	private Vector<Player> players = new Vector<Player>();
+	
 	/**
 	 * DOCME
 	 * 
 	 * @param playerIcons
 	 */
-	public PlayerInitPanel(Vector<MPlayerIcon> playerIcons) {		
+	public PlayerInitPanel(Vector<Player> players) {
+		this.players = players;
+
 		this.setOpaque(true);
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		
-		for (MPlayerIcon icon : playerIcons) {
-			this.add(icon);
+		for (Player player : this.players) {
+			this.add(new MPlayerIcon(player));
 		}
+	}
+	
+	/**
+	 * Adds a new player to this panel.
+	 * 
+	 * @param player The addable player.
+	 * 
+	 */
+	public void add(Player player) {
+		this.players.add(player);
+		
+		this.add(new MPlayerIcon(player));
 	}
 }
