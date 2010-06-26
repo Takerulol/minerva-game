@@ -30,7 +30,12 @@
 
 package de.hochschule.bremen.minerva.ui.gui.panels.subpanels;
 
+import java.util.Vector;
+
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
+
+import de.hochschule.bremen.minerva.vo.World;
 
 /**
  * DOCME
@@ -41,12 +46,23 @@ import javax.swing.JPanel;
  */
 public class WorldInitPanel extends JPanel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7818223033543151286L;
 
-	public WorldInitPanel() {
+	private JComboBox worldSelector; 
+	
+	/**
+	 * DOCME
+	 * 
+	 * @param worlds
+	 * 
+	 */
+	public WorldInitPanel(Vector<World> worlds) {
+		this.worldSelector = new JComboBox();
 		
+		for (World world : worlds) {
+			this.worldSelector.addItem(world.getName());
+		}
+		
+		this.add(worldSelector);
 	}
 }
