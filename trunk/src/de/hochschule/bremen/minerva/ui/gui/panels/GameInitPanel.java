@@ -35,8 +35,7 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JLayeredPane;
 
-import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
-import de.hochschule.bremen.minerva.manager.AccountManager;
+import de.hochschule.bremen.minerva.manager.SessionManager;
 import de.hochschule.bremen.minerva.manager.WorldManager;
 import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
@@ -55,7 +54,7 @@ import de.hochschule.bremen.minerva.vo.World;
  */
 public class GameInitPanel extends JLayeredPane {
 
-	private Player player;
+	private Vector<Player> players = new Vector<Player>();
 	private Background background;
 	private PlayerInitPanel playerInitPanel;
 	private WorldInitPanel worldInitPanel;
@@ -65,9 +64,8 @@ public class GameInitPanel extends JLayeredPane {
 	 */
 	private static final long serialVersionUID = -8901679483780034723L;
 	
-	
 	public GameInitPanel(Player player) {
-		this.player = player;
+		this.players.add(player);
 		this.setPreferredSize(MinervaGUI.WINDOW_SIZE);
 		this.setOpaque(true);
 		
@@ -77,27 +75,7 @@ public class GameInitPanel extends JLayeredPane {
 		this.background.setBounds(0, 0, 500, 500);
 		
 		//player list
-		// TODO: How to handle the player icons here???
-		// TODO: Set the gamemaster
-		
-		Vector<Player> players = new Vector<Player>();
-		this.player.setMaster(true);
-		players.add(this.player);
-		
-		Player carina = null;
-		try {
-			carina = AccountManager.getInstance().getPlayer("cstrempel");
-		} catch (PlayerDoesNotExistException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (DataAccessException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		players.add(carina);
-
-		this.playerInitPanel = new PlayerInitPanel(players);
+		this.playerInitPanel = new PlayerInitPanel();
 		this.playerInitPanel.setOpaque(false);
 		this.playerInitPanel.setBounds(90, 180, 350, 240);
 		this.playerInitPanel.setBorder(BorderFactory.createEmptyBorder());
@@ -113,23 +91,16 @@ public class GameInitPanel extends JLayeredPane {
 		}
 		
 		// TODO: Pass the gamemaster
-		this.worldInitPanel = new WorldInitPanel(players.get(0), worlds);
+		Player gamemaster = SessionManager.get(MinervaGUI.getSessionId()).getMaster();
+		this.worldInitPanel = new WorldInitPanel(gamemaster, worlds);
 		this.worldInitPanel.setOpaque(false);
-		this.worldInitPanel.setBounds(590, 160, 300, 300);
-		this.worldInitPanel.setBorder(BorderFactory.createEmptyBorder());
+		this.worldInitPanel.setBounds(585, 140, 300, 350);
+
 		
 		
 		//adding panels to stage
 		this.add(this.playerInitPanel,20);
 		this.add(this.worldInitPanel,20);
 		this.add(this.background,10);
-	}
-
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
-
-	public Player getPlayer() {
-		return player;
 	}
 }
