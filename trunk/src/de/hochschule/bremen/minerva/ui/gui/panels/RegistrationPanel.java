@@ -1,5 +1,5 @@
 /*
- * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
+ * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, AndrÃ© KÃ¶nig
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
  * $Id$
@@ -21,7 +21,7 @@
  * Contact:
  *     Christian Bollmann: cbollmann@stud.hs-bremen.de
  *     Carina Strempel: cstrempel@stud.hs-bremen.de
- *     André König: akoenig@stud.hs-bremen.de
+ *     AndrÃ© KÃ¶nig: akoenig@stud.hs-bremen.de
  * 
  * Web:
  *     http://minerva.idira.de
@@ -258,8 +258,23 @@ public class RegistrationPanel extends JLayeredPane implements TextResources {
 	 * 
 	 */
 	private boolean isEmailValid(String email) {
-		boolean valid = true;//false;
-		// TODO: Implement!
+		boolean valid = false;
+		/* TODO: 
+			Im Catch-Teil fehlt die Exception Implementierung?!
+			Bei der if-Abfrage fehlt noch der reguläre Ausdruck [a-z A-Z]?!
+		*/
+		
+		try {
+			email = this.getEmail();
+			if (!email.contains(" ") && email.contains("@") && email.contains(".com") || email.contains(".de")){
+				valid = Boolean.TRUE;
+			} else {
+				valid = Boolean.FALSE;
+			}
+		} catch (Exception e) {
+			
+		}
+		
 		return valid;
 	}
 
