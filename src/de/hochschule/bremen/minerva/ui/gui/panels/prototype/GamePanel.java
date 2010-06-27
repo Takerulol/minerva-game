@@ -214,7 +214,7 @@ public class GamePanel extends JLayeredPane {
 			if (country.getArmyCount() > 1) {
 				this.source = country;
 				this.armyIcons.get(this.source).mark(Color.GREEN);
-				for (Country c : world.getNeighbours(this.source)) {
+				for (Country c : this.game.getWorld().getNeighbours(this.source)) {
 					this.armyIcons.get(c).mark(Color.RED);
 				}
 			}
@@ -248,7 +248,7 @@ public class GamePanel extends JLayeredPane {
 			if (country.getArmyCount() > 1) {
 				this.source = country;
 				this.armyIcons.get(this.source).mark(Color.GREEN);
-				for (Country c : world.getNeighbours(this.source)) {
+				for (Country c : this.game.getWorld().getNeighbours(this.source)) {
 					this.armyIcons.get(c).mark(Color.RED);
 				}
 			}
