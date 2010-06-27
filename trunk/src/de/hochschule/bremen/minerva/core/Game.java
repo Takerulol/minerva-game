@@ -202,12 +202,30 @@ public class Game {
 	 */
 	public void addPlayer(Player player) throws GameAlreadyStartedException {
 		if (!this.hasStarted()) {
-			this.players.add(player);
+			if (!this.isPlayerInGame(player)) {
+				this.players.add(player);
+			}
 		} else {
 			throw new GameAlreadyStartedException(player);
 		}
 	}
 
+	/**
+	 * Check if an given player is already in this game.
+	 * 
+	 * @param checkablePlayer The player to check for.
+	 * @return boolean
+	 * 
+	 */
+	private boolean isPlayerInGame(Player checkablePlayer) {
+		for (Player player : this.players) {
+			if (player.getUsername().equals(checkablePlayer.getUsername())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * Returns the game master player.
 	 * 
