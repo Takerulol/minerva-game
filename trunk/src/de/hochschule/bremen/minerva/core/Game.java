@@ -33,6 +33,8 @@ import java.awt.Color;
 import java.util.Collections;
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.exceptions.GameAlreadyStartedException;
+import de.hochschule.bremen.minerva.exceptions.WorldNotDefinedException;
 import de.hochschule.bremen.minerva.exceptions.NoPlayerLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughPlayersLoggedInException;
 import de.hochschule.bremen.minerva.vo.CanonCard;
@@ -65,9 +67,16 @@ public class Game {
 	private Vector<CountryCard> countryCards = new Vector<CountryCard>();
 	private Vector<CountryCard> usedCountryCards = new Vector<CountryCard>();
 	private CardSeriesCounter seriesCounter = new CardSeriesCounter();
+	private boolean started = false;
 	private boolean finished = false;
 	private Player winner = null;
 
+	/**
+	 * DOCME
+	 * 
+	 */
+	public Game() {}
+	
 	/**
 	 * DOCME
 	 * 
@@ -75,24 +84,48 @@ public class Game {
 	 * @param players
 	 * @throws NoPlayerLoggedInException 
 	 * @throws NotEnoughPlayersLoggedInException
+	 * @throws WorldNotDefinedException 
 	 *  
 	 */
-	public Game(World world, Vector<Player> players) throws NoPlayerLoggedInException, NotEnoughPlayersLoggedInException {
+	public Game(World world, Vector<Player> players) throws NoPlayerLoggedInException, NotEnoughPlayersLoggedInException, WorldNotDefinedException {
 		if (players.size() == 0) {
 			throw new NoPlayerLoggedInException();
 		} else if (players.size() == 1) {
-			throw new NotEnoughPlayersLoggedInException(players);
+
 		}
 		this.setWorld(world);
 		this.setPlayer(players);
-		this.generateColors();
 		
+		this.start();
+	}
+
+	/**
+	 * Starts the initialization process
+	 * (generate player countries, allocate missions and so on).
+	 * 
+	 * @throws NotEnoughPlayersLoggedInException
+	 * @throws NoPlayerLoggedInException
+	 * @throws WorldNotDefinedException
+	 * 
+	 */
+	public void start() throws NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException {
+		if (this.players.size() == 0) {
+			throw new NoPlayerLoggedInException();
+		} else if (this.players.size() == 1) {
+			throw new NotEnoughPlayersLoggedInException(players);
+		} else if (this.world == null) {
+			throw new WorldNotDefinedException();
+		}
+
+		this.generateColors();
+
 		this.allocateCountries();
 		this.allocateMissions();
 		this.generateCountryCards();
+		
+		this.setStarted(true);
 	}
 
-	
 	/**
 	 * Sets the next player and creates a new
 	 * Turn. With this turn it is possible to
@@ -139,6 +172,37 @@ public class Game {
 	 */
 	private void setPlayer(Vector<Player> player) {
 		this.players = player;
+	}
+
+	/**
+	 * Returns the owner of a country
+	 * 
+	 * @param country country
+	 * @return owner
+	 * 
+	 */
+	public Player getPlayer(Country byCountry) {
+		for (Player player : this.players) {
+			if (player.hasCountry(byCountry)) {
+				return player;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Add a new player to a game that is not running.
+	 * 
+	 * @param player The player to add.
+	 * @throws GameAlreadyStartedException Not able to add a new player to a already running game session.
+	 * 
+	 */
+	public void add(Player player) throws GameAlreadyStartedException {
+		if (!this.hasStarted()) {
+			this.players.add(player);
+		} else {
+			throw new GameAlreadyStartedException(player);
+		}
 	}
 
 	/**
@@ -189,6 +253,44 @@ public class Game {
 		}
 
 		return finished;
+	}
+
+	/**
+	 * Is the game running?
+	 * 
+	 * @return boolean
+	 * 
+	 */
+	public boolean hasStarted() {
+		return this.started;
+	}
+
+	/**
+	 * Sets the "game started flag".
+	 * 
+	 * @param started
+	 * 
+	 */
+	private void setStarted(boolean started) {
+		this.started = started;
+	}
+
+	/**
+	 * Returns the generated mission vector.
+	 * 
+	 * @return Vector<Mission> The missions.
+	 * 
+	 */
+	public Vector<Mission> getMissions() {
+		return this.missions;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Player getWinner() {
+		return this.winner;
 	}
 
 	/**
@@ -314,24 +416,6 @@ public class Game {
 	}
 
 	/**
-	 * Returns the generated mission vector.
-	 * 
-	 * @return Vector<Mission> The missions.
-	 * 
-	 */
-	public Vector<Mission> getMissions() {
-		return this.missions;
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public Player getWinner() {
-		return this.winner;
-	}
-
-	/**
 	 * Sets the champ.
 	 * 
 	 * @param champ Player The winner
@@ -358,19 +442,5 @@ public class Game {
 			player.setColor(colors.firstElement());
 			colors.remove(0);
 		}
-	}
-	
-	/**
-	 * Returns the owner of a country
-	 * @param country country
-	 * @return owner
-	 */
-	public Player getPlayer(Country byCountry) {
-		for (Player player : this.players) {
-			if (player.hasCountry(byCountry)) {
-				return player;
-			}
-		}
-		return null;
 	}
 }
