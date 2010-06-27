@@ -60,15 +60,10 @@ public class MSlidePanel extends JPanel {
 		this.controlBar = controlBar;
 		this.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
 		
-		this.setup();
 		controlBar.setSlidePanel(this);
 		this.add(controlBar);
 		
 		this.updateUI();
-	}
-	
-	private void setup() {
-		
 	}
 	
 	public void slideUp() {

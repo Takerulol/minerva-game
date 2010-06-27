@@ -45,14 +45,24 @@ import javax.swing.JPanel;
  * @version $Id$
  * @since 1.0
  */
-public class ControlBarPanel extends JPanel {
+public class ControlBarPanel extends JPanel implements ActionListener {
 
 	private int relativeHeight;
 	private MSlidePanel slidePanel;
+	private GamePanel gamePanel;
+	
+	private JButton allocateButton;
+	private JLabel allocatableArmies;
+	private JButton cardButton;
+	private JButton attackButton;
+	private JButton moveButton;
+	private JButton endTurnButton;
+	
 	private JButton slideButton;
 	private JPanel upperHalf;
 	private JPanel lowerHalf;
 	private JLabel currentPlayerLabel;
+	
 	
 	/**
 	 * 
@@ -76,15 +86,26 @@ public class ControlBarPanel extends JPanel {
 		this.upperHalf = new JPanel();
 		this.upperHalf.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
 		
-		this.currentPlayerLabel = new JLabel("Test");
-		//this.currentPlayerLabel.setSize(100, this.currentPlayerLabel.getHeight());
+		this.currentPlayerLabel = new JLabel("CURRENT PLAYER");
+		
+		this.allocateButton = new JButton("Armeen setzen");
+		this.allocatableArmies = new JLabel("0");
+		this.cardButton = new JButton("Karten eintauschen");
+		this.attackButton = new JButton("Angriff");
+		this.moveButton = new JButton("Armeen verschieben");
+		this.endTurnButton = new JButton("Zug beenden");
+		
 		this.upperHalf.add(this.currentPlayerLabel);
-		this.upperHalf.add(new JButton("Test"));
-		this.upperHalf.add(new JButton("Test"));
-		this.upperHalf.add(new JButton("Test"));
-		this.upperHalf.add(new JButton("Test"));
+		
+		this.upperHalf.add(this.allocateButton);
+		this.upperHalf.add(this.allocatableArmies);
+		this.upperHalf.add(this.cardButton);
+		this.upperHalf.add(this.attackButton);
+		this.upperHalf.add(this.moveButton);
+		this.upperHalf.add(this.endTurnButton);
 		
 		
+		//lower half
 		this.lowerHalf = new JPanel();
 		this.lowerHalf.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
 		this.lowerHalf.add(new JButton("Test"));
@@ -97,6 +118,7 @@ public class ControlBarPanel extends JPanel {
 		
 		this.add(this.upperHalf, BorderLayout.NORTH);
 		this.add(this.lowerHalf, BorderLayout.SOUTH);
+		
 		this.updateUI();
 	}
 	
@@ -133,6 +155,57 @@ public class ControlBarPanel extends JPanel {
 	}
 	
 	public void setCurrentPlayerLabel(String currentPlayer) {
-		this.currentPlayerLabel.setText(currentPlayer);
+		this.currentPlayerLabel.setText(" "+currentPlayer+" ");
+	}
+	
+	public void addListeners(GamePanel gamePanel) {
+		this.gamePanel = gamePanel;
+		this.endTurnButton.addActionListener(this);
+		this.allocateButton.addActionListener(this);
+		this.cardButton.addActionListener(this);
+		this.attackButton.addActionListener(this);
+		this.moveButton.addActionListener(this);
+	}
+	
+	public void setAllocatableArmiesLabel(String allocatableArmies) {
+		this.allocatableArmies.setText(" "+allocatableArmies+" ");
+	}
+	
+	public void updateButtons() {
+		if (this.gamePanel.getGameState() > 0) {
+			this.allocateButton.setEnabled(false);
+			if (this.gamePanel.getGameState() > 1) {
+				this.cardButton.setEnabled(false);
+				if (this.gamePanel.getGameState() > 2) {
+					this.attackButton.setEnabled(false);
+					if (this.gamePanel.getGameState() > 3) {
+						this.moveButton.setEnabled(false);
+					}
+				}
+			}
+		} else {
+			this.allocateButton.setEnabled(true);
+			this.cardButton.setEnabled(true);
+			this.attackButton.setEnabled(true);
+			this.moveButton.setEnabled(true);
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		//TODO: implementation
+		if (e.getSource() == this.endTurnButton) {
+			this.gamePanel.setGameState(GamePanel.ALLOCATE);
+			this.gamePanel.nextTurn();
+		} else if ((e.getSource() == this.allocateButton) && (this.gamePanel.getGameState() < GamePanel.CARD_TURN_IN)) {
+			this.gamePanel.setGameState(GamePanel.ALLOCATE);
+		} else if ((e.getSource() == this.cardButton) && (this.gamePanel.getGameState() < GamePanel.ATTACK)) {
+			this.gamePanel.setGameState(GamePanel.CARD_TURN_IN);
+		} else if ((e.getSource() == this.attackButton) && (this.gamePanel.getGameState() < GamePanel.MOVE)) {
+			this.gamePanel.setGameState(GamePanel.ATTACK);
+		} else if (e.getSource() == this.moveButton) {
+			this.gamePanel.setGameState(GamePanel.MOVE);
+		}
+		this.gamePanel.updatePanel();
 	}
 }
