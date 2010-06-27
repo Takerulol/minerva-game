@@ -47,6 +47,7 @@ import de.hochschule.bremen.minerva.exceptions.NotEnoughPlayersLoggedInException
 import de.hochschule.bremen.minerva.exceptions.PlayerAlreadyLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.exceptions.WorldDoesNotExistException;
+import de.hochschule.bremen.minerva.exceptions.WorldNotDefinedException;
 import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.manager.AccountManager;
 import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
@@ -92,14 +93,17 @@ public class GamePanel extends JLayeredPane {
 		} catch (DataAccessException e1) {
 		}
 		Vector<Player> players = new Vector<Player>();
-		players.add(MinervaGUI.getInstance().getPlayer());
+		//players.add(MinervaGUI.getInstance().getPlayer());
 		players.add(p1);
 		
 		try {
-			this.game = new Game(this.world,players);
+			this.game = new Game(this.world, players);
 		} catch (NoPlayerLoggedInException e) {
 			e.printStackTrace();
 		} catch (NotEnoughPlayersLoggedInException e) {
+			e.printStackTrace();
+		} catch (WorldNotDefinedException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -190,9 +194,9 @@ public class GamePanel extends JLayeredPane {
 	 */
 	public void updatePanel() {
 		//TODO:implementation
-		if (this.currentTurn.getCurrentPlayer() != MinervaGUI.getInstance().getPlayer()) {
+		/*if (this.currentTurn.getCurrentPlayer() != MinervaGUI.getInstance().getPlayer()) {
 			//TODO:make buttons unavailable
-		}
+		}*/
 		this.repaint();
 		this.updateUI();
 	}

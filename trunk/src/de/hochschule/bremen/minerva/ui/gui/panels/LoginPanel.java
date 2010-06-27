@@ -185,6 +185,8 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 			} catch (PlayerAlreadyLoggedInException e) {
 				// Nothing to do. Everything is fine. Recycle user object.
 				// The buddy is already logged in. Have a nice day dude ...
+				// Anyway, we have to inform the user ...
+				MMessageBox.show(e.getMessage());
 			} catch (WrongPasswordException e) {
 				MMessageBox.show(e.getMessage());
 			} catch (PlayerDoesNotExistException e) {
@@ -195,22 +197,20 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 			}
 
 			if (player.isLoggedIn()) {
-				
 				// Try to add a new player to the game.
 				try {
 					Game game = SessionManager.get(MinervaGUI.getSessionId());
-					
+
 					if (game.getPlayerCount() == 0) {
 						player.setMaster(true);
 					}
+
 					game.addPlayer(player);
+
+					MinervaGUI.getInstance().changePanel(new GameInitPanel());
 				} catch (GameAlreadyStartedException e) {
 					MMessageBox.show(e.getMessage());
 				}
-
-				//GamePanel gip = new GamePanel();
-				GameInitPanel gip = new GameInitPanel(player);
-				MinervaGUI.getInstance().changePanel(gip);
 			}
 
 			LoginPanel.this.setStatusText(null);
