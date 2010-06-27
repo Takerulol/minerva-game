@@ -260,9 +260,11 @@ public class RegistrationPanel extends JLayeredPane implements TextResources {
 	 */
 	private boolean isEmailValid(String email) {
 		// TODO: Fill with regexpression
-		String regex = "";
+		String regex = "[a-z]";
 
-		return Pattern.matches(regex, email);
+		//return Pattern.matches(regex, email);
+		
+		return true;
 	}
 
 	/**
