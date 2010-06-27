@@ -61,6 +61,9 @@ public interface TextResources {
 	public static final String REGISTRATION_PASSWORD_RETYPED_INVALID = "Das erneut eingegebene Passwort stimmt nicht mit dem ursprünglichen Passwort überein.";
 	public static final String REGISTRATION_ACCOUNT_CREATED          = "Account erstellt ...";
 
+	// GameInitPanel
+	public static final String GAME_INIT_PANEL_BUTTON_START_GAME = "Spiel starten ...";
+	
 	// PlayerInitPanel
 	public static final String PLAYER_INIT_PANEL_BUTTON_ADD_PLAYER = "Spieler hinzufügen";
 	

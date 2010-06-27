@@ -32,6 +32,7 @@ package de.hochschule.bremen.minerva.ui.gui.panels;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -258,24 +259,10 @@ public class RegistrationPanel extends JLayeredPane implements TextResources {
 	 * 
 	 */
 	private boolean isEmailValid(String email) {
-		boolean valid = false;
-		/* TODO: 
-			Im Catch-Teil fehlt die Exception Implementierung?!
-			Bei der if-Abfrage fehlt noch der reguläre Ausdruck [a-z A-Z]?!
-		*/
-		
-		try {
-			email = this.getEmail();
-			if (!email.contains(" ") && email.contains("@") && email.contains(".com") || email.contains(".de")){
-				valid = Boolean.TRUE;
-			} else {
-				valid = Boolean.FALSE;
-			}
-		} catch (Exception e) {
-			
-		}
-		
-		return valid;
+		// TODO: Fill with regexpression
+		String regex = "";
+
+		return Pattern.matches(regex, email);
 	}
 
 	/**
@@ -325,7 +312,7 @@ public class RegistrationPanel extends JLayeredPane implements TextResources {
 			}
 		});
 		
-		//back button
+		// back button
 		this.backButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
