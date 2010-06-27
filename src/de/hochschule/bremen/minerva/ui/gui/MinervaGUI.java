@@ -38,12 +38,13 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import de.hochschule.bremen.minerva.core.Game;
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotReadableException;
 import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
+import de.hochschule.bremen.minerva.manager.SessionManager;
 import de.hochschule.bremen.minerva.ui.UserInterface;
 import de.hochschule.bremen.minerva.ui.gui.panels.*;
-import de.hochschule.bremen.minerva.vo.Player;
 
 /**
  * DOCME
@@ -53,23 +54,23 @@ import de.hochschule.bremen.minerva.vo.Player;
  *
  */
 public class MinervaGUI extends JFrame implements UserInterface {
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 8038646974358166493L;
-	
+
+	private static String GAME_SESSION_ID = null;
+
 	public static final Dimension WINDOW_SIZE = new Dimension(1000, 700);
-	private final int INTRO_DELAY = 2000;  
+
+	private final int INTRO_DELAY = 500;  
 	
 	private JLayeredPane currentPanel;
-	private Player player = new Player();
-	private static MinervaGUI instance = null;
+
+	private static MinervaGUI instance = null;	
+
 	
-
-
 	/**
 	 * Sets the GUI instance
+	 * 
 	 */
 	public MinervaGUI() { 
 		MinervaGUI.instance = this;
@@ -77,18 +78,18 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	
 	/**
 	 * Gets an instance if the GUI already initialized
+	 * 
 	 * @return GUI instance
+	 * 
 	 */
 	public static MinervaGUI getInstance() {
 		return MinervaGUI.instance;
 	}
-	
+
 	/**
 	 * 
 	 */
 	public void run() {
-		
-		
 		try {
 			ApplicationConfigurationManager.setup();
 		} catch (AppConfigurationNotFoundException e) {
@@ -110,9 +111,12 @@ public class MinervaGUI extends JFrame implements UserInterface {
 		this.currentPanel = new StartPanel();
 		this.setContentPane(this.currentPanel);
 		this.currentPanel.updateUI();
-		
+
+		// create game for new session id.
+		MinervaGUI.setSessionId(SessionManager.set(new Game()));
+
 		//login screen after 5 seconds
-		Timer timer = new Timer(this.INTRO_DELAY,new ActionListener() {
+		Timer timer = new Timer(this.INTRO_DELAY, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() instanceof Timer) {
 					MinervaGUI.this.changePanel(new LoginPanel());
@@ -120,9 +124,10 @@ public class MinervaGUI extends JFrame implements UserInterface {
 				}
 			}
 		});
+
 		timer.start();
-		
 		this.validate();
+
 		//packs frame to the size of its panel
 		this.pack();
 		
@@ -156,23 +161,22 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	}
 
 	/**
-	 * DOCME
+	 * Returns the game session id for this gui instance.
 	 * 
-	 * @return
+	 * @return String The unique game session instance.
 	 * 
 	 */
-	public Player getPlayer() {
-		return this.player;
+	public static String getSessionId() {
+		return MinervaGUI.GAME_SESSION_ID;
 	}
 
 	/**
-	 * DOCME
+	 * Returns the game session id.
 	 * 
-	 * @param
+	 * @param sessionID The unique session id.
 	 * 
 	 */
-	public void setPlayer(Player player) {
-		this.player = player;
+	public static void setSessionId(String sessionID) {
+		MinervaGUI.GAME_SESSION_ID = sessionID;
 	}
-	
 }

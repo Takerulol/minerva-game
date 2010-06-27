@@ -30,13 +30,18 @@
 
 package de.hochschule.bremen.minerva.ui.gui.panels.subpanels;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
+import de.hochschule.bremen.minerva.manager.SessionManager;
+import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MButton;
 import de.hochschule.bremen.minerva.ui.gui.controls.MPlayerIcon;
+import de.hochschule.bremen.minerva.ui.gui.panels.LoginPanel;
 import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
 import de.hochschule.bremen.minerva.vo.Player;
 
@@ -50,8 +55,6 @@ import de.hochschule.bremen.minerva.vo.Player;
 public class PlayerInitPanel extends JPanel implements TextResources {
 
 	private static final long serialVersionUID = -344922633298919424L;
-
-	private Vector<Player> players = new Vector<Player>();
 	
 	private MButton buttonAddPlayer;
 	
@@ -60,30 +63,29 @@ public class PlayerInitPanel extends JPanel implements TextResources {
 	 * 
 	 * @param playerIcons
 	 */
-	public PlayerInitPanel(Vector<Player> players) {
-		this.players = players;
+	public PlayerInitPanel() {
+		Vector<Player> players = SessionManager.get(MinervaGUI.getSessionId()).getPlayer();
 
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		this.setOpaque(false);
 
 		this.buttonAddPlayer = new MButton(PLAYER_INIT_PANEL_BUTTON_ADD_PLAYER);
 		
-		for (Player player : this.players) {
+		for (Player player : players) {
 			this.add(new MPlayerIcon(player));
 		}
 		
 		this.add(this.buttonAddPlayer);
+		this.addListeners();
 	}
 	
-	/**
-	 * Adds a new player to this panel.
-	 * 
-	 * @param player The addable player.
-	 * 
-	 */
-	public void add(Player player) {
-		this.players.add(player);
-		
-		this.add(new MPlayerIcon(player));
+	private void addListeners() {
+		// Handling the login event if the user pressed on the login button. 
+		this.buttonAddPlayer.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MinervaGUI.getInstance().changePanel(new LoginPanel());
+			}
+		});
 	}
 }

@@ -40,10 +40,13 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
 
+import de.hochschule.bremen.minerva.core.Game;
+import de.hochschule.bremen.minerva.exceptions.GameAlreadyStartedException;
 import de.hochschule.bremen.minerva.exceptions.PlayerAlreadyLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.manager.AccountManager;
+import de.hochschule.bremen.minerva.manager.SessionManager;
 import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MButton;
@@ -92,18 +95,15 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 		this.username = new MTextField();
 		this.username.setBounds(614, 212, 244, 25);
 		this.username.setOpaque(true);
-this.username.setText("akoenig");
 		
 		//password field
 		this.password = new MPasswordField();
 		this.password.setBounds(614, 281, 244, 25);
 		this.password.setOpaque(true);
-this.password.setText("akoenig");
 
 		//login button
 		this.loginButton = new MButton(TextResources.LOGIN_PANEL_BUTTON);
 
-		
 		Rectangle buttonRectangle = new Rectangle();
 		buttonRectangle.height = (int)this.loginButton.getPreferredSize().getHeight();
 		buttonRectangle.width = (int)this.loginButton.getPreferredSize().getWidth();
@@ -195,9 +195,19 @@ this.password.setText("akoenig");
 			}
 
 			if (player.isLoggedIn()) {
-				//TODO: needs to be changed back after the prototype
-				MinervaGUI.getInstance().setPlayer(player);
 				
+				// Try to add a new player to the game.
+				try {
+					Game game = SessionManager.get(MinervaGUI.getSessionId());
+					
+					if (game.getPlayerCount() == 0) {
+						player.setMaster(true);
+					}
+					game.addPlayer(player);
+				} catch (GameAlreadyStartedException e) {
+					MMessageBox.show(e.getMessage());
+				}
+
 				//GamePanel gip = new GamePanel();
 				GameInitPanel gip = new GameInitPanel(player);
 				MinervaGUI.getInstance().changePanel(gip);

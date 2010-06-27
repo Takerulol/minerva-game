@@ -30,17 +30,19 @@
 
 package de.hochschule.bremen.minerva.ui.gui.panels.subpanels;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import de.hochschule.bremen.minerva.ui.gui.controls.MButton;
+import net.miginfocom.swing.MigLayout;
+
 import de.hochschule.bremen.minerva.ui.gui.controls.MControl;
 import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
 import de.hochschule.bremen.minerva.vo.Player;
@@ -59,10 +61,16 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 
 	private static final Color FONT_COLOR_DEFAULT = new Color(139, 140, 142);
 	
-	private JLabel introduction;
+	private JComboBox worldComboBox; 
+
+	private Vector<World> worlds = new Vector<World>();
 	
-	private JComboBox worldSelector; 
-	
+	private JLabel currentWorldThumbnail = new JLabel();
+	private JLabel currentWorldName = new JLabel();
+	private JLabel currentWorldDescription = new JLabel();
+	private JLabel currentWorldVersion = new JLabel();
+	private JLabel currentWorldAuthor = new JLabel();
+
 	/**
 	 * DOCME
 	 * 
@@ -70,55 +78,95 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 	 * 
 	 */
 	public WorldInitPanel(Player gamemaster, Vector<World> worlds) {
-
-		this.setLayout(new BorderLayout(20, 20));
+		this.worlds = worlds;
+		
+		// - initialize miglayout manager
+		this.setBorder(BorderFactory.createEmptyBorder());
+		this.setLayout(new MigLayout("fillx", "[]10[]"));
 		this.setOpaque(false);
 		
-		// introduction
-		this.introduction = new JLabel();
-		this.introduction.setText(WORLD_INIT_PANEL_INTRODUCTION.replace("{gm}", gamemaster.getFirstName()));
-		this.introduction.setFont(FONT);
-		this.introduction.setForeground(FONT_COLOR_DEFAULT);
-		this.add(this.introduction, BorderLayout.NORTH);
-
+		// - introduction
+		JLabel introduction = new JLabel();
+		introduction.setText(WORLD_INIT_PANEL_INTRODUCTION.replace("{gm}", gamemaster.getFirstName()));
+		introduction.setFont(FONT);
+		introduction.setForeground(FONT_COLOR_DEFAULT);
+		this.add(introduction, "span, width ::300");
+		
+		// - world selector
 		JLabel selectorLabel = new JLabel();
 		selectorLabel.setText(WORLD_INIT_PANEL_SELECTION);
 		selectorLabel.setFont(FONT);
 		selectorLabel.setForeground(FONT_COLOR_DEFAULT);
-		this.add(selectorLabel, BorderLayout.WEST);
+		this.add(selectorLabel, "gaptop 30");
 		
-		this.worldSelector = new JComboBox();
-		this.worldSelector.setFont(FONT);
-		this.worldSelector.setBounds(0, 0, (int)this.worldSelector.getPreferredSize().getWidth(), (int)this.worldSelector.getPreferredSize().getHeight());
-		
-		for (World world : worlds) {
-			this.worldSelector.addItem(world.getName());
+		this.worldComboBox = new JComboBox();
+		this.worldComboBox.setFont(FONT);
+		for (World world : this.worlds) {
+			this.worldComboBox.addItem(world.getName());
 		}
-
-		this.add(this.worldSelector, BorderLayout.CENTER);
-
-		JPanel worldInfo = new JPanel();
-		worldInfo.setBorder(BorderFactory.createLineBorder(new Color(35, 36, 40), 1));
-		worldInfo.setBackground(new Color(14, 15, 16));
-		worldInfo.setOpaque(false);
-		worldInfo.setLayout(new BorderLayout(20, 20));
-		worldInfo.add(new JLabel("Thumbnail"), BorderLayout.WEST);
+		this.add(this.worldComboBox, "wrap 30");
 		
-		JPanel worldDetails = new JPanel();
-		worldDetails.setOpaque(false);
-		worldDetails.setLayout(new BoxLayout(worldDetails, BoxLayout.PAGE_AXIS));
+		// - world info
+		this.currentWorldThumbnail.setText("ICO");
+		this.add(this.currentWorldThumbnail, "span 1 5, gapright 10");
 		
-		worldDetails.add(new JLabel("Title"));
-		worldDetails.add(new JLabel("<html>BeschreibungstextBeschreibungstextBeschreibungstextBeschreibungstextBeschreibungstext</html>"));
-		worldDetails.add(new JLabel("Version: 1.0"));
-		worldDetails.add(new JLabel("Autoren: ..."));
+		this.currentWorldName.setFont(new Font(FONT.getFamily(), Font.BOLD, FONT.getSize()));
+		this.currentWorldName.setForeground(Color.WHITE);
+		this.add(this.currentWorldName, "gaptop 20, wrap 5");
 		
-		worldInfo.add(worldDetails, BorderLayout.CENTER);
+		this.currentWorldDescription.setFont(FONT);
+		this.add(this.currentWorldDescription, "width ::200, wrap 20");
+		
+		JLabel worldVersionLabel = new JLabel(WORLD_INIT_PANEL_VERSION);
+		worldVersionLabel.setFont(FONT);
+		this.add(worldVersionLabel);
 
-		MButton buttonStartGame = new MButton("Spiel starten ...");
-		worldInfo.add(buttonStartGame, BorderLayout.SOUTH);
-		
-		this.add(worldInfo, BorderLayout.SOUTH);
+		this.currentWorldVersion.setFont(FONT);
+		this.add(this.currentWorldVersion, "span, wrap 10");
 
+		JLabel worldAuthorLabel = new JLabel(WORLD_INIT_PANEL_AUTHOR);
+		worldAuthorLabel .setFont(FONT);
+		this.add(worldAuthorLabel );
+
+		this.currentWorldAuthor.setFont(FONT);
+		this.add(this.currentWorldAuthor, "span, wrap 5");
+
+		this.addListeners();
+		
+		this.fillWorldInfo();
+	}
+	
+	/**
+	 * Returns the selected world object.
+	 * 
+	 * @return The selected world object.
+	 * 
+	 */
+	public World getSelectedWorld() {
+		return this.worlds.get(this.worldComboBox.getSelectedIndex());
+	}
+	
+	/**
+	 * Fill the world info fields with the values
+	 * defined by the selected world.
+	 * 
+	 */
+	private void fillWorldInfo() {
+		World selectedWorld = this.getSelectedWorld();
+		
+		this.currentWorldName.setText(selectedWorld.getName());
+		this.currentWorldDescription.setText(selectedWorld.getDescription());
+		this.currentWorldVersion.setText(selectedWorld.getVersion());
+		this.currentWorldAuthor.setText(selectedWorld.getAuthor());
+	}
+
+	private void addListeners() {
+		this.worldComboBox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				WorldInitPanel.this.fillWorldInfo();
+			}
+		});
 	}
 }
