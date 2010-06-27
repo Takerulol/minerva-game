@@ -88,11 +88,6 @@ public class Game {
 	 *  
 	 */
 	public Game(World world, Vector<Player> players) throws NoPlayerLoggedInException, NotEnoughPlayersLoggedInException, WorldNotDefinedException {
-		if (players.size() == 0) {
-			throw new NoPlayerLoggedInException();
-		} else if (players.size() == 1) {
-
-		}
 		this.setWorld(world);
 		this.setPlayer(players);
 		
@@ -191,18 +186,42 @@ public class Game {
 	}
 
 	/**
+	 * Wrapper method for returning the player count.
+	 * @return
+	 */
+	public int getPlayerCount() {
+		return this.players.size();
+	}
+	
+	/**
 	 * Add a new player to a game that is not running.
 	 * 
 	 * @param player The player to add.
 	 * @throws GameAlreadyStartedException Not able to add a new player to a already running game session.
 	 * 
 	 */
-	public void add(Player player) throws GameAlreadyStartedException {
+	public void addPlayer(Player player) throws GameAlreadyStartedException {
 		if (!this.hasStarted()) {
 			this.players.add(player);
 		} else {
 			throw new GameAlreadyStartedException(player);
 		}
+	}
+
+	/**
+	 * Returns the game master player.
+	 * 
+	 * @return The game master player.
+	 * 
+	 */
+	public Player getMaster() {
+		for (Player player : this.players) {
+			if (player.isMaster()) {
+				return player;
+			}
+		}
+		
+		return null;
 	}
 
 	/**
