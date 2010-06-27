@@ -36,7 +36,6 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
@@ -46,30 +45,21 @@ import de.hochschule.bremen.minerva.core.Turn;
 import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
 import de.hochschule.bremen.minerva.exceptions.CountryOwnerException;
 import de.hochschule.bremen.minerva.exceptions.IsOwnCountryException;
-import de.hochschule.bremen.minerva.exceptions.NoPlayerLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughArmiesException;
-import de.hochschule.bremen.minerva.exceptions.NotEnoughPlayersLoggedInException;
-import de.hochschule.bremen.minerva.exceptions.PlayerAlreadyLoggedInException;
-import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
-import de.hochschule.bremen.minerva.exceptions.WorldDoesNotExistException;
-import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
-import de.hochschule.bremen.minerva.manager.AccountManager;
 import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
-import de.hochschule.bremen.minerva.manager.WorldManager;
-import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.manager.SessionManager;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.listener.MMouseListener;
 import de.hochschule.bremen.minerva.util.ColorTool;
 import de.hochschule.bremen.minerva.util.MapTool;
 import de.hochschule.bremen.minerva.vo.Country;
-import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.World;
 
 /**
  * Prototype of the actual game screen.
  * 
- * @version 
- * @since
+ * @version $Id$
+ * @since 1.0
  *
  */
 public class GamePanel extends JLayeredPane {
@@ -96,37 +86,6 @@ public class GamePanel extends JLayeredPane {
 	 * 
 	 */
 	private static final long serialVersionUID = -2906065533734117968L;
-
-	
-	/**
-	 * little test game: logged in user vs. akoenig on original map
-	 */
-	/*
-	private void testGame() {
-		Player p1 = new Player();
-		p1.setUsername("akoenig");
-		p1.setPassword("akoenig");
-		try {
-			AccountManager.getInstance().login(p1);
-		} catch (PlayerAlreadyLoggedInException e1) {
-		} catch (WrongPasswordException e1) {
-		} catch (PlayerDoesNotExistException e1) {
-		} catch (DataAccessException e1) {
-		}
-		Vector<Player> players = new Vector<Player>();
-		players.add(MinervaGUI.getInstance().getPlayer());
-		players.add(p1);
-		
-		try {
-			this.game = new Game(this.world,players);
-		} catch (NoPlayerLoggedInException e) {
-			e.printStackTrace();
-		} catch (NotEnoughPlayersLoggedInException e) {
-			e.printStackTrace();
-		}
-		
-	}
-	*/
 	
 	/**
 	 * Contructor initializing screen.
@@ -136,29 +95,18 @@ public class GamePanel extends JLayeredPane {
 		this.setOpaque(true);
 		//this.setBackground(Color.LIGHT_GRAY);
 		
-		Vector<World> worlds;
-		try {
-			worlds = WorldManager.getInstance().getList(true);
-			try {
-				world = WorldManager.getInstance().get(worlds.get(3));
-			} catch (WorldDoesNotExistException e1) {
-			} catch (DataAccessException e1) {
-				e1.printStackTrace();
-			}
-		} catch (DataAccessException e1) {
-			e1.printStackTrace();
-		}
+		this.game = SessionManager.get(MinervaGUI.getSessionId());
 		
 		String filepath;
 		
 		//lower map
-		filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + world.getMapUnderlay();
+		filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + this.game.getWorld().getMapUnderlay();
 		this.mapUnderlay = new MapPanel(filepath);
 		this.mapUnderlay.setBounds(0,0,500,500);
 		
 		
 		//upper map
-		filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + world.getMap();
+		filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + this.game.getWorld().getMap();
 		this.mapOverlay = new MapPanel(filepath);
 		this.mapOverlay.setBounds(0,0,500,500);
 		
@@ -169,19 +117,18 @@ public class GamePanel extends JLayeredPane {
 		//adds mouse listener to the upper map
 		this.addMapListener();
 		
-		HashMap<Country, Point> countryAnchors = MapTool.getCountryAnchors(this.mapOverlay.getMapImage(), mapUnderlay.getMapImage(), this.world);
+		HashMap<Country, Point> countryAnchors = MapTool.getCountryAnchors(this.mapOverlay.getMapImage(), mapUnderlay.getMapImage(), this.game.getWorld());
 
-		for (Country country : this.world.getCountries()) {
+		for (Country country : this.game.getWorld().getCountries()) {
 			ArmyCountIcon aci = new ArmyCountIcon(Color.RED, countryAnchors.get(country));
 			this.armyIcons.put(country,aci);
 			this.add(aci,100);
 		}
 		
-		
-		//this.testGame();
+		//initializing the first turn
 		this.currentTurn = this.game.nextTurn();
 		
-		slidePanel.getControlBar().setCurrentPlayerLabel(this.currentTurn.getCurrentPlayer().getUsername());
+		slidePanel.getControlBar().setCurrentPlayerLabel(this.currentTurn.getCurrentPlayer());
 		this.repaint();
 		
 		this.refreshArmyCounts();
@@ -204,7 +151,7 @@ public class GamePanel extends JLayeredPane {
 				GamePanel.this.unmarkAll();
 				
 				Color color = ColorTool.fromInteger(GamePanel.this.mapUnderlay.getMapImage().getRGB(e.getX(), e.getY()));
-				Country country = world.getCountry(color);
+				Country country = GamePanel.this.game.getWorld().getCountry(color);
 				
 //				String hexcode = ColorTool.toHexCode(color);
 //				GamePanel.this.armyIcons.get(country).mark(Color.RED);
@@ -347,12 +294,9 @@ public class GamePanel extends JLayeredPane {
 		
 		this.refreshArmyCounts();
 		this.slidePanel.getControlBar().updateButtons();
-		this.slidePanel.getControlBar().setCurrentPlayerLabel(this.currentTurn.getCurrentPlayer().getUsername());
+		this.slidePanel.getControlBar().setCurrentPlayerLabel(this.currentTurn.getCurrentPlayer());
 		this.slidePanel.getControlBar().setAllocatableArmiesLabel(" "+this.currentTurn.getAllocatableArmyCount()+" ");
-		//TODO:implementation
-		/*if (this.currentTurn.getCurrentPlayer() != MinervaGUI.getInstance().getPlayer()) {
-			//TODO:make buttons unavailable
-		}*/
+		
 		this.repaint();
 		this.updateUI();
 	}

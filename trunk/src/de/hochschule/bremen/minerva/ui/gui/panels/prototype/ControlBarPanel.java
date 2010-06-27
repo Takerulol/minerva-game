@@ -39,6 +39,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import de.hochschule.bremen.minerva.vo.Player;
+
 /**
  * Panel sliced
  *
@@ -154,8 +156,9 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 		return this.relativeHeight;	
 	}
 	
-	public void setCurrentPlayerLabel(String currentPlayer) {
-		this.currentPlayerLabel.setText(" "+currentPlayer+" ");
+	public void setCurrentPlayerLabel(Player currentPlayer) {
+		this.currentPlayerLabel.setText(" "+currentPlayer.getUsername()+" ");
+		this.currentPlayerLabel.setForeground(currentPlayer.getColor());
 	}
 	
 	public void addListeners(GamePanel gamePanel) {
