@@ -148,7 +148,7 @@ public class Game {
 	 * 
 	 * @param world
 	 */
-	private void setWorld(World world) {
+	public void setWorld(World world) {
 		this.world = world;
 	}
 	
@@ -201,7 +201,7 @@ public class Game {
 	 * 
 	 */
 	public void addPlayer(Player player) throws GameAlreadyStartedException {
-		if (!this.hasStarted()) {
+		if (!this.isRunning()) {
 			if (!this.isPlayerInGame(player)) {
 				this.players.add(player);
 			}
@@ -298,7 +298,7 @@ public class Game {
 	 * @return boolean
 	 * 
 	 */
-	public boolean hasStarted() {
+	public boolean isRunning() {
 		return this.started;
 	}
 
