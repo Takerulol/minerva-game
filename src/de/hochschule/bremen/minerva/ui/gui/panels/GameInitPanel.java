@@ -113,7 +113,7 @@ public class GameInitPanel extends JLayeredPane {
 		}
 		
 		// TODO: Pass the gamemaster
-		this.worldInitPanel = new WorldInitPanel(players.get(1), worlds);
+		this.worldInitPanel = new WorldInitPanel(players.get(0), worlds);
 		this.worldInitPanel.setOpaque(false);
 		this.worldInitPanel.setBounds(590, 160, 300, 300);
 		this.worldInitPanel.setBorder(BorderFactory.createEmptyBorder());
