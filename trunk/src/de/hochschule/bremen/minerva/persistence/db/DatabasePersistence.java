@@ -75,5 +75,4 @@ public class DatabasePersistence implements Persistence {
 		}
 		return null;
 	}
-	
 }
