@@ -69,13 +69,20 @@ import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.ui.UserInterface;
 import de.hochschule.bremen.minerva.util.Die;
 
+/**
+ * Represents the Minerva "command line user interface".
+ *
+ * @since 1.0
+ * @version $Id$
+ *
+ */
 public class MinervaCUI implements UserInterface {
 
 	private Game game = null;
 	private BufferedReader console = null;
 
 	/**
-	 * DOCME
+	 * Creating the cui.
 	 * 
 	 */
 	public MinervaCUI() {
@@ -84,8 +91,8 @@ public class MinervaCUI implements UserInterface {
 	}
 
 	/**
-	 * DOCME
-	 * 
+	 * The main run method.
+	 *
 	 */
 	public void run() {
 		
@@ -254,9 +261,10 @@ public class MinervaCUI implements UserInterface {
 	}
 
 	/**
-	 * DOCME
-	 * 
+	 * Player initialization.
+	 *
 	 * @param players
+	 *
 	 */
 	private void initPlayers(Vector<Player> players) {
 		this.outln(true, "### Initialisierung der Spieler  ###");
@@ -311,9 +319,10 @@ public class MinervaCUI implements UserInterface {
 	}
 
 	/**
-	 * DOCME
-	 * 
-	 * @return
+	 * Player login.
+	 *
+	 * @return The logged in player value object.
+	 *
 	 */
 	private Player loginPlayer() {
 		this.outln(true, "#### Login ####");
@@ -348,9 +357,8 @@ public class MinervaCUI implements UserInterface {
 	}
 	
 	/**
-	 * DOCME
-	 * 
-	 * @return
+	 * Create a new player account.
+	 *
 	 */
 	private void registerPlayer() {
 		this.outln(true, "#### Registrierung ####");
@@ -392,8 +400,9 @@ public class MinervaCUI implements UserInterface {
 	}
 
 	/**
-	 * DOCME
-	 * @throws DataAccessException 
+	 * World initialization. "On which map you would like to play?"
+	 * 
+	 * @throws DataAccessException Common persistence exception.
 	 * @throws WorldDoesNotExistException 
 	 * 
 	 */
@@ -418,9 +427,10 @@ public class MinervaCUI implements UserInterface {
 	}
 
 	/**
-	 * DOCME
+	 * Move army part.
 	 * 
-	 * @param turn
+	 * @param turn The current turn.
+	 *
 	 */
 	private void moveArmies(Turn turn) {
 		boolean answer;
@@ -477,9 +487,10 @@ public class MinervaCUI implements UserInterface {
 	}
 
 	/**
-	 * DOCME
+	 * The main attack method.
 	 * 
-	 * @param turn
+	 * @param turn The current turn.
+	 *
 	 */
 	private void attack(Turn turn) {
 		AttackResult result = null;
@@ -559,9 +570,10 @@ public class MinervaCUI implements UserInterface {
 	}
 
 	/**
-	 * DOCME
+	 * A new turn has started. Allocate new armies!
 	 * 
-	 * @param turn
+	 * @param turn The current turn.
+	 *
 	 */
 	private void allocateNewArmies(Turn turn) {
 		int armyCount = turn.getAllocatableArmyCount();
@@ -593,7 +605,13 @@ public class MinervaCUI implements UserInterface {
 			}
 		}
 	}
-	
+
+	/**
+	 * Release cards.
+	 *  
+	 * @param turn The current turn.
+	 *
+	 */
 	private void turnCardsIn(Turn turn) {
 		boolean turnIn = true;
 		int oldArmyCount = turn.getAllocatableArmyCount();
@@ -688,27 +706,30 @@ public class MinervaCUI implements UserInterface {
 	}
 
 	/**
-	 * DOCME
+	 * Console read integer.
 	 * 
-	 * @return
+	 * @return The read integer.
+	 * 
 	 */
 	private int readInt() {
 		return Integer.parseInt(this.read());
 	}
 
 	/**
-	 * DOCME
+	 * Console read string.
 	 * 
-	 * @return
+	 * @return The read string.
+	 *
 	 */
 	private String readString() {
 		return this.read();
 	}
 
 	/**
-	 * DOCME
+	 * Console read boolean.
 	 * 
-	 * @return
+	 * @return The read boolean.
+	 *
 	 */
 	private boolean readBoolean() {
 		String answer = this.read();
@@ -739,7 +760,7 @@ public class MinervaCUI implements UserInterface {
 	}
 	
 	/**
-	 * DOCME
+	 * Console output.
 	 * 
 	 * @param message
 	 */
@@ -748,27 +769,29 @@ public class MinervaCUI implements UserInterface {
 	}
 
 	/**
-	 * DOCME
-	 * 
+	 * Console line output.
+	 *
 	 * @param message
+	 *
 	 */
 	private void outln(String message) {
 		this.out(message + "\n");
 	}
 
 	/**
-	 * DOCME
-	 * 
+	 * Console new line output.
+	 *
 	 */
 	private void outln() {
 		this.outln("");
 	}
 	
 	/**
-	 * DOCME
+	 * Console output.
 	 * 
-	 * @param gap
+	 * @param gap A new line before the message?
 	 * @param message
+	 *
 	 */
 	private void outln(boolean gap, String message) {
 		if (gap) {
@@ -779,9 +802,10 @@ public class MinervaCUI implements UserInterface {
 	}
 	
 	/**
-	 * DOCME
-	 * 
+	 * Console error output.
+	 *
 	 * @param message
+	 *
 	 */
 	private void error(String message) {
 		this.outln("[ERROR]: "+message);
@@ -789,7 +813,8 @@ public class MinervaCUI implements UserInterface {
 	}
 	
 	/**
-	 * DOCME
+	 * Print the worlds country list.
+	 * 
 	 */
 	private void printCountryList() {
 		this.outln("\n-- Länderinformationen:");
@@ -809,7 +834,7 @@ public class MinervaCUI implements UserInterface {
 	}
 
 	/**
-	 * DOCME 
+	 * Print registered users. 
 	 * 
 	 */
 	private void printRegisteredUsers(boolean loggedInUsers) {
@@ -830,7 +855,7 @@ public class MinervaCUI implements UserInterface {
 	}
 
 	/**
-	 * DOCME
+	 * Print available worlds.
 	 * 
 	 */
 	private void printWorldList() {
@@ -846,8 +871,10 @@ public class MinervaCUI implements UserInterface {
 	}
 	
 	/**
-	 * DOCME
-	 * @param turn
+	 * Print available cards.
+	 *
+	 * @param turn The current turn.
+	 *
 	 */
 	private void printCardList(Turn turn) {
 		this.outln();
@@ -870,7 +897,7 @@ public class MinervaCUI implements UserInterface {
 	}
 	
 	/**
-	 * DOCME
+	 * Prints the welcome message.
 	 * 
 	 */
 	private void printWelcome() {
