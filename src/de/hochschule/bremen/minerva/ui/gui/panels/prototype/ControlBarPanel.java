@@ -120,7 +120,7 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 		this.lowerHalf.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
 		
 		this.MissionText = new JTextArea();
-		this.MissionText.setText("nix");
+		this.MissionText.setText("Mission:");
 		this.MissionText.setEditable(false);
 		this.MissionText.setPreferredSize(new Dimension(200,50));
 		
