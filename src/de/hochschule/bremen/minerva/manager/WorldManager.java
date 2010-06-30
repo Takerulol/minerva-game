@@ -294,7 +294,7 @@ public class WorldManager {
 	 *  
 	 */
 	private void loadDependencies(World world) throws DataAccessException {
-		Vector<Country> countries = CountryService.getInstance().loadAll(world);
+		Vector<Country> countries = CountryService.getInstance().findAll(world);
 		
 		for (Country country : countries) {
 			country.setContinent(ContinentService.getInstance().find(country.getContinent().getId()));
