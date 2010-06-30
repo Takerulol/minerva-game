@@ -95,7 +95,7 @@ public class MSlidePanel extends JPanel {
 	}
 	
 	public int getRelativeHeight() {
-		return this.controlBar.getRelativeHeight();	
+		return (this.controlBar.getPreferredSize().height - this.controlBar.getRelativeHeight());
 	}
 
 }
