@@ -38,7 +38,13 @@ package de.hochschule.bremen.minerva.persistence;
  * 
  */
 public interface Persistence {
-	
-	public Handler createHandler(Class<?> type);
 
+	/**
+	 * Creates a persistence handler by value object class
+	 * 
+	 * @param type A value object class
+	 * @return The persistence handler.
+	 * 
+	 */
+	public Handler createHandler(Class<?> type);
 }
