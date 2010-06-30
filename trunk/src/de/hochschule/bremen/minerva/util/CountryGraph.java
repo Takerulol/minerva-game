@@ -34,40 +34,49 @@ import de.hochschule.bremen.minerva.vo.Country;
 import java.util.HashMap;
 import java.util.Vector;
 
+/**
+ * Represents a graph adt, which we use for country
+ * relationship visualization.
+ *
+ * @since 1.0
+ * @version $Id$
+ * 
+ */
 public class CountryGraph {
 	
-	/**
-	 * CountryGraph with neighbour-relations.
-	 * 
-	 */
+	// HashMap for neighbour relations.
 	private HashMap<Integer, Vector<Integer>> neighbours = new HashMap<Integer, Vector<Integer>>();
 
-
 	/**
-	 * Connects country one with country in the map. If the country doesn't exit in the map, it will be created.
+	 * Connects country one with country two.
 	 * 
-	 * @param source
-	 * @param with
+	 * @param one The country source value object.
+	 * @param two The country to connect with the first one.
+	 * 
 	 */
-	public void connect(Country source, Country with) {
+	public void connect(Country one, Country two) {
 		Vector<Integer> connections;
 
-		if (neighbours.containsKey(source.getId())) {
-			 connections = neighbours.get(source.getId());
+		if (neighbours.containsKey(one.getId())) {
+			 connections = neighbours.get(one.getId());
 		} else {
 			connections = new Vector<Integer>();
 		}
 
-		connections.add(with.getId());
-		neighbours.put(source.getId(), connections);
+		connections.add(two.getId());
+		neighbours.put(one.getId(), connections);
 	}
 	
 	/**
-	 * Compares two countries for a neighbour-connection.
+	 * Checks if two countries are neighbours or not.
+	 * In technical words: Is country one connected with
+	 * country two.
 	 * 
 	 * @param one
-	 * @param two
-	 * @return
+	 * @param two 
+	 * 
+	 * @return boolean
+	 * 
 	 */
 	public boolean neighbours(Country one, Country two) {
 		if (neighbours.get(one.getId()).contains(two.getId())) {
@@ -77,11 +86,12 @@ public class CountryGraph {
 	}
 
 	/**
-	 * Returns a integer vector with the neighbour ids
-	 * by a given country.
+	 * Returns a integer vector with the
+	 * neighbour id's by a given country.
 	 * 
 	 * @param byCountryId
-	 * @return
+	 * @return A vector containing all neighbour id's from the given source country.
+	 * 
 	 */
 	public Vector<Integer> getNeighbours(int byCountryId) {
 		return this.neighbours.get(byCountryId);
@@ -90,8 +100,9 @@ public class CountryGraph {
 	/**
 	 * Has a specific country neighbours?
 	 * 
-	 * @param countryId
-	 * @return
+	 * @param countryId The id from the checkable country
+	 * @return boolean
+	 * 
 	 */
 	public boolean hasNeighbours(int countryId) {
 		if (this.neighbours.get(countryId) == null) {
