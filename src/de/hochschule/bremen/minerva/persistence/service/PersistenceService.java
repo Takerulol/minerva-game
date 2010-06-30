@@ -42,22 +42,17 @@ import de.hochschule.bremen.minerva.vo.ValueObject;
 public abstract class PersistenceService {
 
 	// PersistenceHandler - We use a database for persistence.
-	// If we want to switch to a file based storage - here is the place.
+	// If we want to switch to a file based storage, here is yout switcher, buddy.
 	protected static Persistence storage = new DatabasePersistence(); 
-	
-	// DOCME!!!
+
 	abstract public Vector<?> findAll() throws DataAccessException;
 
-	// DOCME!!!
 	abstract public ValueObject find(int id) throws NotFoundException, DataAccessException;
 
-	// DOCME !!!
 	abstract public ValueObject find(String name) throws NotFoundException, DataAccessException;
 
-	// DOCME!!!
 	abstract public void save(ValueObject candidate) throws ExistsException, DataAccessException;
 
-	// DOCME!!!
 	abstract public void delete(ValueObject candidate) throws DataAccessException;
 
 	/**
