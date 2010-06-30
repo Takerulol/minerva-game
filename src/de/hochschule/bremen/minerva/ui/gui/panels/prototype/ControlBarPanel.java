@@ -31,6 +31,7 @@
 package de.hochschule.bremen.minerva.ui.gui.panels.prototype;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,7 +39,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
+import de.hochschule.bremen.minerva.vo.Mission;
 import de.hochschule.bremen.minerva.vo.Player;
 
 /**
@@ -53,6 +56,7 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 	private MSlidePanel slidePanel;
 	private GamePanel gamePanel;
 	
+	//upper half
 	private JButton allocateButton;
 	private JLabel allocatableArmies;
 	private JButton cardButton;
@@ -60,6 +64,10 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 	private JButton moveButton;
 	private JButton endTurnButton;
 	
+	//lower half
+	private JTextArea MissionText;
+	
+	//slide
 	private JButton slideButton;
 	private JPanel upperHalf;
 	private JPanel lowerHalf;
@@ -109,12 +117,14 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 		
 		//lower half
 		this.lowerHalf = new JPanel();
-		this.lowerHalf.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
-		this.lowerHalf.add(new JButton("Test"));
-		this.lowerHalf.add(new JButton("Test"));
-		this.lowerHalf.add(new JButton("Test"));
-		this.lowerHalf.add(new JButton("Test"));
-		this.lowerHalf.add(new JButton("Test"));
+		this.lowerHalf.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
+		
+		this.MissionText = new JTextArea();
+		this.MissionText.setText("nix");
+		this.MissionText.setEditable(false);
+		this.MissionText.setPreferredSize(new Dimension(200,50));
+		
+		this.lowerHalf.add(this.MissionText);
 		
 		
 		
@@ -161,6 +171,14 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 		this.currentPlayerLabel.setForeground(currentPlayer.getColor());
 	}
 	
+	public void updateMissionText() {
+		for (Mission mission : this.gamePanel.getGame().getMissions()) {
+			if (mission.getOwner() == this.gamePanel.getGame().getTurns().lastElement().getCurrentPlayer()) {
+				this.MissionText.setText("Mission: \n" +mission.getDescription());
+			}
+		}
+	}
+	
 	public void addListeners(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
 		this.endTurnButton.addActionListener(this);
@@ -200,6 +218,7 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 		if (e.getSource() == this.endTurnButton) {
 			this.gamePanel.setGameState(GamePanel.ALLOCATE);
 			this.gamePanel.nextTurn();
+			this.gamePanel.unmarkAll();
 		} else if ((e.getSource() == this.allocateButton) && (this.gamePanel.getGameState() < GamePanel.CARD_TURN_IN)) {
 			this.gamePanel.setGameState(GamePanel.ALLOCATE);
 		} else if ((e.getSource() == this.cardButton) && (this.gamePanel.getGameState() < GamePanel.ATTACK)) {

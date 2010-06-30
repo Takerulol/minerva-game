@@ -296,6 +296,7 @@ public class GamePanel extends JLayeredPane {
 		this.slidePanel.getControlBar().updateButtons();
 		this.slidePanel.getControlBar().setCurrentPlayerLabel(this.currentTurn.getCurrentPlayer());
 		this.slidePanel.getControlBar().setAllocatableArmiesLabel(" "+this.currentTurn.getAllocatableArmyCount()+" ");
+		this.slidePanel.getControlBar().updateMissionText();
 		
 		this.repaint();
 		this.updateUI();
