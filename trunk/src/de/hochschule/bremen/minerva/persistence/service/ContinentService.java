@@ -38,10 +38,21 @@ import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.vo.Continent;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
+/**
+ * Provides methods for continent I/O operations, like:
+ * selecting, inserting, updating and deleting them via
+ * the persistence handlers.
+ * 
+ * @since 1.0
+ * @version $Id$
+ * 
+ */
 public class ContinentService extends PersistenceService {
 
+	// The ContinentService instance (singleton pattern)
 	private static ContinentService instance = null;
 
+	// The persistence handler
 	private Handler handler = CountryService.storage.createHandler(Continent.class);
 
 	/**
@@ -56,7 +67,8 @@ public class ContinentService extends PersistenceService {
 	 * Singleton pattern.
 	 * Static method that controls the object creation.
 	 * 
-	 * @return DOCME
+	 * @return A ContinentService instance.
+	 * 
 	 */
 	public static ContinentService getInstance() {
 		if (ContinentService.instance == null) {
@@ -66,7 +78,9 @@ public class ContinentService extends PersistenceService {
 	}
 
 	/**
-	 * DOCME
+	 * Returns all continents.
+	 * 
+	 * @return All available continent value objects.
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
@@ -76,11 +90,14 @@ public class ContinentService extends PersistenceService {
 	}
 
 	/**
-	 * DOCME
+	 * Find a continent by an given id.
 	 * 
-	 * @param name
-	 * @return
-	 * @throws DataAccessException
+	 * @param id The unique identifier.
+	 * @return The continent (if found).
+	 * 
+	 * @throws ContinentNotFoundException
+	 * @throws DataAccessException Common persistence exception.
+	 * 
 	 */
 	@Override
 	public Continent find(int id) throws ContinentNotFoundException, DataAccessException {
@@ -88,11 +105,14 @@ public class ContinentService extends PersistenceService {
 	}
 
 	/**
-	 * DOCME
+	 * Find a continent by an given name.
 	 * 
-	 * @param name
-	 * @return
-	 * @throws DataAccessException
+	 * @param name The unique name.
+	 * @return The continent (if found)
+	 * 
+	 * @throws ContinentNotFoundException
+	 * @throws DataAccessException Common persistence exception.
+	 * 
 	 */
 	public Continent find(String name) throws ContinentNotFoundException, DataAccessException {
 		return (Continent)handler.read(name);
@@ -100,7 +120,9 @@ public class ContinentService extends PersistenceService {
 	
 	
 	/**
-	 * DOCME
+	 * Saves a continent.
+	 * 
+	 * @param candidate The saveable continent value object.
 	 * 
 	 */
 	@Override
@@ -109,7 +131,9 @@ public class ContinentService extends PersistenceService {
 	}
 
 	/**
-	 * DOCME
+	 * Deletes a continent.
+	 * 
+	 * @param candidate The removable continent value object.
 	 * 
 	 */
 	@Override
