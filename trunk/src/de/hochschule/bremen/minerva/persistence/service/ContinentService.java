@@ -43,8 +43,12 @@ import de.hochschule.bremen.minerva.vo.ValueObject;
  * selecting, inserting, updating and deleting them via
  * the persistence handlers.
  * 
+ * This service is a wrapper for the underlying persistence handler. 
+ * 
  * @since 1.0
  * @version $Id$
+ * 
+ * @see ContinentHandler
  * 
  */
 public class ContinentService extends PersistenceService {
@@ -52,7 +56,7 @@ public class ContinentService extends PersistenceService {
 	// The ContinentService instance (singleton pattern)
 	private static ContinentService instance = null;
 
-	// The persistence handler
+	// The continent persistence handler
 	private Handler handler = CountryService.storage.createHandler(Continent.class);
 
 	/**
@@ -67,7 +71,7 @@ public class ContinentService extends PersistenceService {
 	 * Singleton pattern.
 	 * Static method that controls the object creation.
 	 * 
-	 * @return A ContinentService instance.
+	 * @return {@link ContinentService}
 	 * 
 	 */
 	public static ContinentService getInstance() {
@@ -81,6 +85,8 @@ public class ContinentService extends PersistenceService {
 	 * Returns all continents.
 	 * 
 	 * @return All available continent value objects.
+	 *
+	 * @throws DataAccessException Common persistence exception.
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
@@ -124,6 +130,9 @@ public class ContinentService extends PersistenceService {
 	 * 
 	 * @param candidate The saveable continent value object.
 	 * 
+	 * @throws ContinentExistsException
+	 * @throws DataAccessException Common persistence exception.
+	 *
 	 */
 	@Override
 	public void save(ValueObject candidate) throws ContinentExistsException, DataAccessException {
@@ -134,6 +143,8 @@ public class ContinentService extends PersistenceService {
 	 * Deletes a continent.
 	 * 
 	 * @param candidate The removable continent value object.
+	 * 
+	 * @throws DataAccessException Common persistence exception.
 	 * 
 	 */
 	@Override
