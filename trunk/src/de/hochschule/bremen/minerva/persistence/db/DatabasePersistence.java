@@ -53,7 +53,11 @@ import de.hochschule.bremen.minerva.persistence.db.handler.WorldHandler;
 public class DatabasePersistence implements Persistence {
 
 	/**
-	 * DOCME
+	 * Factory method, that creates the needed database
+	 * handler by an given value object class name.
+	 * 
+	 * @param type The value object class name.
+	 * @return The database persistence handler ("null" if no handler was found).
 	 * 
 	 */
 	@Override
