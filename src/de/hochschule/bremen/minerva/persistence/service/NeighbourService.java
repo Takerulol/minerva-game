@@ -39,10 +39,23 @@ import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Neighbour;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
+/**
+ * Service for requesting country neighbours and so on.
+ * 
+ * This service is a wrapper for the underlying persistence handler.
+ *  
+ * @since 1.0
+ * @version $Id$
+ * 
+ * @see NeighbourHandler
+ * 
+ */
 public class NeighbourService extends PersistenceService {
 
+	// The NeighbourService instance (singleton pattern)
 	private static NeighbourService instance = null;
 
+	// The neighbour persistence handler
 	private Handler handler = NeighbourService.storage.createHandler(Neighbour.class);
 
 	/**
@@ -56,7 +69,8 @@ public class NeighbourService extends PersistenceService {
 	 * Singleton pattern.
 	 * Static method that controls the object creation.
 	 * 
-	 * @return NeighbourService
+	 * @return {@link NeighbourService}
+	 * 
 	 */
 	public static NeighbourService getInstance() {
 		if (NeighbourService.instance == null) {
@@ -66,11 +80,13 @@ public class NeighbourService extends PersistenceService {
 	}
 
 	/**
-	 * DOCME
+	 * Loads all neighbours, which regards to the given country.
 	 * 
-	 * @param byCountry
-	 * @return
-	 * @throws DataAccessException
+	 * @param byCountry The country, which neighbours should determined.
+	 * @return A vector with the country's neighbours.
+	 * 
+	 * @throws DataAccessException Common persistence exception.
+	 * 
 	 */
 	@SuppressWarnings("unchecked")
 	public Vector<Neighbour> loadAll(Country byCountry) throws DataAccessException {
@@ -78,7 +94,25 @@ public class NeighbourService extends PersistenceService {
 	}
 
 	/**
-	 * DOCME
+	 * Finds a neighbour by an given id.
+	 * 
+	 * @param id The unique neighbour id.
+	 *
+	 * @throws NeighbourNotFoundException
+	 * @throws DataAccessException Common persistence exception.
+	 * 
+	 */
+	@Override
+	public Neighbour find(int id) throws NeighbourNotFoundException, DataAccessException {
+		return (Neighbour)handler.read(id);
+	}
+
+	/**
+	 * Saves a neighbour.
+	 * 
+	 * @param candidate The saveable neighbour.
+	 *
+	 * @throws DataAccessException Common persistence exception. 
 	 * 
 	 */
 	@Override
@@ -86,27 +120,27 @@ public class NeighbourService extends PersistenceService {
 		handler.save((Neighbour)candidate);
 	}
 
+	/**
+	 * Not implemented yet (not necessary at the moment).
+	 * This method should remove the country/neighbour-mapping.
+	 *
+	 */
 	@Override
-	public void delete(ValueObject candidate) throws DataAccessException {
-		// TODO Auto-generated method stub
-		
-	}
+	public void delete(ValueObject candidate) throws DataAccessException {}
 
+	/**
+	 * Not implemented yet (not necessary at the moment).
+	 * Use {@link CountryService#findAll()} instead (Neighbour is a Country subclass).
+	 * 
+	 */
 	@Override
-	public Neighbour find(int id) throws NeighbourNotFoundException, DataAccessException {
-		return (Neighbour)handler.read(id);
-	}
-	
-	@Override
-	public Vector<?> findAll() throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public Vector<?> findAll() throws DataAccessException {return null;}
 
+	/**
+	 * Not implemented yet (not necessary at the moment).
+	 * Use {@link CountryService#find(String)} instead (Neighbour is a Country subclass).
+	 * 
+	 */
 	@Override
-	public ValueObject find(String name) throws NotFoundException,
-			DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public ValueObject find(String name) throws NotFoundException, DataAccessException {return null;}
 }

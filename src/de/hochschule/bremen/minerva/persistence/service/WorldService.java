@@ -39,14 +39,23 @@ import de.hochschule.bremen.minerva.vo.ValueObject;
 import de.hochschule.bremen.minerva.vo.World;
 
 /**
- * DOCME
- * @author akoenig
+ * Provides methods for world I/O operations, like:
+ * selecting, inserting, updating and removing a world.
+ *
+ * This service is a wrapper for the underlying persistence handler.
+ * 
+ * @since 1.0
+ * @version $Id$
+ * 
+ * @see WorldHandler
  *
  */
 public class WorldService extends PersistenceService {
 
+	// The WorldService instance (singleton pattern)
 	private static WorldService instance = null;
 
+	// The world persistence handler
 	private Handler handler = WorldService.storage.createHandler(World.class);
 
 	/**
@@ -61,7 +70,7 @@ public class WorldService extends PersistenceService {
 	 * Singleton pattern.
 	 * Static method that controls the object creation.
 	 * 
-	 * @return DOCME
+	 * @return {@link WorldService}
 	 */
 	public static WorldService getInstance() {
 		if (WorldService.instance == null) {
@@ -71,10 +80,12 @@ public class WorldService extends PersistenceService {
 	}
 
 	/**
-	 * DOCME
+	 * Loads all worlds from the persistence layer.
 	 * 
-	 * @return
-	 * @throws DataAccessException 
+	 * @return A vector with all available worlds.
+	 * 
+	 * @throws DataAccessException Common persistence exception.
+	 * 
 	 */
 	@SuppressWarnings("unchecked")
 	public Vector<World> findAll() throws DataAccessException {
@@ -82,30 +93,41 @@ public class WorldService extends PersistenceService {
 	}
 
 	/**
-	 * DOCME
+	 * Find a world by an specific id.
 	 * 
-	 * @param id
-	 * @return
+	 * @param id The worlds id.
+	 * @return The world value object.
+	 *
+	 * @throws WorldNotFoundException
+	 * @throws DataAccessException Common persistence exception.
+	 *
 	 */
 	public World find(int id) throws WorldNotFoundException, DataAccessException {
 		return (World)handler.read(id);
 	}
 
 	/**
-	 * DOCME
+	 * Find a world by name.
 	 * 
-	 * @param name
-	 * @return
+	 * @param name The worlds name.
+	 * @return The world value object.
+	 * 
 	 * @throws WorldNotFoundException
-	 * @throws DataAccessException
+	 * @throws DataAccessException Common persistence exception.
+	 * 
 	 */
 	public World find(String name) throws WorldNotFoundException, DataAccessException {
 		return (World)handler.read(name);
 	}
 	
 	/**
-	 * DOCME
+	 * Saves the given world.
 	 * 
+	 * @param candidate The saveable world value object.
+	 * 
+	 * @throws WorldExistsException
+	 * @throws DataAccessException Common persistence exception.
+	 *
 	 */
 	@Override
 	public void save(ValueObject candidate) throws WorldExistsException, DataAccessException {
@@ -113,8 +135,12 @@ public class WorldService extends PersistenceService {
 	}
 
 	/**
-	 * DOCME
-	 * 
+	 * Deletes the given world.
+	 *
+	 * @param candidate The deletable world value object.
+	 *
+	 * @throws DataAccessException Common persistence exception.
+	 *
 	 */
 	@Override
 	public void delete(ValueObject candidate) throws DataAccessException {

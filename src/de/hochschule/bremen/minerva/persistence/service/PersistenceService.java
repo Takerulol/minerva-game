@@ -39,6 +39,14 @@ import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.persistence.file.FilebasedPersistence;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
+/**
+ * Abstract class that hold the used persistence engine
+ * and defines methods, that every persistence handler should implement.
+ * 
+ * @since 1.0
+ * @version $Id$
+ *
+ */
 public abstract class PersistenceService {
 
 	// PersistenceHandler - We use a database for persistence.

@@ -39,18 +39,30 @@ import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
 /**
- * DOCME
+ * Provides methods for player I/O operations, like:
+ * selecting, inserting, updating and removing a player.
+ * 
+ * This service is a wrapper for the underlying persistence handler.
+ * 
+ * @since 1.0
+ * @version $Id$
+ * 
+ * @see PlayerHandler
+ *
  */
 public class PlayerService extends PersistenceService {
 
+	// The PlayerService instance (singleton pattern)
 	private static PlayerService instance = null;
 
+	// The player persistence handler
 	private Handler handler = PlayerService.storage.createHandler(Player.class);
 
 	/**
 	 * Singleton pattern. It is not possible
 	 * to create a PlayerService in the common way.
 	 * So this constructor is private.
+	 * 
 	 */
 	private PlayerService() {}
 	
@@ -58,7 +70,8 @@ public class PlayerService extends PersistenceService {
 	 * Singleton pattern.
 	 * Static method that controls the object creation.
 	 * 
-	 * @return PlayerService.instance
+	 * @return {@link PlayerService}
+	 * 
 	 */
 	public static PlayerService getInstance() {
 		if (PlayerService.instance == null) {
@@ -66,43 +79,14 @@ public class PlayerService extends PersistenceService {
 		}
 		return PlayerService.instance;
 	}
-	
-	/**
-	 * Method that deletes the player.
-	 * 
-	 * @throws DataAccessException
-	 */
-	@Override
-	public void delete(ValueObject candidate) throws DataAccessException {
-		handler.remove((Player)candidate);
-	}
 
 	/**
-	 * DOCME
+	 * Finds all player value objects.
 	 * 
-	 * @throws PlayerNotFoundException, PersistenceIOException
-	 */
-	@Override
-	public Player find(int id) throws PlayerNotFoundException, DataAccessException {
-		return (Player)handler.read(id);
-	}
-
-	/**
-	 * DOCME
-	 * 
-	 * @param username
-	 * @return
-	 * @throws DataAccessException
-	 */
-	public Player find(String username) throws PlayerNotFoundException, DataAccessException {
-		return (Player)handler.read(username);
-	}
-	
-	/**
-	 * DOCME
-	 * 
-	 * @throws DataAccessException
-	 * @return players
+	 * @return A vector with all player value objects.
+	 *
+	 * @throws DataAccessException Common persistence exception.
+	 *
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
@@ -111,12 +95,57 @@ public class PlayerService extends PersistenceService {
 	}
 
 	/**
-	 * Method that save the object.
+	 * Find a specific player by id.
 	 * 
-	 * @throws DataAccessException
+	 * @param id The unique player id.
+	 * @return The player value object with the given id.
+	 * 
+	 * @throws PlayerNotFoundException
+	 * @throws DataAccessException Common persistence exception.
+	 * 
+	 */
+	@Override
+	public Player find(int id) throws PlayerNotFoundException, DataAccessException {
+		return (Player)handler.read(id);
+	}
+	
+	/**
+	 * Finds a specific player by username.
+	 * 
+	 * @param username The unique username.
+	 * @return The player value object with the given username.
+	 * 
+	 * @throws PlayerNotFoundException
+	 * @throws DataAccessException Common persistence exception.
+	 * 
+	 */
+	public Player find(String username) throws PlayerNotFoundException, DataAccessException {
+		return (Player)handler.read(username);
+	}
+
+	/**
+	 * Saves a player.
+	 * Updates the given player if it exists and creates it if it doesn't.
+	 * 
+	 * @throws PlayerExistsException If the player was not updatable (e. g. username not available).
+	 * @throws DataAccessException Common persistence exception.
+	 * 
 	 */
 	@Override
 	public void save(ValueObject candidate) throws PlayerExistsException, DataAccessException {
 		handler.save((Player)candidate);
+	}
+
+	/**
+	 * Deletes a specific player.
+	 * 
+	 * @param candidate The deletable player.
+	 *
+	 * @throws DataAccessException Common persistence exception.
+	 *
+	 */
+	@Override
+	public void delete(ValueObject candidate) throws DataAccessException {
+		handler.remove((Player)candidate);
 	}
 }

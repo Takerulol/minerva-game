@@ -43,8 +43,12 @@ import de.hochschule.bremen.minerva.vo.ValueObject;
  * selecting, inserting, updating and deleting them via
  * the persistence handlers.
  *
+ * This service is a wrapper for the underlying persistence handler.
+ *
  * @since 1.0
  * @version $Id$
+ * 
+ * @see CountryHandler
  *
  */
 public class CountryService extends PersistenceService {
@@ -52,7 +56,7 @@ public class CountryService extends PersistenceService {
 	// The CountryService instance (singleton pattern)
 	private static CountryService instance = null;
 
-	// The persistence handler
+	// The country persistence handler
 	private Handler handler = CountryService.storage.createHandler(Country.class);
 
 	/**
@@ -67,7 +71,7 @@ public class CountryService extends PersistenceService {
 	 * Singleton pattern.
 	 * Static method that controls the object creation.
 	 * 
-	 * @return A CountryService instance
+	 * @return {@link CountryService}
 	 * 
 	 */
 	public static CountryService getInstance() {
@@ -81,6 +85,7 @@ public class CountryService extends PersistenceService {
 	 * Returns a vector with all available countries.
 	 * 
 	 * @return Country vector.
+	 *
 	 * @throws DataAccessException Common persistence exception.
 	 *  
 	 */
@@ -95,11 +100,12 @@ public class CountryService extends PersistenceService {
 	 * 
 	 * @param byWorldVo The world reference.
 	 * @return A vector with all countries regarding to the given world.
+	 *
 	 * @throws DataAccessException Common persistence exception.
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public Vector<Country> loadAll(ValueObject byWorldVo) throws DataAccessException {
+	public Vector<Country> findAll(ValueObject byWorldVo) throws DataAccessException {
 		Vector<Country> countries = (Vector<Country>)handler.readAll(byWorldVo);
 		return countries;
 	}
@@ -109,6 +115,7 @@ public class CountryService extends PersistenceService {
 	 * 
 	 * @param id The unique identifier.
 	 * @return The country value object.
+	 *
 	 * @throws CountryNotFoundException
 	 * @throws DataAccessException Common persistence exception.
 	 * 
