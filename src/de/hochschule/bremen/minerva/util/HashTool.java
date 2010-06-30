@@ -42,19 +42,19 @@ import java.security.NoSuchAlgorithmException;
  */
 public class HashTool {
 
-	private static String HASH_ALGORITHM = "MD5";
-
+	private static String MD5_HASH_ALGORITHM = "MD5";
+	
 	/**
 	 * Converts a string to an md5 hash
 	 * 
-	 * @param hashable The hashable string
-	 * @return The hashed string
+	 * @param hashable The hashable string.
+	 * @return The hashed string.
 	 * 
 	 */
 	public static String md5(String hashable) {
 		MessageDigest m = null;
 		try {
-			m = MessageDigest.getInstance(HASH_ALGORITHM);
+			m = MessageDigest.getInstance(MD5_HASH_ALGORITHM);
 		} catch (NoSuchAlgorithmException e) {}
 		
 		

@@ -32,12 +32,20 @@ package de.hochschule.bremen.minerva.util;
 
 import java.util.Vector;
 
+/**
+ * A game die.
+ *  
+ * @since 1.0
+ * @version $Id$
+ *
+ */
 public class Die {
 
 	private int number = 0;
 
 	/**
-	 *  Calculate number.
+	 * Rolls the dice.
+	 * 
 	 */
 	public void dice() {
 		this.number = (int)((Math.random() * 6) + 1);
@@ -47,17 +55,19 @@ public class Die {
 	 * 
 	 * Returns the roll result.
 	 * 
-	 * @return
+	 * @return A random value in the range: 1 - 6
 	 */
 	public int getRollResult() {
 		return this.number;
 	}
 
 	/**
-	 * Finds biggest die in dice-vector.
+	 * Helper method, that compares a vector with dice
+	 * and returns the die with the biggest roll result.
 	 * 
-	 * @param dice
-	 * @return
+	 * @param dice The vector with dice.
+	 * @return The die with the biggest roll result.
+	 * 
 	 */
 	public static Die getLargest(Vector<Die> dice) {
 		Die output = new Die();
@@ -69,6 +79,5 @@ public class Die {
 			}
 		}
 		return output;
-	}
-	
+	}	
 }
