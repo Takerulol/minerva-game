@@ -30,9 +30,12 @@
 package de.hochschule.bremen.minerva.persistence;
 
 /**
- * DOCME
- * @author akoenig
- *
+ * Interface that defines that a persistence layer must implement
+ * a factory method for creating the handler.
+ * 
+ * @since 1.0
+ * @version $Id$
+ * 
  */
 public interface Persistence {
 	
