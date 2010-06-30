@@ -39,14 +39,20 @@ import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
 /**
- * DOCME
- * @author akoenig
+ * Provides methods for country I/O operations, like:
+ * selecting, inserting, updating and deleting them via
+ * the persistence handlers.
+ *
+ * @since 1.0
+ * @version $Id$
  *
  */
 public class CountryService extends PersistenceService {
 
+	// The CountryService instance (singleton pattern)
 	private static CountryService instance = null;
 
+	// The persistence handler
 	private Handler handler = CountryService.storage.createHandler(Country.class);
 
 	/**
@@ -61,7 +67,8 @@ public class CountryService extends PersistenceService {
 	 * Singleton pattern.
 	 * Static method that controls the object creation.
 	 * 
-	 * @return DOCME
+	 * @return A CountryService instance
+	 * 
 	 */
 	public static CountryService getInstance() {
 		if (CountryService.instance == null) {
@@ -71,10 +78,11 @@ public class CountryService extends PersistenceService {
 	}
 
 	/**
-	 * DOCME
+	 * Returns a vector with all available countries.
 	 * 
-	 * @return
-	 * @throws DataAccessException 
+	 * @return Country vector.
+	 * @throws DataAccessException Common persistence exception.
+	 *  
 	 */
 	@SuppressWarnings("unchecked")
 	public Vector<Country> findAll() throws DataAccessException {
@@ -83,47 +91,70 @@ public class CountryService extends PersistenceService {
 	}
 
 	/**
-	 * DOCME
+	 * Loads all countries by an given world value object.
 	 * 
-	 * @param byWorldId
-	 * @return
-	 * @throws DataAccessException
+	 * @param byWorldVo The world reference.
+	 * @return A vector with all countries regarding to the given world.
+	 * @throws DataAccessException Common persistence exception.
+	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public Vector<Country> loadAll(ValueObject byVo) throws DataAccessException {
-		Vector<Country> countries = (Vector<Country>)handler.readAll(byVo);
+	public Vector<Country> loadAll(ValueObject byWorldVo) throws DataAccessException {
+		Vector<Country> countries = (Vector<Country>)handler.readAll(byWorldVo);
 		return countries;
 	}
 
 	/**
-	 * DOCME
+	 * Returns a country by id.
 	 * 
-	 * @param id
-	 * @return
+	 * @param id The unique identifier.
+	 * @return The country value object.
+	 * @throws CountryNotFoundException
+	 * @throws DataAccessException Common persistence exception.
+	 * 
 	 */
 	public Country find(int id) throws CountryNotFoundException, DataAccessException {
 		return (Country)handler.read(id);
 	}
 
 	/**
-	 * DOCME
+	 * Returns a country by name.
+	 *  
+	 * Note that if there is more than one country with
+	 * the given name, the method returns the first value object,
+	 * that was found.
 	 * 
-	 * @param name
-	 * @return
+	 * @param name The name identifier.
+	 * @return The country value object.
+	 * 
 	 * @throws CountryNotFoundException
-	 * @throws DataAccessException
+	 * @throws DataAccessException Common persistence exception.
+	 * 
 	 */
 	public Country find(String name) throws CountryNotFoundException, DataAccessException {
 		return (Country)handler.read(name);
 	}
 	
+	/**
+	 * Saves a country.
+	 * 
+	 * @param candidate The saveable candidate.
+	 * 
+	 * @throws CountryExistsException
+	 * @throws DataAccessException Common persistence exception.
+	 * 
+	 */
 	@Override
 	public void save(ValueObject candidate) throws CountryExistsException, DataAccessException {
 		handler.save((Country)candidate);
 	}
 
 	/**
-	 * DOCME
+	 * Deletes a country.
+	 * 
+	 * @param candidate The deletable candidate.
+	 * 
+	 * @throws DataAccessException Common persistence exception.
 	 * 
 	 */
 	@Override
