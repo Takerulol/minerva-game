@@ -69,8 +69,7 @@ import de.hochschule.bremen.minerva.vo.World;
  *
  */
 public class WorldFile extends World {
-	// TODO: If the country/neighbour mapping is not valid -> throw Exception (at the moment "NullPointerException" ); ).
-	
+
 	private static final String WORLD_FILE_EXTENSION = ".world";
 	private static final String WORLD_FILE_XML = "data.xml";
 	private static final File TEMP_DIR = new File("importer-workspace");
@@ -444,6 +443,8 @@ public class WorldFile extends World {
 	
 	/**
 	 * Common file validation.
+	 * 
+	 * TODO: Use in the next release dtd or xml schema for xml validation.
 	 * 
 	 * @throws WorldFileExtensionException
 	 */
