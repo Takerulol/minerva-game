@@ -32,6 +32,10 @@ package de.hochschule.bremen.minerva.core;
 import java.io.File;
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.exceptions.PlayerAlreadyLoggedInException;
+import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
+import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
+import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.World;
 
@@ -48,8 +52,8 @@ public interface GameEngine {
 	// --------------------------------------
 	// -- login and registration subsystem --
 	// --------------------------------------
-	public void login(Player player);
-	
+	public void login(Player player) throws PlayerAlreadyLoggedInException, WrongPasswordException, PlayerDoesNotExistException, DataAccessException;
+
 	public void logout(Player player);
 
 	public void register(Player player);
@@ -66,5 +70,5 @@ public interface GameEngine {
 	// ----------------------------
 	// -- game core logic subsystem
 	// ----------------------------
-	// TODO: Define methods.
+	// TODO: Add methods.
 }
