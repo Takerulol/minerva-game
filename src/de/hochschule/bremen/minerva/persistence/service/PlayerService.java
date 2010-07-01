@@ -34,7 +34,7 @@ import java.util.Vector;
 import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerNotFoundException;
-import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
@@ -85,12 +85,12 @@ public class PlayerService extends PersistenceService {
 	 * 
 	 * @return A vector with all player value objects.
 	 *
-	 * @throws DataAccessException Common persistence exception.
+	 * @throws PersistenceException Common persistence exception.
 	 *
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public Vector<Player> findAll() throws DataAccessException {
+	public Vector<Player> findAll() throws PersistenceException {
 		return (Vector<Player>)handler.readAll();
 	}
 
@@ -101,11 +101,11 @@ public class PlayerService extends PersistenceService {
 	 * @return The player value object with the given id.
 	 * 
 	 * @throws PlayerNotFoundException
-	 * @throws DataAccessException Common persistence exception.
+	 * @throws PersistenceException Common persistence exception.
 	 * 
 	 */
 	@Override
-	public Player find(int id) throws PlayerNotFoundException, DataAccessException {
+	public Player find(int id) throws PlayerNotFoundException, PersistenceException {
 		return (Player)handler.read(id);
 	}
 	
@@ -116,10 +116,10 @@ public class PlayerService extends PersistenceService {
 	 * @return The player value object with the given username.
 	 * 
 	 * @throws PlayerNotFoundException
-	 * @throws DataAccessException Common persistence exception.
+	 * @throws PersistenceException Common persistence exception.
 	 * 
 	 */
-	public Player find(String username) throws PlayerNotFoundException, DataAccessException {
+	public Player find(String username) throws PlayerNotFoundException, PersistenceException {
 		return (Player)handler.read(username);
 	}
 
@@ -128,11 +128,11 @@ public class PlayerService extends PersistenceService {
 	 * Updates the given player if it exists and creates it if it doesn't.
 	 * 
 	 * @throws PlayerExistsException If the player was not updatable (e. g. username not available).
-	 * @throws DataAccessException Common persistence exception.
+	 * @throws PersistenceException Common persistence exception.
 	 * 
 	 */
 	@Override
-	public void save(ValueObject candidate) throws PlayerExistsException, DataAccessException {
+	public void save(ValueObject candidate) throws PlayerExistsException, PersistenceException {
 		handler.save((Player)candidate);
 	}
 
@@ -141,11 +141,11 @@ public class PlayerService extends PersistenceService {
 	 * 
 	 * @param candidate The deletable player.
 	 *
-	 * @throws DataAccessException Common persistence exception.
+	 * @throws PersistenceException Common persistence exception.
 	 *
 	 */
 	@Override
-	public void delete(ValueObject candidate) throws DataAccessException {
+	public void delete(ValueObject candidate) throws PersistenceException {
 		handler.remove((Player)candidate);
 	}
 }

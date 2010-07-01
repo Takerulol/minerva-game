@@ -34,7 +34,7 @@ import java.util.Vector;
 import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.exceptions.NeighbourNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.NotFoundException;
-import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Neighbour;
 import de.hochschule.bremen.minerva.vo.ValueObject;
@@ -85,11 +85,11 @@ public class NeighbourService extends PersistenceService {
 	 * @param byCountry The country, which neighbours should determined.
 	 * @return A vector with the country's neighbours.
 	 * 
-	 * @throws DataAccessException Common persistence exception.
+	 * @throws PersistenceException Common persistence exception.
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public Vector<Neighbour> loadAll(Country byCountry) throws DataAccessException {
+	public Vector<Neighbour> loadAll(Country byCountry) throws PersistenceException {
 		return (Vector<Neighbour>)handler.readAll(byCountry);
 	}
 
@@ -99,11 +99,11 @@ public class NeighbourService extends PersistenceService {
 	 * @param id The unique neighbour id.
 	 *
 	 * @throws NeighbourNotFoundException
-	 * @throws DataAccessException Common persistence exception.
+	 * @throws PersistenceException Common persistence exception.
 	 * 
 	 */
 	@Override
-	public Neighbour find(int id) throws NeighbourNotFoundException, DataAccessException {
+	public Neighbour find(int id) throws NeighbourNotFoundException, PersistenceException {
 		return (Neighbour)handler.read(id);
 	}
 
@@ -112,11 +112,11 @@ public class NeighbourService extends PersistenceService {
 	 * 
 	 * @param candidate The saveable neighbour.
 	 *
-	 * @throws DataAccessException Common persistence exception. 
+	 * @throws PersistenceException Common persistence exception. 
 	 * 
 	 */
 	@Override
-	public void save(ValueObject candidate) throws DataAccessException {
+	public void save(ValueObject candidate) throws PersistenceException {
 		handler.save((Neighbour)candidate);
 	}
 
@@ -126,7 +126,7 @@ public class NeighbourService extends PersistenceService {
 	 *
 	 */
 	@Override
-	public void delete(ValueObject candidate) throws DataAccessException {}
+	public void delete(ValueObject candidate) throws PersistenceException {}
 
 	/**
 	 * Not implemented yet (not necessary at the moment).
@@ -134,7 +134,7 @@ public class NeighbourService extends PersistenceService {
 	 * 
 	 */
 	@Override
-	public Vector<?> findAll() throws DataAccessException {return null;}
+	public Vector<?> findAll() throws PersistenceException {return null;}
 
 	/**
 	 * Not implemented yet (not necessary at the moment).
@@ -142,5 +142,5 @@ public class NeighbourService extends PersistenceService {
 	 * 
 	 */
 	@Override
-	public ValueObject find(String name) throws NotFoundException, DataAccessException {return null;}
+	public ValueObject find(String name) throws NotFoundException, PersistenceException {return null;}
 }

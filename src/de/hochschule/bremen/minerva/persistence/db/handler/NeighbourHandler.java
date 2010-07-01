@@ -39,7 +39,7 @@ import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateR
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.NeighbourExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.NeighbourNotFoundException;
-import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Neighbour;
 import de.hochschule.bremen.minerva.vo.ValueObject;
@@ -60,7 +60,7 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 	 * 
 	 */
 	@Override
-	public ValueObject read(int countryId) throws DataAccessException {
+	public ValueObject read(int countryId) throws PersistenceException {
 		Neighbour neighbour = null;
 		Object[] params = {countryId};
 
@@ -69,7 +69,7 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 		} catch (NeighbourNotFoundException e) {
 			throw new NeighbourNotFoundException("The neighbour mapping with the id '"+countryId+"' wasn't found.");
 		} catch (DatabaseIOException e) {
-			throw new DataAccessException("Error occurred while reading "
+			throw new PersistenceException("Error occurred while reading "
 					                       + "the neighbour (mapping id = " + countryId +") "
 					                       + "from the database. Reason: "+e.getMessage());
 		}
@@ -108,7 +108,7 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 	 * 
 	 */
 	@Override
-	public Vector<Neighbour> readAll(ValueObject referencedCountry) throws DataAccessException {
+	public Vector<Neighbour> readAll(ValueObject referencedCountry) throws PersistenceException {
 		Country referenceCountry = (Country)referencedCountry;
 		Vector<Neighbour> neighbours = new Vector<Neighbour>();
 
@@ -123,9 +123,9 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 
 			record.close();
 		} catch (DatabaseIOException e) {
-			throw new DataAccessException(e.getMessage());
+			throw new PersistenceException(e.getMessage());
 		} catch (SQLException e) {
-			throw new DataAccessException("Error occurred while "
+			throw new PersistenceException("Error occurred while "
 											+"receiving a neighbours "
 											+"from the database (reference "
 											+"country = "+referenceCountry.getId()+"): "
@@ -137,7 +137,7 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 	}
 
 	@Override
-	public void save(ValueObject registrable) throws DataAccessException {
+	public void save(ValueObject registrable) throws PersistenceException {
 		Neighbour registrableNeighbour = (Neighbour)registrable;
 
 		try {
@@ -166,7 +166,7 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 					+registrableNeighbour.getReference().getId() + " and neighbour id = '"
 					+registrableNeighbour.getId());
 		} catch (DatabaseIOException e) {
-			throw new DataAccessException("Unable to serialize the neighbour mapping with referenced country id = '"
+			throw new PersistenceException("Unable to serialize the neighbour mapping with referenced country id = '"
 					+registrableNeighbour.getReference().getId()+"' and neighbour id = '"
 					+registrableNeighbour.getId()+"'. Reason: "+e.getMessage());
 		}
@@ -190,19 +190,19 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 	}
 
 	@Override
-	public Vector<? extends ValueObject> readAll() throws DataAccessException {
+	public Vector<? extends ValueObject> readAll() throws PersistenceException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void remove(ValueObject candidate) throws DataAccessException {
+	public void remove(ValueObject candidate) throws PersistenceException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public ValueObject read(String name) throws DataAccessException {
+	public ValueObject read(String name) throws PersistenceException {
 		// TODO Auto-generated method stub
 		return null;
 	}

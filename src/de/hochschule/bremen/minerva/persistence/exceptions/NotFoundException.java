@@ -29,7 +29,7 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
-public class NotFoundException extends DataAccessException {
+public class NotFoundException extends PersistenceException {
 
 	/**
 	 * 
