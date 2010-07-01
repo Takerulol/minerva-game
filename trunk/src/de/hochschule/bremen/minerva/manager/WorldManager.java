@@ -37,7 +37,7 @@ import de.hochschule.bremen.minerva.exceptions.WorldDoesNotExistException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileExtensionException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileParseException;
-import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
 import de.hochschule.bremen.minerva.persistence.service.ContinentService;
 import de.hochschule.bremen.minerva.persistence.service.CountryService;
@@ -135,7 +135,7 @@ public class WorldManager {
 	 * @see 		World
 	 * 
 	 */
-	public void store(World world) throws DataAccessException {
+	public void store(World world) throws PersistenceException {
 		boolean dependencyStorage = true; // Store county dependencies?
 
 		// We try to load the world by the given name to verify that
@@ -183,12 +183,12 @@ public class WorldManager {
 	 * @throws WorldFileExtensionException Wrong file extension. 
 	 * @throws WorldFileNotFoundException The given world import file wasn't found.
 	 * @throws WorldFileParseException The given world import file is not well-formed. 
-	 * @throws DataAccessException Common exception from the persistence layer.
+	 * @throws PersistenceException Common exception from the persistence layer.
 	 * 
 	 * @see WorldFile
 	 * 
 	 */
-	public void store(File worldFile) throws WorldFileExtensionException, WorldFileNotFoundException, WorldFileParseException, DataAccessException  {
+	public void store(File worldFile) throws WorldFileExtensionException, WorldFileNotFoundException, WorldFileParseException, PersistenceException  {
 		WorldFile world = new WorldFile(worldFile, ApplicationConfigurationManager.get().getWorldsAssetsDirectory());
 
 		world.parse();
@@ -205,10 +205,10 @@ public class WorldManager {
 	 * Loads a world list from the persistence layer.
 	 * 
 	 * @return A vector with all worlds from the persistence layer.
-	 * @throws DataAccessException Common exception from the persistence layer.
+	 * @throws PersistenceException Common exception from the persistence layer.
 	 * 
 	 */
-	public Vector<World> getList() throws DataAccessException {
+	public Vector<World> getList() throws PersistenceException {
 		Vector<World> worlds = WorldService.getInstance().findAll();
 
 		for (World world : worlds) {
@@ -228,12 +228,12 @@ public class WorldManager {
 	 * 
 	 * @param lite Does not load all country dependencies (only the world data).
 	 * @return A vector with all worlds from the persistence layer.
-	 * @throws DataAccessException Common exception from the persistence layer.
+	 * @throws PersistenceException Common exception from the persistence layer.
 	 * 
 	 * @see WorldManager#getList()
 	 * 
 	 */
-	public Vector<World> getList(boolean lite) throws DataAccessException {
+	public Vector<World> getList(boolean lite) throws PersistenceException {
 		if (lite) {
 			return WorldService.getInstance().findAll();
 		} else {
@@ -246,11 +246,11 @@ public class WorldManager {
 	 * 
 	 * @param id The world id.
 	 * @return The filled world object.
-	 * @throws DataAccessException Common exception from the persistence layer.
+	 * @throws PersistenceException Common exception from the persistence layer.
 	 * @throws WorldDoesNotExistException If the world wasn't found.
 	 * 
 	 */
-	public World get(int id) throws WorldDoesNotExistException, DataAccessException {
+	public World get(int id) throws WorldDoesNotExistException, PersistenceException {
 		try {
 			World world = new World();
 			world.setId(id);
@@ -270,10 +270,10 @@ public class WorldManager {
 	 * @param world
 	 * @return The "complete" world object.
 	 * @throws WorldDoesNotExistException If the world wasn't found.
-	 * @throws DataAccessException Common exception from the persistence layer.
+	 * @throws PersistenceException Common exception from the persistence layer.
 	 * 
 	 */
-	public World get(World world) throws WorldDoesNotExistException, DataAccessException {
+	public World get(World world) throws WorldDoesNotExistException, PersistenceException {
 		
 		try {
 			world = WorldService.getInstance().find(world.getId());
@@ -290,10 +290,10 @@ public class WorldManager {
 	 * from the persistence layer.
 	 * 
 	 * @param world The world for which we should load the country dependencies.
-	 * @throws DataAccessException Common exception from the persistence layer.
+	 * @throws PersistenceException Common exception from the persistence layer.
 	 *  
 	 */
-	private void loadDependencies(World world) throws DataAccessException {
+	private void loadDependencies(World world) throws PersistenceException {
 		Vector<Country> countries = CountryService.getInstance().findAll(world);
 		
 		for (Country country : countries) {
