@@ -1,5 +1,5 @@
 /*
- * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, AndrÃ© KÃ¶nig
+ * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
  * $Id$
@@ -259,7 +259,7 @@ public class RegistrationPanel extends JLayeredPane implements TextResources {
 	 */
 	private boolean isEmailValid(String email) {
 		// TODO: Fill with regexpression
-		String regex = "[a-z]";
+		//String regex = "[a-z]";
 
 		//return Pattern.matches(regex, email);
 		
