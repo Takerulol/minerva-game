@@ -29,23 +29,22 @@
  */
 package de.hochschule.bremen.minerva.persistence.db.exceptions;
 
+/**
+ * Exception will thrown if an database io error occured.
+ *
+ * @since 1.0
+ * @version $Id$
+ *
+ */
 public class DatabaseIOException extends Exception {
 	
-	/**
-	 * DOCME
-	 */
 	private static final long serialVersionUID = -5849231964218540565L;
 
 	/**
-	 * DOCME
-	 */
-	public DatabaseIOException() {
-		super();
-	}
-
-	/**
-	 * DOCME
+	 * A database io exception occured.
+	 * 
 	 * @param message
+	 * 
 	 */
 	public DatabaseIOException(String message) {
 		super(message);
