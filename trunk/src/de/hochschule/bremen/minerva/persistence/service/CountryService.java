@@ -34,7 +34,7 @@ import java.util.Vector;
 import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.exceptions.CountryExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.CountryNotFoundException;
-import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
+import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
@@ -86,11 +86,11 @@ public class CountryService extends PersistenceService {
 	 * 
 	 * @return Country vector.
 	 *
-	 * @throws PersistenceException Common persistence exception.
+	 * @throws DataAccessException Common persistence exception.
 	 *  
 	 */
 	@SuppressWarnings("unchecked")
-	public Vector<Country> findAll() throws PersistenceException {
+	public Vector<Country> findAll() throws DataAccessException {
 		Vector<Country> countries = (Vector<Country>)handler.readAll();
 		return countries;
 	}
@@ -101,11 +101,11 @@ public class CountryService extends PersistenceService {
 	 * @param byWorldVo The world reference.
 	 * @return A vector with all countries regarding to the given world.
 	 *
-	 * @throws PersistenceException Common persistence exception.
+	 * @throws DataAccessException Common persistence exception.
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public Vector<Country> findAll(ValueObject byWorldVo) throws PersistenceException {
+	public Vector<Country> findAll(ValueObject byWorldVo) throws DataAccessException {
 		Vector<Country> countries = (Vector<Country>)handler.readAll(byWorldVo);
 		return countries;
 	}
@@ -117,10 +117,10 @@ public class CountryService extends PersistenceService {
 	 * @return The country value object.
 	 *
 	 * @throws CountryNotFoundException
-	 * @throws PersistenceException Common persistence exception.
+	 * @throws DataAccessException Common persistence exception.
 	 * 
 	 */
-	public Country find(int id) throws CountryNotFoundException, PersistenceException {
+	public Country find(int id) throws CountryNotFoundException, DataAccessException {
 		return (Country)handler.read(id);
 	}
 
@@ -135,10 +135,10 @@ public class CountryService extends PersistenceService {
 	 * @return The country value object.
 	 * 
 	 * @throws CountryNotFoundException
-	 * @throws PersistenceException Common persistence exception.
+	 * @throws DataAccessException Common persistence exception.
 	 * 
 	 */
-	public Country find(String name) throws CountryNotFoundException, PersistenceException {
+	public Country find(String name) throws CountryNotFoundException, DataAccessException {
 		return (Country)handler.read(name);
 	}
 	
@@ -148,11 +148,11 @@ public class CountryService extends PersistenceService {
 	 * @param candidate The saveable candidate.
 	 * 
 	 * @throws CountryExistsException
-	 * @throws PersistenceException Common persistence exception.
+	 * @throws DataAccessException Common persistence exception.
 	 * 
 	 */
 	@Override
-	public void save(ValueObject candidate) throws CountryExistsException, PersistenceException {
+	public void save(ValueObject candidate) throws CountryExistsException, DataAccessException {
 		handler.save((Country)candidate);
 	}
 
@@ -161,11 +161,11 @@ public class CountryService extends PersistenceService {
 	 * 
 	 * @param candidate The deletable candidate.
 	 * 
-	 * @throws PersistenceException Common persistence exception.
+	 * @throws DataAccessException Common persistence exception.
 	 * 
 	 */
 	@Override
-	public void delete(ValueObject candidate) throws PersistenceException {
+	public void delete(ValueObject candidate) throws DataAccessException {
 		Country deletableCountry = (Country)candidate;
 		
 		handler.remove(deletableCountry);

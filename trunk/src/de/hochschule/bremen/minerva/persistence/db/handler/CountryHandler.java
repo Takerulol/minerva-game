@@ -45,7 +45,7 @@ import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateR
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.CountryExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.CountryNotFoundException;
-import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
+import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
 /**
@@ -80,7 +80,7 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	 * 
 	 */
 	@Override
-	public Country read(int id) throws PersistenceException {
+	public Country read(int id) throws DataAccessException {
 		Country country = null;
 		Object[] params = {id};
 
@@ -89,7 +89,7 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 		} catch (CountryNotFoundException e) {
 			throw new CountryNotFoundException("The country with the id '"+id+"' wasn't found.");
 		} catch (DatabaseIOException e) {
-			throw new PersistenceException("Error occurred while reading "
+			throw new DataAccessException("Error occurred while reading "
 					                       + "the country (id=" + id +") "
 					                       + "from the database. Reason: "+e.getMessage());
 		}
@@ -101,7 +101,7 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	 * DOCME
 	 * 
 	 */
-	public Country read(String name) throws PersistenceException {
+	public Country read(String name) throws DataAccessException {
 		Country country = null;
 		Object[] params = {name};
 
@@ -110,7 +110,7 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 		} catch (CountryNotFoundException e) {
 			throw new CountryNotFoundException("The country '"+name+"' wasn't found.");
 		} catch (DatabaseIOException e) {
-			throw new PersistenceException("Error occurred while reading "
+			throw new DataAccessException("Error occurred while reading "
 					                       + "the country '" + name + "'"
 					                       + "from the database. Reason: "+e.getMessage());
 		}
@@ -156,11 +156,11 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	 * readAll(int byWorldId).
 	 * 
 	 * @return A collection with the selected countries.
-	 * @throws PersistenceException
+	 * @throws DataAccessException
 	 * 
 	 */
 	@Override
-	public Vector<Country> readAll() throws PersistenceException {
+	public Vector<Country> readAll() throws DataAccessException {
 		WorldHandler handler = new WorldHandler();
 		Vector<World> worlds = handler.readAll();
 
@@ -175,10 +175,10 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	 * 
 	 * @param byWorld - The world value object.
 	 * @return A collection with the selected countries.
-	 * @throws PersistenceException
+	 * @throws DataAccessException
 	 *  
 	 */
-	public Vector<Country> readAll(ValueObject byVo) throws PersistenceException {
+	public Vector<Country> readAll(ValueObject byVo) throws DataAccessException {
 		Vector<Country> countries = null;
 		
 		if (byVo instanceof World) {
@@ -186,7 +186,7 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 		} else if (byVo instanceof Continent) {
 			countries = this.readAll((Continent)byVo);
 		} else {
-			throw new PersistenceException("There is no method implementation for the given value object: "+byVo.getClass());
+			throw new DataAccessException("There is no method implementation for the given value object: "+byVo.getClass());
 		}
 		
 		return countries;
@@ -198,14 +198,14 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	 * 
 	 * @param byContinent
 	 * @return A collection with the selected countries.
-	 * @throws PersistenceException
+	 * @throws DataAccessException
 	 */
-	private Vector<Country> readAll(Continent byContinent) throws PersistenceException {
+	private Vector<Country> readAll(Continent byContinent) throws DataAccessException {
 		try {
 			Object[] params = {byContinent.getId()};
 			return this.readAll(sql.get("selectAllByContinentId"), params);
-		} catch (PersistenceException e) {
-			throw new PersistenceException("Error while reading all countries "
+		} catch (DataAccessException e) {
+			throw new DataAccessException("Error while reading all countries "
 					+"from the database by the given continent id: "+byContinent.getId());
 		}
 	}
@@ -216,14 +216,14 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	 * 
 	 * @param byWorldId - A int with the world id.
 	 * @return A collection with the selected countries.
-	 * @throws PersistenceException 
+	 * @throws DataAccessException 
 	 */
-	private Vector<Country> readAll(World byWorld) throws PersistenceException {
+	private Vector<Country> readAll(World byWorld) throws DataAccessException {
 		try {
 			Object[] params = {byWorld.getId()};
 			return this.readAll(sql.get("selectAllByWorldId"), params);
-		} catch (PersistenceException e) {
-			throw new PersistenceException("Error while reading all countries "
+		} catch (DataAccessException e) {
+			throw new DataAccessException("Error while reading all countries "
 					+"from the database by the given world id: "+byWorld.getId());
 		}
 	}
@@ -234,9 +234,9 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	 * @param sqlKey
 	 * @param params
 	 * @return
-	 * @throws PersistenceException
+	 * @throws DataAccessException
 	 */
-	private Vector<Country> readAll(String sql, Object[] params) throws PersistenceException {
+	private Vector<Country> readAll(String sql, Object[] params) throws DataAccessException {
 		Vector<Country> countries = new Vector<Country>();
 		
 		try {
@@ -248,9 +248,9 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 
 			record.close();
 		} catch (DatabaseIOException e) {
-			throw new PersistenceException(e.getMessage());
+			throw new DataAccessException(e.getMessage());
 		} catch (SQLException e) {
-			throw new PersistenceException("SQL error code: "+e.getErrorCode());
+			throw new DataAccessException("SQL error code: "+e.getErrorCode());
 		}
 
 		return countries;		
@@ -261,14 +261,14 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	 * 
 	 */
 	@Override
-	public void remove(ValueObject candidate) throws PersistenceException {
+	public void remove(ValueObject candidate) throws DataAccessException {
 		Country deletableCountry = (Country)candidate;
 		Object[] params = {deletableCountry.getId()};
 
 		try {
 			this.delete(sql.get("delete"), params);
 		} catch (DatabaseIOException e) {
-			throw new PersistenceException(e.getMessage());
+			throw new DataAccessException(e.getMessage());
 		}
 	}
 
@@ -277,7 +277,7 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	 * 
 	 */
 	@Override
-	public void save(ValueObject country) throws PersistenceException {
+	public void save(ValueObject country) throws DataAccessException {
 		Country registrableCountry = (Country)country;
 
 		try {
@@ -313,7 +313,7 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 						+"country: '"+registrableCountry.getName()+"'. There is already "
 						+"a similar one.");
 		} catch (DatabaseIOException e) {
-			throw new PersistenceException("Unable to serialize the country: '"+registrableCountry.getName()+"'. Reason: "+e.getMessage());
+			throw new DataAccessException("Unable to serialize the country: '"+registrableCountry.getName()+"'. Reason: "+e.getMessage());
 		}
 
 		// The country does not have a player id.

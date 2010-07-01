@@ -32,7 +32,7 @@ package de.hochschule.bremen.minerva.persistence.service;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Handler;
-import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
+import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
 import de.hochschule.bremen.minerva.vo.ValueObject;
@@ -84,11 +84,11 @@ public class WorldService extends PersistenceService {
 	 * 
 	 * @return A vector with all available worlds.
 	 * 
-	 * @throws PersistenceException Common persistence exception.
+	 * @throws DataAccessException Common persistence exception.
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public Vector<World> findAll() throws PersistenceException {
+	public Vector<World> findAll() throws DataAccessException {
 		return (Vector<World>)handler.readAll();
 	}
 
@@ -99,10 +99,10 @@ public class WorldService extends PersistenceService {
 	 * @return The world value object.
 	 *
 	 * @throws WorldNotFoundException
-	 * @throws PersistenceException Common persistence exception.
+	 * @throws DataAccessException Common persistence exception.
 	 *
 	 */
-	public World find(int id) throws WorldNotFoundException, PersistenceException {
+	public World find(int id) throws WorldNotFoundException, DataAccessException {
 		return (World)handler.read(id);
 	}
 
@@ -113,10 +113,10 @@ public class WorldService extends PersistenceService {
 	 * @return The world value object.
 	 * 
 	 * @throws WorldNotFoundException
-	 * @throws PersistenceException Common persistence exception.
+	 * @throws DataAccessException Common persistence exception.
 	 * 
 	 */
-	public World find(String name) throws WorldNotFoundException, PersistenceException {
+	public World find(String name) throws WorldNotFoundException, DataAccessException {
 		return (World)handler.read(name);
 	}
 	
@@ -126,11 +126,11 @@ public class WorldService extends PersistenceService {
 	 * @param candidate The saveable world value object.
 	 * 
 	 * @throws WorldExistsException
-	 * @throws PersistenceException Common persistence exception.
+	 * @throws DataAccessException Common persistence exception.
 	 *
 	 */
 	@Override
-	public void save(ValueObject candidate) throws WorldExistsException, PersistenceException {
+	public void save(ValueObject candidate) throws WorldExistsException, DataAccessException {
 		handler.save((World)candidate);
 	}
 
@@ -139,11 +139,11 @@ public class WorldService extends PersistenceService {
 	 *
 	 * @param candidate The deletable world value object.
 	 *
-	 * @throws PersistenceException Common persistence exception.
+	 * @throws DataAccessException Common persistence exception.
 	 *
 	 */
 	@Override
-	public void delete(ValueObject candidate) throws PersistenceException {
+	public void delete(ValueObject candidate) throws DataAccessException {
 		World deletableWorld = (World)candidate;
 		
 		handler.remove(deletableWorld);

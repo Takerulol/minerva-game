@@ -35,7 +35,7 @@ import de.hochschule.bremen.minerva.persistence.Persistence;
 import de.hochschule.bremen.minerva.persistence.db.DatabasePersistence;
 import de.hochschule.bremen.minerva.persistence.exceptions.ExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.NotFoundException;
-import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
+import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.persistence.file.FilebasedPersistence;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
@@ -53,15 +53,15 @@ public abstract class PersistenceService {
 	// If we want to switch to a file based storage, here is yout switcher, buddy.
 	protected static Persistence storage = new DatabasePersistence(); 
 
-	abstract public Vector<?> findAll() throws PersistenceException;
+	abstract public Vector<?> findAll() throws DataAccessException;
 
-	abstract public ValueObject find(int id) throws NotFoundException, PersistenceException;
+	abstract public ValueObject find(int id) throws NotFoundException, DataAccessException;
 
-	abstract public ValueObject find(String name) throws NotFoundException, PersistenceException;
+	abstract public ValueObject find(String name) throws NotFoundException, DataAccessException;
 
-	abstract public void save(ValueObject candidate) throws ExistsException, PersistenceException;
+	abstract public void save(ValueObject candidate) throws ExistsException, DataAccessException;
 
-	abstract public void delete(ValueObject candidate) throws PersistenceException;
+	abstract public void delete(ValueObject candidate) throws DataAccessException;
 
 	/**
 	 * Possibility to switch the persistence engine.

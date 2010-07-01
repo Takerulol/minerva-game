@@ -34,7 +34,7 @@ import java.util.Vector;
 import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.exceptions.ContinentExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.ContinentNotFoundException;
-import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
+import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.vo.Continent;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
@@ -86,11 +86,11 @@ public class ContinentService extends PersistenceService {
 	 * 
 	 * @return All available continent value objects.
 	 *
-	 * @throws PersistenceException Common persistence exception.
+	 * @throws DataAccessException Common persistence exception.
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public Vector<Continent> findAll() throws PersistenceException {
+	public Vector<Continent> findAll() throws DataAccessException {
 		Vector<Continent> continents = (Vector<Continent>)handler.readAll();
 		return continents;
 	}
@@ -102,11 +102,11 @@ public class ContinentService extends PersistenceService {
 	 * @return The continent (if found).
 	 * 
 	 * @throws ContinentNotFoundException
-	 * @throws PersistenceException Common persistence exception.
+	 * @throws DataAccessException Common persistence exception.
 	 * 
 	 */
 	@Override
-	public Continent find(int id) throws ContinentNotFoundException, PersistenceException {
+	public Continent find(int id) throws ContinentNotFoundException, DataAccessException {
 		return (Continent)handler.read(id);
 	}
 
@@ -117,10 +117,10 @@ public class ContinentService extends PersistenceService {
 	 * @return The continent (if found)
 	 * 
 	 * @throws ContinentNotFoundException
-	 * @throws PersistenceException Common persistence exception.
+	 * @throws DataAccessException Common persistence exception.
 	 * 
 	 */
-	public Continent find(String name) throws ContinentNotFoundException, PersistenceException {
+	public Continent find(String name) throws ContinentNotFoundException, DataAccessException {
 		return (Continent)handler.read(name);
 	}
 	
@@ -131,11 +131,11 @@ public class ContinentService extends PersistenceService {
 	 * @param candidate The saveable continent value object.
 	 * 
 	 * @throws ContinentExistsException
-	 * @throws PersistenceException Common persistence exception.
+	 * @throws DataAccessException Common persistence exception.
 	 *
 	 */
 	@Override
-	public void save(ValueObject candidate) throws ContinentExistsException, PersistenceException {
+	public void save(ValueObject candidate) throws ContinentExistsException, DataAccessException {
 		handler.save((Continent)candidate);
 	}
 
@@ -144,11 +144,11 @@ public class ContinentService extends PersistenceService {
 	 * 
 	 * @param candidate The removable continent value object.
 	 * 
-	 * @throws PersistenceException Common persistence exception.
+	 * @throws DataAccessException Common persistence exception.
 	 * 
 	 */
 	@Override
-	public void delete(ValueObject candidate) throws PersistenceException {
+	public void delete(ValueObject candidate) throws DataAccessException {
 		Continent continent = (Continent)candidate;
 		handler.remove(continent);
 	}
