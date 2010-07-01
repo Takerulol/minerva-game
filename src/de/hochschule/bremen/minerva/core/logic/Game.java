@@ -27,7 +27,7 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.core;
+package de.hochschule.bremen.minerva.core.logic;
 
 import java.awt.Color;
 import java.util.Collections;

@@ -27,57 +27,44 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.manager;
+package de.hochschule.bremen.minerva.core;
 
-import java.util.HashMap;
+import java.io.File;
+import java.util.Vector;
 
-import de.hochschule.bremen.minerva.core.logic.Game;
-import de.hochschule.bremen.minerva.util.HashTool;
+import de.hochschule.bremen.minerva.vo.Player;
+import de.hochschule.bremen.minerva.vo.World;
 
 /**
- * Session manager that provides the functionality to store game sessions.
+ * The game engine.
+ * A facade interface, that represents a lightweight subsystem access.
  * 
- * @version $Id$
  * @since 1.0
- *
+ * @version $Id$
+ * 
  */
-public class SessionManager {
+public interface GameEngine {
+	
+	// --------------------------------------
+	// -- login and registration subsystem --
+	// --------------------------------------
+	public void login(Player player);
+	
+	public void logout(Player player);
 
-	private static HashMap<String, Game> SESSIONS = new HashMap<String, Game>();
+	public void register(Player player);
 
-	/**
-	 * DOCME
-	 * 
-	 * @param game
-	 * @return
-	 * 
-	 */
-	public static String set(Game game) {
-		String sessionId = SessionManager.generateSessionId();
-		
-		SessionManager.SESSIONS.put(sessionId, game);
-		return sessionId;
-	}
+	// ---------------------
+	// -- world subsystem --
+	// ---------------------
+	public Vector<World> getWorlds();
 
-	/**
-	 * DOCME
-	 * 
-	 * @param sessionId
-	 * @return
-	 * 
-	 */
-	public static Game get(String sessionId) {
-		return SESSIONS.get(sessionId);
-	}
+	public Vector<World> getWorlds(boolean lite);
 
-	/**
-	 * Generates unique session ids.
-	 * 
-	 * @return The session id.
-	 * 
-	 */
-	private static String generateSessionId() {
-		String unixTimestamp = String.valueOf((System.currentTimeMillis()/1000));
-		return HashTool.md5(unixTimestamp);
-	}
+	public void importWorld(File worldFile);
+
+	// ----------------------------
+	// -- game core logic subsystem
+	// ----------------------------
+	// TODO: Define methods.
 }
