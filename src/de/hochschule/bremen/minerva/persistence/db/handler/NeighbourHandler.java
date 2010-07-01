@@ -39,7 +39,7 @@ import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateR
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.NeighbourExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.NeighbourNotFoundException;
-import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Neighbour;
 import de.hochschule.bremen.minerva.vo.ValueObject;
@@ -70,11 +70,11 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 	 * @return The neighbour value object.
 	 * 
 	 * @throws NeighbourNotFoundException
-	 * @throws DataAccessException
+	 * @throws PersistenceException
 	 * 
 	 */
 	@Override
-	public ValueObject read(int countryId) throws NeighbourNotFoundException, DataAccessException {
+	public ValueObject read(int countryId) throws NeighbourNotFoundException, PersistenceException {
 		Neighbour neighbour = null;
 		Object[] params = {countryId};
 
@@ -83,7 +83,7 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 		} catch (NeighbourNotFoundException e) {
 			throw new NeighbourNotFoundException("The neighbour mapping with the id '"+countryId+"' wasn't found.");
 		} catch (DatabaseIOException e) {
-			throw new DataAccessException("Error occurred while reading "
+			throw new PersistenceException("Error occurred while reading "
 					                       + "the neighbour (mapping id = " + countryId +") "
 					                       + "from the database. Reason: "+e.getMessage());
 		}
@@ -128,11 +128,11 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 	 * @param referencedCountry The country whose neighbours we are looking for.
 	 * @return A vector with all neighbours.
 	 *
-	 * @throws DataAccessException
+	 * @throws PersistenceException
 	 * 
 	 */
 	@Override
-	public Vector<Neighbour> readAll(ValueObject referencedCountry) throws DataAccessException {
+	public Vector<Neighbour> readAll(ValueObject referencedCountry) throws PersistenceException {
 		Country referenceCountry = (Country)referencedCountry;
 		Vector<Neighbour> neighbours = new Vector<Neighbour>();
 
@@ -147,9 +147,9 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 
 			record.close();
 		} catch (DatabaseIOException e) {
-			throw new DataAccessException(e.getMessage());
+			throw new PersistenceException(e.getMessage());
 		} catch (SQLException e) {
-			throw new DataAccessException("Error occurred while "
+			throw new PersistenceException("Error occurred while "
 											+"receiving a neighbours "
 											+"from the database (reference "
 											+"country = "+referenceCountry.getId()+"): "
@@ -166,11 +166,11 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 	 * @param registrable The registrable neighbour value object.
 	 * 
 	 * @throws NeighbourExistsException
-	 * @throws DataAccessException
+	 * @throws PersistenceException
 	 * 
 	 */
 	@Override
-	public void save(ValueObject registrable) throws NeighbourExistsException, DataAccessException {
+	public void save(ValueObject registrable) throws NeighbourExistsException, PersistenceException {
 		Neighbour registrableNeighbour = (Neighbour)registrable;
 
 		try {
@@ -199,7 +199,7 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 					+registrableNeighbour.getReference().getId() + " and neighbour id = '"
 					+registrableNeighbour.getId());
 		} catch (DatabaseIOException e) {
-			throw new DataAccessException("Unable to serialize the neighbour mapping with referenced country id = '"
+			throw new PersistenceException("Unable to serialize the neighbour mapping with referenced country id = '"
 					+registrableNeighbour.getReference().getId()+"' and neighbour id = '"
 					+registrableNeighbour.getId()+"'. Reason: "+e.getMessage());
 		}
@@ -233,7 +233,7 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 	 * 
 	 */
 	@Override
-	public Vector<? extends ValueObject> readAll() throws DataAccessException {return null;}
+	public Vector<? extends ValueObject> readAll() throws PersistenceException {return null;}
 
 	/**
 	 * Not in use. But the interface forces me to declare this method.
@@ -241,7 +241,7 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 	 * 
 	 */
 	@Override
-	public void remove(ValueObject candidate) throws DataAccessException {}
+	public void remove(ValueObject candidate) throws PersistenceException {}
 
 	/**
 	 * Not in use. But the interface forces me to declare this method.
@@ -249,5 +249,5 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 	 * 
 	 */
 	@Override
-	public ValueObject read(String name) throws DataAccessException {return null;}
+	public ValueObject read(String name) throws PersistenceException {return null;}
 }
