@@ -44,15 +44,18 @@ import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateR
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
 
 /**
- * DOCME
- * 
+ * Handler, which provides the functionality to select, save or deletes
+ * worlds from the database.
+ *
+ * @since 1.0
+ * @version $Id$
+ *
  */
 public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 
 	private final static HashMap<String, String> sql = new HashMap<String, String>();
 
 	static {
-		// 		// select \"id\", \"token\", \"name\", \"description\",  \"author\", \"version\"
 		sql.put("selectById", "select \"id\", \"token\", \"name\", \"description\", \"author\", \"version\", \"map\", \"map_underlay\", \"thumbnail\" from world where \"id\" = ?");
 		sql.put("selectByName", "select \"id\", \"token\", \"name\", \"description\", \"author\", \"version\", \"map\", \"map_underlay\", \"thumbnail\" from world where \"name\" = ?");
 		sql.put("selectAll", "select \"id\", \"token\", \"name\", \"description\", \"author\", \"version\", \"map\", \"map_underlay\", \"thumbnail\" from world order by \"name\"");
@@ -62,11 +65,16 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 	}
 
 	/**
-	 * DOCME
-	 * @throws DataAccessException 
+	 * Reads ONE world with the given id from the database.
+	 * 
+	 * @param id The unique world id.
+	 * @return The found world.
+	 *
+	 * @throws WorldNotFoundException
+	 * @throws DataAccessExceptiona
 	 * 
 	 */
-	public World read(int id) throws DataAccessException {
+	public World read(int id) throws WorldNotFoundException, DataAccessException {
 		World world = new World();
 		Object[] params = {id};
 		
@@ -84,10 +92,16 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 	}
 
 	/**
-	 * DOCME
+	 * Reads ONE player with the given name from the database.
+	 * 
+	 * @param name The name from those world we are looking for.
+	 * @return The found world.
+	 *
+	 * @throws WorldNotFoundException
+	 * @throws DataAccessException
 	 * 
 	 */
-	public World read(String name) throws DataAccessException {
+	public World read(String name) throws WorldNotFoundException, DataAccessException {
 		World world = new World();
 		Object[] params = {name};
 
@@ -105,13 +119,16 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 	}
 
 	/**
-	 * DOCME
+	 * Private method that wraps the select from the database
+	 * functionality. Don't repeat yourself! :)
 	 * 
-	 * @param sql
-	 * @param params
-	 * @return
+	 * @param sql The raw sql statement.
+	 * @param params The sql statement parameters.
+	 * @return The world, which was read from the database.
+	 * 
 	 * @throws WorldNotFoundException
 	 * @throws DatabaseIOException
+	 *
 	 */
 	private World read(String sql, Object[] params) throws WorldNotFoundException, DatabaseIOException {
 		World world = new World();
@@ -135,8 +152,10 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 	/**
 	 * Loads all worlds from the database and return a
 	 * list with world value objects.
-	 * 
-	 * @see de.hochschule.bremen.minerva.vo.World
+	 *
+	 * @return A vector with all available worlds.
+	 *
+	 * @throws DataAccessException
 	 * 
 	 */
 	@Override
@@ -161,9 +180,18 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 		return worlds;
 	}
 
+	/**
+	 * Saves a world.
+	 * 
+	 * @param registrable The registrable world value object.
+	 *
+	 * @throws WorldExistsException
+	 * @throws DataAccessException
+	 * 
+	 */
 	@Override
-	public void save(ValueObject world) throws DataAccessException {
-		World registrableWorld = (World)world;
+	public void save(ValueObject registrable) throws WorldExistsException, DataAccessException {
+		World registrableWorld = (World)registrable;
 
 		try {
 			try {
@@ -209,12 +237,20 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 		// The player does not have a player id.
 		// So we read the player object by the given username
 		// to fulfill the referenced player value object.
-		registrableWorld.setId(this.read(registrableWorld.getName()).getId());
-		world = registrableWorld;
+		try {
+			registrableWorld.setId(this.read(registrableWorld.getName()).getId());
+		} catch (WorldNotFoundException e) {
+			// It is not possible, that this exception will be thrown.
+			// We created the world moments before.
+		}
+		registrable = registrableWorld;
 	}
 
 	/**
-	 * DOCME
+	 * Deletes a world.
+	 * 
+	 * @param candidate The deletable world.
+	 * @throws DataAccessException
 	 * 
 	 */
 	@Override
@@ -230,11 +266,13 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 	}
 
 	/**
-	 * DOCME
+	 * Converts a database result set to an
+	 * world value object.
 	 * 
-	 * @param current
-	 * @return
+	 * @param convertable The convertable world result set.
+	 * 
 	 * @throws SQLException
+	 * 
 	 */
 	protected World resultSetToObject(ResultSet current) throws SQLException {
 		World world = new World();
@@ -253,13 +291,10 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 	}
 
 	/**
-	 * TODO: This method is not necessary. Please check the interface
-	 * design to avoid such unused methods.
-	 *  
+	 * Not in use. But the interface forces me to declare this method.
+	 * What a pity! Would be great to define a second interface, but, well the time :(
+	 * 
 	 */
 	@Override
-	public Vector<? extends ValueObject> readAll(ValueObject referencedCountry) throws DataAccessException {		
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public Vector<? extends ValueObject> readAll(ValueObject referencedCountry) throws DataAccessException {return null;}
 }

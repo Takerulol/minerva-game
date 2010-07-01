@@ -33,9 +33,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
-
 import de.hochschule.bremen.minerva.util.ColorTool;
 import de.hochschule.bremen.minerva.vo.Continent;
 import de.hochschule.bremen.minerva.vo.Country;
@@ -49,12 +46,12 @@ import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
 /**
- * TODO: Issue 4: Exception-Meldungen auslagern (http://code.google.com/p/minerva-game/issues/detail?id=4)
- */
-
-/**
- * DOCME
- * 
+ * Handler, which provides the functionality to select, save or deletes
+ * countries from the database.
+ *
+ * @since 1.0
+ * @version $Id$
+ *
  */
 public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 
@@ -73,14 +70,17 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	}
 
 	/**
-	 * Reads ONE country with the given id from the database.
+	 * Reads ONE country from the database by the given id.
 	 * 
-	 * @param id - The country id
-	 * @throws CountryNotFoundException, PersistenceIOException
+	 * @param id The country id.
+	 * @return The country value object.
+	 * 
+	 * @throws CountryNotFoundException
+	 * @throws DataAccessException
 	 * 
 	 */
 	@Override
-	public Country read(int id) throws DataAccessException {
+	public Country read(int id) throws CountryNotFoundException, DataAccessException {
 		Country country = null;
 		Object[] params = {id};
 
@@ -98,10 +98,16 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	}
 
 	/**
-	 * DOCME
+	 * Reads ONE country from the database by the given name.
+	 * 
+	 * @param name The country name.
+	 * @return The country value object
+	 *
+	 * @throws CountryNotFoundException
+	 * @throws DataAccessException Common persistence io exception
 	 * 
 	 */
-	public Country read(String name) throws DataAccessException {
+	public Country read(String name) throws CountryNotFoundException, DataAccessException {
 		Country country = null;
 		Object[] params = {name};
 
@@ -119,13 +125,16 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	}
 
 	/**
-	 * DOCME
+	 * Private method that wraps the select from the database
+	 * functionality. Don't repeat yourself! :)
 	 * 
-	 * @param sql
-	 * @param params
-	 * @return
+	 * @param sql The raw sql statement.
+	 * @param params The sql statement parameters.
+	 * @return The country, which was read from the database.
+	 * 
 	 * @throws CountryNotFoundException
 	 * @throws DatabaseIOException
+	 * 
 	 */
 	private Country read(String sql, Object[] params) throws CountryNotFoundException, DatabaseIOException {
 		Country country = null;
@@ -156,6 +165,7 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	 * readAll(int byWorldId).
 	 * 
 	 * @return A collection with the selected countries.
+	 *
 	 * @throws DataAccessException
 	 * 
 	 */
@@ -172,21 +182,22 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	 * 
 	 * This is a wrapper class for the private method:
 	 * readAll(int byWorldId).
-	 * 
-	 * @param byWorld - The world value object.
+	 *
+	 * @param byWorld The world value object.
 	 * @return A collection with the selected countries.
+	 *
 	 * @throws DataAccessException
 	 *  
 	 */
-	public Vector<Country> readAll(ValueObject byVo) throws DataAccessException {
+	public Vector<Country> readAll(ValueObject byWorld) throws DataAccessException {
 		Vector<Country> countries = null;
 		
-		if (byVo instanceof World) {
-			countries = this.readAll((World)byVo);
-		} else if (byVo instanceof Continent) {
-			countries = this.readAll((Continent)byVo);
+		if (byWorld instanceof World) {
+			countries = this.readAll((World)byWorld);
+		} else if (byWorld instanceof Continent) {
+			countries = this.readAll((Continent)byWorld);
 		} else {
-			throw new DataAccessException("There is no method implementation for the given value object: "+byVo.getClass());
+			throw new DataAccessException("There is no method implementation for the given value object: "+byWorld.getClass());
 		}
 		
 		return countries;
@@ -196,9 +207,11 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	 * Reads all countries from the database which are linked
 	 * to the given continent. 
 	 * 
-	 * @param byContinent
+	 * @param byContinent The continent, which all found countries are connected to.
 	 * @return A collection with the selected countries.
+	 *
 	 * @throws DataAccessException
+	 *
 	 */
 	private Vector<Country> readAll(Continent byContinent) throws DataAccessException {
 		try {
@@ -214,9 +227,11 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	 * Reads all countries from the database which are linked
 	 * to the given world.
 	 * 
-	 * @param byWorldId - A int with the world id.
+	 * @param byWorld A world, whose countries should be returned.
 	 * @return A collection with the selected countries.
-	 * @throws DataAccessException 
+	 *
+	 * @throws DataAccessException
+	 * 
 	 */
 	private Vector<Country> readAll(World byWorld) throws DataAccessException {
 		try {
@@ -229,16 +244,18 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	}
 
 	/**
-	 * DOCME
+	 * Reads all country by an given raw sql statement.
 	 * 
-	 * @param sqlKey
-	 * @param params
-	 * @return
+	 * @param sql The raw sql statement.
+	 * @param params The parameters for the sql statement.
+	 * 
+	 * @return A vector with found countries.
 	 * @throws DataAccessException
+	 *
 	 */
 	private Vector<Country> readAll(String sql, Object[] params) throws DataAccessException {
 		Vector<Country> countries = new Vector<Country>();
-		
+
 		try {
 			ResultSet record = this.select(sql, params);
 
@@ -257,7 +274,11 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	}
 	
 	/**
-	 * DOCME
+	 * Deletes a specific country from the database.
+	 * 
+	 * @param candidate The removable country.
+	 * 
+	 * @throws DataAccessException
 	 * 
 	 */
 	@Override
@@ -273,12 +294,17 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 	}
 
 	/**
-	 * DOCME
+	 * Saves a specific country.
 	 * 
+	 * @param candidate The saveable country.
+	 * 
+	 * @throws DataAccessException
+	 * @throws CountryExistsException 
+	 *
 	 */
 	@Override
-	public void save(ValueObject country) throws DataAccessException {
-		Country registrableCountry = (Country)country;
+	public void save(ValueObject candidate) throws CountryExistsException, DataAccessException {
+		Country registrableCountry = (Country)candidate;
 
 		try {
 			try {
@@ -319,12 +345,23 @@ public class CountryHandler extends AbstractDatabaseHandler implements Handler {
 		// The country does not have a player id.
 		// So we read the country object by the given name
 		// to fulfill the referenced country value object.
-		registrableCountry.setId(this.read(registrableCountry.getName()).getId());
-		country = registrableCountry;
+		try {
+			registrableCountry.setId(this.read(registrableCountry.getName()).getId());
+		} catch (CountryNotFoundException e) {
+			// It is not possible, that this exception will be thrown.
+			// We created the country moments before.
+		}
+		candidate = registrableCountry;
 	}
 
 	/**
-	 * DOCME
+	 * Converts a database result set to an
+	 * country value object.
+	 * 
+	 * @param convertable The convertable country result set.
+	 * 
+	 * @throws SQLException
+	 * 
 	 */
 	@Override
 	protected Country resultSetToObject(ResultSet current) throws SQLException {

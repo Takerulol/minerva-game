@@ -32,6 +32,8 @@ package de.hochschule.bremen.minerva.persistence;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.persistence.exceptions.EntryExistsException;
+import de.hochschule.bremen.minerva.persistence.exceptions.EntryNotFoundException;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
 /**
@@ -61,7 +63,7 @@ public interface Handler {
 	 * @throws DataAccessException Common persistence exception
 	 * 
 	 */
-	public ValueObject read(int id) throws DataAccessException;
+	public ValueObject read(int id) throws EntryNotFoundException, DataAccessException;
 
 	/**
 	 * Read a object by name
@@ -71,7 +73,7 @@ public interface Handler {
 	 * @throws DataAccessException Common persistence exception
 	 * 
 	 */
-	public ValueObject read(String name) throws DataAccessException;
+	public ValueObject read(String name) throws EntryNotFoundException, DataAccessException;
 
 	/**
 	 * Reads all objects.
@@ -114,5 +116,5 @@ public interface Handler {
 	 * @throws DataAccessException Common persistence exception
 	 * 
 	 */
-	public void save(ValueObject registrable) throws DataAccessException;
+	public void save(ValueObject registrable) throws EntryExistsException, DataAccessException;
 }

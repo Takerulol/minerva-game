@@ -44,10 +44,13 @@ import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
-//TODO: DOCME of the whole class PlayerHandler and the last method 
-
 /**
- * DOCME
+ * Handler, which provides the functionality to select, save or deletes
+ * players from the database.
+ *
+ * @since 1.0
+ * @version $Id$
+ *
  */
 public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 
@@ -66,13 +69,15 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 	/**
 	 * Reads ONE player with the given id from the database.
 	 * 
-	 * @param id - The player id.
-	 * @return player
-	 * @throws PlayerNotFoundException, PersistenceIOException
+	 * @param id The unique player id.
+	 * @return The found player.
+	 *
+	 * @throws PlayerNotFoundException
+	 * @throws DataAccessExceptiona
 	 * 
 	 */
 	@Override
-	public Player read(int id) throws DataAccessException {
+	public Player read(int id) throws PlayerNotFoundException, DataAccessException {
 		Player player = null;
 		Object[] params = {id};
 
@@ -92,10 +97,14 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 	/**
 	 * Reads ONE player with the given name from the database.
 	 * 
-	 * @param name - The username.
-	 * @return Player object from the database.
+	 * @param name The username from those player we are looking for.
+	 * @return The found player.
+	 *
+	 * @throws PlayerNotFoundException
+	 * @throws DataAccessException
+	 * 
 	 */
-	public Player read(String name) throws DataAccessException {
+	public Player read(String name) throws PlayerNotFoundException, DataAccessException {
 		Player player = null;
 		Object[] params = {name};
 
@@ -113,11 +122,16 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 	}
 
 	/**
-	 * DOCME
+	 * Private method that wraps the select from the database
+	 * functionality. Don't repeat yourself! :)
 	 * 
-	 * @param sql
-	 * @param params - Object array with parameters for the prepared statement.
+	 * @param sql The raw sql statement.
+	 * @param params The sql statement parameters.
+	 * @return The player, which was read from the database.
 	 * 
+	 * @throws PlayerNotFoundException
+	 * @throws DatabaseIOException
+	 *
 	 */
 	private Player read(String sql, Object[] params) throws PlayerNotFoundException, DatabaseIOException {
 		Player player = null;
@@ -141,8 +155,9 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 	/**
 	 * Reads ALL player from the database.
 	 * 
-	 * @return player
+	 * @return A vector with found players
 	 * @throws DataAccessException
+	 *
 	 */
 	@Override
 	public Vector<Player> readAll() throws DataAccessException {
@@ -166,12 +181,12 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 		return players;
 	}
 
-
 	/**
-	 * Method remove to delete attributes of the player in the database.
+	 * Deletes a player.
 	 * 
-	 * @param candidate
-	 * @throws DataAccessException 
+	 * @param candidate The deletable player.
+	 * @throws DataAccessException
+	 * 
 	 */
 	@Override
 	public void remove(ValueObject candidate) throws DataAccessException {
@@ -187,15 +202,16 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 	}
 
 	/**
-	 * Save attributes of the player in the database. 
-	 * If it is a new player, the player will be insert in the database.
-	 * If it is an already existing player, the attributes of the player will be update in the database.
+	 * Save a player. 
 	 * 
-	 * @param player
-	 * @throws PlayerExistsException, PersistenceIOException
+	 * @param player The saveable player.
+	 *
+	 * @throws PlayerExistsException
+	 * @throws DataAccessException
+	 *
 	 */
 	@Override
-	public void save(ValueObject player) throws DataAccessException {
+	public void save(ValueObject player) throws PlayerExistsException, DataAccessException {
 		Player registrablePlayer = (Player)player;
 
 		try {
@@ -238,16 +254,23 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 		// The player does not have a player id.
 		// So we read the player object by the given username
 		// to fulfill the referenced player value object.
-		registrablePlayer.setId(this.read(registrablePlayer.getUsername()).getId());
+		try {
+			registrablePlayer.setId(this.read(registrablePlayer.getUsername()).getId());
+		} catch (PlayerNotFoundException e) {
+			// It is not possible, that this exception will be thrown.
+			// We created the player moments before.
+		}
 		player = registrablePlayer;
 	}
 
 	/**
-	 * Get all attributes of the player from the database.
+	 * Converts a database result set to an
+	 * player value object.
 	 * 
-	 * @param current
+	 * @param convertable The convertable player result set.
+	 * 
 	 * @throws SQLException
-	 * @return player
+	 * 
 	 */
 	@Override
 	protected Player resultSetToObject(ResultSet current) throws SQLException {
@@ -265,15 +288,10 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 	}
 
 	/**
-	 * DOCME
-	 *
-	 * @param reference
-	 * @throws DataAccessException
-	 * @return null
+	 * Not in use. But the interface forces me to declare this method.
+	 * What a pity! Would be great to define a second interface, but, well the time :(
+	 * 
 	 */
 	@Override
-	public Vector<Player> readAll(ValueObject reference) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public Vector<Player> readAll(ValueObject reference) throws DataAccessException {return null;}
 }

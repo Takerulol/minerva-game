@@ -41,17 +41,30 @@ import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateR
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
-
+/**
+ * The abstract database handler, which every database handler should inherit from.
+ * Provides database connection handling, sending sql statements and so on.
+ * 
+ * @since 1.0
+ * @version $Id$
+ *
+ */
 public abstract class AbstractDatabaseHandler {
 	
 	private static Connection connection = null;
 
-	// TODO: Move this data to the 'config.ini'
 	private static String databaseName = "database";
 	private static String databaseDriver = "org.apache.derby.jdbc.EmbeddedDriver";
-	
+
+	private static String ERROR_DB_DRIVER = "The database driver wasn't found. What about the driver jar? Is it available?";
+	private static String ERROR_DB_LOCKED = "Unable to connect to the specified database. Is it locked? Is the 'sqlexplorer' currently running? ;)";
+	private static String ERROR_DB_DISCONNECT_FAILED = "Unable to disconnect from the database.";
+
 	/**
-	 * DOCME
+	 * Creates an database connection.
+	 * 
+	 * @throws DatabaseConnectionException
+	 *
 	 */
 	private void connect() throws DatabaseConnectionException {
 		try {
@@ -60,19 +73,21 @@ public abstract class AbstractDatabaseHandler {
 				AbstractDatabaseHandler.connection = DriverManager.getConnection("jdbc:derby:"+AbstractDatabaseHandler.databaseName+";create=true");
 			}
 		} catch (InstantiationException e) {
-			throw new DatabaseConnectionException("Problem occured while database driver init.");
+			throw new DatabaseConnectionException(e.getMessage());
 		} catch (IllegalAccessException e) {
-			throw new DatabaseConnectionException();
+			throw new DatabaseConnectionException(e.getMessage());
 		} catch (ClassNotFoundException e) {
-			throw new DatabaseConnectionException("The database driver wasn't found. What about the driver jar? Is it available?");
+			throw new DatabaseConnectionException(ERROR_DB_DRIVER);
 		} catch (SQLException e) {
-			throw new DatabaseConnectionException("Unable to connect to the specified database. Is it locked? Is the 'sqlexplorer' currently running? ;)");
+			throw new DatabaseConnectionException(ERROR_DB_LOCKED);
 		}
 	}
 
 	/**
-	 * DOCME
+	 * Disconnects an active database connection.
 	 * 
+	 * @throws DatabaseConnectionException
+	 *
 	 */
 	public void disconnect() throws DatabaseConnectionException {
 		try {
@@ -80,14 +95,18 @@ public abstract class AbstractDatabaseHandler {
 				AbstractDatabaseHandler.connection.close();
 			}
 		} catch (SQLException e) {
-			throw new DatabaseConnectionException("Database disconnect failed.");
+			throw new DatabaseConnectionException(ERROR_DB_DISCONNECT_FAILED);
 		}
 	}
 
 	/**
-	 * DOCME
-	 * @param sql
-	 * @param params
+	 * Creates a prepared statements.
+	 * 
+	 * @param sql Raw sql statement.
+	 * @param params Parameters, which are insertable into the sql statement.
+	 * 
+	 * @throws SQLException
+	 * 
 	 */
 	private PreparedStatement createPreparedStatement(String sql, Object[] params) throws SQLException {
 		PreparedStatement statement = AbstractDatabaseHandler.connection.prepareStatement(sql);
@@ -110,10 +129,13 @@ public abstract class AbstractDatabaseHandler {
 	}
 
 	/**
+	 * Executes an sql select statement.
 	 * 
-	 * @param sql
-	 * @return
+	 * @param sql The executable sql statement.
+	 * @return The result set
+	 * 
 	 * @throws DatabaseIOException
+	 * 
 	 */
 	protected ResultSet select(String sql) throws DatabaseIOException {
 		this.connect();
@@ -128,11 +150,14 @@ public abstract class AbstractDatabaseHandler {
 	}
 	
 	/**
-	 * DOCME
+	 * Executes an prepared sql select statement.
 	 * 
-	 * @param sql
-	 * @return
-	 * @throws Exception
+	 * @param sql The executable raw sql statement.
+	 * @param params The parameters for the sql statement.
+	 * @return The result set.
+	 * 
+	 * @throws DatabaseIOException
+	 * 
 	 */
 	protected ResultSet select(String sql, Object[] params) throws DatabaseIOException {
 		this.connect();
@@ -148,10 +173,13 @@ public abstract class AbstractDatabaseHandler {
 	}
 
 	/**
-	 * DOCME
+	 * Executes an prepared sql insert statement.
 	 * 
-	 * @param sql
-	 * @throws Exception
+	 * @param sql The executable raw sql statement.
+	 * @param params The parameters for the sql statement.
+	 * 
+	 * @throws DatabaseIOException
+	 * 
 	 */
 	protected void insert(String sql, Object[] params) throws DatabaseIOException {
 		this.connect();
@@ -175,10 +203,13 @@ public abstract class AbstractDatabaseHandler {
 	}
 
 	/**
-	 * DOCME
+	 * Executes an prepared sql update statement.
 	 * 
-	 * @param sql
-	 * @throws Exception
+	 * @param sql The executable raw sql statement.
+	 * @param params The parameters for the sql statement.
+	 * 
+	 * @throws DatabaseIOException
+	 * 
 	 */
 	protected void update(String sql, Object[] params) throws DatabaseIOException {
 		this.connect();
@@ -203,10 +234,13 @@ public abstract class AbstractDatabaseHandler {
 	}
 
 	/**
-	 * DOCME
+	 * Executes an prepared sql delete statement.
 	 * 
-	 * @param sql
-	 * @throws Exception
+	 * @param sql The executable raw sql statement.
+	 * @param params The parameters for the sql statement.
+	 * 
+	 * @throws DatabaseIOException
+	 * 
 	 */
 	protected void delete(String sql, Object[] params) throws DatabaseIOException {
 		this.connect();
@@ -219,6 +253,15 @@ public abstract class AbstractDatabaseHandler {
 		}
 	}
 	
-	// DOCME
-	protected abstract ValueObject resultSetToObject(ResultSet current) throws SQLException;
+	/**
+	 * Converter method, which every handler should implement.
+	 * Converts an given result set into an value object.
+	 * 
+	 * @param convertable The convertable result set.
+	 * @return The converted value object.
+	 *
+	 * @throws SQLException
+	 *
+	 */
+	protected abstract ValueObject resultSetToObject(ResultSet convertable) throws SQLException;
 }

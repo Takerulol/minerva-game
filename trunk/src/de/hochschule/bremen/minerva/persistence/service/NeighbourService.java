@@ -32,6 +32,8 @@ package de.hochschule.bremen.minerva.persistence.service;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Handler;
+import de.hochschule.bremen.minerva.persistence.exceptions.EntryExistsException;
+import de.hochschule.bremen.minerva.persistence.exceptions.NeighbourExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.NeighbourNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.EntryNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
@@ -104,7 +106,11 @@ public class NeighbourService extends PersistenceService {
 	 */
 	@Override
 	public Neighbour find(int id) throws NeighbourNotFoundException, DataAccessException {
-		return (Neighbour)handler.read(id);
+		try {
+			return (Neighbour)handler.read(id);
+		} catch (EntryNotFoundException e) {
+			throw new NeighbourNotFoundException(e.getMessage());
+		}
 	}
 
 	/**
@@ -112,12 +118,17 @@ public class NeighbourService extends PersistenceService {
 	 * 
 	 * @param candidate The saveable neighbour.
 	 *
+	 * @throws NeighbourExistsException 
 	 * @throws DataAccessException Common persistence exception. 
 	 * 
 	 */
 	@Override
-	public void save(ValueObject candidate) throws DataAccessException {
-		handler.save((Neighbour)candidate);
+	public void save(ValueObject candidate) throws NeighbourExistsException, DataAccessException {
+		try {
+			handler.save((Neighbour)candidate);
+		} catch (EntryExistsException e) {
+			throw new NeighbourExistsException(e.getMessage());
+		}
 	}
 
 	/**

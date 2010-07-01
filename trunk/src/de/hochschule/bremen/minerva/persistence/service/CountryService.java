@@ -35,6 +35,8 @@ import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.exceptions.CountryExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.CountryNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.persistence.exceptions.EntryExistsException;
+import de.hochschule.bremen.minerva.persistence.exceptions.EntryNotFoundException;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
@@ -121,7 +123,11 @@ public class CountryService extends PersistenceService {
 	 * 
 	 */
 	public Country find(int id) throws CountryNotFoundException, DataAccessException {
-		return (Country)handler.read(id);
+		try {
+			return (Country)handler.read(id);
+		} catch (EntryNotFoundException e) {
+			throw new CountryNotFoundException(e.getMessage());
+		}
 	}
 
 	/**
@@ -139,7 +145,11 @@ public class CountryService extends PersistenceService {
 	 * 
 	 */
 	public Country find(String name) throws CountryNotFoundException, DataAccessException {
-		return (Country)handler.read(name);
+		try {
+			return (Country)handler.read(name);
+		} catch (EntryNotFoundException e) {
+			throw new CountryNotFoundException(e.getMessage());
+		}
 	}
 	
 	/**
@@ -153,7 +163,11 @@ public class CountryService extends PersistenceService {
 	 */
 	@Override
 	public void save(ValueObject candidate) throws CountryExistsException, DataAccessException {
-		handler.save((Country)candidate);
+		try {
+			handler.save((Country)candidate);
+		} catch (EntryExistsException e) {
+			throw new CountryExistsException(e.getMessage());
+		}
 	}
 
 	/**

@@ -27,28 +27,21 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.persistence.exceptions;
+package de.hochschule.bremen.minerva.exceptions;
 
-public class EntryNotFoundException extends Exception {
+/**
+ * Exception that will be thrown if it is not possible to
+ * store an world (e. g. hurt a unique-constraint, etc.).
+ *  
+ * @since 1.0
+ * @version $Id$
+ *
+ */
+public class WorldNotStorable extends Exception {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4900106725076031969L;
+	private static final long serialVersionUID = 8868184972756654993L;
 
-	/**
-	 * DOCME
-	 * 
-	 */
-	public EntryNotFoundException() {
-		super();
-	}
-
-	/**
-	 * DOCME
-	 * @param message
-	 */
-	public EntryNotFoundException(String message) {
-		super(message);
+	public WorldNotStorable(String reason) {
+		super("Beim Speichern einer Welt ist ein schwerwiegender Fehler aufgetreten. Grund: "+reason);
 	}
 }
