@@ -43,26 +43,8 @@ import de.hochschule.bremen.minerva.util.HashTool;
  */
 public class SessionManager {
 
-	private static SessionManager instance = null;
-	
-	private HashMap<String, Game> sessions = new HashMap<String, Game>();
+	private static HashMap<String, Game> SESSIONS = new HashMap<String, Game>();
 
-	private SessionManager() {}
-
-	/**
-	 * Singleton pattern. It is not possible
-	 * to create a SessionManager in the common way.
-	 * So this constructor is private.
-	 * 
-	 */
-	public static SessionManager getInstance() {
-		if (SessionManager.instance == null) {
-			SessionManager.instance = new SessionManager();
-		}
-		
-		return SessionManager.instance;
-	}
-	
 	/**
 	 * DOCME
 	 * 
@@ -70,10 +52,10 @@ public class SessionManager {
 	 * @return
 	 * 
 	 */
-	public String set(Game game) {
+	public static String set(Game game) {
 		String sessionId = SessionManager.generateSessionId();
 		
-		this.sessions.put(sessionId, game);
+		SessionManager.SESSIONS.put(sessionId, game);
 		return sessionId;
 	}
 
@@ -84,32 +66,12 @@ public class SessionManager {
 	 * @return
 	 * 
 	 */
-	public Game get(String sessionId) {
-		return this.sessions.get(sessionId);
+	public static Game get(String sessionId) {
+		return SESSIONS.get(sessionId);
 	}
 
 	/**
-	 * Returns the first game session.
-	 * 
-	 * @return The first available game session.
-	 * 
-	 */
-	public Game getFirst() {
-		return (Game)this.sessions.values().toArray()[0];
-	}
-
-	/**
-	 * Are some session available?
-	 * 
-	 * @return boolean
-	 * 
-	 */
-	public boolean sessionsExist() {
-		return (this.sessions.size() > 0);
-	}
-
-	/**
-	 * Generates unique session id's.
+	 * Generates unique session ids.
 	 * 
 	 * @return The session id.
 	 * 
