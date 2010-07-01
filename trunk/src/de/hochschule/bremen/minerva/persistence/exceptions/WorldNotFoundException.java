@@ -29,7 +29,7 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
-public class WorldNotFoundException extends NotFoundException {
+public class WorldNotFoundException extends EntryNotFoundException {
 
 	/**
 	 * DOCME

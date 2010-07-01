@@ -29,18 +29,18 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
-public class NotFoundException extends DataAccessException {
+public class EntryExistsException extends DataAccessException {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4900106725076031969L;
+	private static final long serialVersionUID = 652826129764031926L;
 
 	/**
 	 * DOCME
 	 * 
 	 */
-	public NotFoundException() {
+	public EntryExistsException() {
 		super();
 	}
 
@@ -48,7 +48,7 @@ public class NotFoundException extends DataAccessException {
 	 * DOCME
 	 * @param message
 	 */
-	public NotFoundException(String message) {
+	public EntryExistsException(String message) {
 		super(message);
 	}
 }

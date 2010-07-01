@@ -30,7 +30,7 @@
 
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
-public class PlayerNotFoundException extends NotFoundException {
+public class PlayerNotFoundException extends EntryNotFoundException {
 
 	/**
 	 * DOCME

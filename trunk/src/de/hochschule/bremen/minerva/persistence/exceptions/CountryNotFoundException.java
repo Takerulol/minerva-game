@@ -29,7 +29,7 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
-public class CountryNotFoundException extends NotFoundException {
+public class CountryNotFoundException extends EntryNotFoundException {
 
 	/**
 	 * DOCME
