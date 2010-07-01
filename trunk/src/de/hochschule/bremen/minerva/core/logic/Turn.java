@@ -28,7 +28,7 @@
  * 
  */
 
-package de.hochschule.bremen.minerva.core;
+package de.hochschule.bremen.minerva.core.logic;
 
 import java.util.Collections;
 import java.util.Vector;

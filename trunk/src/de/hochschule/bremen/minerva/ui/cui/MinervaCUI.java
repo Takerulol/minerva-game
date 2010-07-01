@@ -35,9 +35,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Vector;
 
-import de.hochschule.bremen.minerva.core.AttackResult;
-import de.hochschule.bremen.minerva.core.Game;
-import de.hochschule.bremen.minerva.core.Turn;
+import de.hochschule.bremen.minerva.core.logic.AttackResult;
+import de.hochschule.bremen.minerva.core.logic.Game;
+import de.hochschule.bremen.minerva.core.logic.Turn;
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotReadableException;
 import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;

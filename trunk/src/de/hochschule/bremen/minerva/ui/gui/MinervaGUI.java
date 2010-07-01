@@ -38,7 +38,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import de.hochschule.bremen.minerva.core.Game;
+import de.hochschule.bremen.minerva.core.logic.Game;
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotReadableException;
 import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;

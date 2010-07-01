@@ -40,8 +40,8 @@ import java.util.Map;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 
-import de.hochschule.bremen.minerva.core.Game;
-import de.hochschule.bremen.minerva.core.Turn;
+import de.hochschule.bremen.minerva.core.logic.Game;
+import de.hochschule.bremen.minerva.core.logic.Turn;
 import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
 import de.hochschule.bremen.minerva.exceptions.CountryOwnerException;
 import de.hochschule.bremen.minerva.exceptions.IsOwnCountryException;
