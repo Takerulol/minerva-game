@@ -37,7 +37,7 @@ import java.util.Vector;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 import de.hochschule.bremen.minerva.vo.World;
 import de.hochschule.bremen.minerva.persistence.Handler;
-import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
+import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateRecordException;
@@ -63,10 +63,10 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 
 	/**
 	 * DOCME
-	 * @throws PersistenceException 
+	 * @throws DataAccessException 
 	 * 
 	 */
-	public World read(int id) throws PersistenceException {
+	public World read(int id) throws DataAccessException {
 		World world = new World();
 		Object[] params = {id};
 		
@@ -75,7 +75,7 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 		} catch (WorldNotFoundException e) {
 			throw new WorldNotFoundException("The world with the id '"+id+"' wasn't found.");
 		} catch (DatabaseIOException e) {
-			throw new PersistenceException("Error occurred while reading "
+			throw new DataAccessException("Error occurred while reading "
                     + "the world (id=" + id +") "
                     + "from the database. Reason: "+e.getMessage());
 		}
@@ -87,7 +87,7 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 	 * DOCME
 	 * 
 	 */
-	public World read(String name) throws PersistenceException {
+	public World read(String name) throws DataAccessException {
 		World world = new World();
 		Object[] params = {name};
 
@@ -96,7 +96,7 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 		} catch (WorldNotFoundException e) {
 			throw new WorldNotFoundException("The world '"+name+"' wasn't found.");
 		} catch (DatabaseIOException e) {
-			throw new PersistenceException("Error occurred while reading "
+			throw new DataAccessException("Error occurred while reading "
 					                       + "the world '" + name +"' "
 					                       + "from the database. Reason: "+e.getMessage());
 		}
@@ -140,7 +140,7 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 	 * 
 	 */
 	@Override
-	public Vector<World> readAll() throws PersistenceException {
+	public Vector<World> readAll() throws DataAccessException {
 		Vector<World> worlds = new Vector<World>();
 
 		try {
@@ -152,9 +152,9 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 
 			record.close();
 		} catch (DatabaseIOException e) {
-			throw new PersistenceException(e.getMessage());
+			throw new DataAccessException(e.getMessage());
 		} catch (SQLException e) {
-			throw new PersistenceException("Error occurred while receiving a world list from the database: "
+			throw new DataAccessException("Error occurred while receiving a world list from the database: "
 											 +e.getMessage()+" - "+e.getErrorCode());
 		}
 
@@ -162,7 +162,7 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 	}
 
 	@Override
-	public void save(ValueObject world) throws PersistenceException {
+	public void save(ValueObject world) throws DataAccessException {
 		World registrableWorld = (World)world;
 
 		try {
@@ -203,7 +203,7 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 					+"world '"+registrableWorld.getName()+"'. There is already "
 					+"a similar one.");
 		} catch (DatabaseIOException e) {
-			throw new PersistenceException("Unable to serialize the world '"+registrableWorld.getName()+"'. Reason: "+e.getMessage());
+			throw new DataAccessException("Unable to serialize the world '"+registrableWorld.getName()+"'. Reason: "+e.getMessage());
 		}
 
 		// The player does not have a player id.
@@ -218,14 +218,14 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 	 * 
 	 */
 	@Override
-	public void remove(ValueObject candidate) throws PersistenceException {
+	public void remove(ValueObject candidate) throws DataAccessException {
 		World deletableWorld = (World)candidate;
 		Object[] params = {deletableWorld.getId()};
 
 		try {
 			this.delete(sql.get("delete"), params);
 		} catch (DatabaseIOException e) {
-			throw new PersistenceException(e.getMessage());
+			throw new DataAccessException(e.getMessage());
 		}
 	}
 
@@ -258,7 +258,7 @@ public class WorldHandler extends AbstractDatabaseHandler implements Handler {
 	 *  
 	 */
 	@Override
-	public Vector<? extends ValueObject> readAll(ValueObject referencedCountry) throws PersistenceException {		
+	public Vector<? extends ValueObject> readAll(ValueObject referencedCountry) throws DataAccessException {		
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -29,7 +29,7 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
-public class PersistenceException extends Exception {
+public class DataAccessException extends Exception {
 	
 	/**
 	 * DOCME
@@ -41,7 +41,7 @@ public class PersistenceException extends Exception {
 	 * DOCME
 	 * 
 	 */
-	public PersistenceException() {
+	public DataAccessException() {
 		super();
 	}
 
@@ -49,7 +49,7 @@ public class PersistenceException extends Exception {
 	 * DOCME
 	 * @param message
 	 */
-	public PersistenceException(String message) {
+	public DataAccessException(String message) {
 		super(message);
 	}
 }
