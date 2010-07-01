@@ -88,7 +88,7 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 		} catch (DatabaseIOException e) {
 			throw new PersistenceException("Error occurred while reading "
 					                       + "the player (id=" + id +") "
-					                       + "from the database. Reason: "+e.getMessage());
+					                       + "from the database.\nReason: "+e.getMessage());
 		}
 
 		return player;
@@ -115,7 +115,7 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 		} catch (DatabaseIOException e) {
 			throw new PersistenceException("Error occurred while reading "
 					                       + "the player (username=" + name +") "
-					                       + "from the database. Reason: "+e.getMessage());
+					                       + "from the database.\nReason: "+e.getMessage());
 		}
 		
 		return player;
@@ -248,7 +248,7 @@ public class PlayerHandler extends AbstractDatabaseHandler implements Handler {
 					+"player: '"+registrablePlayer.getUsername()+"'. There is already "
 					+"a similar one.");
 		} catch (DatabaseIOException e) {
-			throw new PersistenceException("Unable to serialize the player: '"+registrablePlayer.getUsername()+"'. Reason: "+e.getMessage());			
+			throw new PersistenceException("Unable to serialize the player: '"+registrablePlayer.getUsername()+"'.\nReason: "+e.getMessage());			
 		}
 
 		// The player does not have a player id.

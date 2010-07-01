@@ -47,6 +47,6 @@ public class DatabaseConnectionException extends DatabaseIOException {
 	 * 
 	 */
 	public DatabaseConnectionException(String reason) {
-		super("Database connection exception. Reason: "+reason);
+		super("Database connection exception.\nReason: "+reason);
 	}
 }

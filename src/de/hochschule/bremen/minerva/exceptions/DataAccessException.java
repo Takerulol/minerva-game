@@ -33,8 +33,14 @@ public class DataAccessException extends Exception {
 
 	private static final long serialVersionUID = -5068821212470257120L;
 
+	/**
+	 * A common data access error occurred.
+	 * 
+	 * @param message The reason.
+	 * 
+	 */
 	public DataAccessException(String message) {
-		super(message);
+		super("Beim Zugriff auf gespeicherte Daten ist ein schwerwiegender Fehler aufgetreten: \n\n"+message);
 	}
 
 }
