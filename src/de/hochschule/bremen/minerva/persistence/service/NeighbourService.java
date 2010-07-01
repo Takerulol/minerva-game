@@ -33,7 +33,7 @@ import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.exceptions.NeighbourNotFoundException;
-import de.hochschule.bremen.minerva.persistence.exceptions.NotFoundException;
+import de.hochschule.bremen.minerva.persistence.exceptions.EntryNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Neighbour;
@@ -142,5 +142,5 @@ public class NeighbourService extends PersistenceService {
 	 * 
 	 */
 	@Override
-	public ValueObject find(String name) throws NotFoundException, DataAccessException {return null;}
+	public ValueObject find(String name) throws EntryNotFoundException, DataAccessException {return null;}
 }
