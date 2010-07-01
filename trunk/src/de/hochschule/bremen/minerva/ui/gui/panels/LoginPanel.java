@@ -190,9 +190,9 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 			} catch (WrongPasswordException e) {
 				MMessageBox.error(e.getMessage());
 			} catch (PlayerDoesNotExistException e) {
-				MMessageBox.error(e.getMessage());
+				MMessageBox.show(e.getMessage());
 			} catch (DataAccessException e) {
-				MMessageBox.error(e.getMessage());
+				MMessageBox.show(e.getMessage());
 				Runtime.getRuntime().exit(ERROR);
 			}
 
@@ -209,7 +209,7 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 
 					MinervaGUI.getInstance().changePanel(new GameInitPanel());
 				} catch (GameAlreadyStartedException e) {
-					MMessageBox.error(e.getMessage());
+					MMessageBox.show(e.getMessage());
 				}
 			}
 
