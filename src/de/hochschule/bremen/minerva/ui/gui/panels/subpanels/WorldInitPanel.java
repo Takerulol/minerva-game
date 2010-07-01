@@ -82,7 +82,7 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 		
 		// - initialize miglayout manager
 		this.setBorder(BorderFactory.createEmptyBorder());
-		this.setLayout(new MigLayout("fillx", "[]10[]"));
+		this.setLayout(new MigLayout("wrap", "[]10[]"));
 		this.setOpaque(false);
 		
 		// - introduction
@@ -90,7 +90,7 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 		introduction.setText(WORLD_INIT_PANEL_INTRODUCTION.replace("{gm}", gamemaster.getFirstName()));
 		introduction.setFont(FONT);
 		introduction.setForeground(FONT_COLOR_DEFAULT);
-		this.add(introduction, "span, width ::300");
+		this.add(introduction, "span, shrink");
 		
 		// - world selector
 		JLabel selectorLabel = new JLabel();
@@ -107,38 +107,37 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 		this.add(this.worldComboBox, "wrap 30");
 		
 		// - world info
+		JPanel worldInfo = new JPanel();
+		worldInfo.setLayout(new MigLayout("fillx", "[]10[]"));
+
 		this.currentWorldThumbnail.setText("ICO");
-		this.add(this.currentWorldThumbnail, "span 1 5, gapright 10");
+		worldInfo.add(this.currentWorldThumbnail, "span 1 5, gapright 10");
 		
 		this.currentWorldName.setFont(new Font(FONT.getFamily(), Font.BOLD, FONT.getSize()));
 		this.currentWorldName.setForeground(Color.WHITE);
-		this.add(this.currentWorldName, "gaptop 20, wrap 5");
+		worldInfo.add(this.currentWorldName, "wrap");
 		
 		this.currentWorldDescription.setFont(FONT);
-		this.add(this.currentWorldDescription, "width ::200, wrap 20");
+		worldInfo.add(this.currentWorldDescription, "grow, wrap");
 		
-		JLabel worldVersionLabel = new JLabel(WORLD_INIT_PANEL_VERSION);
-		worldVersionLabel.setFont(FONT);
-		this.add(worldVersionLabel);
-
 		this.currentWorldVersion.setFont(FONT);
-		this.add(this.currentWorldVersion, "span, wrap 10");
-
-		JLabel worldAuthorLabel = new JLabel(WORLD_INIT_PANEL_AUTHOR);
-		worldAuthorLabel .setFont(FONT);
-		this.add(worldAuthorLabel );
+		worldInfo.add(this.currentWorldVersion, "span, wrap 10");
 
 		this.currentWorldAuthor.setFont(FONT);
-		this.add(this.currentWorldAuthor, "span, wrap 5");
+		worldInfo.add(this.currentWorldAuthor, "span, wrap 5");
+
+		worldInfo.setBackground(new Color(14, 15, 17));
+		worldInfo.setBorder(BorderFactory.createLineBorder(new Color(35, 36, 40)));
+		this.add(worldInfo, "span");
 
 		this.addListeners();
-		
+
 		this.fillWorldInfo();
 	}
 	
 	/**
 	 * Returns the selected world object.
-	 * 
+	 *
 	 * @return The selected world object.
 	 * 
 	 */
@@ -156,8 +155,8 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 		
 		this.currentWorldName.setText(selectedWorld.getName());
 		this.currentWorldDescription.setText(selectedWorld.getDescription());
-		this.currentWorldVersion.setText(selectedWorld.getVersion());
-		this.currentWorldAuthor.setText(selectedWorld.getAuthor());
+		this.currentWorldVersion.setText(WORLD_INIT_PANEL_VERSION + " " + selectedWorld.getVersion());
+		this.currentWorldAuthor.setText(WORLD_INIT_PANEL_AUTHOR + " " + selectedWorld.getAuthor());
 	}
 
 	private void addListeners() {
