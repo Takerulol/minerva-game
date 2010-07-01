@@ -44,8 +44,12 @@ import de.hochschule.bremen.minerva.vo.Continent;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
 /**
- * DOCME
- * 
+ * Handler, which provides the functionality to select, save or deletes
+ * continents from the database.
+ *
+ * @since 1.0
+ * @version $Id$
+ *
  */
 public class ContinentHandler extends AbstractDatabaseHandler implements Handler {
 
@@ -63,13 +67,15 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 	/**
 	 * Reads ONE continent from the database by the given id.
 	 * 
-	 * @param id - The continent id.
+	 * @param id The continent id.
 	 * @return The continent value object.
-	 * @throws ContinentNotFoundException which is a PersistenceIOException
+	 * 
+	 * @throws ContinentNotFoundException
+	 * @throws DataAccessException
 	 * 
 	 */
 	@Override
-	public Continent read(int id) throws DataAccessException {
+	public Continent read(int id) throws ContinentNotFoundException, DataAccessException {
 		Continent continent = null;
 		Object[] params = {id};
 
@@ -89,12 +95,14 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 	/**
 	 * Reads ONE continent from the database by the given name.
 	 * 
-	 * @param name - The continent name.
+	 * @param name The continent name.
 	 * @return The continent value object
-	 * @throws ContinentNotFoundException which is a PersistenceIOException
+	 *
+	 * @throws ContinentNotFoundException
+	 * @throws DataAccessException Common persistence io exception
 	 * 
 	 */
-	public Continent read(String name) throws DataAccessException {
+	public Continent read(String name) throws ContinentNotFoundException, DataAccessException {
 		Continent continent = null;
 		Object[] params = {name};
 
@@ -112,12 +120,16 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 	}
 
 	/**
-	 * DOCME
+	 * Private method that wraps the select from the database
+	 * functionality. Don't repeat yourself! :)
 	 * 
-	 * @param sql
-	 * @param params
-	 * @return
+	 * @param sql The raw sql statement.
+	 * @param params The sql statement parameters.
+	 * @return The continent, which was read from the database.
+	 * 
 	 * @throws ContinentNotFoundException
+	 * @throws DatabaseIOException
+	 * 
 	 */
 	private Continent read(String sql, Object[] params) throws ContinentNotFoundException, DatabaseIOException {
 		Continent continent = null;
@@ -139,7 +151,11 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 	}
 	
 	/**
-	 * DOCME
+	 * Reads all continents from the database.
+	 * 
+	 * @return A vector with continent value objects.
+	 * 
+	 * @throws DataAccessException
 	 * 
 	 */
 	@Override
@@ -167,11 +183,16 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 	}
 
 	/**
-	 * DOCME
+	 * Persists a continent in the database.
+	 * 
+	 * @param registrable The registrable continent.
+	 * 
+	 * @throws ContinentExistsException 
+	 * @throws DataAccessException
 	 * 
 	 */
 	@Override
-	public void save(ValueObject registrable) throws DataAccessException {
+	public void save(ValueObject registrable) throws ContinentExistsException, DataAccessException {
 		Continent registrableContinent = (Continent)registrable;
 
 		try {
@@ -201,12 +222,21 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 		// The continent does not have a continent id.
 		// So we read the continent object by the given name
 		// to fulfill the referenced continent value object.
-		registrableContinent.setId(this.read(registrableContinent.getName()).getId());
+		try {
+			registrableContinent.setId(this.read(registrableContinent.getName()).getId());
+		} catch (ContinentNotFoundException e) {
+			// It is not possible, that this exception will be thrown. We created the
+			// continent moments before.
+		}
 		registrable = registrableContinent;
 	}
 
 	/**
-	 * DOCME
+	 * Deletes a specific continent.
+	 * 
+	 * @param candidate The saveable continent
+	 * 
+	 * @throws DataAccessException
 	 * 
 	 */
 	@Override
@@ -223,15 +253,20 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 	}
 
 	/**
-	 * DOCME
+	 * Converts a database result set to an continent
+	 * value object.
+	 * 
+	 * @param convertable The convertable continent result set.
+	 * 
+	 * @throws SQLException
 	 * 
 	 */
 	@Override
-	protected Continent resultSetToObject(ResultSet current) throws SQLException {
+	protected Continent resultSetToObject(ResultSet convertable) throws SQLException {
 		Continent continent = new Continent();
 		
-		continent.setId(current.getInt(1));
-		continent.setName(current.getString(2));
+		continent.setId(convertable.getInt(1));
+		continent.setName(convertable.getString(2));
 
 		return continent;
 	}
@@ -239,6 +274,7 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 	/**
 	 * TODO: This method is not necessary. Please check the interface
 	 * design to avoid such unused methods.
+	 * There is no way to declare optional method (makes no sense) or something.
 	 *  
 	 */
 	@Override

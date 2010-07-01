@@ -44,6 +44,14 @@ import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Neighbour;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
+/**
+ * Handler, which provides the functionality to select, save or deletes
+ * neighbours from the database.
+ *
+ * @since 1.0
+ * @version $Id$
+ *
+ */
 public class NeighbourHandler extends AbstractDatabaseHandler implements Handler {
 
 	private final static HashMap<String, String> sql = new HashMap<String, String>();
@@ -56,11 +64,17 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 	}
 
 	/**
-	 * DOCME
+	 * Reads ONE neighbour from the database by the given id.
+	 * 
+	 * @param id The neighbour country id.
+	 * @return The neighbour value object.
+	 * 
+	 * @throws NeighbourNotFoundException
+	 * @throws DataAccessException
 	 * 
 	 */
 	@Override
-	public ValueObject read(int countryId) throws DataAccessException {
+	public ValueObject read(int countryId) throws NeighbourNotFoundException, DataAccessException {
 		Neighbour neighbour = null;
 		Object[] params = {countryId};
 
@@ -78,10 +92,15 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 	}
 
 	/**
-	 * DOCME
+	 * Private method that wraps the select from the database
+	 * functionality. Don't repeat yourself! :)
 	 * 
-	 * @param sql
-	 * @param params - Object array with parameters for the prepared statement.
+	 * @param sql The raw sql statement.
+	 * @param params The sql statement parameters.
+	 * @return The neighbour, which was read from the database.
+	 * 
+	 * @throws NeighbourNotFoundException
+	 * @throws DatabaseIOException
 	 * 
 	 */
 	private Neighbour read(String sql, Object[] params) throws NeighbourNotFoundException, DatabaseIOException {
@@ -105,6 +124,11 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 
 	/**
 	 * Reads all neighbours by a given reference country
+	 * 
+	 * @param referencedCountry The country whose neighbours we are looking for.
+	 * @return A vector with all neighbours.
+	 *
+	 * @throws DataAccessException
 	 * 
 	 */
 	@Override
@@ -136,8 +160,17 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 		return neighbours;
 	}
 
+	/**
+	 * Saves a neighbour-country mapping.
+	 * 
+	 * @param registrable The registrable neighbour value object.
+	 * 
+	 * @throws NeighbourExistsException
+	 * @throws DataAccessException
+	 * 
+	 */
 	@Override
-	public void save(ValueObject registrable) throws DataAccessException {
+	public void save(ValueObject registrable) throws NeighbourExistsException, DataAccessException {
 		Neighbour registrableNeighbour = (Neighbour)registrable;
 
 		try {
@@ -173,7 +206,12 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 	}
 	
 	/**
-	 * DOCME
+	 * Converts a database result set to an
+	 * neighbour value object.
+	 * 
+	 * @param convertable The convertable neighbour result set.
+	 * 
+	 * @throws SQLException
 	 * 
 	 */
 	@Override
@@ -189,21 +227,27 @@ public class NeighbourHandler extends AbstractDatabaseHandler implements Handler
 		return neighbour;
 	}
 
+	/**
+	 * Not in use. But the interface forces me to declare this method.
+	 * What a pity! Would be great to define a second interface, but, well the time :(
+	 * 
+	 */
 	@Override
-	public Vector<? extends ValueObject> readAll() throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public Vector<? extends ValueObject> readAll() throws DataAccessException {return null;}
 
+	/**
+	 * Not in use. But the interface forces me to declare this method.
+	 * What a pity! Would be great to define a second interface, but, well the time :(
+	 * 
+	 */
 	@Override
-	public void remove(ValueObject candidate) throws DataAccessException {
-		// TODO Auto-generated method stub
-		
-	}
+	public void remove(ValueObject candidate) throws DataAccessException {}
 
+	/**
+	 * Not in use. But the interface forces me to declare this method.
+	 * What a pity! Would be great to define a second interface, but, well the time :(
+	 * 
+	 */
 	@Override
-	public ValueObject read(String name) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public ValueObject read(String name) throws DataAccessException {return null;}
 }

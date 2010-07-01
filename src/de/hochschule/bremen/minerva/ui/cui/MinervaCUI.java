@@ -54,6 +54,7 @@ import de.hochschule.bremen.minerva.exceptions.WorldFileExtensionException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileParseException;
 import de.hochschule.bremen.minerva.exceptions.WorldNotDefinedException;
+import de.hochschule.bremen.minerva.exceptions.WorldNotStorable;
 import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.vo.CavalerieCard;
 import de.hochschule.bremen.minerva.vo.Country;
@@ -184,6 +185,9 @@ public class MinervaCUI implements UserInterface {
 				this.importWorld(false);
 			} catch (DataAccessException e) {
 				this.error("Es ist ein allgemeiner Persistenzfehler aufgetreten: "+e.getMessage());
+				Runtime.getRuntime().exit(0);
+			} catch (WorldNotStorable e) {
+				this.error(e.getMessage());
 				Runtime.getRuntime().exit(0);
 			}
 		}

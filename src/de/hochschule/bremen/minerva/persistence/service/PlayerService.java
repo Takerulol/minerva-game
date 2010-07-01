@@ -32,6 +32,8 @@ package de.hochschule.bremen.minerva.persistence.service;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Handler;
+import de.hochschule.bremen.minerva.persistence.exceptions.EntryExistsException;
+import de.hochschule.bremen.minerva.persistence.exceptions.EntryNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
@@ -106,7 +108,11 @@ public class PlayerService extends PersistenceService {
 	 */
 	@Override
 	public Player find(int id) throws PlayerNotFoundException, DataAccessException {
-		return (Player)handler.read(id);
+		try {
+			return (Player)handler.read(id);
+		} catch (EntryNotFoundException e) {
+			throw new PlayerNotFoundException(e.getMessage());
+		}
 	}
 	
 	/**
@@ -120,7 +126,11 @@ public class PlayerService extends PersistenceService {
 	 * 
 	 */
 	public Player find(String username) throws PlayerNotFoundException, DataAccessException {
-		return (Player)handler.read(username);
+		try {
+			return (Player)handler.read(username);
+		} catch (EntryNotFoundException e) {
+			throw new PlayerNotFoundException(e.getMessage());
+		}
 	}
 
 	/**
@@ -133,7 +143,11 @@ public class PlayerService extends PersistenceService {
 	 */
 	@Override
 	public void save(ValueObject candidate) throws PlayerExistsException, DataAccessException {
-		handler.save((Player)candidate);
+		try {
+			handler.save((Player)candidate);
+		} catch (EntryExistsException e) {
+			throw new PlayerExistsException(e.getMessage());
+		}
 	}
 
 	/**

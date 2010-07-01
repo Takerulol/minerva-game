@@ -35,6 +35,8 @@ import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.exceptions.ContinentExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.ContinentNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.persistence.exceptions.EntryExistsException;
+import de.hochschule.bremen.minerva.persistence.exceptions.EntryNotFoundException;
 import de.hochschule.bremen.minerva.vo.Continent;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
@@ -107,7 +109,11 @@ public class ContinentService extends PersistenceService {
 	 */
 	@Override
 	public Continent find(int id) throws ContinentNotFoundException, DataAccessException {
-		return (Continent)handler.read(id);
+		try {
+			return (Continent)handler.read(id);
+		} catch (EntryNotFoundException e) {
+			throw new ContinentNotFoundException(e.getMessage());
+		}
 	}
 
 	/**
@@ -121,7 +127,11 @@ public class ContinentService extends PersistenceService {
 	 * 
 	 */
 	public Continent find(String name) throws ContinentNotFoundException, DataAccessException {
-		return (Continent)handler.read(name);
+		try {
+			return (Continent)handler.read(name);
+		} catch (EntryNotFoundException e) {
+			throw new ContinentNotFoundException(e.getMessage());
+		}
 	}
 	
 	
@@ -136,7 +146,11 @@ public class ContinentService extends PersistenceService {
 	 */
 	@Override
 	public void save(ValueObject candidate) throws ContinentExistsException, DataAccessException {
-		handler.save((Continent)candidate);
+		try {
+			handler.save((Continent)candidate);
+		} catch (EntryExistsException e) {
+			throw new ContinentExistsException(e.getMessage());
+		}
 	}
 
 	/**

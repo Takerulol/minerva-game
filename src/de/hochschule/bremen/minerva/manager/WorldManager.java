@@ -37,7 +37,13 @@ import de.hochschule.bremen.minerva.exceptions.WorldDoesNotExistException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileExtensionException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileParseException;
+import de.hochschule.bremen.minerva.exceptions.WorldNotStorable;
+import de.hochschule.bremen.minerva.persistence.exceptions.ContinentExistsException;
+import de.hochschule.bremen.minerva.persistence.exceptions.ContinentNotFoundException;
+import de.hochschule.bremen.minerva.persistence.exceptions.CountryExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.persistence.exceptions.NeighbourExistsException;
+import de.hochschule.bremen.minerva.persistence.exceptions.WorldExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
 import de.hochschule.bremen.minerva.persistence.service.ContinentService;
 import de.hochschule.bremen.minerva.persistence.service.CountryService;
@@ -132,10 +138,12 @@ public class WorldManager {
 	 * </pre>
 	 * 
 	 * @param world The world object, which should be stored.
-	 * @see 		World
+	 *
+	 * @throws WorldExistsException
+	 * @throws WorldNotStorable 
 	 * 
 	 */
-	public void store(World world) throws DataAccessException {
+	public void store(World world) throws WorldNotStorable, DataAccessException {
 		boolean dependencyStorage = true; // Store county dependencies?
 
 		// We try to load the world by the given name to verify that
@@ -149,28 +157,40 @@ public class WorldManager {
 			dependencyStorage = false;
 		}
 
-		WorldService.getInstance().save(world);
+		try {
+			WorldService.getInstance().save(world);
 
-		for (Country country : world.getCountries()) {
-			ContinentService.getInstance().save(country.getContinent());
+			for (Country country : world.getCountries()) {
+				ContinentService.getInstance().save(country.getContinent());
 			
-			country.setWorldId(world.getId());
-			CountryService.getInstance().save(country);
-		}
+				country.setWorldId(world.getId());
+				CountryService.getInstance().save(country);
+			}
 
-		if (dependencyStorage) {
-			for (Country country : world.getCountries()) {				
-				if (world.hasNeighbours(country)) {
-					Vector<Country> neighbours = world.getNeighbours(country);
+			if (dependencyStorage) {
+				for (Country country : world.getCountries()) {				
+					if (world.hasNeighbours(country)) {
+						Vector<Country> neighbours = world.getNeighbours(country);
 
-					for (Country neighbour : neighbours) {
-						Neighbour neighbourMapping = new Neighbour();
-						neighbourMapping.setId(neighbour.getId());
-						neighbourMapping.getReference().setId(country.getId());
-						NeighbourService.getInstance().save(neighbourMapping);
+						for (Country neighbour : neighbours) {
+							Neighbour neighbourMapping = new Neighbour();
+							neighbourMapping.setId(neighbour.getId());
+							neighbourMapping.getReference().setId(country.getId());
+							NeighbourService.getInstance().save(neighbourMapping);
+						}
 					}
 				}
 			}
+		} catch (CountryExistsException e) {
+			throw new WorldNotStorable(e.getMessage());
+		} catch (ContinentExistsException e) {
+			throw new WorldNotStorable(e.getMessage());
+		} catch (NeighbourExistsException e) {
+			throw new WorldNotStorable(e.getMessage());
+		} catch (WorldExistsException e) {
+			throw new WorldNotStorable(e.getMessage());
+		} finally {
+			// TODO: Implement a rollback method.
 		}
 	}
 
@@ -180,15 +200,17 @@ public class WorldManager {
 	 * an external tool which is able to create playable minerva worlds.<br />
 	 * 
 	 * @param File The world import file (*.world)
+	 *
 	 * @throws WorldFileExtensionException Wrong file extension. 
 	 * @throws WorldFileNotFoundException The given world import file wasn't found.
 	 * @throws WorldFileParseException The given world import file is not well-formed. 
 	 * @throws DataAccessException Common exception from the persistence layer.
+	 * @throws WorldNotStorable If some common exception occured (e. g. country exists, etc.)
 	 * 
 	 * @see WorldFile
 	 * 
 	 */
-	public void store(File worldFile) throws WorldFileExtensionException, WorldFileNotFoundException, WorldFileParseException, DataAccessException  {
+	public void store(File worldFile) throws WorldFileExtensionException, WorldFileNotFoundException, WorldFileParseException, WorldNotStorable, DataAccessException {
 		WorldFile world = new WorldFile(worldFile, ApplicationConfigurationManager.get().getWorldsAssetsDirectory());
 
 		world.parse();
@@ -205,6 +227,7 @@ public class WorldManager {
 	 * Loads a world list from the persistence layer.
 	 * 
 	 * @return A vector with all worlds from the persistence layer.
+	 *
 	 * @throws DataAccessException Common exception from the persistence layer.
 	 * 
 	 */
@@ -228,6 +251,7 @@ public class WorldManager {
 	 * 
 	 * @param lite Does not load all country dependencies (only the world data).
 	 * @return A vector with all worlds from the persistence layer.
+	 *
 	 * @throws DataAccessException Common exception from the persistence layer.
 	 * 
 	 * @see WorldManager#getList()
@@ -246,19 +270,16 @@ public class WorldManager {
 	 * 
 	 * @param id The world id.
 	 * @return The filled world object.
+	 *
 	 * @throws DataAccessException Common exception from the persistence layer.
 	 * @throws WorldDoesNotExistException If the world wasn't found.
 	 * 
 	 */
 	public World get(int id) throws WorldDoesNotExistException, DataAccessException {
-		try {
-			World world = new World();
-			world.setId(id);
+		World world = new World();
+		world.setId(id);
 		
-			return this.get(world);
-		} catch (WorldNotFoundException e) {
-			throw new WorldDoesNotExistException(id);
-		}
+		return this.get(world);
 	}
 
 	/**
@@ -269,6 +290,7 @@ public class WorldManager {
 	 * 
 	 * @param world
 	 * @return The "complete" world object.
+	 *
 	 * @throws WorldDoesNotExistException If the world wasn't found.
 	 * @throws DataAccessException Common exception from the persistence layer.
 	 * 
@@ -290,6 +312,7 @@ public class WorldManager {
 	 * from the persistence layer.
 	 * 
 	 * @param world The world for which we should load the country dependencies.
+	 *
 	 * @throws DataAccessException Common exception from the persistence layer.
 	 *  
 	 */
@@ -297,8 +320,16 @@ public class WorldManager {
 		Vector<Country> countries = CountryService.getInstance().findAll(world);
 		
 		for (Country country : countries) {
-			country.setContinent(ContinentService.getInstance().find(country.getContinent().getId()));
-			
+			try {
+				country.setContinent(ContinentService.getInstance().find(country.getContinent().getId()));
+			} catch (ContinentNotFoundException e) {
+				// It is a big problem, if a continent wasn't found.
+				// Means, that the data model, which the persistence layer delivers,
+				// is not consistent anymore. So we wrap the ContinentNotFoundException
+				// into an DataAccessException.
+				throw new DataAccessException(e.getMessage());
+			}
+
 			for (Neighbour neighbour : NeighbourService.getInstance().loadAll(country)) {
 				world.connectCountries(country, neighbour);
 			}

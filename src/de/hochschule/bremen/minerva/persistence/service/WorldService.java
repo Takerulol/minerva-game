@@ -33,6 +33,8 @@ import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.persistence.exceptions.EntryExistsException;
+import de.hochschule.bremen.minerva.persistence.exceptions.EntryNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
 import de.hochschule.bremen.minerva.vo.ValueObject;
@@ -103,7 +105,11 @@ public class WorldService extends PersistenceService {
 	 *
 	 */
 	public World find(int id) throws WorldNotFoundException, DataAccessException {
-		return (World)handler.read(id);
+		try {
+			return (World)handler.read(id);
+		} catch (EntryNotFoundException e) {
+			throw new WorldNotFoundException(e.getMessage());
+		}
 	}
 
 	/**
@@ -117,7 +123,11 @@ public class WorldService extends PersistenceService {
 	 * 
 	 */
 	public World find(String name) throws WorldNotFoundException, DataAccessException {
-		return (World)handler.read(name);
+		try {
+			return (World)handler.read(name);
+		} catch (EntryNotFoundException e) {
+			throw new WorldNotFoundException(e.getMessage());
+		}
 	}
 	
 	/**
@@ -131,7 +141,11 @@ public class WorldService extends PersistenceService {
 	 */
 	@Override
 	public void save(ValueObject candidate) throws WorldExistsException, DataAccessException {
-		handler.save((World)candidate);
+		try {
+			handler.save((World)candidate);
+		} catch (EntryExistsException e) {
+			throw new WorldExistsException(e.getMessage());
+		}
 	}
 
 	/**
