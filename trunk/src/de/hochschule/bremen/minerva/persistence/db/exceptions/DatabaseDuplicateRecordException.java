@@ -47,6 +47,6 @@ public class DatabaseDuplicateRecordException extends DatabaseIOException {
 	 * 
 	 */
 	public DatabaseDuplicateRecordException(String reason) {
-		super("A duplicate record was found. Tried to save a entry, which is already available. Details: "+reason);
+		super("A duplicate record was found. Tried to save a entry, which is already available. Details:\n"+reason);
 	}
 }
