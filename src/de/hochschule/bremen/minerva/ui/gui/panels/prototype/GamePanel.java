@@ -36,6 +36,7 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
@@ -53,6 +54,7 @@ import de.hochschule.bremen.minerva.ui.gui.listener.MMouseListener;
 import de.hochschule.bremen.minerva.util.ColorTool;
 import de.hochschule.bremen.minerva.util.MapTool;
 import de.hochschule.bremen.minerva.vo.Country;
+import de.hochschule.bremen.minerva.vo.CountryCard;
 import de.hochschule.bremen.minerva.vo.World;
 
 /**
@@ -119,22 +121,25 @@ public class GamePanel extends JLayeredPane {
 		
 		HashMap<Country, Point> countryAnchors = MapTool.getCountryAnchors(this.mapOverlay.getMapImage(), mapUnderlay.getMapImage(), this.game.getWorld());
 
+		//initializing the first turn
+		this.currentTurn = this.game.nextTurn();
+
+		slidePanel.getControlBar().setCurrentPlayerLabel(this.currentTurn.getCurrentPlayer());
+		this.add(slidePanel, 10000);
+		
 		for (Country country : this.game.getWorld().getCountries()) {
 			ArmyCountIcon aci = new ArmyCountIcon(Color.RED, countryAnchors.get(country));
 			this.armyIcons.put(country,aci);
-			this.add(aci,100);
+			this.add(aci,-10000);
 		}
 		
-		//initializing the first turn
-		this.currentTurn = this.game.nextTurn();
 		
-		slidePanel.getControlBar().setCurrentPlayerLabel(this.currentTurn.getCurrentPlayer());
-		this.repaint();
-		
+
 		this.refreshArmyCounts();
 		
+		
+		
 		//Adding everything up
-		this.add(slidePanel, 1000);
 		this.add(this.mapOverlay,-20000);
 		this.add(this.mapUnderlay,-30000);
 		
@@ -145,6 +150,9 @@ public class GamePanel extends JLayeredPane {
 		this.updatePanel();
 	}
 
+	/**
+	 * Adds the action listener on the upper map to interact with mouse clicks
+	 */
 	private void addMapListener() {
 		this.mapOverlay.addMouseListener(new MMouseListener() {
 			public void mouseClicked(MouseEvent e) {
@@ -168,7 +176,7 @@ public class GamePanel extends JLayeredPane {
 				if (gameState == 0) {
 					GamePanel.this.allocate(country);
 				} else if (GamePanel.this.getGameState() == GamePanel.CARD_TURN_IN) {
-					//TODO: implementation
+					//TODO: implementation, also wrong place ... button in control bar will be used instead of map
 				} else if (GamePanel.this.getGameState() == GamePanel.ATTACK) {
 					GamePanel.this.attack(country);
 				} else if (GamePanel.this.getGameState() == GamePanel.MOVE) {
@@ -180,8 +188,8 @@ public class GamePanel extends JLayeredPane {
 	}
 	
 	/**
-	 * 
-	 * @param country
+	 * Allocates one army on a destined country
+	 * @param country country toput an army on
 	 */
 	private void allocate(Country country) {
 		try {
@@ -199,15 +207,25 @@ public class GamePanel extends JLayeredPane {
 	
 	/**
 	 * 
+	 * @param card
 	 */
-	@SuppressWarnings("unused")
-	private void cardTurnIn(/* card ? series ? */) {
+	private void TurnCardIn(CountryCard card) {
 		//TODO: implementation
 	}
 	
 	/**
 	 * 
-	 * @param country
+	 * @param series
+	 */
+	private void TurnSeriesIn(Vector<CountryCard> series) {
+		//TODO: implementation
+	}
+	
+	/**
+	 * Attack one country from another.
+	 * Use it once to set the sources country and twice to set destination country.
+	 * After setting the destination you'll get an option pane to the army count.
+	 * @param country first source then destination
 	 */
 	private void attack(Country country) {
 		if (this.source == null) {
@@ -240,8 +258,10 @@ public class GamePanel extends JLayeredPane {
 	}
 	
 	/**
-	 * 
-	 * @param country
+	 * Moves units from one to another country.
+	 * Use it once to set the sources country and twice to set destination country.
+	 * After setting the destination you'll get an option pane to the army count.
+	 * @param country first source then destination
 	 */
 	private void move(Country country) {
 		if (this.source == null) {
@@ -274,6 +294,10 @@ public class GamePanel extends JLayeredPane {
 		}
 	}
 
+	/**
+	 * Opens JDialog with given error text
+	 * @param errorText String of error text
+	 */
 	private void errorDialog(String errorText) {
 		JOptionPane.showMessageDialog(this,
 			    errorText,
@@ -285,7 +309,7 @@ public class GamePanel extends JLayeredPane {
 	 * Updates whole panel, when something changed during the game
 	 */
 	public void updatePanel() {
-		//TODO: extension
+		//TODO: extension needed?
 		
 		//use this for server/client implementation
 //		if (this.currentTurn.getCurrentPlayer() != MinervaGUI.getInstance().getPlayer()) {
@@ -297,6 +321,7 @@ public class GamePanel extends JLayeredPane {
 		this.slidePanel.getControlBar().setCurrentPlayerLabel(this.currentTurn.getCurrentPlayer());
 		this.slidePanel.getControlBar().setAllocatableArmiesLabel(" "+this.currentTurn.getAllocatableArmyCount()+" ");
 		this.slidePanel.getControlBar().updateMissionText();
+		this.slidePanel.getControlBar().updateCardList(this.currentTurn.getCurrentPlayer().getCountryCards());
 		
 		this.repaint();
 		this.updateUI();
@@ -315,7 +340,7 @@ public class GamePanel extends JLayeredPane {
 	}
 	
 	/**
-	 * Removes markings of alle countries.
+	 * Removes markings of all countries.
 	 */
 	@SuppressWarnings("unchecked")
 	public void unmarkAll() {
