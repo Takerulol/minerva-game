@@ -108,15 +108,18 @@ public class ArmyCountIcon extends JPanel {
 	 * AWT/Swing paint method ... never use this manually
 	 */
 	public void paint(Graphics g) {
+		//inner color
 		g.setColor(this.color);
 		g.fillArc(1, 1, 20, 20, 0, 360);
 		
-		
+		//border
 		g.setColor(Color.black);
 		g.drawArc(1, 1, 20, 20, 0, 360);
 	
+		//army count
 		g.drawString(String.valueOf(this.armyCount), 11 - 4 * String.valueOf(this.armyCount).length(), 15);
 		
+		//marking circle
 		if (marked) {
 			g.setColor(this.markColor);
 			g.drawArc(-1, -1, 24, 24, 0, 360);
