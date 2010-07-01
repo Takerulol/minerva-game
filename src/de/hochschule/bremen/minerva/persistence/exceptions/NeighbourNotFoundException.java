@@ -29,7 +29,7 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
-public class NeighbourNotFoundException extends NotFoundException {
+public class NeighbourNotFoundException extends EntryNotFoundException {
 
 
 	/**

@@ -29,7 +29,7 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
-public class ContinentExistsException extends ExistsException {
+public class ContinentExistsException extends EntryExistsException {
 
 	/**
 	 * 

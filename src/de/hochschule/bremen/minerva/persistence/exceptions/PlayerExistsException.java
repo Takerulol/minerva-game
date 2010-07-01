@@ -30,7 +30,7 @@
 
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
-public class PlayerExistsException extends ExistsException {
+public class PlayerExistsException extends EntryExistsException {
 
 	/**
 	 * DOCME

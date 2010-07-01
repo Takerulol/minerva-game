@@ -29,7 +29,7 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
-public class NeighbourExistsException extends ExistsException {
+public class NeighbourExistsException extends EntryExistsException {
 
 	/**
 	 * 
