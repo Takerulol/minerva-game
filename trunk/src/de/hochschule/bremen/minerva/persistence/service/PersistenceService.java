@@ -33,8 +33,8 @@ import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Persistence;
 import de.hochschule.bremen.minerva.persistence.db.DatabasePersistence;
-import de.hochschule.bremen.minerva.persistence.exceptions.ExistsException;
-import de.hochschule.bremen.minerva.persistence.exceptions.NotFoundException;
+import de.hochschule.bremen.minerva.persistence.exceptions.EntryExistsException;
+import de.hochschule.bremen.minerva.persistence.exceptions.EntryNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.persistence.file.FilebasedPersistence;
 import de.hochschule.bremen.minerva.vo.ValueObject;
@@ -55,11 +55,11 @@ public abstract class PersistenceService {
 
 	abstract public Vector<?> findAll() throws DataAccessException;
 
-	abstract public ValueObject find(int id) throws NotFoundException, DataAccessException;
+	abstract public ValueObject find(int id) throws EntryNotFoundException, DataAccessException;
 
-	abstract public ValueObject find(String name) throws NotFoundException, DataAccessException;
+	abstract public ValueObject find(String name) throws EntryNotFoundException, DataAccessException;
 
-	abstract public void save(ValueObject candidate) throws ExistsException, DataAccessException;
+	abstract public void save(ValueObject candidate) throws EntryExistsException, DataAccessException;
 
 	abstract public void delete(ValueObject candidate) throws DataAccessException;
 
