@@ -29,25 +29,24 @@
  */
 package de.hochschule.bremen.minerva.persistence.db.exceptions;
 
+/**
+ * Exception for database connection problems
+ * 
+ * @since 1.0
+ * @version $Id$
+ *
+ */
 public class DatabaseConnectionException extends DatabaseIOException {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7538188076728398157L;
 
 	/**
-	 * DOCME 
+	 * Problem while connecting to the database.
+	 * 
+	 * @param reason The exception reason.
+	 * 
 	 */
-	public DatabaseConnectionException() {
-		super();
-	}
-
-	/**
-	 * DOCME
-	 * @param message
-	 */
-	public DatabaseConnectionException(String message) {
-		super(message);
+	public DatabaseConnectionException(String reason) {
+		super("Database connection exception. Reason: "+reason);
 	}
 }

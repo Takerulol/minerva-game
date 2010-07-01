@@ -29,25 +29,24 @@
  */
 package de.hochschule.bremen.minerva.persistence.db.exceptions;
 
+/**
+ * Exception will thrown if someone tried to save an already existing entry.
+ * 
+ * @since 1.0
+ * @version $Id$
+ *
+ */
 public class DatabaseDuplicateRecordException extends DatabaseIOException {
 
-	/**
-	 * DOCME
-	 */
 	private static final long serialVersionUID = 618058872724951001L;
 
 	/**
-	 * DOCME
+	 * Duplicate record was found.
+	 * 
+	 * @param reason Technical error message.
+	 * 
 	 */
-	public DatabaseDuplicateRecordException() {
-		super();
-	}
-
-	/**
-	 * DOCME
-	 * @param message
-	 */
-	public DatabaseDuplicateRecordException(String message) {
-		super(message);
+	public DatabaseDuplicateRecordException(String reason) {
+		super("A duplicate record was found. Tried to save a entry, which is already available. Details: "+reason);
 	}
 }
