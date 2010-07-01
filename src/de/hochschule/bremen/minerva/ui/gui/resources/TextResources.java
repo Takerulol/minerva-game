@@ -79,4 +79,8 @@ public interface TextResources {
 	public static final String MPLAYERICON_USERNAME = "Benutzername:";
 	public static final String MPLAYERICON_EMAIL = "E-Mail:";
 	public static final String MPLAYERICON_GAMEMASTER = "Spielmaster";
+	
+	// MMessageBox
+	public static final String MMESSAGE_INFO_TITLE = "minerva - the game";
+	public static final String MMESSAGE_ERROR_TITLE = MMESSAGE_INFO_TITLE + " - Fehler";
 }
