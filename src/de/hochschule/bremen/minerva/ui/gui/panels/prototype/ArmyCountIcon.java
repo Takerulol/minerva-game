@@ -40,6 +40,15 @@ import javax.swing.JPanel;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Player;
 
+/**
+ * Represents a filled circle with an army count which is placed on each country. It
+ * also has the color of the player owning the country.
+ * It can be marked with circle in a designated color.
+ * 
+ * @version $Id$
+ * @since 1.0
+ * 
+ */
 public class ArmyCountIcon extends JPanel {
 	
 	private Color color;
@@ -52,6 +61,11 @@ public class ArmyCountIcon extends JPanel {
 	 */
 	private static final long serialVersionUID = 1865891788129661164L;
 	
+	/**
+	 * Constructs the icon.
+	 * @param color inner color of the icon
+	 * @param p point on the map where it shall be put at.
+	 */
 	public ArmyCountIcon(Color color, Point p) {
 		this.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
 		this.color = color;
@@ -61,23 +75,38 @@ public class ArmyCountIcon extends JPanel {
 		
 	}
 	
+	/**
+	 * Sets the owner + the country itself where this icon is at.
+	 * @param country country
+	 * @param player country owner
+	 */
 	public void setPlayer(Country country, Player player) {
 		this.armyCount = country.getArmyCount();
 		this.color = player.getColor();
 		this.repaint();
 	}
 	
+	/**
+	 * Marks the icon with a circle
+	 * @param color color of the circle
+	 */
 	public void mark(Color color) {
 		this.marked = true;
 		this.markColor = color;
 		this.repaint();
 	}
 	
+	/**
+	 * Removes the mark.
+	 */
 	public void unmark() {
 		marked = false;
 		this.repaint();
 	}
 	
+	/**
+	 * AWT/Swing paint method ... never use this manually
+	 */
 	public void paint(Graphics g) {
 		g.setColor(this.color);
 		g.fillArc(1, 1, 20, 20, 0, 360);
