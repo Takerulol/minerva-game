@@ -32,44 +32,44 @@ package de.hochschule.bremen.minerva.persistence.file.handler;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.persistence.Handler;
-import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
 public class NeighbourHandler implements Handler {
 
 	@Override
-	public ValueObject read(int id) throws DataAccessException {
+	public ValueObject read(int id) throws PersistenceException {
 		System.out.println("NeighbourHandler.read() - Filebased storage is not implemented.");
 		return null;
 	}
 
 	@Override
-	public ValueObject read(String name) throws DataAccessException {
+	public ValueObject read(String name) throws PersistenceException {
 		System.out.println("NeighbourHandler.read() - Filebased storage is not implemented.");
 		return null;
 	}
 
 	@Override
 	public Vector<? extends ValueObject> readAll()
-			throws DataAccessException {
+			throws PersistenceException {
 		System.out.println("NeighbourHandler.readAll() - Filebased storage is not implemented.");
 		return null;
 	}
 
 	@Override
 	public Vector<? extends ValueObject> readAll(ValueObject reference)
-			throws DataAccessException {
+			throws PersistenceException {
 		System.out.println("NeighbourHandler.readAll() - Filebased storage is not implemented.");
 		return null;
 	}
 
 	@Override
-	public void remove(ValueObject candidate) throws DataAccessException {
+	public void remove(ValueObject candidate) throws PersistenceException {
 		System.out.println("NeighbourHandler.remove() - Filebased storage is not implemented.");
 	}
 
 	@Override
-	public void save(ValueObject registrable) throws DataAccessException {
+	public void save(ValueObject registrable) throws PersistenceException {
 		System.out.println("NeighbourHandler.save() - Filebased storage is not implemented.");		
 	}
 }

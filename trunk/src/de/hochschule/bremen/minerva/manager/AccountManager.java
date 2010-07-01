@@ -31,11 +31,12 @@ package de.hochschule.bremen.minerva.manager;
 
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.exceptions.PlayerAlreadyLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
-import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerNotFoundException;
 import de.hochschule.bremen.minerva.persistence.service.PlayerService;
 import de.hochschule.bremen.minerva.util.HashTool;
@@ -73,7 +74,8 @@ public class AccountManager {
 	 * Singleton pattern.
 	 * Static method that controls the object creation.
 	 * 
-	 * @return DOCME
+	 * @return A account manager instance.
+	 *
 	 */
 	public static AccountManager getInstance() {
 		if (AccountManager.instance == null) {
@@ -86,8 +88,10 @@ public class AccountManager {
 	 * Adds the desired player into the database.
 	 * 
 	 * @param player Player object to create an entry in the database with.
+	 *
 	 * @throws PlayerExistsException Thrown if the player or email already exists.
-	 * @throws DataAccessException
+	 * @throws DataAccessException Common data access exception.
+	 * 
 	 */
 	public void createPlayer(Player player) throws PlayerExistsException, DataAccessException {
 		player.setPassword(HashTool.md5(player.getPassword()));
@@ -96,6 +100,8 @@ public class AccountManager {
 			service.save(player);
 		} catch (de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException e) {
 			throw new PlayerExistsException(player);
+		} catch (PersistenceException e) {
+			throw new DataAccessException(e.getMessage());
 		} 
 	}
 	
@@ -103,10 +109,17 @@ public class AccountManager {
 	 * Gets all players in database
 	 * 
 	 * @return Vector of all registered players in the database.
-	 * @throws DataAccessException
+	 *
+	 * @throws DataAccessException Common data access exception.
+	 *
 	 */
 	public Vector<Player> getPlayerList() throws DataAccessException {
-		Vector<Player> players = (Vector<Player>)service.findAll();
+		Vector<Player> players = new Vector<Player>();
+		try {
+			players = (Vector<Player>)service.findAll();
+		} catch (PersistenceException e) {
+			throw new DataAccessException(e.getMessage());
+		}
 		return players;
 	}
 	
@@ -115,13 +128,19 @@ public class AccountManager {
 	 * 
 	 * @param loggedInPlayers True if you want to get all logged in players.
 	 * @return Vector of all registered players in the database. If loggedInPlayers == true you will only get the logged in players.
-	 * @throws DataAccessException
+	 *
+	 * @throws DataAccessException Common data access exception.
+	 *
 	 */
-	@SuppressWarnings("unchecked")
 	public Vector<Player> getPlayerList(boolean loggedInPlayers) throws DataAccessException {
-		Vector<Player> players = (Vector<Player>)service.findAll();
+		Vector<Player> players;
+		try {
+			players = (Vector<Player>)service.findAll();
+		} catch (PersistenceException e) {
+			throw new DataAccessException(e.getMessage());
+		}
 		if (loggedInPlayers && (players != null)) {
-			Vector<Player> temp = (Vector<Player>) players.clone();
+			Vector<Player> temp = new Vector<Player>(players);
 			for (Player player : players) {
 				if (!player.isLoggedIn()) {
 					temp.remove(player);
@@ -137,13 +156,18 @@ public class AccountManager {
 	 * 
 	 * @param username Username of the player you want to get.
 	 * @return Player object of the desired player.
-	 * @throws PlayerDoesNotExistException, PersistenceIOException
+	 *
+	 * @throws PlayerDoesNotExistException
+	 * @throws DataAccessException Common data access exception.
+	 *
 	 */
 	public Player getPlayer(String username) throws PlayerDoesNotExistException, DataAccessException {
 		try {
 			return service.find(username);
 		} catch (PlayerNotFoundException e) {
 			throw new PlayerDoesNotExistException(username);
+		} catch (PersistenceException e) {
+			throw new DataAccessException(e.getMessage());
 		}
 	}
 	
@@ -152,13 +176,18 @@ public class AccountManager {
 	 * 
 	 * @param id Id of the player you want to get.
 	 * @return Player object of the desired player.
-	 * @throws PlayerDoesNotExistException, PersistenceIOException
+	 *
+	 * @throws PlayerDoesNotExistException
+	 * @throws DataAccessException Common data access exception.
+	 *
 	 */
 	public Player getPlayer(int id) throws PlayerDoesNotExistException, DataAccessException {
 		try {
 			return service.find(id);
 		} catch (PlayerNotFoundException e) {
 			throw new PlayerDoesNotExistException(id);
+		} catch (PersistenceException e) {
+			throw new DataAccessException(e.getMessage());
 		}
 	}
 	
@@ -167,9 +196,11 @@ public class AccountManager {
 	 * 
 	 * @param player Player object you want to fully get out of database.
 	 * @return Player object of the desired player.
-	 * @throws DataAccessException
+	 *
+	 * @throws DataAccessException Common data access exception.
+	 *
 	 */
-	public Player getPlayer(Player player) throws DataAccessException, PlayerDoesNotExistException {
+	public Player getPlayer(Player player) throws PlayerDoesNotExistException, DataAccessException {
 		
 		if (player.getUsername() != null) {
 			player = this.getPlayer(player.getUsername());
@@ -193,17 +224,15 @@ public class AccountManager {
 	 * The desired player will be logged in.
 	 * 
 	 * @param player Player you want to login.
+	 *
 	 * @throws WrongPasswordException Password typed in didn't match.
 	 * @throws PlayerDoesNotExistException Player you want to login doesn't exist.
-	 * @throws DataAccessException
+	 * @throws PersistenceException
+	 * @throws DataAccessException Common data access exception.
+	 *
 	 */
 	public void login(Player player) throws PlayerAlreadyLoggedInException, WrongPasswordException, PlayerDoesNotExistException, DataAccessException {
-		Player temp = null;
-		try {
-			temp = this.getPlayer(player);
-		} catch (PlayerNotFoundException e) {
-			throw new PlayerDoesNotExistException(player);
-		}
+		Player temp = this.getPlayer(player);
 
 		String hashedPassword = HashTool.md5(player.getPassword());
 
@@ -221,7 +250,16 @@ public class AccountManager {
 			}
 
 			temp.setLoggedIn(true);
-			service.save(temp);
+			
+			try {
+				service.save(temp);
+			} catch (de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException e) {
+				// It is not possible, that the player does not exist.
+				// We loaded it a few code lines before. So it must exist.
+				// So the catch area will never be thrown.				
+			} catch (PersistenceException e) {
+				throw new DataAccessException(e.getMessage());
+			}
 
 			player.setLoggedIn(temp.isLoggedIn());
 		} else {
@@ -233,28 +271,46 @@ public class AccountManager {
 	 * This will logout the desired player, regardless if he is logged in or not.
 	 * 
 	 * @throws PlayerDoesNotExistException Player you want to logout doesn't exist.
-	 * @throws DataAccessException
+	 * @throws PersistenceException
+	 * @throws DataAccessException Common data access exception.
+	 * 
 	 */
-	public void logout(Player player) throws PlayerDoesNotExistException, DataAccessException {
+	public void logout(Player player) throws PlayerDoesNotExistException, PersistenceException, DataAccessException {
 		try {
 			player = this.getPlayer(player);
 		} catch (PlayerDoesNotExistException e) {
 			throw new PlayerDoesNotExistException("You can't logout a player that does not exist.");
 		}
 		player.setLoggedIn(false);
-		service.save(player);
+
+		// It is not possible, that the player does not exist.
+		// We loaded it a few code lines before. So it must exist.
+		// So the catch area will never be thrown.
+		try {
+			service.save(player);
+		} catch (de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException e) {}
 	}
 	
 	/**
 	 * All logged in players will be logged out.
-	 * 
-	 * @throws DataAccessException
+	 *
+	 * @throws DataAccessException Common data access exception.
+	 *
 	 */
 	public void logout() throws DataAccessException {
 		Vector<Player> loggedInPlayers = this.getPlayerList(true);
 		for (Player player : loggedInPlayers) {
 			player.setLoggedIn(false);
-			service.save(player);
+
+			try {
+				service.save(player);
+			} catch (de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException e) {				
+				// It is not possible, that the player does not exist.
+				// We loaded it a few code lines before. So it must exist.
+				// So the catch area will never be thrown.
+			} catch (PersistenceException e) {
+				throw new DataAccessException(e.getMessage());
+			}
 		}
 	}
 }

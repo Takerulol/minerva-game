@@ -31,7 +31,7 @@ package de.hochschule.bremen.minerva.persistence;
 
 import java.util.Vector;
 
-import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
 import de.hochschule.bremen.minerva.persistence.exceptions.EntryExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.EntryNotFoundException;
 import de.hochschule.bremen.minerva.vo.ValueObject;
@@ -60,29 +60,29 @@ public interface Handler {
 	 * 
 	 * @param id The identifier.
 	 * @return The value object
-	 * @throws DataAccessException Common persistence exception
+	 * @throws PersistenceException Common persistence exception
 	 * 
 	 */
-	public ValueObject read(int id) throws EntryNotFoundException, DataAccessException;
+	public ValueObject read(int id) throws EntryNotFoundException, PersistenceException;
 
 	/**
 	 * Read a object by name
 	 * 
 	 * @param name The name identifier.
 	 * @return
-	 * @throws DataAccessException Common persistence exception
+	 * @throws PersistenceException Common persistence exception
 	 * 
 	 */
-	public ValueObject read(String name) throws EntryNotFoundException, DataAccessException;
+	public ValueObject read(String name) throws EntryNotFoundException, PersistenceException;
 
 	/**
 	 * Reads all objects.
 	 * 
 	 * @return A vector with value objects.
-	 * @throws DataAccessException Common persistence exception
+	 * @throws PersistenceException Common persistence exception
 	 * 
 	 */
-	public Vector<? extends ValueObject> readAll() throws DataAccessException;
+	public Vector<? extends ValueObject> readAll() throws PersistenceException;
 
 	/**
 	 * Reads all by an given reference value object.
@@ -95,26 +95,26 @@ public interface Handler {
 	 * 
 	 * @param reference The referenced value object.
 	 * @return A vector with value objects.
-	 * @throws DataAccessException Common persistence exception
+	 * @throws PersistenceException Common persistence exception
 	 * 
 	 */
-	public Vector<? extends ValueObject> readAll(ValueObject reference) throws DataAccessException;
+	public Vector<? extends ValueObject> readAll(ValueObject reference) throws PersistenceException;
 
 	/**
 	 * Deletes the given value object.
 	 * 
 	 * @param candidate The deletable value object.
-	 * @throws DataAccessException Common persistence exception
+	 * @throws PersistenceException Common persistence exception
 	 * 
 	 */
-	public void remove(ValueObject candidate) throws DataAccessException;
+	public void remove(ValueObject candidate) throws PersistenceException;
 
 	/**
 	 * Save combines the "CRUD" operations: create and update
 	 * 
 	 * @param registrable The saveable value object.
-	 * @throws DataAccessException Common persistence exception
+	 * @throws PersistenceException Common persistence exception
 	 * 
 	 */
-	public void save(ValueObject registrable) throws EntryExistsException, DataAccessException;
+	public void save(ValueObject registrable) throws EntryExistsException, PersistenceException;
 }

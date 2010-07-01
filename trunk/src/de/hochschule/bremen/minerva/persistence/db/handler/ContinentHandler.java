@@ -39,7 +39,7 @@ import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateR
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.ContinentExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.ContinentNotFoundException;
-import de.hochschule.bremen.minerva.persistence.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
 import de.hochschule.bremen.minerva.vo.Continent;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
@@ -71,11 +71,11 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 	 * @return The continent value object.
 	 * 
 	 * @throws ContinentNotFoundException
-	 * @throws DataAccessException
+	 * @throws PersistenceException
 	 * 
 	 */
 	@Override
-	public Continent read(int id) throws ContinentNotFoundException, DataAccessException {
+	public Continent read(int id) throws ContinentNotFoundException, PersistenceException {
 		Continent continent = null;
 		Object[] params = {id};
 
@@ -84,7 +84,7 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 		} catch (ContinentNotFoundException e) {
 			throw new ContinentNotFoundException("The continent with the id '"+id+"' wasn't found.");
 		} catch (DatabaseIOException e) {
-			throw new DataAccessException("Error occurred while reading "
+			throw new PersistenceException("Error occurred while reading "
 					                       + "the continent (id=" + id +") "
 					                       + "from the database. Reason: "+e.getMessage());
 		}
@@ -99,10 +99,10 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 	 * @return The continent value object
 	 *
 	 * @throws ContinentNotFoundException
-	 * @throws DataAccessException Common persistence io exception
+	 * @throws PersistenceException Common persistence io exception
 	 * 
 	 */
-	public Continent read(String name) throws ContinentNotFoundException, DataAccessException {
+	public Continent read(String name) throws ContinentNotFoundException, PersistenceException {
 		Continent continent = null;
 		Object[] params = {name};
 
@@ -111,7 +111,7 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 		} catch (ContinentNotFoundException e) {
 			throw new ContinentNotFoundException("The continent '"+name+"' wasn't found.");
 		} catch (DatabaseIOException e) {
-			throw new DataAccessException("Error occurred while reading "
+			throw new PersistenceException("Error occurred while reading "
 					                       + "the continent (name=" + name +") "
 					                       + "from the database. Reason: "+e.getMessage());
 		}
@@ -155,11 +155,11 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 	 * 
 	 * @return A vector with continent value objects.
 	 * 
-	 * @throws DataAccessException
+	 * @throws PersistenceException
 	 * 
 	 */
 	@Override
-	public Vector<Continent> readAll() throws DataAccessException {
+	public Vector<Continent> readAll() throws PersistenceException {
 		Vector<Continent> continents = new Vector<Continent>();
 
 		try {
@@ -171,9 +171,9 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 
 			record.close();
 		} catch (DatabaseIOException e) {
-			throw new DataAccessException(e.getMessage());
+			throw new PersistenceException(e.getMessage());
 		} catch (SQLException e) {
-			throw new DataAccessException("Error occurred while receiving "
+			throw new PersistenceException("Error occurred while receiving "
 											+"a continent list from the database: "
 											 +e.getMessage()+" - "
 											 +e.getErrorCode());
@@ -188,11 +188,11 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 	 * @param registrable The registrable continent.
 	 * 
 	 * @throws ContinentExistsException 
-	 * @throws DataAccessException
+	 * @throws PersistenceException
 	 * 
 	 */
 	@Override
-	public void save(ValueObject registrable) throws ContinentExistsException, DataAccessException {
+	public void save(ValueObject registrable) throws ContinentExistsException, PersistenceException {
 		Continent registrableContinent = (Continent)registrable;
 
 		try {
@@ -216,7 +216,7 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 			throw new ContinentExistsException("Unable to serialize the continent: '"
 					+registrableContinent.getName()+"'. There is already a similar one.");
 		} catch (DatabaseIOException e) {
-			throw new DataAccessException("Unable to serialize the continent object: '"+registrableContinent.getName()+"'. Reason: "+e.getMessage());
+			throw new PersistenceException("Unable to serialize the continent object: '"+registrableContinent.getName()+"'. Reason: "+e.getMessage());
 		}
 
 		// The continent does not have a continent id.
@@ -236,11 +236,11 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 	 * 
 	 * @param candidate The saveable continent
 	 * 
-	 * @throws DataAccessException
+	 * @throws PersistenceException
 	 * 
 	 */
 	@Override
-	public void remove(ValueObject candidate) throws DataAccessException {
+	public void remove(ValueObject candidate) throws PersistenceException {
 		Continent deletableContinent = (Continent)candidate;
 		
 		Object[] params = {deletableContinent.getId()};
@@ -248,7 +248,7 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 		try {
 			this.delete(sql.get("delete"), params);
 		} catch (DatabaseIOException e) {
-			throw new DataAccessException(e.getMessage());
+			throw new PersistenceException(e.getMessage());
 		}
 	}
 
@@ -278,7 +278,7 @@ public class ContinentHandler extends AbstractDatabaseHandler implements Handler
 	 *  
 	 */
 	@Override
-	public Vector<? extends ValueObject> readAll(ValueObject referencedCountry) throws DataAccessException {		
+	public Vector<? extends ValueObject> readAll(ValueObject referencedCountry) throws PersistenceException {		
 		// TODO Auto-generated method stub
 		return null;
 	}	
