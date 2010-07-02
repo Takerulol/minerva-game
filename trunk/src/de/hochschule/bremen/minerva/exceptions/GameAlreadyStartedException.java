@@ -52,5 +52,4 @@ public class GameAlreadyStartedException extends Exception {
 	public GameAlreadyStartedException(Player player) {
 		super("Die Spiel-Session wurde bereits gestartet. Der Spieler '" + player.getUsername() + "' kann somit nicht mehr hinzugefügt werden.");
 	}
-	
 }
