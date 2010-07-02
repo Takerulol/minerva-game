@@ -29,24 +29,24 @@
  */
 package de.hochschule.bremen.minerva.ui.gui.controls;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import net.miginfocom.swing.MigLayout;
 
 import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
 import de.hochschule.bremen.minerva.vo.Player;
 
 /**
- * DOCME
+ * The MPlayerIcon represents the detailed player view for the game
+ * initialization view.
  * 
  * @version $Id$
  * @since 1.0
@@ -54,9 +54,6 @@ import de.hochschule.bremen.minerva.vo.Player;
  */
 public class MPlayerIcon extends JPanel implements MControl, TextResources {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7238829407887665957L;
 	
 	private static final Color FONT_COLOR_DEFAULT = new Color(139, 140, 142);
@@ -74,70 +71,56 @@ public class MPlayerIcon extends JPanel implements MControl, TextResources {
 	private JPanel dataArea;
 	
 	/**
-	 * DOCME
+	 * Construct the layout.
 	 * 
-	 * @param player
+	 * @param player The player which represents the model for the icon.
 	 * 
 	 */
 	public MPlayerIcon(Player player) {
 		this.player = player;
 
 		// Loading the player
-		this.setLayout(new BorderLayout());
+		this.setLayout(new MigLayout("", "[]20[]"));
 		this.setOpaque(false);
 
 		// Loading the player icon
-		this.iconArea = new JPanel() {
-			private static final long serialVersionUID = -3484770437177556562L;
-
-			public void paint(java.awt.Graphics g) {
-				String color = "_" + MPlayerIcon.this.determinePlayerColor(MPlayerIcon.this.player);
-				String iconPath = ApplicationConfigurationManager.get().getUIAssetsDirectory() + MPlayerIcon.class.getSimpleName() + color + ApplicationConfigurationManager.get().getUIAssetsFileExtension();
-				try {
-					g.drawImage(ImageIO.read(new File(iconPath)), 0, 0, this);
-				} catch (IOException e) {
-					// If a error occurred while loading the player icon, well, do nothing.
-				}
-			};
-		};
+		this.iconArea = new JPanel();
 		this.iconArea.setOpaque(false);
-		this.iconArea.setPreferredSize(new Dimension(62, 90));
-		
+		this.add(this.iconArea, "width 62, height 76");
+
 		this.dataArea = new JPanel();
-		this.dataArea.setLayout(new BoxLayout(this.dataArea, BoxLayout.PAGE_AXIS));
+		this.dataArea.setLayout(new MigLayout());
 		this.dataArea.setOpaque(false);
 		
 		this.name = new JLabel();
 		this.name.setFont(new Font(FONT.getName(), Font.BOLD, FONT.getSize()));
 		this.name.setForeground(Color.WHITE);
-
+		this.dataArea.add(this.name, "wrap");
+		
 		this.gamemaster = new JLabel();
 		this.gamemaster.setFont(FONT);
 		this.gamemaster.setForeground(FONT_COLOR_GAMEMASTER);
+		this.dataArea.add(this.gamemaster, "wrap");
 
 		this.username = new JLabel();
 		this.username.setFont(FONT);
 		this.username.setForeground(FONT_COLOR_DEFAULT);
+		this.dataArea.add(this.username, "wrap");
 
 		this.email = new JLabel();
 		this.email.setFont(FONT);
 		this.email.setForeground(FONT_COLOR_DEFAULT);
+		this.dataArea.add(this.email, "wrap");
 		
 		this.gamemaster.setVisible(false);
-		
-		this.dataArea.add(this.name);
-		this.dataArea.add(this.gamemaster);
-		this.dataArea.add(this.username);
-		this.dataArea.add(this.email);
 
-		this.add(this.iconArea, BorderLayout.WEST);
-		this.add(this.dataArea, BorderLayout.CENTER);
+		this.add(this.dataArea);
 
 		this.refresh();
 	}
 
 	/**
-	 * DOCME
+	 * Pushs the model data to the ui elements.
 	 * 
 	 */
 	private void refresh() {
@@ -151,15 +134,27 @@ public class MPlayerIcon extends JPanel implements MControl, TextResources {
 		this.username.setText(MPLAYERICON_USERNAME + " " + this.player.getUsername());
 		this.email.setText(MPLAYERICON_EMAIL + " " + this.player.getEmail());
 		
-		// TODO: Icon refresh
+		this.iconArea = new JPanel() {
+			private static final long serialVersionUID = -3484770437177556562L;
+
+			public void paint(java.awt.Graphics g) {
+				String color = "_" + MPlayerIcon.this.determinePlayerColor(MPlayerIcon.this.player);
+				String iconPath = ApplicationConfigurationManager.get().getUIAssetsDirectory() + MPlayerIcon.class.getSimpleName() + color + ApplicationConfigurationManager.get().getUIAssetsFileExtension();
+				try {
+					g.drawImage(ImageIO.read(new File(iconPath)), 0, 0, this);
+				} catch (IOException e) {
+					// If a error occurred while loading the player icon, well, do nothing.
+				}
+			};
+		};
 	}
 
 	/**
 	 * Returns the player object, which represents
 	 * the MPlayerIcon model.
-	 * 
+	 *
 	 * @return Player The player model.
-	 * 
+	 *
 	 */
 	public Player getPlayer() {
 		return this.player;
