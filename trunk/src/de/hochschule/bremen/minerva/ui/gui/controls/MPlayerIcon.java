@@ -31,11 +31,17 @@ package de.hochschule.bremen.minerva.ui.gui.controls;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
 import de.hochschule.bremen.minerva.vo.Player;
 
@@ -76,12 +82,26 @@ public class MPlayerIcon extends JPanel implements MControl, TextResources {
 	public MPlayerIcon(Player player) {
 		this.player = player;
 
+		// Loading the player
 		this.setLayout(new BorderLayout());
 		this.setOpaque(false);
-		
-		this.iconArea = new JPanel();
+
+		// Loading the player icon
+		this.iconArea = new JPanel() {
+			private static final long serialVersionUID = -3484770437177556562L;
+
+			public void paint(java.awt.Graphics g) {
+				String color = "_" + MPlayerIcon.this.determinePlayerColor(MPlayerIcon.this.player);
+				String iconPath = ApplicationConfigurationManager.get().getUIAssetsDirectory() + MPlayerIcon.class.getSimpleName() + color + ApplicationConfigurationManager.get().getUIAssetsFileExtension();
+				try {
+					g.drawImage(ImageIO.read(new File(iconPath)), 0, 0, this);
+				} catch (IOException e) {
+					// If a error occurred while loading the player icon, well, do nothing.
+				}
+			};
+		};
 		this.iconArea.setOpaque(false);
-		this.iconArea.add(new JLabel("ICON"));
+		this.iconArea.setPreferredSize(new Dimension(62, 90));
 		
 		this.dataArea = new JPanel();
 		this.dataArea.setLayout(new BoxLayout(this.dataArea, BoxLayout.PAGE_AXIS));
@@ -155,5 +175,35 @@ public class MPlayerIcon extends JPanel implements MControl, TextResources {
 		this.player = player;
 		
 		this.refresh();
-	}	
+	}
+
+	/**
+	 * Determines the color string from the color,
+	 * that the player uses.
+	 * 
+	 * @param player The player, from which we determine the color string.
+	 * @return The color string.
+	 * 
+	 */
+	private String determinePlayerColor(Player player) {		
+		if (player.getColor() == null) {
+			return "default";
+		} else if (player.getColor().equals(Color.BLUE)) {
+			return "blue";
+		} else if (player.getColor().equals(Color.GRAY)) {
+			return "gray";
+		} else if (player.getColor().equals(Color.GREEN)) {
+			return "green";
+		} else if (player.getColor().equals(Color.MAGENTA)) {
+			return "magenta";
+		} else if (player.getColor().equals(Color.ORANGE)) {
+			return "orange";
+		} else if (player.getColor().equals(Color.RED)) {
+			return "red";
+		} else if (player.getColor().equals(Color.YELLOW)) {
+			return "yellow";
+		} else {
+			return "default";
+		}
+	}
 }

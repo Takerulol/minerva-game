@@ -61,7 +61,7 @@ public class MinervaGUI extends JFrame implements UserInterface {
 
 	public static final Dimension WINDOW_SIZE = new Dimension(1000, 700);
 
-	private final int INTRO_DELAY = 500;  
+	private final int INTRO_DELAY = 1000;  
 	
 	private JLayeredPane currentPanel;
 

@@ -34,8 +34,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.Vector;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -43,6 +46,8 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
+import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
+import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MControl;
 import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
 import de.hochschule.bremen.minerva.vo.Player;
@@ -82,7 +87,7 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 		
 		// - initialize miglayout manager
 		this.setBorder(BorderFactory.createEmptyBorder());
-		this.setLayout(new MigLayout("wrap", "[]10[]"));
+		this.setLayout(new MigLayout("width 400!", "[]10[]"));
 		this.setOpaque(false);
 		
 		// - introduction
@@ -90,7 +95,7 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 		introduction.setText(WORLD_INIT_PANEL_INTRODUCTION.replace("{gm}", gamemaster.getFirstName()));
 		introduction.setFont(FONT);
 		introduction.setForeground(FONT_COLOR_DEFAULT);
-		this.add(introduction, "span, shrink");
+		this.add(introduction, "span, width 300!");
 		
 		// - world selector
 		JLabel selectorLabel = new JLabel();
@@ -98,7 +103,7 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 		selectorLabel.setFont(FONT);
 		selectorLabel.setForeground(FONT_COLOR_DEFAULT);
 		this.add(selectorLabel, "gaptop 30");
-		
+
 		this.worldComboBox = new JComboBox();
 		this.worldComboBox.setFont(FONT);
 		for (World world : this.worlds) {
@@ -108,31 +113,32 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 		
 		// - world info
 		JPanel worldInfo = new JPanel();
-		worldInfo.setLayout(new MigLayout("fillx", "[]10[]"));
+		worldInfo.setLayout(new MigLayout("fillx, insets 15", "[]10[]"));
 
-		this.currentWorldThumbnail.setText("ICO");
+		this.currentWorldThumbnail.setText("thumb");
 		worldInfo.add(this.currentWorldThumbnail, "span 1 5, gapright 10");
-		
+
 		this.currentWorldName.setFont(new Font(FONT.getFamily(), Font.BOLD, FONT.getSize()));
 		this.currentWorldName.setForeground(Color.WHITE);
-		worldInfo.add(this.currentWorldName, "wrap");
-		
+		worldInfo.add(this.currentWorldName, "width 200!, wrap");
+
 		this.currentWorldDescription.setFont(FONT);
-		worldInfo.add(this.currentWorldDescription, "grow, wrap");
-		
+		worldInfo.add(this.currentWorldDescription, "width 200!, wrap 15");
+
 		this.currentWorldVersion.setFont(FONT);
-		worldInfo.add(this.currentWorldVersion, "span, wrap 10");
+		worldInfo.add(this.currentWorldVersion, "width 200!, wrap 20");
 
 		this.currentWorldAuthor.setFont(FONT);
-		worldInfo.add(this.currentWorldAuthor, "span, wrap 5");
+		worldInfo.add(this.currentWorldAuthor, "width 150!, wrap 10");
 
 		worldInfo.setBackground(new Color(14, 15, 17));
 		worldInfo.setBorder(BorderFactory.createLineBorder(new Color(35, 36, 40)));
-		this.add(worldInfo, "span");
+		this.add(worldInfo, "width 300!, span 2");
 
 		this.addListeners();
 
 		this.fillWorldInfo();
+		MinervaGUI.getInstance().pack();
 	}
 	
 	/**
@@ -152,11 +158,20 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 	 */
 	private void fillWorldInfo() {
 		World selectedWorld = this.getSelectedWorld();
+
+		String thumbnailPath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + selectedWorld.getThumbnail();
+
+	 	try {
+	 		this.currentWorldThumbnail.setText("");
+			this.currentWorldThumbnail.getGraphics().drawImage(ImageIO.read(new File(thumbnailPath)), 0, 0, null);
+		} catch (IOException e) {
+			this.currentWorldThumbnail.setText("THUMB");
+		} 
 		
 		this.currentWorldName.setText(selectedWorld.getName());
-		this.currentWorldDescription.setText(selectedWorld.getDescription());
-		this.currentWorldVersion.setText(WORLD_INIT_PANEL_VERSION + " " + selectedWorld.getVersion());
-		this.currentWorldAuthor.setText(WORLD_INIT_PANEL_AUTHOR + " " + selectedWorld.getAuthor());
+		this.currentWorldDescription.setText("<html>"+selectedWorld.getDescription());
+		this.currentWorldVersion.setText("<html>"+WORLD_INIT_PANEL_VERSION + "<br />" + selectedWorld.getVersion());
+		this.currentWorldAuthor.setText("<html>"+WORLD_INIT_PANEL_AUTHOR + "<br />" + selectedWorld.getAuthor());
 	}
 
 	private void addListeners() {
