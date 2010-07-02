@@ -32,10 +32,27 @@ package de.hochschule.bremen.minerva.core;
 import java.io.File;
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.core.logic.AttackResult;
+import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
+import de.hochschule.bremen.minerva.exceptions.CountryOwnerException;
 import de.hochschule.bremen.minerva.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.exceptions.GameAlreadyStartedException;
+import de.hochschule.bremen.minerva.exceptions.IsOwnCountryException;
+import de.hochschule.bremen.minerva.exceptions.NoPlayerLoggedInException;
+import de.hochschule.bremen.minerva.exceptions.NotEnoughArmiesException;
+import de.hochschule.bremen.minerva.exceptions.NotEnoughPlayersLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.PlayerAlreadyLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
+import de.hochschule.bremen.minerva.exceptions.PlayerExistsException;
+import de.hochschule.bremen.minerva.exceptions.WorldFileExtensionException;
+import de.hochschule.bremen.minerva.exceptions.WorldFileNotFoundException;
+import de.hochschule.bremen.minerva.exceptions.WorldFileParseException;
+import de.hochschule.bremen.minerva.exceptions.WorldNotDefinedException;
+import de.hochschule.bremen.minerva.exceptions.WorldNotStorable;
 import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
+import de.hochschule.bremen.minerva.vo.Country;
+import de.hochschule.bremen.minerva.vo.CountryCard;
+import de.hochschule.bremen.minerva.vo.Mission;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.World;
 
@@ -52,23 +69,41 @@ public interface GameEngine {
 	// --------------------------------------
 	// -- login and registration subsystem --
 	// --------------------------------------
-	public void login(Player player) throws PlayerAlreadyLoggedInException, WrongPasswordException, PlayerDoesNotExistException, DataAccessException;
+	public void login(Player player) throws PlayerAlreadyLoggedInException, GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, DataAccessException;
 
-	public void logout(Player player);
-
-	public void register(Player player);
+	public void register(Player player) throws PlayerExistsException, DataAccessException ;
 
 	// ---------------------
 	// -- world subsystem --
 	// ---------------------
-	public Vector<World> getWorlds();
+	public Vector<World> getWorldList() throws DataAccessException;
 
-	public Vector<World> getWorlds(boolean lite);
+	public Vector<World> getWorldList(boolean lite) throws DataAccessException ;
 
-	public void importWorld(File worldFile);
+	public void importWorld(File worldFile) throws WorldNotStorable, WorldFileNotFoundException, WorldFileExtensionException, WorldFileParseException, DataAccessException;
 
 	// ----------------------------
 	// -- game core logic subsystem
 	// ----------------------------
-	public String createGame();
+	public Vector<Player> getPlayers();
+
+	public Vector<Mission> getMissions();
+	
+	public void setWorldToGame(World world);
+
+	public void startGame() throws NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException;
+	
+	public void killGame() throws DataAccessException ;
+
+	public void releaseCard(CountryCard card);
+
+	public void releaseCards(Vector<CountryCard> cards);
+
+	public void allocateArmy(Country allocatable) throws NotEnoughArmiesException, CountryOwnerException;
+
+	public AttackResult attack(Country source, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException;
+	
+	public void move(Country source, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, CountryOwnerException;
+
+	public void finishTurn();
 }
