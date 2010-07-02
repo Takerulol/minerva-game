@@ -271,11 +271,10 @@ public class AccountManager {
 	 * This will logout the desired player, regardless if he is logged in or not.
 	 * 
 	 * @throws PlayerDoesNotExistException Player you want to logout doesn't exist.
-	 * @throws PersistenceException
 	 * @throws DataAccessException Common data access exception.
 	 * 
 	 */
-	public void logout(Player player) throws PlayerDoesNotExistException, PersistenceException, DataAccessException {
+	public void logout(Player player) throws PlayerDoesNotExistException, DataAccessException {
 		try {
 			player = this.getPlayer(player);
 		} catch (PlayerDoesNotExistException e) {
@@ -283,12 +282,15 @@ public class AccountManager {
 		}
 		player.setLoggedIn(false);
 
-		// It is not possible, that the player does not exist.
-		// We loaded it a few code lines before. So it must exist.
-		// So the catch area will never be thrown.
 		try {
 			service.save(player);
-		} catch (de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException e) {}
+		} catch (de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException e) {
+			// It is not possible, that the player does not exist.
+			// We loaded it a few code lines before. So it must exist.
+			// So the catch area will never be reached.
+		} catch (PersistenceException e) {
+			throw new DataAccessException(e.getMessage());
+		}
 	}
 	
 	/**
