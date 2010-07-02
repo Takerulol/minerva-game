@@ -84,7 +84,20 @@ public class MPlayerIcon extends JPanel implements MControl, TextResources {
 		this.setOpaque(false);
 
 		// Loading the player icon
-		this.iconArea = new JPanel();
+		this.iconArea = new JPanel() {
+			private static final long serialVersionUID = -3484770437177556562L;
+
+			public void paint(java.awt.Graphics g) {
+				String color = "_" + MPlayerIcon.this.determinePlayerColor(MPlayerIcon.this.player);
+				String iconPath = ApplicationConfigurationManager.get().getUIAssetsDirectory() + MPlayerIcon.class.getSimpleName() + color + ApplicationConfigurationManager.get().getUIAssetsFileExtension();
+				try {
+					g.drawImage(ImageIO.read(new File(iconPath)), 0, 0, this);
+				} catch (IOException e) {
+					// If a error occurred while loading the player icon, well, do nothing.
+				}
+			};
+		};
+
 		this.iconArea.setOpaque(false);
 		this.add(this.iconArea, "width 62, height 76");
 
@@ -133,20 +146,6 @@ public class MPlayerIcon extends JPanel implements MControl, TextResources {
 		
 		this.username.setText(MPLAYERICON_USERNAME + " " + this.player.getUsername());
 		this.email.setText(MPLAYERICON_EMAIL + " " + this.player.getEmail());
-		
-		this.iconArea = new JPanel() {
-			private static final long serialVersionUID = -3484770437177556562L;
-
-			public void paint(java.awt.Graphics g) {
-				String color = "_" + MPlayerIcon.this.determinePlayerColor(MPlayerIcon.this.player);
-				String iconPath = ApplicationConfigurationManager.get().getUIAssetsDirectory() + MPlayerIcon.class.getSimpleName() + color + ApplicationConfigurationManager.get().getUIAssetsFileExtension();
-				try {
-					g.drawImage(ImageIO.read(new File(iconPath)), 0, 0, this);
-				} catch (IOException e) {
-					// If a error occurred while loading the player icon, well, do nothing.
-				}
-			};
-		};
 	}
 
 	/**
@@ -158,18 +157,6 @@ public class MPlayerIcon extends JPanel implements MControl, TextResources {
 	 */
 	public Player getPlayer() {
 		return this.player;
-	}
-
-	/**
-	 * Sets a player that represents the model.
-	 * 
-	 * @param player The player model.
-	 * 
-	 */
-	public void setPlayer(Player player) {
-		this.player = player;
-		
-		this.refresh();
 	}
 
 	/**
