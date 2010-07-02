@@ -181,7 +181,6 @@ public class GameInitPanel extends JLayeredPane implements TextResources {
 		// user if he move the mouse over the "add player link"
 		this.addMouseMotionListener(new MMouseMotionListener() {
 			public void mouseMoved(MouseEvent e) {
-				System.out.println("move");
 				if (GameInitPanel.this.isPlayerAddLink(e.getX(), e.getY())) {
 					GameInitPanel.this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				} else {
