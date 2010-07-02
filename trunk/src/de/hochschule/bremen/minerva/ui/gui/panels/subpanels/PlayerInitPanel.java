@@ -64,7 +64,7 @@ public class PlayerInitPanel extends JPanel implements TextResources {
 	 * @param playerIcons
 	 */
 	public PlayerInitPanel() {
-		Vector<Player> players = SessionManager.get(MinervaGUI.getSessionId()).getPlayer();
+		Vector<Player> players = SessionManager.get(MinervaGUI.getSessionId()).getPlayers();
 
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		this.setOpaque(false);

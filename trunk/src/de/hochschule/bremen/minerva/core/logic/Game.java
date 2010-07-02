@@ -97,6 +97,7 @@ public class Game {
 	/**
 	 * Starts the initialization process
 	 * (generate player countries, allocate missions and so on).
+	 * And ... starts the first turn.
 	 * 
 	 * @throws NotEnoughPlayersLoggedInException
 	 * @throws NoPlayerLoggedInException
@@ -119,8 +120,10 @@ public class Game {
 		this.generateCountryCards();
 		
 		this.setStarted(true);
-	}
 
+		this.nextTurn();
+	}
+	
 	/**
 	 * Sets the next player and creates a new
 	 * Turn. With this turn it is possible to
@@ -131,7 +134,7 @@ public class Game {
 	 */
 	public Turn nextTurn() {
 		this.turns.add(new Turn(this.nextPlayer(), this.world, this.players, this.countryCards, this.usedCountryCards, this.seriesCounter));
-		return this.turns.lastElement();
+		return this.getCurrentTurn();
 	}
 
 	/**
@@ -156,7 +159,7 @@ public class Game {
 	 * DOCME
 	 * @return the player
 	 */
-	public Vector<Player> getPlayer() {
+	public Vector<Player> getPlayers() {
 		return players;
 	}
 
@@ -259,7 +262,17 @@ public class Game {
 	public int getTurnCount() {
 		return this.turns.size();
 	}
-	
+
+	/**
+	 * Returns the current turn object.
+	 * 
+	 * @return The current turn to play with.
+	 * 
+	 */
+	public Turn getCurrentTurn() {
+		return this.turns.lastElement();
+	}
+
 	/**
 	 * DOCME
 	 * @return Game finished?
@@ -385,7 +398,7 @@ public class Game {
 	 * 
 	 */
 	private void allocateMissions() {
-		Vector<Player> defeatablePlayers = new Vector<Player>(this.getPlayer());
+		Vector<Player> defeatablePlayers = new Vector<Player>(this.getPlayers());
 		Vector<Continent> conquerableContinents = new Vector<Continent>(this.world.getContinents());
 		
 		int missionType = 0;
