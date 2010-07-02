@@ -277,6 +277,7 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 		this.cardButton.addActionListener(this);
 		this.attackButton.addActionListener(this);
 		this.moveButton.addActionListener(this);
+		this.turnIn.addActionListener(this);
 	}
 	
 	/**
@@ -331,7 +332,22 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 			this.gamePanel.setGameState(GamePanel.ATTACK);
 		} else if (e.getSource() == this.moveButton) {
 			this.gamePanel.setGameState(GamePanel.MOVE);
+		} else if (e.getSource() == this.turnIn) {
+			if (this.cardList.getSelectedIndices().length == 1) {
+				this.gamePanel.TurnCardIn(this.gamePanel.getCurrentTurn().getCurrentPlayer().getCountryCards().get(this.cardList.getSelectedIndex()));
+			} else if (this.cardList.getSelectedIndices().length == 3) {
+				Vector<CountryCard> series = new Vector<CountryCard>();
+				for (int i = 0; i < 3; i++) {
+					series.add(this.gamePanel.getCurrentTurn().getCurrentPlayer().getCountryCards().get(this.cardList.getSelectedIndices()[i]));
+					System.out.println(""+this.gamePanel.getCurrentTurn().getCurrentPlayer().getCountryCards().get(this.cardList.getSelectedIndices()[i]));
+				}
+				this.gamePanel.TurnSeriesIn(series);
+			} else {
+				//TODO: better error handling
+				this.gamePanel.errorDialog("Das geht nicht!");
+			}
 		}
 		this.gamePanel.updatePanel();
 	}
+
 }

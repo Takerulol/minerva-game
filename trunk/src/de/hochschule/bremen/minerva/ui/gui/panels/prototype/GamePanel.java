@@ -209,16 +209,16 @@ public class GamePanel extends JLayeredPane {
 	 * 
 	 * @param card
 	 */
-	private void TurnCardIn(CountryCard card) {
-		//TODO: implementation
+	public void TurnCardIn(CountryCard card) {
+		this.currentTurn.releaseCard(card);
 	}
 	
 	/**
 	 * 
 	 * @param series
 	 */
-	private void TurnSeriesIn(Vector<CountryCard> series) {
-		//TODO: implementation
+	public void TurnSeriesIn(Vector<CountryCard> series) {
+		this.currentTurn.releaseCardSeries(series);
 	}
 	
 	/**
@@ -242,7 +242,7 @@ public class GamePanel extends JLayeredPane {
 			
 			int wert = Integer.parseInt(JOptionPane.showInputDialog("Wieviele Armeen " +
 					"sollen angreifen? (max: "+this.currentTurn.calcMaxAttackCount(this.source)+")",
-					""+(this.source.getArmyCount()-1)));
+					""+(this.currentTurn.calcMaxAttackCount(this.source))));
 			try {
 				this.currentTurn.attack(this.source, this.destination, wert);
 			} catch (CountriesNotInRelationException e) {
@@ -298,7 +298,7 @@ public class GamePanel extends JLayeredPane {
 	 * Opens JDialog with given error text
 	 * @param errorText String of error text
 	 */
-	private void errorDialog(String errorText) {
+	public void errorDialog(String errorText) {
 		JOptionPane.showMessageDialog(this,
 			    errorText,
 			    "Fehler",
@@ -391,4 +391,11 @@ public class GamePanel extends JLayeredPane {
 		return gameState;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+	public Turn getCurrentTurn() {
+		return this.currentTurn;
+	}
 }
