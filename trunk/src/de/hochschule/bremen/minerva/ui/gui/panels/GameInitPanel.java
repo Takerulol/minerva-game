@@ -30,8 +30,10 @@
 
 package de.hochschule.bremen.minerva.ui.gui.panels;
 
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -47,6 +49,8 @@ import de.hochschule.bremen.minerva.manager.WorldManager;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MButton;
 import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
+import de.hochschule.bremen.minerva.ui.gui.listener.MMouseListener;
+import de.hochschule.bremen.minerva.ui.gui.listener.MMouseMotionListener;
 import de.hochschule.bremen.minerva.ui.gui.panels.prototype.GamePanel;
 import de.hochschule.bremen.minerva.ui.gui.panels.subpanels.PlayerInitPanel;
 import de.hochschule.bremen.minerva.ui.gui.panels.subpanels.WorldInitPanel;
@@ -74,15 +78,13 @@ public class GameInitPanel extends JLayeredPane implements TextResources {
 		this.setPreferredSize(MinervaGUI.WINDOW_SIZE);
 		this.setOpaque(true);
 		
-		// TODO: change image
-		// background
 		this.background = new Background(this.getClass());
 		this.background.setBounds(0, 0, 500, 500);
 		
 		// player list
 		this.playerInitPanel = new PlayerInitPanel();
 		this.playerInitPanel.setOpaque(false);
-		this.playerInitPanel.setBounds(90, 180, 350, 240);
+		this.playerInitPanel.setBounds(40, 150, 350, 500);
 		this.playerInitPanel.setBorder(BorderFactory.createEmptyBorder());
 	
 		// game init
@@ -112,7 +114,23 @@ public class GameInitPanel extends JLayeredPane implements TextResources {
 		
 		this.addListeners();
 	}
-	
+
+	/**
+	 * Check if the coordinates represent the player add link.
+	 * 
+	 * @param x The checkable x coordinate.
+	 * @param y The checkable y coordinate.
+	 *
+	 * @return Is inside the "player add link rectangle"?
+	 *
+	 */
+	private boolean isPlayerAddLink(int x, int y) {
+		if ((x < 505) && (x > 350) && (y < 123) && (y > 110)) {
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * Register the event handler.
 	 * 
@@ -147,6 +165,28 @@ public class GameInitPanel extends JLayeredPane implements TextResources {
 				}
 
 				MinervaGUI.getInstance().changePanel(nextPanel);
+			}
+		});
+
+		// MMouseListener for handling the click on the "player add link".
+		this.addMouseListener(new MMouseListener() {
+			public void mouseClicked(MouseEvent e) {
+				if (GameInitPanel.this.isPlayerAddLink(e.getX(), e.getY())) {
+					MinervaGUI.getInstance().changePanel(new LoginPanel());					
+				}
+			}
+		});
+
+		// MMouseMotionListener for sending a interaction feedback to the
+		// user if he move the mouse over the "add player link"
+		this.addMouseMotionListener(new MMouseMotionListener() {
+			public void mouseMoved(MouseEvent e) {
+				System.out.println("move");
+				if (GameInitPanel.this.isPlayerAddLink(e.getX(), e.getY())) {
+					GameInitPanel.this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				} else {
+					GameInitPanel.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				}
 			}
 		});
 	}
