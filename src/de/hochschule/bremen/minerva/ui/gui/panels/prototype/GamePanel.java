@@ -264,7 +264,7 @@ public class GamePanel extends JLayeredPane {
 					this.errorDialog(e.getMessage());
 				}
 			} catch (NumberFormatException e1) {
-				//no need, just to make the method doesn't end
+				//no need, just to make sure that the method doesn't end
 			}
 		
 			this.source = null;
@@ -306,7 +306,7 @@ public class GamePanel extends JLayeredPane {
 					this.errorDialog(e.getMessage());
 				}
 			} catch (NumberFormatException e1) {
-				//no need, just to make sure that the methods doesn't
+				//no need, just to make sure that the methods doesn't end
 			}
 			
 			this.source = null;
