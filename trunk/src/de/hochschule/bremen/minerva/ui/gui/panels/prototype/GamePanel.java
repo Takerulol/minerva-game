@@ -120,7 +120,17 @@ public class GamePanel extends JLayeredPane {
 		this.addMapListener();
 		
 		HashMap<Country, Point> countryAnchors = MapTool.getCountryAnchors(this.mapOverlay.getMapImage(), mapUnderlay.getMapImage(), this.game.getWorld());
-
+//		Iterator iter = countryAnchors.entrySet().iterator();
+//		while (iter.hasNext()) {
+//			Map.Entry pairs = (Map.Entry)iter.next();
+//			System.out.println(pairs.getKey());
+//		}
+//		for (Country country : this.game.getWorld().getCountries()) {
+//			if (!(countryAnchors.containsKey(country))) {
+//				System.out.println("lol"+country);
+//			}
+//		}
+		
 		//initializing the first turn
 		this.currentTurn = this.game.nextTurn();
 
@@ -239,19 +249,24 @@ public class GamePanel extends JLayeredPane {
 		} else {
 			this.destination = country;
 			this.armyIcons.get(country).mark(Color.YELLOW);
-			
-			int wert = Integer.parseInt(JOptionPane.showInputDialog("Wieviele Armeen " +
-					"sollen angreifen? (max: "+this.currentTurn.calcMaxAttackCount(this.source)+")",
-					""+(this.currentTurn.calcMaxAttackCount(this.source))));
 			try {
-				this.currentTurn.attack(this.source, this.destination, wert);
-			} catch (CountriesNotInRelationException e) {
-				this.errorDialog(e.getMessage());
-			} catch (NotEnoughArmiesException e) {
-				this.errorDialog(e.getMessage());
-			} catch (IsOwnCountryException e) {
-				this.errorDialog(e.getMessage());
+				int wert = Integer.parseInt(JOptionPane.showInputDialog("Wieviele Armeen " +
+						"sollen angreifen? (max: "+this.currentTurn.calcMaxAttackCount(this.source)+")",
+						""+(this.currentTurn.calcMaxAttackCount(this.source))));
+				
+				try {
+					this.currentTurn.attack(this.source, this.destination, wert);
+				} catch (CountriesNotInRelationException e) {
+					this.errorDialog(e.getMessage());
+				} catch (NotEnoughArmiesException e) {
+					this.errorDialog(e.getMessage());
+				} catch (IsOwnCountryException e) {
+					this.errorDialog(e.getMessage());
+				}
+			} catch (NumberFormatException e1) {
+				//no need, just to make the method doesn't end
 			}
+		
 			this.source = null;
 			this.destination = null;
 		}	
@@ -277,18 +292,23 @@ public class GamePanel extends JLayeredPane {
 			this.armyIcons.get(this.source).mark(Color.GREEN);
 			this.armyIcons.get(country).mark(Color.YELLOW);
 			
-			int wert = Integer.parseInt(JOptionPane.showInputDialog("Wieviele Armeen " +
-					"sollen bewegt werden? (max: "+(this.source.getArmyCount()-1)+")",
-					""+(this.source.getArmyCount()-1)));
 			try {
-				this.currentTurn.moveArmies(this.source, this.destination, wert);
-			} catch (CountriesNotInRelationException e) {
-				this.errorDialog(e.getMessage());
-			} catch (NotEnoughArmiesException e) {
-				this.errorDialog(e.getMessage());
-			} catch (CountryOwnerException e) {
-				this.errorDialog(e.getMessage());
+				int wert = Integer.parseInt(JOptionPane.showInputDialog("Wieviele Armeen " +
+						"sollen bewegt werden? (max: "+(this.source.getArmyCount()-1)+")",
+						""+(this.source.getArmyCount()-1)));
+				try {
+					this.currentTurn.moveArmies(this.source, this.destination, wert);
+				} catch (CountriesNotInRelationException e) {
+					this.errorDialog(e.getMessage());
+				} catch (NotEnoughArmiesException e) {
+					this.errorDialog(e.getMessage());
+				} catch (CountryOwnerException e) {
+					this.errorDialog(e.getMessage());
+				}
+			} catch (NumberFormatException e1) {
+				//no need, just to make sure that the methods doesn't
 			}
+			
 			this.source = null;
 			this.destination = null;
 		}
