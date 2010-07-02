@@ -3,10 +3,10 @@
 <world>
 	<meta>
 		<token>origworld</token>
-		<name>Original Risiko-Welt</name>
+		<name>Risiko-Welt von Hasbro</name>
 		<author>Carina Strempel, Christian Bollmann, André König</author>
-		<description>Die original Welt des Risiko-Spiels von Hasbro.</description>
-		<version>1.0 beta</version>
+		<description>Dies ist die original Risiko-Welt von Hasbro. Die Welt besteht aus 42 Ländern verteilt auf 6 Kontinenten.</description>
+		<version>1.0</version>
 
 		<map>1bc5b77f3e50b7fbe12c792ee438da45.png</map>
 		<map-underlay>b44a59383b3123a747d139bd0e71d2df.png</map-underlay>
@@ -53,7 +53,7 @@
 		<country id="22" continent="2" color="7da7d9" token="oa" name="Ost-Australien" neighbours="20, 21" />
 
 		<!-- Afrika -->
-		<country id="23" continent="3" color="92268E" token="na" name="Nordwest-Afrika" neighbours="3, 4, 24, 25, 26, 30" />
+		<country id="23" continent="3" color="92268F" token="na" name="Nordwest-Afrika" neighbours="3, 4, 24, 25, 26, 30" />
 		<country id="24" continent="3" color="9379BE" token="eg" name="Ägypten" neighbours="3, 17, 23, 25" />
 		<country id="25" continent="3" color="2E3092" token="oaf" name="Ost-Afrika" neighbours="17, 23, 24, 26, 27, 28" />
 		<country id="26" continent="3" color="0054A6" token="cd" name="Kongo" neighbours="23, 25, 27" />
