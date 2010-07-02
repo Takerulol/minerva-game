@@ -43,6 +43,7 @@ public class Player extends ValueObject {
 	private boolean loggedIn = false;
 	private boolean currentPlayer = false;
 	private boolean master = false;
+	private PlayerState state = PlayerState.IDLE;
 	private Color color = Color.WHITE;
 	
 	// The countries, that the player won.
@@ -303,6 +304,26 @@ public class Player extends ValueObject {
 		return getClass().getName() + "[id=" + this.id + ",username=" + this.username + ",last_name=" + this.lastName + ",first_name=" + this.firstName + ",email=" + this.email + ", loggedIn=" + this.loggedIn + "]";
 	}
 
+	/**
+	 * Sets the current player state.
+	 * 
+	 * @param state The new player state.
+	 *
+	 */
+	public void setState(PlayerState state) {
+		this.state = state;
+	}
+
+	/**
+	 * Returns the current player state.
+	 * 
+	 * @return The player state.
+	 * 
+	 */
+	public PlayerState getState() {
+		return this.state;
+	}
+	
 	/**
 	 * Sets color of the player
 	 * @param color Color
