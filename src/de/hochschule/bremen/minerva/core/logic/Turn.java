@@ -42,6 +42,7 @@ import de.hochschule.bremen.minerva.vo.Army;
 import de.hochschule.bremen.minerva.vo.CanonCard;
 import de.hochschule.bremen.minerva.vo.CardSeriesCounter;
 import de.hochschule.bremen.minerva.vo.CavalerieCard;
+import de.hochschule.bremen.minerva.vo.Continent;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.CountryCard;
 import de.hochschule.bremen.minerva.vo.Player;
@@ -57,6 +58,8 @@ import de.hochschule.bremen.minerva.vo.World;
  */
 public class Turn {
 
+	public static final int CONTINENT_ARMY_GET = 5;
+	
 	private World world = null;
 	private Vector<Player> players = null;
 	private Player currentPlayer = null;
@@ -92,8 +95,6 @@ public class Turn {
 		this.seriesCounter = seriesCounter;
 	}
 	
-	//TODO: Regelabfrage, ob ganzer Kontinent besetzt ist. änderung dass methode nur einmal
-	// ausgefuehrt werden darf.
 	/**
 	 * Creates armies for the current player by taking his countryCount / 3.
 	 * If its less than 3, the current player gets 3 armies.
@@ -102,12 +103,30 @@ public class Turn {
 	 * @return Vector of armies gained per turn.
 	 */
 	private void createArmies() {
+		//army via country count
 		int armyGet = this.currentPlayer.getCountryCount() / 3;
 
 		if (armyGet < 3) {
 			armyGet = 3;
 		}
-
+		
+		//armies via fully conquered continents
+		int conqueredContinents = 0;
+		boolean check;
+		for (Continent continent : this.world.getContinents()) {
+			check = true;
+			for (Country country : this.world.getCountries(continent)) {
+				if (!this.currentPlayer.hasCountry(country)) {
+					check = false;
+				}
+			}
+			if (check) {
+				conqueredContinents++;
+			}
+		}
+		armyGet += conqueredContinents * Turn.CONTINENT_ARMY_GET;
+		
+		//creating armies
 		for (int i = 0; i < armyGet; i++) {
 			this.allocatableArmies.add(new Army());
 		}
@@ -378,7 +397,7 @@ public class Turn {
 			}
 			
 			//one card of each type
-			if ((soldierCards.size() > 1) && (canonCards.size() > 1 ) && (cavalerieCards.size() > 1)) {
+			if ((soldierCards.size() >= 1) && (canonCards.size() >= 1 ) && (cavalerieCards.size() >= 1)) {
 				this.usedCountryCards.add(soldierCards.firstElement());
 				this.usedCountryCards.add(canonCards.firstElement());
 				this.usedCountryCards.add(cavalerieCards.firstElement());

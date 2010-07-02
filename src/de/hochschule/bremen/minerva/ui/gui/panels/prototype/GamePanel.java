@@ -120,6 +120,9 @@ public class GamePanel extends JLayeredPane {
 		this.addMapListener();
 		
 		HashMap<Country, Point> countryAnchors = MapTool.getCountryAnchors(this.mapOverlay.getMapImage(), mapUnderlay.getMapImage(), this.game.getWorld());
+
+		
+		//TODO: remove this when finished
 //		Iterator iter = countryAnchors.entrySet().iterator();
 //		while (iter.hasNext()) {
 //			Map.Entry pairs = (Map.Entry)iter.next();
@@ -186,7 +189,11 @@ public class GamePanel extends JLayeredPane {
 				if (gameState == 0) {
 					GamePanel.this.allocate(country);
 				} else if (GamePanel.this.getGameState() == GamePanel.CARD_TURN_IN) {
-					//TODO: implementation, also wrong place ... button in control bar will be used instead of map
+					/*
+					 * Nothing will happen here.
+					 * You can't interact with the map, when you're trying to
+					 * release cards.
+					 */
 				} else if (GamePanel.this.getGameState() == GamePanel.ATTACK) {
 					GamePanel.this.attack(country);
 				} else if (GamePanel.this.getGameState() == GamePanel.MOVE) {

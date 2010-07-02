@@ -253,8 +253,18 @@ public class World extends ValueObject {
 	 */
 	public Vector<Continent> getContinents() {
 		Vector<Continent> continents = new Vector<Continent>();
+	
 		for (Country country : this.countries) {
-			if (!(continents.contains(country.getContinent()))) {
+//			if (!(continents.contains(country.getContinent()))) {
+//				continents.add(country.getContinent());
+//			}
+			boolean check = true;
+			for (Continent continent : continents) {
+				if (continent.getId() == country.getContinent().getId()) {
+					check = false;
+				}
+			}
+			if (check) {
 				continents.add(country.getContinent());
 			}
 		}
