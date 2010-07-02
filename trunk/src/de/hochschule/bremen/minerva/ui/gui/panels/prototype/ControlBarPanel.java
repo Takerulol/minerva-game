@@ -339,7 +339,6 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 				Vector<CountryCard> series = new Vector<CountryCard>();
 				for (int i = 0; i < 3; i++) {
 					series.add(this.gamePanel.getCurrentTurn().getCurrentPlayer().getCountryCards().get(this.cardList.getSelectedIndices()[i]));
-					System.out.println(""+this.gamePanel.getCurrentTurn().getCurrentPlayer().getCountryCards().get(this.cardList.getSelectedIndices()[i]));
 				}
 				this.gamePanel.TurnSeriesIn(series);
 			} else {
