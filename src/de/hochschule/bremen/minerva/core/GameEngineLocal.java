@@ -41,6 +41,7 @@ import de.hochschule.bremen.minerva.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.exceptions.GameAlreadyStartedException;
 import de.hochschule.bremen.minerva.exceptions.IsOwnCountryException;
 import de.hochschule.bremen.minerva.exceptions.NoPlayerLoggedInException;
+import de.hochschule.bremen.minerva.exceptions.NoPlayerSlotAvailableException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughArmiesException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughPlayersLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.PlayerAlreadyLoggedInException;
@@ -103,10 +104,11 @@ public class GameEngineLocal implements GameEngine {
 	 * Login a player into the current game
 	 *
 	 * @throws GameAlreadyStartedException It is not possible to login a player if the game is already running. 
+	 * @throws NoPlayerSlotAvailableException 
 	 * 
 	 */
 	@Override
-	public void login(Player player) throws PlayerAlreadyLoggedInException, GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, DataAccessException {
+	public void login(Player player) throws PlayerAlreadyLoggedInException, GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException {
 		AccountManager.getInstance().login(player);
 
 		this.game.addPlayer(player);

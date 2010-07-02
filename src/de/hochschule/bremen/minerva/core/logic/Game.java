@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.exceptions.GameAlreadyStartedException;
+import de.hochschule.bremen.minerva.exceptions.NoPlayerSlotAvailableException;
 import de.hochschule.bremen.minerva.exceptions.WorldNotDefinedException;
 import de.hochschule.bremen.minerva.exceptions.NoPlayerLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughPlayersLoggedInException;
@@ -71,11 +72,21 @@ public class Game {
 	private boolean finished = false;
 	private Player winner = null;
 
+	private Vector<Color> availablePlayerColors = new Vector<Color>();
+
 	/**
 	 * DOCME
 	 * 
 	 */
-	public Game() {}
+	public Game() {
+		this.availablePlayerColors.add(Color.BLUE);
+		this.availablePlayerColors.add(Color.GRAY);
+		this.availablePlayerColors.add(Color.GREEN);
+		this.availablePlayerColors.add(Color.MAGENTA);
+		this.availablePlayerColors.add(Color.ORANGE);
+		this.availablePlayerColors.add(Color.RED);
+		this.availablePlayerColors.add(Color.YELLOW);
+	}
 	
 	/**
 	 * DOCME
@@ -112,8 +123,6 @@ public class Game {
 		} else if (this.world == null) {
 			throw new WorldNotDefinedException();
 		}
-
-		this.generateColors();
 
 		this.allocateCountries();
 		this.allocateMissions();
@@ -201,12 +210,18 @@ public class Game {
 	 * 
 	 * @param player The player to add.
 	 * @throws GameAlreadyStartedException Not able to add a new player to a already running game session.
+	 * @throws NoPlayerSlotAvailableException The game is full.
 	 * 
 	 */
-	public void addPlayer(Player player) throws GameAlreadyStartedException {
+	public void addPlayer(Player player) throws GameAlreadyStartedException, NoPlayerSlotAvailableException {
 		if (!this.isRunning()) {
 			if (!this.isPlayerInGame(player)) {
-				this.players.add(player);
+				if (this.isPlayerColorAvailable()) {
+					player.setColor(this.generatePlayerColor());
+					this.players.add(player);
+				} else {
+					throw new NoPlayerSlotAvailableException(player);
+				}
 			}
 		} else {
 			throw new GameAlreadyStartedException(player);
@@ -474,23 +489,30 @@ public class Game {
 	private void setWinner(Player champ) {
 		this.winner = champ;
 	}
-	
+
 	/**
-	 * Generates unique colors for each player
+	 * Gets a randomized color from the "available colors vector".
+	 * 
+	 * @return The determined color.
+	 * 
 	 */
-	private void generateColors() {
-		Vector<Color> colors = new Vector<Color>();
-		colors.add(Color.RED);
-		colors.add(Color.GREEN);
-		colors.add(Color.BLUE);
-		colors.add(Color.YELLOW);
-		colors.add(Color.WHITE);
-		colors.add(Color.ORANGE);
-		Collections.shuffle(colors);
-		
-		for (Player player : this.players) {
-			player.setColor(colors.firstElement());
-			colors.remove(0);
-		}
+	private Color generatePlayerColor() {
+		Collections.shuffle(this.availablePlayerColors);
+		Color playerColor = new Color(this.availablePlayerColors.get(0).getRGB());
+		this.availablePlayerColors.remove(0);
+
+		return playerColor;		
+	}
+
+	/**
+	 * Are there any player colors available?
+	 * If not, the game is full and it is not possible
+	 * add a new player.
+	 *  
+	 * @return boolean
+	 *
+	 */
+	private boolean isPlayerColorAvailable() {
+		return !this.availablePlayerColors.isEmpty();
 	}
 }
