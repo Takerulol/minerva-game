@@ -71,7 +71,7 @@ public interface TextResources {
 	public static final String WORLD_INIT_PANEL_INTRODUCTION = "<html>{gm}, bitte wähle aus der unteren Liste eine Welt aus, auf der gespielt werden soll.</html>";
 	public static final String WORLD_INIT_PANEL_SELECTION    = "Auswahl:";
 	public static final String WORLD_INIT_PANEL_VERSION      = "Version:";
-	public static final String WORLD_INIT_PANEL_AUTHOR       = "Autor:";
+	public static final String WORLD_INIT_PANEL_AUTHOR       = "Autor(en):";
 	
 	// -- Controls
 	

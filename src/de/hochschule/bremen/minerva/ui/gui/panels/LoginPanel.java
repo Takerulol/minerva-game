@@ -126,9 +126,9 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 		
 		this.updateUI();
 		this.addListeners();
-		
+
 		this.repaint();
-		
+
 		// Set the focus to the username textfield.
 		SwingUtilities.invokeLater(new Runnable() {public void run() {LoginPanel.this.username.requestFocus();}});
 	}

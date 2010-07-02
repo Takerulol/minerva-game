@@ -6,7 +6,7 @@ app.icon.path=assets/userinterface/app-icon.png
 -- Directory configuration
 directory.assets.worlds=assets/worlds/
 directory.assets.userinterface=assets/userinterface/
-directory.assets.userinterface.fileextension=.jpg
+directory.assets.userinterface.fileextension=.png
 
 -- Server configuration
 server.port=9090
