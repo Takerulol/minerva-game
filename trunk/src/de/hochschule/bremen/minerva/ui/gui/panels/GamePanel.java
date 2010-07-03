@@ -241,7 +241,9 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		} catch (NotEnoughArmiesException e) {
 			MMessageBox.error(e.getMessage());
 		} catch (CountryOwnerException e) {
-			MMessageBox.error(e.getMessage());
+			if (country.getName() != null) {
+				MMessageBox.error(e.getMessage());
+			}
 		}
 		if (this.currentTurn.getAllocatableArmyCount() == 0) {
 			this.setGameState(GamePanel.CARD_TURN_IN);

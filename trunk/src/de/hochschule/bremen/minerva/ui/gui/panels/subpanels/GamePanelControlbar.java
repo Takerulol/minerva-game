@@ -86,7 +86,7 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 	//lower half
 	private JList cardList;
 	private DefaultListModel model;
-	private JButton turnIn;
+	private JButton buttonTurnIn;
 	
 	//slide
 	private JButton slideButton;
@@ -168,7 +168,7 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 		//constructing all objects
 		this.model = new DefaultListModel();
 		this.cardList = new JList(this.model);
-		this.turnIn = new JButton("Turn in!");
+		this.buttonTurnIn = new JButton(GAME_PANEL_CONTROLBAR_BUTTON_TURN_CARDS_IN);
 		
 		//card list
 		this.cardList.setVisibleRowCount(5);
@@ -178,12 +178,12 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 		this.cardList.setOpaque(false);
 		this.cardList.setSelectionModel(selection);
 		this.cardList.setPreferredSize(new Dimension(250,125));
-		this.cardList.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(187, 186, 187)), "Cards"));
+		this.cardList.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(187, 186, 187)), GAME_PANEL_CARDS));
 		this.cardList.setFont(FONT);
 		this.cardList.setForeground(new Color(139, 140, 142));
 
 		this.lowerHalf.add(this.cardList);
-		this.lowerHalf.add(this.turnIn);
+		this.lowerHalf.add(this.buttonTurnIn);
 	}
 	
 	/**
@@ -264,7 +264,7 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 		this.cardButton.addActionListener(this);
 		this.attackButton.addActionListener(this);
 		this.moveButton.addActionListener(this);
-		this.turnIn.addActionListener(this);
+		this.buttonTurnIn.addActionListener(this);
 	}
 	
 	/**
@@ -290,14 +290,14 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 					}
 				}
 			} else {
-				this.turnIn.setEnabled(true);
+				this.buttonTurnIn.setEnabled(true);
 			}
 		} else {
 			this.allocateButton.setEnabled(true);
 			this.cardButton.setEnabled(true);
 			this.attackButton.setEnabled(true);
 			this.moveButton.setEnabled(true);
-			this.turnIn.setEnabled(false);
+			this.buttonTurnIn.setEnabled(false);
 		}
 	}
 
@@ -319,7 +319,7 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 			this.gamePanel.setGameState(GamePanel.ATTACK);
 		} else if (e.getSource() == this.moveButton) {
 			this.gamePanel.setGameState(GamePanel.MOVE);
-		} else if (e.getSource() == this.turnIn) {
+		} else if (e.getSource() == this.buttonTurnIn) {
 			if (this.cardList.getSelectedIndices().length == 1) {
 				this.gamePanel.TurnCardIn(this.gamePanel.getCurrentTurn().getCurrentPlayer().getCountryCards().get(this.cardList.getSelectedIndex()));
 			} else if (this.cardList.getSelectedIndices().length == 3) {
