@@ -61,6 +61,7 @@ import de.hochschule.bremen.minerva.ui.gui.controls.MControl;
 import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
 import de.hochschule.bremen.minerva.ui.gui.controls.MSlidePanel;
 import de.hochschule.bremen.minerva.ui.gui.listener.MMouseListener;
+import de.hochschule.bremen.minerva.ui.gui.panels.subpanels.GamePanelControlbar;
 import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
 import de.hochschule.bremen.minerva.util.ColorTool;
 import de.hochschule.bremen.minerva.util.MapTool;
@@ -145,7 +146,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		this.mapOverlay.setBounds(0,0,500,500);
 		
 		//control bar
-		this.slidePanel = new MSlidePanel(new ControlBarPanel());
+		this.slidePanel = new MSlidePanel(new GamePanelControlbar());
 		slidePanel.setBounds(0, this.getPreferredSize().height - slidePanel.getRelativeHeight(), slidePanel.getPreferredSize().width,slidePanel.getPreferredSize().height);
 		
 		//adds mouse listener to the upper map
