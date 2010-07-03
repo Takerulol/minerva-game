@@ -50,6 +50,7 @@ import de.hochschule.bremen.minerva.exceptions.NotEnoughArmiesException;
 import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.manager.SessionManager;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
+import de.hochschule.bremen.minerva.ui.gui.controls.MSlidePanel;
 import de.hochschule.bremen.minerva.ui.gui.listener.MMouseListener;
 import de.hochschule.bremen.minerva.util.ColorTool;
 import de.hochschule.bremen.minerva.util.MapTool;
