@@ -61,7 +61,7 @@ public class PlayerInitPanel extends JPanel implements TextResources {
 		this.setOpaque(false);
 
 		for (Player player : players) {
-			this.add(new MPlayerIcon(player));
+			this.add(new MPlayerIcon(player, false));
 		}
 	}
 }

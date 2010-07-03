@@ -48,6 +48,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 
+import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
+import de.hochschule.bremen.minerva.ui.gui.controls.MPlayerIcon;
 import de.hochschule.bremen.minerva.ui.gui.controls.MSlidePanel;
 import de.hochschule.bremen.minerva.vo.CavalerieCard;
 import de.hochschule.bremen.minerva.vo.CountryCard;
@@ -80,7 +82,6 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 	private JButton endTurnButton;
 	
 	//lower half
-	private JTextArea MissionText;
 	private JList cardList;
 	private DefaultListModel model;
 	private JButton turnIn;
@@ -89,7 +90,8 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 	private JButton slideButton;
 	private JPanel upperHalf;
 	private JPanel lowerHalf;
-	private JLabel currentPlayerLabel;
+
+	private JPanel currentPlayerArea;
 	
 	
 	/**
@@ -109,14 +111,15 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 	 */
 	private void init() {
 		this.setLayout(new BorderLayout());
-		
+		this.setOpaque(false);
+
 		this.initUpperHalf();
 		this.initLowerHalf();
 		
 		this.add(this.upperHalf, BorderLayout.NORTH);
 		this.add(this.lowerHalf, BorderLayout.SOUTH);
 		
-		this.setPreferredSize(new Dimension(1000,(this.upperHalf.getPreferredSize().height + this.lowerHalf.getPreferredSize().height)));
+		this.setPreferredSize(new Dimension(1000, 220));
 		
 		this.updateUI();
 	}
@@ -127,12 +130,13 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 	private void initUpperHalf() {
 		//upper half
 		this.upperHalf = new JPanel();
-		this.upperHalf.setBackground(Color.LIGHT_GRAY);
 		this.upperHalf.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
-		
-		this.currentPlayerLabel = new JLabel("CURRENT PLAYER");
-		this.currentPlayerLabel.setPreferredSize(new Dimension(100,26));
-		
+		this.upperHalf.setOpaque(false);
+
+		this.currentPlayerArea = new JPanel();
+		this.currentPlayerArea.setOpaque(false);
+
+		// TODO: MOVE THIS TO THE TEXT RESOURCES!!!!!!
 		this.allocateButton = new JButton("Armeen setzen");
 		this.allocatableArmies = new JLabel("0");
 		this.cardButton = new JButton("Karten eintauschen");
@@ -140,7 +144,7 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 		this.moveButton = new JButton("Armeen verschieben");
 		this.endTurnButton = new JButton("Zug beenden");
 		
-		this.upperHalf.add(this.currentPlayerLabel);
+		this.upperHalf.add(this.currentPlayerArea);
 		
 		this.upperHalf.add(this.allocateButton);
 		this.upperHalf.add(this.allocatableArmies);
@@ -156,23 +160,13 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 	private void initLowerHalf() {
 		//lower half
 		this.lowerHalf = new JPanel();
-		this.lowerHalf.setBackground(Color.LIGHT_GRAY);
 		this.lowerHalf.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
+		this.lowerHalf.setOpaque(false);
 		
 		//constructing all objects
-		this.MissionText = new JTextArea();
-		this.MissionText.setLineWrap(true);
-		this.MissionText.setWrapStyleWord(true);
 		this.model = new DefaultListModel();
 		this.cardList = new JList(this.model);
 		this.turnIn = new JButton("Turn in!");
-		
-		//mission text
-		this.MissionText.setText("Mission:");
-		this.MissionText.setEditable(false);
-		this.MissionText.setPreferredSize(new Dimension(150,125));
-		this.MissionText.setBackground(Color.LIGHT_GRAY);
-		this.MissionText.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.CYAN),"Mission"));
 		
 		//card list
 		this.cardList.setVisibleRowCount(5);
@@ -180,12 +174,8 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 		selection.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		this.cardList.setSelectionModel(selection);
 		this.cardList.setPreferredSize(new Dimension(250,125));
-		this.cardList.setBackground(Color.LIGHT_GRAY);
 		this.cardList.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.CYAN),"Cards"));
-		
-		
-		
-		this.lowerHalf.add(this.MissionText);
+
 		this.lowerHalf.add(this.cardList);
 		this.lowerHalf.add(this.turnIn);
 	}
@@ -199,6 +189,8 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 	public void setSlidePanel(MSlidePanel slidePanel) {
 		this.slidePanel = slidePanel;
 		this.relativeHeight = (int) lowerHalf.getPreferredSize().getHeight();
+
+		// TODO: MOVE TO TEXT RESOURCES!!!
 		this.slideButton = new JButton("Slide");
 		this.upperHalf.add(this.slideButton);
 		this.addSlideListeners();
@@ -233,10 +225,10 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 	 * @param currentPlayer name of current player
 	 */
 	public void setCurrentPlayerLabel(Player currentPlayer) {
-		this.currentPlayerLabel.setText(" "+currentPlayer.getUsername()+" ");
-		this.currentPlayerLabel.setForeground(currentPlayer.getColor());
+		this.currentPlayerArea.removeAll();
+		this.currentPlayerArea.add(new MPlayerIcon(currentPlayer, true));
 	}
-	
+
 	/**
 	 * update the card list of the current player to the given one.
 	 * @param cards card list
@@ -246,6 +238,7 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 		for (CountryCard card : cards) {
 			String text;
 			if (card instanceof SoldierCard) {
+				// TODO: MOVE THE STRINGS TO THE TEXT RESOURCES!!!
 				text = "Symbol: Soldier, Land: "+card.getReference().getName();
 			} else if (card instanceof CavalerieCard) {
 				text = "Symbol: Cavalerie, Land: "+card.getReference().getName();
@@ -253,17 +246,6 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 				text = "Symbol: Canon, Land: "+card.getReference().getName();
 			}
 			model.addElement(text);
-		}
-	}
-	
-	/**
-	 * Updates mission text to the current player's.
-	 */
-	public void updateMissionText() {
-		for (Mission mission : this.gamePanel.getGame().getMissions()) {
-			if (mission.getOwner() == this.gamePanel.getGame().getTurns().lastElement().getCurrentPlayer()) {
-				this.MissionText.setText(mission.getDescription());
-			}
 		}
 	}
 	
@@ -343,8 +325,8 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 				}
 				this.gamePanel.TurnSeriesIn(series);
 			} else {
-				//TODO: better error handling
-				this.gamePanel.errorDialog("Das geht nicht!");
+				//TODO: Better exception message!!!!
+				MMessageBox.error("Das geht nicht.");
 			}
 		}
 		this.gamePanel.updatePanel();
