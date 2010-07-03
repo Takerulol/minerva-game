@@ -233,7 +233,7 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 	 */
 	public void setCurrentPlayerLabel(Player currentPlayer) {
 		this.currentPlayerArea.removeAll();
-		this.currentPlayerArea.add(new MPlayerIcon(currentPlayer, true));
+		this.currentPlayerArea.add(new MPlayerIcon(currentPlayer));
 	}
 
 	/**

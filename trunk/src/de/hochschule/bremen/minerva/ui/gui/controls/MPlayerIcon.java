@@ -74,10 +74,9 @@ public class MPlayerIcon extends JPanel implements MControl, TextResources {
 	 * Construct the layout.
 	 * 
 	 * @param player The player which represents the model for the icon.
-	 * @param liteView Show only the player icon, the full name and the username.
 	 * 
 	 */
-	public MPlayerIcon(Player player, boolean liteView) {
+	public MPlayerIcon(Player player) {
 		this.player = player;
 
 		// Loading the player
