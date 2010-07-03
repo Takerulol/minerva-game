@@ -36,8 +36,8 @@ import de.hochschule.bremen.minerva.util.Die;
 import de.hochschule.bremen.minerva.vo.Player;
 
 /**
- * Result of one attack saving the attacker, defender, armies lost and if the attack was
- * a success.
+ * Result of one attack saving the attacker,
+ * defender, armies lost and if the attack was a success.
  * 
  * @since 1.0
  * @version $Id$
@@ -58,12 +58,13 @@ public class AttackResult {
 
 	/**
 	 * Constructor of the AttackResult.
-	 * 
+	 *
 	 * @param attacker Attacking player.
 	 * @param defender Defending player.
 	 * @param lostArmies Armies lost by the attacker.
 	 * @param defeatedArmies Armies lost by the defender.
 	 * @param win Was the attack a success?
+	 *
 	 */
 	public AttackResult(Player attacker, Player defender, int lostArmies, int defeatedArmies, Vector<Die> attackerDice, Vector<Die> defenderDice, boolean win) {
 		this.setAttacker(attacker);
@@ -80,6 +81,7 @@ public class AttackResult {
 	 * Sets lost armies of the attacker.
 	 * 
 	 * @param lostAttackerArmies Number of lost armies.
+	 *
 	 */
 	private void setLostAttackerArmies(int lostAttackerArmies) {
 		this.lostAttackerArmies = lostAttackerArmies;
@@ -89,6 +91,7 @@ public class AttackResult {
 	 * Gets lost armies of the attacker.
 	 * 
 	 * @return Number of lost armies.
+	 *
 	 */
 	public int getLostAttackerArmies() {
 		return lostAttackerArmies;
@@ -98,6 +101,7 @@ public class AttackResult {
 	 * Sets lost armies of the defender.
 	 * 
 	 * @param lostDefenderArmies Number of lost armies.
+	 *
 	 */
 	private void setLostDefenderArmies(int lostDefenderArmies) {
 		this.lostDefenderArmies = lostDefenderArmies;
@@ -107,6 +111,7 @@ public class AttackResult {
 	 * Gets lost armies of the defender.
 	 * 
 	 * @return Number of lost armies.
+	 *
 	 */
 	public int getLostDefenderArmies() {
 		return lostDefenderArmies;
@@ -116,6 +121,7 @@ public class AttackResult {
 	 * Sets success of the attack.
 	 * 
 	 * @param win Success yes/no?
+	 *
 	 */
 	private void setWin(boolean win) {
 		this.win = win;
@@ -125,6 +131,7 @@ public class AttackResult {
 	 * Returns success of the attack.
 	 * 
 	 * @return Success yes/no?
+	 *
 	 */
 	public boolean isWin() {
 		return win;
@@ -134,6 +141,7 @@ public class AttackResult {
 	 * Sets attacking player.
 	 *  
 	 * @param attacker Attacking player.
+	 *
 	 */
 	private void setAttacker(Player attacker) {
 		this.attacker = attacker;
@@ -143,6 +151,7 @@ public class AttackResult {
 	 * Gets attacking player.
 	 * 
 	 * @return Attacking player.
+	 *
 	 */
 	public Player getAttacker() {
 		return attacker;
@@ -152,6 +161,7 @@ public class AttackResult {
 	 * Sets defending player.
 	 * 
 	 * @param defender Defending player.
+	 *
 	 */
 	private void setDefender(Player defender) {
 		this.defender = defender;
@@ -161,6 +171,7 @@ public class AttackResult {
 	 * Gets defending player.
 	 * 
 	 * @return Defending player.
+	 *
 	 */
 	public Player getDefender() {
 		return defender;
@@ -168,8 +179,8 @@ public class AttackResult {
 
 	/**
 	 * Sets the attacker die.
-	 * 
-	 * @param Die attackerDie The attacker die.
+	 *
+	 * @param attackerDie The attacker die.
 	 * 
 	 */
 	private void setAttackerDice(Vector<Die> attackerDice) {
@@ -179,7 +190,7 @@ public class AttackResult {
 	/**
 	 * Returns the attacker die.
 	 * 
-	 * @return Die
+	 * @return A vector with all attacker dice.
 	 * 
 	 */
 	public Vector<Die> getAttackerDice() {
@@ -189,8 +200,8 @@ public class AttackResult {
 	/**
 	 * Sets the defender die.
 	 * 
-	 * @param Die defenderDie The defender die.
-	 * 
+	 * @param defenderDie The defender die.
+	 *
 	 */
 	private void setDefenderDice(Vector<Die> defenderDice) {
 		this.defenderDice = defenderDice;
@@ -198,9 +209,9 @@ public class AttackResult {
 
 	/**
 	 * Returns the defender die
-	 * 
+	 *
 	 * @return Die The defender die.
-	 * 
+	 *
 	 */
 	public Vector<Die> getDefenderDice() {
 		return this.defenderDice;
@@ -208,8 +219,9 @@ public class AttackResult {
 
 	/**
 	 * Gets the whole AttackResult as a string.
-	 * 
-	 * @return String of AttackResult.
+	 *
+	 * @return The attack result as string.
+	 *
 	 */
 	public String toString() {
 		return (""+this.attacker.getUsername()+" attacked "+this.defender.getUsername()+", lost "+this.lostAttackerArmies+ ((this.lostAttackerArmies > 1)? " armies" : " army")+" and defeated " + this.lostDefenderArmies +((this.lostDefenderArmies > 1)? " armies. " : " army. ")+this.attacker.getUsername()+ ((this.win) ? " won" : " did not win")+ " the country.");
