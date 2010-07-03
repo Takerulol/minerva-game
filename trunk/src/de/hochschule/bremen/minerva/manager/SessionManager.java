@@ -40,6 +40,8 @@ import de.hochschule.bremen.minerva.util.HashTool;
  * @version $Id$
  * @since 1.0
  *
+ * @deprecated Session functionality will be implemented in the 1.1 release.
+ *
  */
 public class SessionManager {
 
