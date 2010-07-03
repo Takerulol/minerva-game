@@ -32,22 +32,16 @@ package de.hochschule.bremen.minerva.exceptions;
 import java.io.File;
 
 /**
- * DOCME
+ * Tried to import an world file that does not have the correct file extension.
  *
  * @since 1.0
  * @version $Id$
  * 
  */
 public class WorldFileExtensionException extends Exception {
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 6507674073849573747L;
 
-	/**
-	 * DOCME
-	 */
 	public WorldFileExtensionException(File worldFile, String worldFileExtension) {
 		super("Die Datei '"+worldFile.getAbsolutePath() +
 		      "' ist nicht vom richtigen Typ. " +

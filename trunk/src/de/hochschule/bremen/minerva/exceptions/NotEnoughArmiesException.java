@@ -32,7 +32,7 @@ package de.hochschule.bremen.minerva.exceptions;
 import de.hochschule.bremen.minerva.vo.Country;
 
 /**
- * DOCME
+ * Tried to attack a country with no enough armies.
  *
  * @since 1.0
  * @version $Id$
@@ -40,34 +40,16 @@ import de.hochschule.bremen.minerva.vo.Country;
  */
 public class NotEnoughArmiesException extends Exception{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1508846470029928606L;
 
-	/**
-	 * DOCME
-	 */
 	public NotEnoughArmiesException() {
 		super();
 	}
 	
-	/**
-	 * DOCME
-	 * @param message
-	 */
 	public NotEnoughArmiesException(Country attackerCountry, Country defenderCountry) {
 		super("Das Land '"+attackerCountry.getName()+"' besitzt nur noch "+attackerCountry.getArmyCount()+" Einheiten und kann das Land '"+defenderCountry.getName()+"' somit nicht angreifen.");
 	}
 
-	/**
-	 * DOCME
-	 * 
-	 * @param from
-	 * @param armyCount
-	 * @param move
-	 * 
-	 */
 	public NotEnoughArmiesException(Country from, int armyCount, boolean move) {
 		super(armyCount+" Einheite(n) sind nicht auf dem Land '"+from.getName()+"' zum Verschieben verfügbar.");
 	}

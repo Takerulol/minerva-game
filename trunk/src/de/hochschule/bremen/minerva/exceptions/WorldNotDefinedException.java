@@ -31,7 +31,7 @@ package de.hochschule.bremen.minerva.exceptions;
 
 /**
  * Exception that will thrown if someone tried to do something
- * that is not possible if no world was defined.
+ * that is not possible if no world was defined (e. g. starting a game).
  * 
  * @since 1.0
  * @version $Id$

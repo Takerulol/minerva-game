@@ -30,7 +30,7 @@
 package de.hochschule.bremen.minerva.exceptions;
 
 /**
- * DOCME
+ * If the application configuration was not writable.
  * 
  * @version $Id$
  * @since 1.0
@@ -38,17 +38,14 @@ package de.hochschule.bremen.minerva.exceptions;
  */
 public class AppConfigurationNotWritableException extends Exception {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2924757645981690790L;
 
 	/**
-	 * DOCME
+	 * Was not able to write the given app configuration file.
 	 * 
-	 * @param filename
-	 * @param reason
-	 * 
+	 * @param filename The app configuration file.
+	 * @param reason The technical reason why it was not possible to write the file.
+	 *
 	 */
 	public AppConfigurationNotWritableException(String filename, String reason) {
 		super("Die Minerva Konfigurationsdatei ("+filename

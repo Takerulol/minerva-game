@@ -32,7 +32,7 @@ package de.hochschule.bremen.minerva.exceptions;
 import de.hochschule.bremen.minerva.vo.Player;
 
 /**
- * DOCME
+ * Tried to do a operation on an non-existing player.
  *
  * @since 1.0
  * @version $Id$
@@ -41,33 +41,17 @@ import de.hochschule.bremen.minerva.vo.Player;
 public class PlayerDoesNotExistException extends Exception {
 
 	private static final String MESSAGE_VERIFY_YOUR_INPUT = "Bitte überprüfen Sie Ihre Angaben.";
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 6034698563212835072L;
 
-	/**
-	 * DOCME
-	 */
 	public PlayerDoesNotExistException(Player player) {
 		super("Der Spieler '"+player.getUsername()+"' existiert nicht. "+MESSAGE_VERIFY_YOUR_INPUT);
 	}
 
-	/**
-	 * DOCME
-	 * 
-	 * @param id
-	 */
 	public PlayerDoesNotExistException(int id) {
 		super("Der Spieler mit der ID '"+id+"' existiert nicht. "+MESSAGE_VERIFY_YOUR_INPUT);
 	}
 
-	/**
-	 * DOCME
-	 * 
-	 * @param username
-	 */
 	public PlayerDoesNotExistException(String username) {
 		super("Der Spieler mit dem Benutzernamen '"+username+"' existiert nicht. "+MESSAGE_VERIFY_YOUR_INPUT);
 	}

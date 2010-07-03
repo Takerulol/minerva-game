@@ -43,21 +43,10 @@ public class WorldNotStorable extends Exception {
 
 	private static final long serialVersionUID = 8868184972756654993L;
 
-	/**
-	 * DOCME
-	 * 
-	 * @param reason
-	 */
 	public WorldNotStorable(String reason) {
 		super("Beim Speichern einer Welt ist ein schwerwiegender Fehler aufgetreten. Grund: "+reason);
 	}
 
-	/**
-	 * DOCME
-	 * 
-	 * @param worldFile
-	 * @param playerIsntMaster
-	 */
 	public WorldNotStorable(File worldFile, boolean playerIsntMaster) {
 		super("Die Welt: '"+worldFile.getName()+"' kann nicht gespeichert werden, weil der Spieler nicht der Gamemaster ist.");
 	}

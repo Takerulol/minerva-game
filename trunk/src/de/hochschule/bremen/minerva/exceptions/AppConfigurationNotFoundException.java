@@ -30,7 +30,7 @@
 package de.hochschule.bremen.minerva.exceptions;
 
 /**
- * DOCME
+ * If the application configuration is not available.
  * 
  * @version $Id$
  * @since 1.0
@@ -38,15 +38,13 @@ package de.hochschule.bremen.minerva.exceptions;
  */
 public class AppConfigurationNotFoundException extends Exception {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7196558872252940085L;
 
 	/**
-	 * DOCME
+	 * The given application configuration file wasn't found.
 	 * 
-	 * @param filename
+	 * @param filename The app configuration file.
+	 *
 	 */
 	public AppConfigurationNotFoundException(String filename) {
 		super("Die Minerva Konfigurationsdatei ("+filename

@@ -32,7 +32,7 @@ package de.hochschule.bremen.minerva.exceptions;
 import de.hochschule.bremen.minerva.vo.World;
 
 /**
- * DOCME
+ * Tried to request an world that does not exist.
  *
  * @since 1.0
  * @version $Id$
@@ -40,14 +40,8 @@ import de.hochschule.bremen.minerva.vo.World;
  */
 public class WorldDoesNotExistException extends Exception {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 358043147516691019L;
 
-	/**
-	 * DOCME
-	 */
 	public WorldDoesNotExistException(World world) {
 		super("Die Welt '"+world.getName()+"' existiert nicht.");
 	}

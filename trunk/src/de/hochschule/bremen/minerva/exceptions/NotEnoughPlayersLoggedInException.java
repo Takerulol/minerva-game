@@ -34,7 +34,7 @@ import java.util.Vector;
 import de.hochschule.bremen.minerva.vo.Player;
 
 /**
- * DOCME
+ * Not enough players logged in for starting a new game.
  *
  * @since 1.0
  * @version $Id$
@@ -42,17 +42,8 @@ import de.hochschule.bremen.minerva.vo.Player;
  */
 public class NotEnoughPlayersLoggedInException extends Exception {
 
-	/**
-	 * DOCME
-	 * 
-	 */
 	private static final long serialVersionUID = 7058149089226110325L;
 
-	/**
-	 * DOCME
-	 * 
-	 * @param players
-	 */
 	public NotEnoughPlayersLoggedInException(Vector<Player> players) {
 		super("Es wird mehr als ein Spieler benötigt, um das Spiel starten zu können.");
 	}

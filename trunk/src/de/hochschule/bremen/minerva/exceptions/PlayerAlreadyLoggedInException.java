@@ -32,7 +32,7 @@ package de.hochschule.bremen.minerva.exceptions;
 import de.hochschule.bremen.minerva.vo.Player;
 
 /**
- * DOCME
+ * Tried to login a player twice.
  *
  * @since 1.0
  * @version $Id$
@@ -40,19 +40,9 @@ import de.hochschule.bremen.minerva.vo.Player;
  */
 public class PlayerAlreadyLoggedInException extends Exception {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2986054247353082420L;
 
-	/**
-	 * DOCME
-	 * 
-	 * @param player
-	 * 
-	 */
 	public PlayerAlreadyLoggedInException(Player player) {
 		super("Der Spieler '"+player.getUsername()+"' ist bereits eingeloggt.");
-	}
-	
+	}	
 }

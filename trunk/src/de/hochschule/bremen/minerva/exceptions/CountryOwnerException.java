@@ -33,7 +33,7 @@ import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.Player;
 
 /**
- * DOCME
+ * A player does not own a given country.
  *
  * @since 1.0
  * @version $Id$
@@ -41,13 +41,10 @@ import de.hochschule.bremen.minerva.vo.Player;
  */
 public class CountryOwnerException extends Exception {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1054976220627063505L;
 
 	/**
-	 * DOCME
+	 * The player does not owns the country.
 	 * 
 	 * @param country
 	 * @param player

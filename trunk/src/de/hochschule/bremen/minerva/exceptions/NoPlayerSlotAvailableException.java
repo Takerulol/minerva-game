@@ -33,7 +33,7 @@ import de.hochschule.bremen.minerva.vo.Player;
 
 /**
  * Exception, that will thrown if no player slot is available
- * in a existing game (is full).
+ * in a existing game (full).
  *
  * @version $Id: MPlayerIcon.java 550 2010-07-02 15:36:51Z andre.koenig $
  * @since 1.0

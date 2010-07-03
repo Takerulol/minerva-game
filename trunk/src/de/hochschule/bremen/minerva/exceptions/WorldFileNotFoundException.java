@@ -33,7 +33,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 /**
- * DOCME
+ * The importable world file was not found.
  *
  * @since 1.0
  * @version $Id$
@@ -41,15 +41,8 @@ import java.io.FileNotFoundException;
  */
 public class WorldFileNotFoundException extends FileNotFoundException {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5573616752872323846L;
 
-	/**
-	 * DOCME
-	 * 
-	 */
 	public WorldFileNotFoundException(File worldFile) {
 		super("Die World-Datei: '"+worldFile.getAbsolutePath()+"' wurde nicht gefunden.");
 	}
