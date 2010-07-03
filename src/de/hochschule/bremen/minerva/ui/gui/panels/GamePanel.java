@@ -282,6 +282,9 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 			//setting destination country
 			this.destination = country;
 			this.armyIcons.get(country).mark(Color.YELLOW);
+			
+			this.armyIcons.get(this.source).mark(Color.YELLOW);
+			this.updatePanel();
 			try {
 				//army count input
 				int wert = Integer.parseInt(JOptionPane.showInputDialog("Wieviele Armeen " +
@@ -359,6 +362,8 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 			this.armyIcons.get(this.source).mark(Color.GREEN);
 			this.armyIcons.get(country).mark(Color.YELLOW);
 			
+			this.armyIcons.get(this.source).mark(Color.YELLOW);
+			this.updatePanel();
 			try {
 				//army count input
 				int wert = Integer.parseInt(JOptionPane.showInputDialog("Wieviele Armeen " +
@@ -422,6 +427,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		//source and destination will be reset when player is in wrong state
 		if ((this.currentPlayer.getState() == PlayerState.RELEASE_CARDS) || 
 				(this.currentPlayer.getState() == PlayerState.ALLOCATE_ARMIES)) {
+			this.unmarkAll();
 			this.source = null;
 			this.destination = null;
 		}
@@ -430,6 +436,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		if ((this.currentPlayer.getState() == PlayerState.RELEASE_CARDS) && (GamePanel.this.currentPlayer.getCountryCards().isEmpty())) {
 			this.currentPlayer.setState(PlayerState.ALLOCATE_ARMIES);
 		}
+		
 
 		//refreshing army count icons
 		this.refreshArmyCounts();

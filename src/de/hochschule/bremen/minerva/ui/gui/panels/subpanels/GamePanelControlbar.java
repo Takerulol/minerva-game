@@ -324,12 +324,16 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 			this.gamePanel.unmarkAll();
 		} else if (e.getSource() == this.allocateButton) {
 			this.gamePanel.getCurrentPlayer().setState(PlayerState.ALLOCATE_ARMIES);
+			this.gamePanel.unmarkAll();
 		} else if (e.getSource() == this.cardButton) {
 			this.gamePanel.getCurrentPlayer().setState(PlayerState.RELEASE_CARDS);
+			this.gamePanel.unmarkAll();
 		} else if (e.getSource() == this.attackButton) {
 			this.gamePanel.getCurrentPlayer().setState(PlayerState.ATTACK);
+			this.gamePanel.unmarkAll();
 		} else if (e.getSource() == this.moveButton) {
 			this.gamePanel.getCurrentPlayer().setState(PlayerState.MOVE);
+			this.gamePanel.unmarkAll();
 		} else if (e.getSource() == this.buttonTurnIn) {
 		
 			if (this.cardList.getSelectedIndices().length == 1) {
