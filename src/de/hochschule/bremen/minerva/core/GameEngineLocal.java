@@ -212,7 +212,11 @@ public class GameEngineLocal implements GameEngine {
 	}
 
 	/**
-	 * Starts the game session.
+	 * Starts the game session. Please verify, that
+	 * you have already defined all neccessary data
+	 * for starting a game.
+	 * 
+	 * @see GameEngineLocal#setGameWorld(World)
 	 *
 	 * @throws WorldNotDefinedException 
 	 * @throws NoPlayerLoggedInException 
