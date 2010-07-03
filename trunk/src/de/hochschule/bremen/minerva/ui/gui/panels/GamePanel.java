@@ -368,7 +368,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		this.slidePanel.getControlBar().updateCardList(this.currentTurn.getCurrentPlayer().getCountryCards());
 
 		searchPlayerMission : for (Mission mission : this.getGame().getMissions()) {
-			if (mission.getOwner() == this.getGame().getTurns().lastElement().getCurrentPlayer()) {
+			if (mission.getOwner() == this.getGame().getCurrentTurn().getCurrentPlayer()) {
 				this.missionLabel.setText(mission.getTitle());
 				break searchPlayerMission;
 			}
