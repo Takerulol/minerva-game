@@ -38,6 +38,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import de.hochschule.bremen.minerva.core.GameEngine;
+import de.hochschule.bremen.minerva.core.GameEngineLocal;
 import de.hochschule.bremen.minerva.core.logic.Game;
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotReadableException;
@@ -66,6 +68,8 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	private JLayeredPane currentPanel;
 
 	private static MinervaGUI instance = null;	
+	
+	private static final GameEngine GAME_ENGINE = GameEngineLocal.getEngine();
 
 	
 	/**
@@ -178,5 +182,14 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	 */
 	public static void setSessionId(String sessionID) {
 		MinervaGUI.GAME_SESSION_ID = sessionID;
+	}
+	
+	/**
+	 * Returns the game engine.
+	 * 
+	 * @return game engine
+	 */
+	public static GameEngine getEngine() {
+		return MinervaGUI.GAME_ENGINE;
 	}
 }

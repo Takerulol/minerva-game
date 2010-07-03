@@ -34,7 +34,6 @@ import java.util.Vector;
 
 import javax.swing.JPanel;
 
-import de.hochschule.bremen.minerva.manager.SessionManager;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MPlayerIcon;
 import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
@@ -57,7 +56,7 @@ public class PlayerInitPanel extends JPanel implements TextResources {
 	 * @param playerIcons
 	 */
 	public PlayerInitPanel() {
-		Vector<Player> players = SessionManager.get(MinervaGUI.getSessionId()).getPlayers();
+		Vector<Player> players = MinervaGUI.getEngine().getPlayers();
 		this.setOpaque(false);
 
 		for (Player player : players) {

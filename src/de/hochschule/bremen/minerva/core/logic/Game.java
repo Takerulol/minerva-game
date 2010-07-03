@@ -49,6 +49,7 @@ import de.hochschule.bremen.minerva.vo.CountryConquerMission;
 import de.hochschule.bremen.minerva.vo.DefeatPlayerMission;
 import de.hochschule.bremen.minerva.vo.Mission;
 import de.hochschule.bremen.minerva.vo.Player;
+import de.hochschule.bremen.minerva.vo.PlayerState;
 import de.hochschule.bremen.minerva.vo.SoldierCard;
 import de.hochschule.bremen.minerva.vo.World;
 
@@ -150,7 +151,12 @@ public class Game {
 	 * 
 	 */
 	public Turn nextTurn() {
-		this.turns.add(new Turn(this.nextPlayer(), this.world, this.players, this.countryCards, this.usedCountryCards, this.seriesCounter));
+		if (!this.turns.isEmpty()) {
+			this.getCurrentTurn().getCurrentPlayer().setState(PlayerState.IDLE);
+		}
+		Player nextPlayer = this.nextPlayer();
+		nextPlayer.setState(PlayerState.RELEASE_CARDS);
+		this.turns.add(new Turn(nextPlayer, this.world, this.players, this.countryCards, this.usedCountryCards, this.seriesCounter));
 		return this.getCurrentTurn();
 	}
 
