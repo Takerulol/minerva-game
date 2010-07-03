@@ -29,6 +29,13 @@
  */
 package de.hochschule.bremen.minerva.ui;
 
+/**
+ * A user interface should implement this methods.
+ *
+ * @since 1.0
+ * @version $Id$
+ * 
+ */
 public interface UserInterface {
 
 	public void run();
