@@ -35,6 +35,13 @@ import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
+/**
+ * Class stub for a filebased persistence country handler.
+ * 
+ * @version $Id$
+ * @since 1.0
+ *
+ */
 public class CountryHandler implements Handler {
 
 	@Override
