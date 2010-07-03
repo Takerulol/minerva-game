@@ -51,9 +51,6 @@ public class MSlidePanel extends JPanel {
 	private GamePanelControlbar controlBar;
 	private boolean minimized = true;
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 9178493186977704484L;
 	
 
