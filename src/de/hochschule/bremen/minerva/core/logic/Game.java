@@ -75,7 +75,11 @@ public class Game {
 	private Vector<Color> availablePlayerColors = new Vector<Color>();
 
 	/**
-	 * DOCME
+	 * Creates a "empty" game object.
+	 * Please note that it is not possible to start the game
+	 * if you don't have defined an world or no players logged in.
+	 * 
+	 * @see Game#start()
 	 * 
 	 */
 	public Game() {
@@ -89,31 +93,36 @@ public class Game {
 	}
 	
 	/**
-	 * DOCME
+	 * Creates a new game, which already has all necessary
+	 * data for starting the game.
 	 * 
-	 * @param world
-	 * @param players
+	 * @param world The world to play on.
+	 * @param players The players.
+	 *
 	 * @throws NoPlayerLoggedInException 
 	 * @throws NotEnoughPlayersLoggedInException
 	 * @throws WorldNotDefinedException 
+	 * @throws NoPlayerSlotAvailableException If the given player vector is bigger than the available player slots.
+	 * @throws GameAlreadyStartedException 
 	 *  
 	 */
-	public Game(World world, Vector<Player> players) throws NoPlayerLoggedInException, NotEnoughPlayersLoggedInException, WorldNotDefinedException {
+	public Game(World world, Vector<Player> players) throws NoPlayerLoggedInException, NotEnoughPlayersLoggedInException, WorldNotDefinedException, GameAlreadyStartedException, NoPlayerSlotAvailableException {
+		this();
 		this.setWorld(world);
-		this.setPlayer(players);
 		
-		this.start();
+		for (Player player : players) {
+			this.addPlayer(player);
+		}
 	}
 
 	/**
-	 * Starts the initialization process
-	 * (generate player countries, allocate missions and so on).
-	 * And ... starts the first turn.
-	 * 
+	 * Starts the initialization process (generate player countries,
+	 * allocate missions and so on). And ... starts the first turn.
+	 *
 	 * @throws NotEnoughPlayersLoggedInException
 	 * @throws NoPlayerLoggedInException
 	 * @throws WorldNotDefinedException
-	 * 
+	 *
 	 */
 	public void start() throws NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException {
 		if (this.players.size() == 0) {
@@ -135,8 +144,7 @@ public class Game {
 	
 	/**
 	 * Sets the next player and creates a new
-	 * Turn. With this turn it is possible to
-	 * implement the application logic.
+	 * Turn. A turn provides the core game logic.
      *
 	 * @return Turn
 	 * 
@@ -147,38 +155,33 @@ public class Game {
 	}
 
 	/**
-	 * DOCME
+	 * The world on which this game is running.
 	 * 
-	 * @return
+	 * @return The games world.
+	 *
 	 */
 	public World getWorld() {
 		return world;
 	}
 
 	/**
-	 * DOCME
+	 * Sets the world to play within this game session.
 	 * 
-	 * @param world
+	 * @param world The world on which the game should be played.
+	 *
 	 */
 	public void setWorld(World world) {
 		this.world = world;
 	}
 	
 	/**
-	 * DOCME
-	 * @return the player
+	 * Gets the player assigned to this game.
+	 *
+	 * @return A vector with all players assigned to this game.
+	 *
 	 */
 	public Vector<Player> getPlayers() {
 		return players;
-	}
-
-	/**
-	 * DOCME
-	 * 
-	 * @param player
-	 */
-	private void setPlayer(Vector<Player> player) {
-		this.players = player;
 	}
 
 	/**
@@ -199,7 +202,9 @@ public class Game {
 
 	/**
 	 * Wrapper method for returning the player count.
-	 * @return
+	 *
+	 * @return A count, that represents the players assigned to this game.
+	 * 
 	 */
 	public int getPlayerCount() {
 		return this.players.size();
@@ -232,8 +237,9 @@ public class Game {
 	 * Check if an given player is already in this game.
 	 * 
 	 * @param checkablePlayer The player to check for.
+	 *
 	 * @return boolean
-	 * 
+	 *
 	 */
 	private boolean isPlayerInGame(Player checkablePlayer) {
 		for (Player player : this.players) {
@@ -245,7 +251,7 @@ public class Game {
 	}
 	
 	/**
-	 * Returns the game master player.
+	 * Returns the player, which represents the gamemaster.
 	 * 
 	 * @return The game master player.
 	 * 
@@ -261,8 +267,12 @@ public class Game {
 	}
 
 	/**
-	 * DOCME
-	 * @return the turns
+	 * Returns the vector with all previous turns.
+	 * 
+	 * @return The vector with turns.
+	 * 
+	 * @deprecated Use a different method. Turns should not be visible!
+	 *
 	 */
 	public Vector<Turn> getTurns() {
 		return this.turns;
@@ -272,7 +282,7 @@ public class Game {
 	 * Returns the turn count.
 	 * 
 	 * @return int The turn count.
-	 *  
+	 *
 	 */
 	public int getTurnCount() {
 		return this.turns.size();
@@ -289,11 +299,10 @@ public class Game {
 	}
 
 	/**
-	 * DOCME
-	 * @return Game finished?
-	 * 
-	 * TODO: Mission aus dem Vector entfernen.
-	 * 
+	 * Is the game finished?
+	 *
+	 * @return boolean
+	 *
 	 */
 	public boolean isFinished() {
 		if (turns.lastElement().getCurrentPlayer().getCountryCount() == world.getCountryCount()) {
@@ -307,9 +316,8 @@ public class Game {
 				}
 			}
 			if (!winners.isEmpty()) {
-				if (winners.contains(turns.lastElement().getCurrentPlayer())) {
-					//TODO: write wrapper method for turns.lastElement()
-					this.setWinner(turns.lastElement().getCurrentPlayer());
+				if (winners.contains(this.getCurrentTurn().getCurrentPlayer())) {
+					this.setWinner(this.getCurrentTurn().getCurrentPlayer());
 				} else {
 					this.setWinner(winners.firstElement());
 				}
@@ -343,29 +351,25 @@ public class Game {
 	/**
 	 * Returns the generated mission vector.
 	 * 
-	 * @return Vector<Mission> The missions.
+	 * @return Vector<Mission> The missions
 	 * 
 	 */
 	public Vector<Mission> getMissions() {
 		return this.missions;
 	}
-	
+
 	/**
-	 * 
-	 * @return
+	 * The match winner.
+	 *
+	 * @return The winner player.
+	 *
 	 */
 	public Player getWinner() {
 		return this.winner;
 	}
 
 	/**
-	 * Iterates over the player vector and determines
-	 * the current player. This player is not the current player
-	 * anymore. Sets the next player object in the list as the
-	 * current player and returns this instance.
-	 * 
-	 * If there is no player the "current player", we flag the first
-	 * player in the vector as the new current player.
+	 * Determines the next player object.
 	 * 
 	 * @return The next player.
 	 * 
@@ -389,7 +393,8 @@ public class Game {
 	}
 
 	/**
-	 * DOCME
+	 * Allocates the countries. Every player gets an
+	 * country in a randomized kind of way.
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
@@ -425,7 +430,6 @@ public class Game {
 				
 				// Conquer country mission
 				case 0:
-					// DOCME: The calculation!
 					short conquerableCountryCount = (short)((this.world.getCountryCount()*4)/7);
 					this.missions.add(new CountryConquerMission(conquerableCountryCount, player));
 				break;
@@ -456,14 +460,14 @@ public class Game {
 			}
 		}
 	}
-	
-	//TODO:	maybe shuffle country vector without creating temp
+
 	/**
-	 * Generates full stack of country cards according to the number country list with
-	 * a random symbol.
+	 * Generates full stack of country cards
+	 * according to the number country list with a random symbol.
 	 * 
 	 */
 	private void generateCountryCards() {
+		//TODO:	maybe shuffle country vector without creating temp
 		Vector<Country> temp = new Vector<Country>(this.world.getCountries());
 		Collections.shuffle(temp);
 		
