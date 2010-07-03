@@ -32,6 +32,8 @@ package de.hochschule.bremen.minerva.ui.gui.controls;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 
@@ -49,7 +51,7 @@ import de.hochschule.bremen.minerva.vo.Player;
  * @since 1.0
  * 
  */
-public class MArmyCountIcon extends JPanel {
+public class MArmyCountIcon extends JPanel implements MControl {
 	
 	private Color color;
 	private int armyCount = 0;
@@ -66,7 +68,7 @@ public class MArmyCountIcon extends JPanel {
 	 *
 	 */
 	public MArmyCountIcon(Color color, Point p) {
-		this.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
+		this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		this.color = color;
 		this.setSize(30,30);
 		
@@ -116,22 +118,45 @@ public class MArmyCountIcon extends JPanel {
 	 * 
 	 */
 	public void paint(Graphics g) {
-		//inner color
+		int height = 20;
+		int width = 20;
+
+		// inner color
 		g.setColor(this.color);
-		g.fillArc(1, 1, 20, 20, 0, 360);
+		g.fillArc(1, 1, width, height, 0, 360);
 		
 		//border
-		g.setColor(Color.black);
-		g.drawArc(1, 1, 20, 20, 0, 360);
+		g.setColor(new Color(51, 53, 55));
+		g.drawArc(1, 1, width, height, 0, 360);
 	
+		g.setFont(new Font(FONT.getFamily(), Font.ROMAN_BASELINE, 10));
+
+		String armyCountText = String.valueOf(this.armyCount);
+
+		FontMetrics fMetrics = g.getFontMetrics();
+		int textWidth = (fMetrics.stringWidth(armyCountText) / 2);
+		int textHeight = (fMetrics.getHeight() / 2);
+		int descent = fMetrics.getDescent();
+
+		if (this.isPlayerColorDark()) {
+			g.setColor(Color.WHITE);
+		}
+
 		//army count
-		g.drawString(String.valueOf(this.armyCount), 11 - 4 * String.valueOf(this.armyCount).length(), 15);
-		
+		int x = (width / 2) - (textWidth / 2);
+		int y = ((height / 2) + (textHeight - (descent / 2)));
+
+		g.drawString(armyCountText, x, y);
+
 		//marking circle
 		if (marked) {
 			g.setColor(this.markColor);
 			g.drawArc(-1, -1, 24, 24, 0, 360);
 			g.drawArc(0, 0, 22, 22, 0, 360);
 		}
+	}
+
+	private boolean isPlayerColorDark() {
+		return true;
 	}
 }
