@@ -47,14 +47,13 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
-import de.hochschule.bremen.minerva.core.logic.Game;
-import de.hochschule.bremen.minerva.core.logic.Turn;
+import de.hochschule.bremen.minerva.core.GameEngine;
+import de.hochschule.bremen.minerva.core.GameEngineLocal;
 import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
 import de.hochschule.bremen.minerva.exceptions.CountryOwnerException;
 import de.hochschule.bremen.minerva.exceptions.IsOwnCountryException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughArmiesException;
 import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
-import de.hochschule.bremen.minerva.manager.SessionManager;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MArmyCountIcon;
 import de.hochschule.bremen.minerva.ui.gui.controls.MControl;
@@ -68,7 +67,8 @@ import de.hochschule.bremen.minerva.util.MapTool;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.CountryCard;
 import de.hochschule.bremen.minerva.vo.Mission;
-import de.hochschule.bremen.minerva.vo.World;
+import de.hochschule.bremen.minerva.vo.Player;
+import de.hochschule.bremen.minerva.vo.PlayerState;
 
 /**
  * Prototype of the actual game screen.
@@ -83,19 +83,12 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	public MSlidePanel slidePanel;
 	public JLabel missionLabel;
 
+	public GameEngine engine = MinervaGUI.getEngine();
+	
 	public HashMap<Country, MArmyCountIcon> armyIcons = new HashMap<Country, MArmyCountIcon>();
-	public World world;
-	private Game game;
-	private Turn currentTurn;
-	
-	// TODO: Use the new PlayerState enum.
-	public static final int ALLOCATE = 0;
-	public static final int CARD_TURN_IN = 1;
-	public static final int ATTACK = 2;
-	public static final int MOVE = 3;
-	public static final int OTHER_PLAYER = 4;
-	
-	private int gameState = 0;
+
+	private Player currentPlayer;
+
 	private Country source = null;
 	private Country destination = null;
 	
@@ -112,8 +105,6 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	public GamePanel() {
 		this.setPreferredSize(MinervaGUI.WINDOW_SIZE);
 		this.setOpaque(true);
-
-		this.game = SessionManager.get(MinervaGUI.getSessionId());
 
 		String filepath;
 		
@@ -136,12 +127,12 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		missionPanel.add(missionLabel);
 
 		//lower map
-		filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + this.game.getWorld().getMapUnderlay();
+		filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + this.engine.getGameWorld().getMapUnderlay();
 		this.mapUnderlay = new MapPanel(filepath);
 		this.mapUnderlay.setBounds(0,0,500,500);
 		
 		//upper map
-		filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + this.game.getWorld().getMap();
+		filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + this.engine.getGameWorld().getMap();
 		this.mapOverlay = new MapPanel(filepath);
 		this.mapOverlay.setBounds(0,0,500,500);
 		
@@ -152,7 +143,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		//adds mouse listener to the upper map
 		this.addMapListener();
 		
-		HashMap<Country, Point> countryAnchors = MapTool.getCountryAnchors(this.mapOverlay.getMapImage(), mapUnderlay.getMapImage(), this.game.getWorld());
+		HashMap<Country, Point> countryAnchors = MapTool.getCountryAnchors(this.mapOverlay.getMapImage(), mapUnderlay.getMapImage(), this.engine.getGameWorld());
 
 		
 		//TODO: remove this when finished
@@ -167,15 +158,15 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 //			}
 //		}
 		
-		//initializing the first turn
-		this.currentTurn = this.game.nextTurn();
 		this.add(slidePanel, 10000);
+	
 		
-		for (Country country : this.game.getWorld().getCountries()) {
+		for (Country country : this.engine.getGameWorld().getCountries()) {
 			MArmyCountIcon aci = new MArmyCountIcon(Color.RED, countryAnchors.get(country));
 			this.armyIcons.put(country,aci);
 			this.add(aci,-10000);
 		}
+
 
 		this.refreshArmyCounts();
 
@@ -196,10 +187,10 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	private void addMapListener() {
 		this.mapOverlay.addMouseListener(new MMouseListener() {
 			public void mouseClicked(MouseEvent e) {
-				GamePanel.this.unmarkAll();
+GamePanel.this.unmarkAll();
 				
 				Color color = ColorTool.fromInteger(GamePanel.this.mapUnderlay.getMapImage().getRGB(e.getX(), e.getY()));
-				Country country = GamePanel.this.game.getWorld().getCountry(color);
+				Country country = GamePanel.this.engine.getGameWorld().getCountry(color);
 				
 //				String hexcode = ColorTool.toHexCode(color);
 //				GamePanel.this.armyIcons.get(country).mark(Color.RED);
@@ -212,18 +203,17 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 //				
 //				System.out.println("Farbe: "+hexcode+" "+country);
 				
-				int gameState = GamePanel.this.getGameState();
-				if (gameState == 0) {
+				if (GamePanel.this.currentPlayer.getState() == PlayerState.ALLOCATE_ARMIES) {
 					GamePanel.this.allocate(country);
-				} else if (GamePanel.this.getGameState() == GamePanel.CARD_TURN_IN) {
+				} else if (GamePanel.this.currentPlayer.getState() == PlayerState.RELEASE_CARDS) {
 					/*
 					 * Nothing will happen here.
 					 * You can't interact with the map, when you're trying to
 					 * release cards.
 					 */
-				} else if (GamePanel.this.getGameState() == GamePanel.ATTACK) {
+				} else if (GamePanel.this.currentPlayer.getState() == PlayerState.ATTACK) {
 					GamePanel.this.attack(country);
-				} else if (GamePanel.this.getGameState() == GamePanel.MOVE) {
+				} else if (GamePanel.this.currentPlayer.getState() == PlayerState.MOVE) {
 					GamePanel.this.move(country);
 				}
 				GamePanel.this.updatePanel();
@@ -237,16 +227,14 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	 */
 	private void allocate(Country country) {
 		try {
-			this.currentTurn.allocateArmy(country);
+			this.engine.allocateArmy(country);
 		} catch (NotEnoughArmiesException e) {
 			MMessageBox.error(e.getMessage());
 		} catch (CountryOwnerException e) {
-			if (country.getName() != null) {
-				MMessageBox.error(e.getMessage());
-			}
+			MMessageBox.error(e.getMessage());
 		}
-		if (this.currentTurn.getAllocatableArmyCount() == 0) {
-			this.setGameState(GamePanel.CARD_TURN_IN);
+		if (this.engine.getAllocatableArmyCount() == 0) {
+			this.currentPlayer.setState(PlayerState.ATTACK);
 		}
 		this.updatePanel();
 	}
@@ -256,7 +244,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	 * @param card
 	 */
 	public void TurnCardIn(CountryCard card) {
-		this.currentTurn.releaseCard(card);
+		this.engine.releaseCard(card);
 	}
 	
 	/**
@@ -264,7 +252,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	 * @param series
 	 */
 	public void TurnSeriesIn(Vector<CountryCard> series) {
-		this.currentTurn.releaseCardSeries(series);
+		this.engine.releaseCards(series);
 	}
 	
 	/**
@@ -278,7 +266,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 			if (country.getArmyCount() > 1) {
 				this.source = country;
 				this.armyIcons.get(this.source).mark(Color.GREEN);
-				for (Country c : this.game.getWorld().getNeighbours(this.source)) {
+				for (Country c : this.engine.getGameWorld().getNeighbours(this.source)) {
 					this.armyIcons.get(c).mark(Color.RED);
 				}
 			}
@@ -287,11 +275,12 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 			this.armyIcons.get(country).mark(Color.YELLOW);
 			try {
 				int wert = Integer.parseInt(JOptionPane.showInputDialog("Wieviele Armeen " +
-						"sollen angreifen? (max: "+this.currentTurn.calcMaxAttackCount(this.source)+")",
-						""+(this.currentTurn.calcMaxAttackCount(this.source))));
+						"sollen angreifen? (max: "+this.calcMaxAttackCount(this.source)+")",
+						""+(this.calcMaxAttackCount(this.source))));
 				
 				try {
-					this.currentTurn.attack(this.source, this.destination, wert);
+					//TODO: handle attack result
+					this.engine.attack(this.source, this.destination, wert);
 				} catch (CountriesNotInRelationException e) {
 					MMessageBox.error(e.getMessage());
 				} catch (NotEnoughArmiesException e) {
@@ -319,7 +308,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 			if (country.getArmyCount() > 1) {
 				this.source = country;
 				this.armyIcons.get(this.source).mark(Color.GREEN);
-				for (Country c : this.game.getWorld().getNeighbours(this.source)) {
+				for (Country c : this.engine.getGameWorld().getNeighbours(this.source)) {
 					this.armyIcons.get(c).mark(Color.RED);
 				}
 			}
@@ -333,7 +322,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 						"sollen bewegt werden? (max: "+(this.source.getArmyCount()-1)+")",
 						""+(this.source.getArmyCount()-1)));
 				try {
-					this.currentTurn.moveArmies(this.source, this.destination, wert);
+					this.engine.move(this.source, this.destination, wert);
 				} catch (CountriesNotInRelationException e) {
 					MMessageBox.error(e.getMessage());
 				} catch (NotEnoughArmiesException e) {
@@ -361,14 +350,42 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 //			this.setGameState(GamePanel.OTHER_PLAYER);
 //		}
 
+//		this.refreshArmyCounts();
+//		this.slidePanel.getControlBar().updateButtons();
+//		this.slidePanel.getControlBar().setCurrentPlayerLabel(this.currentTurn.getCurrentPlayer());
+//		this.slidePanel.getControlBar().setAllocatableArmiesLabel(" "+this.currentTurn.getAllocatableArmyCount()+" ");
+//		this.slidePanel.getControlBar().updateCardList(this.currentTurn.getCurrentPlayer().getCountryCards());
+//
+//		searchPlayerMission : for (Mission mission : this.getGame().getMissions()) {
+//			if (mission.getOwner() == this.getGame().getCurrentTurn().getCurrentPlayer()) {
+//				this.missionLabel.setText(mission.getTitle());
+//				break searchPlayerMission;
+//			}
+//		}
+//
+//		this.repaint();
+//		this.updateUI();
+		
+		if (this.engine instanceof GameEngineLocal) {
+			System.out.println("GameEngineLocal");
+			for (Player player : this.engine.getPlayers()) {
+				if (player.getState() != PlayerState.IDLE)
+				this.currentPlayer = player;
+			}
+		}
+		
+		if ((this.currentPlayer.getState() == PlayerState.RELEASE_CARDS) && (GamePanel.this.currentPlayer.getCountryCards().isEmpty())) {
+			this.currentPlayer.setState(PlayerState.ALLOCATE_ARMIES);
+		}
+
 		this.refreshArmyCounts();
 		this.slidePanel.getControlBar().updateButtons();
-		this.slidePanel.getControlBar().setCurrentPlayerLabel(this.currentTurn.getCurrentPlayer());
-		this.slidePanel.getControlBar().setAllocatableArmiesLabel(" "+this.currentTurn.getAllocatableArmyCount()+" ");
-		this.slidePanel.getControlBar().updateCardList(this.currentTurn.getCurrentPlayer().getCountryCards());
+		this.slidePanel.getControlBar().setCurrentPlayerLabel(this.currentPlayer);
+		this.slidePanel.getControlBar().setAllocatableArmiesLabel(" "+this.engine.getAllocatableArmyCount()+" ");
+		this.slidePanel.getControlBar().updateCardList(this.currentPlayer.getCountryCards());
 
-		searchPlayerMission : for (Mission mission : this.getGame().getMissions()) {
-			if (mission.getOwner() == this.getGame().getCurrentTurn().getCurrentPlayer()) {
+		searchPlayerMission : for (Mission mission : this.engine.getMissions()) {
+			if (mission.getOwner() == this.currentPlayer) {
 				this.missionLabel.setText(mission.getTitle());
 				break searchPlayerMission;
 			}
@@ -376,6 +393,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 
 		this.repaint();
 		this.updateUI();
+		
 	}
 	
 	/**
@@ -386,8 +404,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		while (iter.hasNext()) {
 			@SuppressWarnings("rawtypes")
 			Map.Entry pairs = (Map.Entry)iter.next();
-			((MArmyCountIcon)pairs.getValue()).setPlayer(((Country)pairs.getKey()), this.game.getPlayer(((Country)pairs.getKey())));
-		}
+			((MArmyCountIcon)pairs.getValue()).setPlayer(((Country)pairs.getKey()), this.getPlayer(((Country)pairs.getKey())));		}
 	}
 	
 	/**
@@ -406,47 +423,46 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	 * 
 	 * @return
 	 */
-	public Game getGame() {
-		return this.game;
-	}
-	
-	/**
-	 * 
-	 */
-	public void nextTurn() {
-		this.currentTurn = game.nextTurn();
-		this.updatePanel();
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public Turn getTurn() {
-		return this.currentTurn;
+	public Player getCurrentPlayer() {
+		return currentPlayer;
 	}
 
 	/**
 	 * 
-	 * @param gameState
+	 * @param currentPlayer
 	 */
-	public void setGameState(int gameState) {
-		this.gameState = gameState;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public int getGameState() {
-		return gameState;
+	public void setCurrentPlayer(Player currentPlayer) {
+		this.currentPlayer = currentPlayer;
 	}
 	
 	/**
 	 * 
+	 * @param byCountry
 	 * @return
 	 */
-	public Turn getCurrentTurn() {
-		return this.currentTurn;
+	public Player getPlayer(Country byCountry) {
+		for (Player player : this.engine.getPlayers()) {
+			if (player.hasCountry(byCountry)) {
+				return player;
+			}
+		}
+		return null;
 	}
+	
+	/**
+	 * Calculates maximum number of armies which can attack from the selected country.
+	 * 
+	 * @param country Country where to calculate the maximum number to attack with.
+	 * @return Maximum number of armies to attack with.
+	 */
+	public int calcMaxAttackCount(Country country) {
+		int armyCount = country.getArmyCount();
+
+		if (armyCount > 3) {
+			return 3;
+		} else {
+			return armyCount-1;
+		}
+	}
+	
 }

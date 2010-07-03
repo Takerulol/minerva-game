@@ -40,7 +40,6 @@ import javax.swing.SwingUtilities;
 
 import de.hochschule.bremen.minerva.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.exceptions.PlayerExistsException;
-import de.hochschule.bremen.minerva.manager.AccountManager;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
 import de.hochschule.bremen.minerva.ui.gui.controls.MPasswordField;
@@ -296,9 +295,10 @@ public class RegistrationPanel extends JLayeredPane implements TextResources {
 				String retypedPassword = String.copyValueOf(RegistrationPanel.this.passwordRetype.getPassword());
 
 				if (RegistrationPanel.this.areRegistrationCredentialsValid(player, retypedPassword)) {
+					
 					try {
-						AccountManager.getInstance().createPlayer(player);
-
+						MinervaGUI.getEngine().register(player);
+						
 						LoginPanel loginPanel = new LoginPanel();
 						loginPanel.setStatusText(REGISTRATION_ACCOUNT_CREATED);
 						MinervaGUI.getInstance().changePanel(loginPanel);
@@ -309,6 +309,7 @@ public class RegistrationPanel extends JLayeredPane implements TextResources {
 						MMessageBox.show(e.getMessage());
 						Runtime.getRuntime().exit(ERROR);
 					}
+
 				}
 			}
 		});

@@ -47,6 +47,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 
+import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MControl;
 import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
 import de.hochschule.bremen.minerva.ui.gui.controls.MPlayerIcon;
@@ -56,6 +57,7 @@ import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
 import de.hochschule.bremen.minerva.vo.CavalerieCard;
 import de.hochschule.bremen.minerva.vo.CountryCard;
 import de.hochschule.bremen.minerva.vo.Player;
+import de.hochschule.bremen.minerva.vo.PlayerState;
 import de.hochschule.bremen.minerva.vo.SoldierCard;
 
 /**
@@ -148,9 +150,9 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 		
 		this.upperHalf.add(this.currentPlayerArea);
 		
+		this.upperHalf.add(this.cardButton);
 		this.upperHalf.add(this.allocateButton);
 		this.upperHalf.add(this.allocatableArmies);
-		this.upperHalf.add(this.cardButton);
 		this.upperHalf.add(this.attackButton);
 		this.upperHalf.add(this.moveButton);
 		this.upperHalf.add(this.endTurnButton);
@@ -279,26 +281,37 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 	 * Updates the state of all buttons
 	 */
 	public void updateButtons() {
-		if (this.gamePanel.getGameState() > 0) {
-			this.allocateButton.setEnabled(false);
-			if (this.gamePanel.getGameState() > 1) {
-				this.cardButton.setEnabled(false);
-				if (this.gamePanel.getGameState() > 2) {
-					this.attackButton.setEnabled(false);
-					if (this.gamePanel.getGameState() > 3) {
-						this.moveButton.setEnabled(false);
-					}
-				}
-			} else {
-				this.buttonTurnIn.setEnabled(true);
-			}
-		} else {
+		if (this.gamePanel.getCurrentPlayer().getState() == PlayerState.RELEASE_CARDS) {
 			this.allocateButton.setEnabled(true);
 			this.cardButton.setEnabled(true);
 			this.attackButton.setEnabled(true);
 			this.moveButton.setEnabled(true);
+			this.buttonTurnIn.setEnabled(true);
+		} else if (this.gamePanel.getCurrentPlayer().getState() == PlayerState.ALLOCATE_ARMIES) {
+			this.allocateButton.setEnabled(true);
+			this.cardButton.setEnabled(false);
+			this.attackButton.setEnabled(true);
+			this.moveButton.setEnabled(true);
 			this.buttonTurnIn.setEnabled(false);
-		}
+		} else if (this.gamePanel.getCurrentPlayer().getState() == PlayerState.ATTACK) {
+			this.allocateButton.setEnabled(false);
+			this.cardButton.setEnabled(false);
+			this.attackButton.setEnabled(true);
+			this.moveButton.setEnabled(true);
+			this.buttonTurnIn.setEnabled(false);
+		} else if (this.gamePanel.getCurrentPlayer().getState() == PlayerState.MOVE) {
+			this.allocateButton.setEnabled(false);
+			this.cardButton.setEnabled(false);
+			this.attackButton.setEnabled(false);
+			this.moveButton.setEnabled(true);
+			this.buttonTurnIn.setEnabled(false);
+		} else if (this.gamePanel.getCurrentPlayer().getState() == PlayerState.IDLE) {
+			this.allocateButton.setEnabled(false);
+			this.cardButton.setEnabled(false);
+			this.attackButton.setEnabled(false);
+			this.moveButton.setEnabled(false);
+			this.buttonTurnIn.setEnabled(false);
+		} 
 	}
 
 	/**
@@ -306,26 +319,25 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//TODO: implementation
 		if (e.getSource() == this.endTurnButton) {
-			this.gamePanel.setGameState(GamePanel.ALLOCATE);
-			this.gamePanel.nextTurn();
+			MinervaGUI.getEngine().finishTurn();
 			this.gamePanel.unmarkAll();
-		} else if ((e.getSource() == this.allocateButton) && (this.gamePanel.getGameState() < GamePanel.CARD_TURN_IN)) {
-			this.gamePanel.setGameState(GamePanel.ALLOCATE);
-		} else if ((e.getSource() == this.cardButton) && (this.gamePanel.getGameState() < GamePanel.ATTACK)) {
-			this.gamePanel.setGameState(GamePanel.CARD_TURN_IN);
-		} else if ((e.getSource() == this.attackButton) && (this.gamePanel.getGameState() < GamePanel.MOVE)) {
-			this.gamePanel.setGameState(GamePanel.ATTACK);
+		} else if (e.getSource() == this.allocateButton) {
+			this.gamePanel.getCurrentPlayer().setState(PlayerState.ALLOCATE_ARMIES);
+		} else if (e.getSource() == this.cardButton) {
+			this.gamePanel.getCurrentPlayer().setState(PlayerState.RELEASE_CARDS);
+		} else if (e.getSource() == this.attackButton) {
+			this.gamePanel.getCurrentPlayer().setState(PlayerState.ATTACK);
 		} else if (e.getSource() == this.moveButton) {
-			this.gamePanel.setGameState(GamePanel.MOVE);
+			this.gamePanel.getCurrentPlayer().setState(PlayerState.MOVE);
 		} else if (e.getSource() == this.buttonTurnIn) {
+		
 			if (this.cardList.getSelectedIndices().length == 1) {
-				this.gamePanel.TurnCardIn(this.gamePanel.getCurrentTurn().getCurrentPlayer().getCountryCards().get(this.cardList.getSelectedIndex()));
+				this.gamePanel.TurnCardIn(this.gamePanel.getCurrentPlayer().getCountryCards().get(this.cardList.getSelectedIndex()));
 			} else if (this.cardList.getSelectedIndices().length == 3) {
 				Vector<CountryCard> series = new Vector<CountryCard>();
 				for (int i = 0; i < 3; i++) {
-					series.add(this.gamePanel.getCurrentTurn().getCurrentPlayer().getCountryCards().get(this.cardList.getSelectedIndices()[i]));
+					series.add(this.gamePanel.getCurrentPlayer().getCountryCards().get(this.cardList.getSelectedIndices()[i]));
 				}
 				this.gamePanel.TurnSeriesIn(series);
 			} else {
@@ -333,6 +345,7 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 				MMessageBox.error("Das geht nicht.");
 			}
 		}
+	
 		this.gamePanel.updatePanel();
 	}
 }

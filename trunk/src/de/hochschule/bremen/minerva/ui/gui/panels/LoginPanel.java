@@ -40,15 +40,12 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
 
-import de.hochschule.bremen.minerva.core.logic.Game;
 import de.hochschule.bremen.minerva.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.exceptions.GameAlreadyStartedException;
 import de.hochschule.bremen.minerva.exceptions.NoPlayerSlotAvailableException;
 import de.hochschule.bremen.minerva.exceptions.PlayerAlreadyLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
-import de.hochschule.bremen.minerva.manager.AccountManager;
-import de.hochschule.bremen.minerva.manager.SessionManager;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MButton;
 import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
@@ -182,38 +179,28 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 			LoginPanel.this.setStatusText(TextResources.LOGIN_PANEL_STATUS_WHILE_LOGIN);
 
 			try {
-				AccountManager.getInstance().login(player);
+				MinervaGUI.getEngine().login(player);
+				MinervaGUI.getInstance().changePanel(new GameInitPanel());
 			} catch (PlayerAlreadyLoggedInException e) {
-				// Nothing to do. Everything is fine. Recycle user object.
-				// The buddy is already logged in. Have a nice day dude ...
-				// Anyway, we have to inform the user ...
+				//kill game and logout all players, when somebody is already logged in
+				try {
+					MinervaGUI.getEngine().killGame();
+				} catch (DataAccessException e1) {
+					MMessageBox.show(e1.getMessage());
+					Runtime.getRuntime().exit(ERROR);
+				}
+				MMessageBox.show(e.getMessage());
+			} catch (GameAlreadyStartedException e) {
 				MMessageBox.show(e.getMessage());
 			} catch (WrongPasswordException e) {
-				MMessageBox.error(e.getMessage());
+				MMessageBox.show(e.getMessage());
 			} catch (PlayerDoesNotExistException e) {
+				MMessageBox.show(e.getMessage());
+			} catch (NoPlayerSlotAvailableException e) {
 				MMessageBox.show(e.getMessage());
 			} catch (DataAccessException e) {
 				MMessageBox.show(e.getMessage());
 				Runtime.getRuntime().exit(ERROR);
-			}
-
-			if (player.isLoggedIn()) {
-				// Try to add a new player to the game.
-				try {
-					Game game = SessionManager.get(MinervaGUI.getSessionId());
-
-					if (game.getPlayerCount() == 0) {
-						player.setMaster(true);
-					}
-
-					game.addPlayer(player);
-
-					MinervaGUI.getInstance().changePanel(new GameInitPanel());
-				} catch (GameAlreadyStartedException e) {
-					MMessageBox.show(e.getMessage());
-				} catch (NoPlayerSlotAvailableException e) {
-					MMessageBox.error(e.getMessage());
-				}
 			}
 
 			LoginPanel.this.setStatusText(null);

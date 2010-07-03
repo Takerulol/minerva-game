@@ -101,6 +101,8 @@ public interface GameEngine {
 	public void releaseCard(CountryCard card);
 
 	public void releaseCards(Vector<CountryCard> cards);
+	
+	public int getAllocatableArmyCount();
 
 	public void allocateArmy(Country allocatable) throws NotEnoughArmiesException, CountryOwnerException;
 

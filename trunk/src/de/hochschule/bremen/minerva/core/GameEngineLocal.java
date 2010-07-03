@@ -337,4 +337,14 @@ public class GameEngineLocal implements GameEngine {
 	public void finishTurn() {
 		this.game.nextTurn();
 	}
+
+	/**
+	 * Returns the current allocatable army count
+	 * 
+	 * @return army count
+	 */
+	@Override
+	public int getAllocatableArmyCount() {
+		return this.game.getCurrentTurn().getAllocatableArmyCount();
+	}
 }

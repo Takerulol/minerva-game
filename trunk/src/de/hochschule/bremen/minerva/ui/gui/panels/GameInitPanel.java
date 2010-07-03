@@ -39,13 +39,10 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JLayeredPane;
 
-import de.hochschule.bremen.minerva.core.logic.Game;
 import de.hochschule.bremen.minerva.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.exceptions.NoPlayerLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughPlayersLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.WorldNotDefinedException;
-import de.hochschule.bremen.minerva.manager.SessionManager;
-import de.hochschule.bremen.minerva.manager.WorldManager;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MButton;
 import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
@@ -88,8 +85,9 @@ public class GameInitPanel extends JLayeredPane implements TextResources {
 	
 		// game init
 		Vector<World> worlds = new Vector<World>();
+		
 		try {
-			worlds = WorldManager.getInstance().getList();
+			worlds = MinervaGUI.getEngine().getWorldList();
 		} catch (DataAccessException e) {
 			// TODO: Handle the DataAccessException in a correct way.
 			MMessageBox.show(e.getMessage());
@@ -97,7 +95,7 @@ public class GameInitPanel extends JLayeredPane implements TextResources {
 		}
 
 		// TODO: Pass the gamemaster
-		Player gamemaster = SessionManager.get(MinervaGUI.getSessionId()).getMaster();
+		Player gamemaster = MinervaGUI.getEngine().getPlayers().firstElement();
 		this.worldInitPanel = new WorldInitPanel(gamemaster, worlds);
 		this.worldInitPanel.setOpaque(false);
 		this.worldInitPanel.setBounds(585, 140, 300, 350);
@@ -141,13 +139,12 @@ public class GameInitPanel extends JLayeredPane implements TextResources {
 			public void actionPerformed(ActionEvent event) {
 				JLayeredPane nextPanel;
 
-				Game game = SessionManager.get(MinervaGUI.getSessionId());
-
 				World selectedWorld = GameInitPanel.this.worldInitPanel.getSelectedWorld();
-				game.setWorld(selectedWorld);
+				
+				MinervaGUI.getEngine().setGameWorld(selectedWorld);
 
 				try {
-					game.start();
+					MinervaGUI.getEngine().startGame();
 					nextPanel = new GamePanel();
 				} catch (NotEnoughPlayersLoggedInException e) {
 					// Okay, back to the login panel
