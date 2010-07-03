@@ -36,6 +36,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.Vector;
 
 import javax.swing.JPanel;
 
@@ -138,8 +139,10 @@ public class MArmyCountIcon extends JPanel implements MControl {
 		int textHeight = (fMetrics.getHeight() / 2);
 		int descent = fMetrics.getDescent();
 
-		if (this.isPlayerColorDark()) {
+		if (this.isDarkColor()) {
 			g.setColor(Color.WHITE);
+		} else {
+			g.setColor(Color.BLACK);
 		}
 
 		//army count
@@ -156,7 +159,22 @@ public class MArmyCountIcon extends JPanel implements MControl {
 		}
 	}
 
-	private boolean isPlayerColorDark() {
-		return true;
+	/**
+	 * Is the background a dark color?
+	 * 
+	 * @return boolean
+	 * 
+	 */
+	private boolean isDarkColor() {
+		Vector<Color> darkColors = new Vector<Color>();
+		darkColors.add(Color.BLUE);
+		darkColors.add(Color.RED);
+		darkColors.add(Color.GRAY);
+
+		if (darkColors.contains(this.color)) {
+			return true;
+		}
+
+		return false;
 	}
 }
