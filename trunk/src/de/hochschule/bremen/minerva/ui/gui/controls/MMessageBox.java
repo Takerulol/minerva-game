@@ -34,7 +34,7 @@ import javax.swing.JOptionPane;
 import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
 
 /**
- * DOCME
+ * Own minerva message box. The "M" stands for Minerva ;)
  * 
  * @version $Id$
  * @since 1.0
@@ -45,22 +45,18 @@ public class MMessageBox implements TextResources {
 	private static final long serialVersionUID = -5590613142565702637L;
 
 	/**
-	 * DOCME
+	 * Show a information box with the given message.
 	 * 
-	 * @param message
+	 * @param message The message string.
 	 */
 	public static void show(String message) {
 		JOptionPane.showMessageDialog(null, message, MMESSAGE_INFO_TITLE, JOptionPane.INFORMATION_MESSAGE);
-		/*JDialog d = new JDialog();
-		d.add( new JTextField(message) );
-		d.setVisible(true);
-		d.setModal(true);*/
 	}
 
 	/**
-	 * DOCME
+	 * Show a error box.
 	 * 
-	 * @param message
+	 * @param message The error message.
 	 *
 	 */
 	public static void error(String message) {

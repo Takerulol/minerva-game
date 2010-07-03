@@ -32,7 +32,7 @@ package de.hochschule.bremen.minerva.ui.gui.controls;
 import java.awt.Font;
 
 /**
- * DOCME
+ * Interface that defines common look&feel properties, like fonts.
  * 
  * @version $Id$
  * @since 1.0
