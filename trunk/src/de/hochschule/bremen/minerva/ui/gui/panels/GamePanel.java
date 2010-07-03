@@ -367,7 +367,6 @@ GamePanel.this.unmarkAll();
 //		this.updateUI();
 		
 		if (this.engine instanceof GameEngineLocal) {
-			System.out.println("GameEngineLocal");
 			for (Player player : this.engine.getPlayers()) {
 				if (player.getState() != PlayerState.IDLE)
 				this.currentPlayer = player;
