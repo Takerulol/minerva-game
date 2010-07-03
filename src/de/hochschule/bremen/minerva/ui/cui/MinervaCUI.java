@@ -43,8 +43,10 @@ import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotReadableExcept
 import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
 import de.hochschule.bremen.minerva.exceptions.CountryOwnerException;
 import de.hochschule.bremen.minerva.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.exceptions.GameAlreadyStartedException;
 import de.hochschule.bremen.minerva.exceptions.IsOwnCountryException;
 import de.hochschule.bremen.minerva.exceptions.NoPlayerLoggedInException;
+import de.hochschule.bremen.minerva.exceptions.NoPlayerSlotAvailableException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughArmiesException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughPlayersLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.PlayerAlreadyLoggedInException;
@@ -261,6 +263,10 @@ public class MinervaCUI implements UserInterface {
 			this.error("Es ist ein allgemeiner Persistenzfehler aufgetreten. Beende die Anwendung. Grund: "+e.getMessage());
 		} catch (WorldNotDefinedException e) {
 			this.error(e.getMessage());
+		} catch (GameAlreadyStartedException e) {
+			e.printStackTrace();
+		} catch (NoPlayerSlotAvailableException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -827,7 +833,7 @@ public class MinervaCUI implements UserInterface {
 		for (Country country : this.game.getWorld().getCountries()) {
 			
 			// WARNING: ugly hack
-			Turn turn = this.game.getTurns().lastElement();
+			Turn turn = this.game.getCurrentTurn();
 			Player currentPlayer = turn.getCurrentPlayer();
 			boolean hasCountry = currentPlayer.hasCountry(country);
 			
