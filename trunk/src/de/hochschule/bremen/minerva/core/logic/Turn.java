@@ -79,6 +79,7 @@ public class Turn {
 	 * @param Vector<CountryCard> countryCards Vector with country card obtainable after a succesful attack.
 	 * @param Vector<CountryCard> usedCountryCards Vector with turned in country cards.
 	 * @param CardSeriesCounter seriesCounter Counter of turned in series in the game.
+	 *
 	 */
 	public Turn(Player currentPlayer, World world, Vector<Player> players,
 			Vector<CountryCard> countryCards, Vector<CountryCard> usedCountryCards,
@@ -101,6 +102,7 @@ public class Turn {
 	 * 
 	 * @param currentPlayer The current player of this turn.
 	 * @return Vector of armies gained per turn.
+	 *
 	 */
 	private void createArmies() {
 		//army via country count
@@ -134,7 +136,9 @@ public class Turn {
 	
 	/**
 	 * Creates armies by a certain amount.
+	 *
 	 * @param numberOfArmies Number of armies to create.
+	 *
 	 */
 	private void createArmies(int numberOfArmies) {
 		for (int i = 0; i < numberOfArmies; i++) {
@@ -144,7 +148,9 @@ public class Turn {
 	
 	/**
 	 * Creates armies out of a series or just creates beginning armies.
+	 *
 	 * @param seriesTurnIn True if a series is turned in.
+	 *
 	 */
 	private void createArmies(Boolean seriesTurnIn) {
 		if (seriesTurnIn) {
@@ -158,15 +164,15 @@ public class Turn {
 			this.seriesCounter.increaseCounter();
 		}
 	}
-	
-	//TODO: möglicherweise Exception wenn keine einheiten mehr verfügbar sind? oder abwaelzen 
-	// auf gui, dass naechster schritt automatisch kommt.
+
 	/**
 	 * Allocates a single allocatable army into a country.
 	 * 
 	 * @param country The country where to put an army.
+	 *
 	 * @throws NotEnoughArmiesException 
-	 * @throws CountryOwnerException 
+	 * @throws CountryOwnerException
+	 * 
 	 */
 	public void allocateArmy(Country country) throws NotEnoughArmiesException, CountryOwnerException {
 		if (currentPlayer.hasCountry(country)) {
@@ -189,13 +195,11 @@ public class Turn {
 	 * @param attackerCountry Country where to attack from.
 	 * @param defenderCountry Country which will be attacked.
 	 * @param armyCount Number of armies used. max: 1 <= armies available <= 3 ; min: 1. Minimum one army must remain on the country.
+	 *
 	 * @throws CountriesNotInRelationException The countries are not connected.
 	 * @throws IsOwnCountryException Trying to attack an own country.
 	 * @throws NotEnoughArmiesException Too little or too many armies used.
-	 * 
-	 * TODO: Implement feedback (won / lost).
-	 * 		- put dice into attack result (is it changed yet?)
-	 * 
+	 *
 	 */
 	public AttackResult attack(Country attackerCountry, Country defenderCountry, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException {
 		AttackResult result = null;
@@ -299,13 +303,15 @@ public class Turn {
 	
 	/**
 	 * Moves specific amount of armies from one to another, related country.
-	 * 
+	 *
 	 * @param from Country from where to move.
 	 * @param destination Country to move to.
 	 * @param armyCount Number of armies you want to move.
+	 *
 	 * @throws CountriesNotInRelationException Countries are not connected.
 	 * @throws NotEnoughArmiesException Not enough armies on the country to move.
-	 * @throws CountryOwnerException 
+	 * @throws CountryOwnerException
+	 * 
 	 */
 	public void moveArmies(Country from, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, CountryOwnerException {
 		if (currentPlayer.hasCountry(from)) {
@@ -320,9 +326,7 @@ public class Turn {
 				if (from.getArmyCount() <= armyCount) {
 					throw new NotEnoughArmiesException(from, armyCount, true);
 				}
-				
-				//TODO: abfrage ob armee schon bewegt wurde
-				//actually moving armies
+
 				for (int i = 0; i < armyCount; i++) {
 					from.removeArmy();
 					Army newArmy = new Army();
@@ -341,6 +345,7 @@ public class Turn {
 	 * Releases the desired card if the country is owned by the current player.
 	 *
 	 * @param countryCard Card to release.
+	 *
 	 */
 	public void releaseCard(CountryCard countryCard) {
 		if (currentPlayer.hasCountry(countryCard.getReference())) {
@@ -349,9 +354,10 @@ public class Turn {
 			this.currentPlayer.getCountryCards().remove(countryCard);
 		}
 	}
-	
+
 	/**
 	 * Releases one possible series of the currentPlayers card stack.
+	 *
 	 */
 	public void releaseCardSeries() {
 		cardStackReleaser(this.currentPlayer.getCountryCards());
@@ -359,23 +365,21 @@ public class Turn {
 	
 	/**
 	 * Releases the the desired card series.
-	 * 
+	 *
 	 * @param cardSeries
+	 *
 	 */
 	public void releaseCardSeries(Vector<CountryCard> cardSeries) {
 		cardStackReleaser(cardSeries);
 	}
 	
-	/*
-	 * TODO:
-	 * 	- probably Exceptions?
-	 *  - maybe return value if no card series could be released.
-	 */
 	/**
 	 * If there is a series available in the given card stack, it will be released.
 	 * If there are two different series in the card stack only one will be released.
 	 * Card stack must not be greater than 5 cards because a player should hold more.
+	 *
 	 * @param releasableCards Card stack to be released.
+	 *
 	 */
 	private void cardStackReleaser(Vector<CountryCard> releasableCards) {
 		//need at least 3 cards to ever release a series
@@ -426,98 +430,105 @@ public class Turn {
 			}
 		}
 	}
-	
-	
+
 	/**
 	 * Sets current player.
 	 * 
 	 * @param currentPlayer The current player.
+	 *
 	 */
 	private void setCurrentPlayer(Player currentPlayer) {
 		this.currentPlayer = currentPlayer;
 	}
+
 	/**
 	 * Returns current player.
-	 * 
+	 *
 	 * @return The current player.
+	 *
 	 */
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
+
 	/**
 	 * Sets world.
-	 * 
+	 *
 	 * @param world The world to play in.
+	 *
 	 */
 	private void setWorld(World world) {
 		this.world = world;
 	}
+
 	/**
 	 * Returns world.
-	 * 
+	 *
 	 * @return The world where you are playing in.
+	 *
 	 */
 	public World getWorld() {
 		return world;
 	}
+
 	/**
 	 * Sets players. (Vector)
-	 * 
+	 *
 	 * @param players Vector of all players in this game/match.
+	 *
 	 */
 	private void setPlayers(Vector<Player> players) {
 		this.players = players;
 	}
+
 	/**
-	 * Returns players. (Vector)
-	 * 
+	 * Returns players.
+	 *
 	 * @return players Vector of all players in this game/match.
+	 *
 	 */
 	public Vector<Player> getPlayers() {
 		return players;
 	}
-	/**
-	 * Sets allocatable armies, usually the one created with createArmies.
-	 * 
-	 * @param allocatableArmies The armies which can be allocated by the player.
-	 * @deprecated
-	 */
-	@SuppressWarnings("unused") //old
-	private void setAllocatableArmies(Vector<Army> allocatableArmies) {
-		this.allocatableArmies = allocatableArmies;
-	}
+
 	/**
 	 * Returns allocatable armies.
 	 * 
 	 * @return Vector with armies.
+	 *
 	 */
 	private Vector<Army> getAllocatableArmies() {
 		return allocatableArmies;
 	}
+
 	/**
 	 * Adds one allocatable army to the vector.
+	 *
 	 */
 	private void addAllocatableArmy() {
 		allocatableArmies.add(new Army());
 	}
+
 	/**
 	 * Gets allocatable army-count.
-	 * 
+	 *
 	 * @return Integer of the number of armies to allocate.
+	 *
 	 */
 	public int getAllocatableArmyCount() {
 		return getAllocatableArmies().size();
 	}
-	
+
 	/**
 	 * Calculates maximum number of possible defending armies.
 	 * 
 	 * @param defender Country which will defend.
 	 * @param armyCount Number of attacking armies.
+	 *
 	 * @return Number of armies defending (1 or 2).
+	 *
 	 */
 	private int calcMaxDefenderCount(Country defender, int armyCount) {
-			
 		if(armyCount == 1){
 			return 1;
 		}
@@ -531,9 +542,11 @@ public class Turn {
 
 	/**
 	 * Calculates maximum number of armies which can attack from the selected country.
-	 * 
+	 *
 	 * @param country Country where to calculate the maximum number to attack with.
+	 *
 	 * @return Maximum number of armies to attack with.
+	 *
 	 */
 	public int calcMaxAttackCount(Country country) {
 		int armyCount = country.getArmyCount();
@@ -544,12 +557,14 @@ public class Turn {
 			return armyCount-1;
 		}
 	}
-	
+
 	/**
 	 * Finds the owner of a country.
-	 * 
+	 *
 	 * @param country Country where you want to find the owner.
+	 *
 	 * @return Owner of the country.
+	 *
 	 */
 	private Player findPlayerToCountry(Country country) { 
 		for (Player player : players) {
@@ -564,6 +579,7 @@ public class Turn {
 	 * Gets vector with all attack results of this match.
 	 * 
 	 * @return attack results
+	 *
 	 */
 	public Vector<AttackResult> getAttackResults() {
 		return attackResults;
