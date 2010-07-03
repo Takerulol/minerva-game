@@ -29,26 +29,21 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
+/**
+ * Country not persistable. It exists already.
+ * 
+ * @version $Id$
+ * @since 1.0
+ *
+ */
 public class CountryExistsException extends EntryExistsException {
 
-	/**
-	 * DOCME
-	 * 
-	 */
 	private static final long serialVersionUID = -4214144883197393870L;
 
-	/**
-	 * DOCME
-	 * 
-	 */
 	public CountryExistsException() {
 		super();
 	}
 
-	/**
-	 * DOCME
-	 * @param message
-	 */
 	public CountryExistsException(String message) {
 		super(message);
 	}

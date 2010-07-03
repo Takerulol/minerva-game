@@ -29,27 +29,21 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
+/**
+ * Searched for an country which does not exist.
+ * 
+ * @version $Id$
+ * @since 1.0
+ *
+ */
 public class CountryNotFoundException extends EntryNotFoundException {
 
-	/**
-	 * DOCME
-	 *  
-	 */
 	private static final long serialVersionUID = -413264982056999150L;
 
-	/**
-	 * DOCME
-	 * 
-	 */
 	public CountryNotFoundException() {
 		super();
 	}
 
-	/**
-	 * DOCME
-	 * 
-	 * @param message
-	 */
 	public CountryNotFoundException(String message) {
 		super(message);
 	}

@@ -27,30 +27,23 @@
  *     http://minerva.idira.de
  * 
  */
-
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
+/**
+ * Player not persistable. It exists already.
+ * 
+ * @version $Id$
+ * @since 1.0
+ *
+ */
 public class PlayerExistsException extends EntryExistsException {
 
-	/**
-	 * DOCME
-	 * 
-	 */
 	private static final long serialVersionUID = -1406415230390126832L;
 
-	/**
-	 * DOCME
-	 * 
-	 */
 	public PlayerExistsException() {
 		super();
 	}
-	
-	/**
-	 * DOCME
-	 * 
-	 * @param message
-	 */
+
 	public PlayerExistsException(String message) {
 		super(message);
 	}

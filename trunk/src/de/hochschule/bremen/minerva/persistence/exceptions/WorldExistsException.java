@@ -29,27 +29,21 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
+/**
+ * World not persistable. It exists already.
+ * 
+ * @version $Id$
+ * @since 1.0
+ *
+ */
 public class WorldExistsException extends EntryExistsException {
 
-	
-	/**
-	 * DOCME
-	 * 
-	 */
 	private static final long serialVersionUID = 5443945233900971489L;
 
-	/**
-	 * DOCME
-	 * 
-	 */
 	public WorldExistsException() {
 		super();
 	}
 
-	/**
-	 * DOCME
-	 * @param message
-	 */
 	public WorldExistsException(String message) {
 		super(message);
 	}

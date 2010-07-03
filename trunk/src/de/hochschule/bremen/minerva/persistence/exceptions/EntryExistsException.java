@@ -29,25 +29,22 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
+/**
+ * Exception which will be defined in the persistence interfaces (superclass).
+ * Means that an entry which should be stored already exist.
+ * 
+ * @version $Id$
+ * @since 1.0
+ *
+ */
 public class EntryExistsException extends Exception {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 652826129764031926L;
 
-	/**
-	 * DOCME
-	 * 
-	 */
 	public EntryExistsException() {
 		super();
 	}
 
-	/**
-	 * DOCME
-	 * @param message
-	 */
 	public EntryExistsException(String message) {
 		super(message);
 	}

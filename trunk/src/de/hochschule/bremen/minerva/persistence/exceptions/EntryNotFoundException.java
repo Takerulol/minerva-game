@@ -29,25 +29,22 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
+/**
+ * Exception which will be defined in the persistence interfaces (superclass).
+ * Means that an entry searched for does not exist.
+ * 
+ * @version $Id$
+ * @since 1.0
+ *
+ */
 public class EntryNotFoundException extends Exception {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4900106725076031969L;
 
-	/**
-	 * DOCME
-	 * 
-	 */
 	public EntryNotFoundException() {
 		super();
 	}
 
-	/**
-	 * DOCME
-	 * @param message
-	 */
 	public EntryNotFoundException(String message) {
 		super(message);
 	}
