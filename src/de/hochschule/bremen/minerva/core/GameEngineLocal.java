@@ -236,8 +236,21 @@ public class GameEngineLocal implements GameEngine {
 	public void killGame() throws DataAccessException {
 		AccountManager.getInstance().logout();
 		this.game = new Game();
+		
+		// TODO: Close persistence service.
 	}
 
+	/**
+	 * Returns the world value object from
+	 * the current game.
+	 * 
+	 * @return The world value object.
+	 *
+	 */
+	public World getGameWorld() {
+		return this.game.getWorld();
+	}
+	
 	/**
 	 * Release a country card.
 	 *

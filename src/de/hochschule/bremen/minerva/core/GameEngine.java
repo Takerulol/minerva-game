@@ -89,12 +89,14 @@ public interface GameEngine {
 	public Vector<Player> getPlayers();
 
 	public Vector<Mission> getMissions();
-	
+
 	public void setWorldToGame(World world);
 
 	public void startGame() throws NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException;
-	
+
 	public void killGame() throws DataAccessException ;
+
+	public World getGameWorld();
 
 	public void releaseCard(CountryCard card);
 
