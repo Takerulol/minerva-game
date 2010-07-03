@@ -91,7 +91,7 @@ public interface GameEngine {
 
 	public void startGame() throws NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException;
 
-	public void killGame() throws DataAccessException ;
+	public void killGame(boolean createNewOne) throws DataAccessException ;
 
 	public void setGameWorld(World world);
 
