@@ -336,18 +336,6 @@ public class World extends ValueObject {
 	}
 
 	/**
-	 * Get a country by an given vector index.
-	 * 
-	 * @param index
-	 * @return The country object, which was searched for.
-	 * @deprecated Use {@link World#getCountry(Country)} instead.
-	 * 
-	 */
-	public Country getCountry(int index) {
-		return this.countries.get(index);
-	}
-
-	/**
 	 * Returns a country object by an given country object :)
 	 * Note that, the given country object must have
 	 * the country id.
@@ -387,17 +375,6 @@ public class World extends ValueObject {
 		}
 		
 		return foundCountry;
-	}
-
-	/**
-	 * Returns the country graph, which contains the country-neighbour-relation.
-	 * 
-	 * @return
-	 * @deprecated Use methods within the world instead (for example {@link World#connectCountries(Country, Country)})
-	 * 
-	 */
-	public CountryGraph getCountryGraph() {
-		return countryGraph;
 	}
 
 	/**
