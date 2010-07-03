@@ -140,7 +140,6 @@ public class WorldManager {
 	 * 
 	 * @param world The world object, which should be stored.
 	 *
-	 * @throws WorldExistsException
 	 * @throws WorldNotStorable 
 	 * @throws DataAccessException Common data access exception.
 	 * 
