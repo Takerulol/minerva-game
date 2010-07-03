@@ -200,7 +200,7 @@ public class GameEngineLocal implements GameEngine {
 	 * 
 	 */
 	@Override
-	public void setWorldToGame(World world) {
+	public void setGameWorld(World world) {
 		// Check if the game is running. If it running
 		// it should not be possible to add the world.
 		// Well, it is not necessary to inform the user,
