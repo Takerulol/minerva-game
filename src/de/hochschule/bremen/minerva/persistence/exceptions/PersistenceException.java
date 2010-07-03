@@ -29,26 +29,23 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
+/**
+ * A common persistence exception. Will be thrown if some technical problem
+ * occurred. For example: file not writable (filebased persistence), database
+ * not reachable (database persistence).
+ * 
+ * @version $Id: AppConfigurationNotFoundException.java 584 2010-07-03 18:18:01Z andre.koenig $
+ * @since 1.0
+ *
+ */
 public class PersistenceException extends Exception {
-	
-	/**
-	 * DOCME
-	 *  
-	 */
+
 	private static final long serialVersionUID = 8365171814386246346L;
 
-	/**
-	 * DOCME
-	 * 
-	 */
 	public PersistenceException() {
 		super();
 	}
 
-	/**
-	 * DOCME
-	 * @param message
-	 */
 	public PersistenceException(String message) {
 		super(message);
 	}

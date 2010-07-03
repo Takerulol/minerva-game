@@ -31,23 +31,12 @@ package de.hochschule.bremen.minerva.persistence.exceptions;
 
 public class NeighbourExistsException extends EntryExistsException {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5195944532702847468L;
 
-	/**
-	 * DOCME
-	 * 
-	 */
 	public NeighbourExistsException() {
 		super();
 	}
 
-	/**
-	 * DOCME
-	 * @param message
-	 */
 	public NeighbourExistsException(String message) {
 		super(message);
 	}

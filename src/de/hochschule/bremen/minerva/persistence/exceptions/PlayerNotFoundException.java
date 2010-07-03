@@ -27,32 +27,24 @@
  *     http://minerva.idira.de
  * 
  */
-
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
+/**
+ * Searched for an player which does not exist.
+ * 
+ * @version $Id$
+ * @since 1.0
+ *
+ */
 public class PlayerNotFoundException extends EntryNotFoundException {
 
-	/**
-	 * DOCME
-	 * 
-	 */
 	private static final long serialVersionUID = -2158564109074058756L;
-	
-	/**
-	 * DOCME
-	 * 
-	 */
+
 	public PlayerNotFoundException() {
 		super();
 	}
-	
-	/**
-	 * DOCME
-	 * 
-	 * @param message
-	 */
+
 	public PlayerNotFoundException(String message) {
 		super(message);
 	}
-
 }

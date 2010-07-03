@@ -29,27 +29,21 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
+/**
+ * Searched for an neighbour which does not exist.
+ * 
+ * @version $Id$
+ * @since 1.0
+ *
+ */
 public class NeighbourNotFoundException extends EntryNotFoundException {
 
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8579256857835744155L;
 
-	/**
-	 * DOCME
-	 * 
-	 */
 	public NeighbourNotFoundException() {
 		super();
 	}
 
-	/**
-	 * DOCME
-	 * 
-	 * @param message
-	 */
 	public NeighbourNotFoundException(String message) {
 		super(message);
 	}

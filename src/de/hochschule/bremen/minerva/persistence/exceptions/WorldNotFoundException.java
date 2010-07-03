@@ -29,26 +29,21 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
+/**
+ * Searched for an world which does not exist.
+ * 
+ * @version $Id$
+ * @since 1.0
+ *
+ */
 public class WorldNotFoundException extends EntryNotFoundException {
 
-	/**
-	 * DOCME
-	 * 
-	 */
 	private static final long serialVersionUID = 1512130570169982223L;
 
-	/**
-	 * DOCME
-	 * 
-	 */
 	public WorldNotFoundException() {
 		super();
 	}
 
-	/**
-	 * DOCME
-	 * @param message
-	 */
 	public WorldNotFoundException(String message) {
 		super(message);
 	}

@@ -29,25 +29,21 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
+/**
+ * Continent not persistable. It exists already.
+ * 
+ * @version $Id$
+ * @since 1.0
+ *
+ */
 public class ContinentExistsException extends EntryExistsException {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8548848860083061773L;
 
-	/**
-	 * DOCME
-	 * 
-	 */
 	public ContinentExistsException() {
 		super();
 	}
 
-	/**
-	 * DOCME
-	 * @param message
-	 */
 	public ContinentExistsException(String message) {
 		super(message);
 	}

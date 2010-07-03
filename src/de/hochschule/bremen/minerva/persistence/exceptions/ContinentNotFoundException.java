@@ -29,26 +29,21 @@
  */
 package de.hochschule.bremen.minerva.persistence.exceptions;
 
+/**
+ * Searched for an continent which does not exist.
+ * 
+ * @version $Id$
+ * @since 1.0
+ *
+ */
 public class ContinentNotFoundException extends EntryNotFoundException {
 
-	/**
-	 * DOCME
-	 *  
-	 */
 	private static final long serialVersionUID = 8365171814386246346L;
 
-	/**
-	 * DOCME
-	 * 
-	 */
 	public ContinentNotFoundException() {
 		super();
 	}
 
-	/**
-	 * DOCME
-	 * @param message
-	 */
 	public ContinentNotFoundException(String message) {
 		super(message);
 	}
