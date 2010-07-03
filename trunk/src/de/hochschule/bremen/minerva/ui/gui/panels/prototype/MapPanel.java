@@ -49,15 +49,14 @@ import javax.swing.JPanel;
 public class MapPanel extends JPanel {
 
 	private BufferedImage mapImage;
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 8073669333884391243L;
 	
 	/**
 	 * Creates new MapPanel with designated map image
+	 *
 	 * @param filepath path of map image file (overlay or underlay)
+	 *
 	 */
 	public MapPanel(String filepath) {
 		File file = new File(filepath);
@@ -71,6 +70,7 @@ public class MapPanel extends JPanel {
 
 	/**
 	 * Typical panel paint method
+	 *
 	 */
 	public void paint(Graphics g) {
 		g.drawImage(this.mapImage, 0, 0, this.mapImage.getWidth(this), this.mapImage.getHeight(this), this);
@@ -79,7 +79,9 @@ public class MapPanel extends JPanel {
 	
 	/**
 	 * Gets the map image.
+	 *
 	 * @return buffered image of map
+	 *
 	 */
 	public BufferedImage getMapImage() {
 		return this.mapImage;
