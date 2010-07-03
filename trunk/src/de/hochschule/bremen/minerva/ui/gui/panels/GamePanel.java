@@ -349,20 +349,6 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	}
 
 	/**
-	 * Opens JDialog with given error text
-	 * @param errorText String of error text
-	 * 
-	 * @deprecated Use MMessageBox.error() instead.
-	 * 
-	 */
-	public void errorDialog(String errorText) {
-		JOptionPane.showMessageDialog(this,
-			    errorText,
-			    "Fehler",
-			    JOptionPane.ERROR_MESSAGE);
-	}
-
-	/**
 	 * Updates whole panel, when something changed during the game
 	 */
 	public void updatePanel() {
