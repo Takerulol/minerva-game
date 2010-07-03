@@ -85,16 +85,14 @@ public class GameInitPanel extends JLayeredPane implements TextResources {
 	
 		// game init
 		Vector<World> worlds = new Vector<World>();
-		
+
 		try {
 			worlds = MinervaGUI.getEngine().getWorldList();
 		} catch (DataAccessException e) {
-			// TODO: Handle the DataAccessException in a correct way.
 			MMessageBox.show(e.getMessage());
 			Runtime.getRuntime().exit(ERROR);
 		}
 
-		// TODO: Pass the gamemaster
 		Player gamemaster = MinervaGUI.getEngine().getPlayers().firstElement();
 		this.worldInitPanel = new WorldInitPanel(gamemaster, worlds);
 		this.worldInitPanel.setOpaque(false);

@@ -108,8 +108,10 @@ public class GameEngineLocal implements GameEngine {
 	 * 
 	 */
 	@Override
-	public void login(Player player) throws PlayerAlreadyLoggedInException, GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException {
-		AccountManager.getInstance().login(player);
+	public void login(Player player) throws GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException {
+		try {
+			AccountManager.getInstance().login(player);
+		} catch (PlayerAlreadyLoggedInException e) {}
 
 		this.game.addPlayer(player);
 	}
