@@ -242,9 +242,10 @@ public class Country extends ValueObject {
 	}
 
 	/**
-	 * DOCME
+	 * Returns the army count.
 	 * 
-	 * @return
+	 * @return The count, which armies are on this country.
+	 *
 	 */
 	public int getArmyCount() {
 		return this.armies.size();
