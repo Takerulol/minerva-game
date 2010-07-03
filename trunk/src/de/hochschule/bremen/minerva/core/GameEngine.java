@@ -42,7 +42,6 @@ import de.hochschule.bremen.minerva.exceptions.NoPlayerLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.NoPlayerSlotAvailableException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughArmiesException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughPlayersLoggedInException;
-import de.hochschule.bremen.minerva.exceptions.PlayerAlreadyLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileExtensionException;
@@ -70,7 +69,7 @@ public interface GameEngine {
 	// --------------------------------------
 	// -- login and registration subsystem --
 	// --------------------------------------
-	public void login(Player player) throws PlayerAlreadyLoggedInException, GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException;
+	public void login(Player player) throws GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException;
 
 	public void register(Player player) throws PlayerExistsException, DataAccessException ;
 

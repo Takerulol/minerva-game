@@ -43,7 +43,6 @@ import javax.swing.SwingUtilities;
 import de.hochschule.bremen.minerva.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.exceptions.GameAlreadyStartedException;
 import de.hochschule.bremen.minerva.exceptions.NoPlayerSlotAvailableException;
-import de.hochschule.bremen.minerva.exceptions.PlayerAlreadyLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
@@ -180,16 +179,6 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 
 			try {
 				MinervaGUI.getEngine().login(player);
-				MinervaGUI.getInstance().changePanel(new GameInitPanel());
-			} catch (PlayerAlreadyLoggedInException e) {
-				//kill game and logout all players, when somebody is already logged in
-				try {
-					MinervaGUI.getEngine().killGame();
-				} catch (DataAccessException e1) {
-					MMessageBox.show(e1.getMessage());
-					Runtime.getRuntime().exit(ERROR);
-				}
-				MMessageBox.show(e.getMessage());
 			} catch (GameAlreadyStartedException e) {
 				MMessageBox.show(e.getMessage());
 			} catch (WrongPasswordException e) {
@@ -201,6 +190,10 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 			} catch (DataAccessException e) {
 				MMessageBox.show(e.getMessage());
 				Runtime.getRuntime().exit(ERROR);
+			}
+
+			if (player.isLoggedIn()) {
+				MinervaGUI.getInstance().changePanel(new GameInitPanel());
 			}
 
 			LoginPanel.this.setStatusText(null);
