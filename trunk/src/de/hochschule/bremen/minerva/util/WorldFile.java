@@ -285,7 +285,8 @@ public class WorldFile extends World {
 	}
 
 	/**
-	 * DOCME
+	 * Cleans the workspace directory and removes all
+	 * temporary created files.
 	 * 
 	 */
 	public void clean() {
