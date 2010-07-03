@@ -30,9 +30,11 @@
 
 package de.hochschule.bremen.minerva.ui.gui.controls;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Rectangle;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import de.hochschule.bremen.minerva.ui.gui.panels.prototype.ControlBarPanel;
@@ -62,6 +64,8 @@ public class MSlidePanel extends JPanel {
 	public MSlidePanel(ControlBarPanel controlBar) {
 		this.controlBar = controlBar;
 		this.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
+		this.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(71, 73, 75)));
+		this.setOpaque(false);
 		
 		controlBar.setSlidePanel(this);
 		this.add(controlBar);

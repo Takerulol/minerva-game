@@ -31,6 +31,7 @@
 package de.hochschule.bremen.minerva.ui.gui.panels.prototype;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
@@ -38,8 +39,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import net.miginfocom.swing.MigLayout;
 
 import de.hochschule.bremen.minerva.core.logic.Game;
 import de.hochschule.bremen.minerva.core.logic.Turn;
@@ -50,12 +56,15 @@ import de.hochschule.bremen.minerva.exceptions.NotEnoughArmiesException;
 import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.manager.SessionManager;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
+import de.hochschule.bremen.minerva.ui.gui.controls.MControl;
+import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
 import de.hochschule.bremen.minerva.ui.gui.controls.MSlidePanel;
 import de.hochschule.bremen.minerva.ui.gui.listener.MMouseListener;
 import de.hochschule.bremen.minerva.util.ColorTool;
 import de.hochschule.bremen.minerva.util.MapTool;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.CountryCard;
+import de.hochschule.bremen.minerva.vo.Mission;
 import de.hochschule.bremen.minerva.vo.World;
 
 /**
@@ -65,15 +74,18 @@ import de.hochschule.bremen.minerva.vo.World;
  * @since 1.0
  *
  */
-public class GamePanel extends JLayeredPane {
+public class GamePanel extends JLayeredPane implements MControl {
 	public MapPanel mapOverlay;
 	public MapPanel mapUnderlay;
 	public MSlidePanel slidePanel;
+	public JLabel missionLabel;
+
 	public HashMap<Country, ArmyCountIcon> armyIcons = new HashMap<Country, ArmyCountIcon>();
 	public World world;
 	private Game game;
 	private Turn currentTurn;
 	
+	// TODO: Use the new PlayerState enum.
 	public static final int ALLOCATE = 0;
 	public static final int CARD_TURN_IN = 1;
 	public static final int ATTACK = 2;
@@ -92,21 +104,38 @@ public class GamePanel extends JLayeredPane {
 	
 	/**
 	 * Contructor initializing screen.
+	 *
 	 */
 	public GamePanel() {
 		this.setPreferredSize(MinervaGUI.WINDOW_SIZE);
 		this.setOpaque(true);
-		//this.setBackground(Color.LIGHT_GRAY);
-		
+
 		this.game = SessionManager.get(MinervaGUI.getSessionId());
-		
+
 		String filepath;
 		
+		// the mission panel
+		JPanel missionPanel = new JPanel();
+		missionPanel.setBounds(0, 0, 1000, 30);
+		missionPanel.setLayout(new MigLayout());
+		missionPanel.setOpaque(false);
+		missionPanel.setBorder(BorderFactory.createMatteBorder (0, 0, 1, 0, new Color(71, 73, 75)));
+		this.add(missionPanel, 10000);
+
+		JLabel yourMissionLabel = new JLabel("Deine Mission: ");
+		yourMissionLabel.setFont(new Font(FONT.getFamily(), Font.BOLD, 12));
+		yourMissionLabel.setForeground(new Color(1, 174, 253));
+		missionPanel.add(yourMissionLabel);
+
+		this.missionLabel = new JLabel();
+		this.missionLabel.setFont(new Font(FONT.getFamily(), Font.ROMAN_BASELINE, 12));
+		this.missionLabel.setForeground(new Color(186, 187, 188));
+		missionPanel.add(missionLabel);
+
 		//lower map
 		filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + this.game.getWorld().getMapUnderlay();
 		this.mapUnderlay = new MapPanel(filepath);
 		this.mapUnderlay.setBounds(0,0,500,500);
-		
 		
 		//upper map
 		filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + this.game.getWorld().getMap();
@@ -146,13 +175,9 @@ public class GamePanel extends JLayeredPane {
 			this.armyIcons.put(country,aci);
 			this.add(aci,-10000);
 		}
-		
-		
 
 		this.refreshArmyCounts();
-		
-		
-		
+
 		//Adding everything up
 		this.add(this.mapOverlay,-20000);
 		this.add(this.mapUnderlay,-30000);
@@ -213,9 +238,9 @@ public class GamePanel extends JLayeredPane {
 		try {
 			this.currentTurn.allocateArmy(country);
 		} catch (NotEnoughArmiesException e) {
-			this.errorDialog(e.getMessage());
+			MMessageBox.error(e.getMessage());
 		} catch (CountryOwnerException e) {
-			this.errorDialog(e.getMessage());
+			MMessageBox.error(e.getMessage());
 		}
 		if (this.currentTurn.getAllocatableArmyCount() == 0) {
 			this.setGameState(GamePanel.CARD_TURN_IN);
@@ -265,11 +290,11 @@ public class GamePanel extends JLayeredPane {
 				try {
 					this.currentTurn.attack(this.source, this.destination, wert);
 				} catch (CountriesNotInRelationException e) {
-					this.errorDialog(e.getMessage());
+					MMessageBox.error(e.getMessage());
 				} catch (NotEnoughArmiesException e) {
-					this.errorDialog(e.getMessage());
+					MMessageBox.error(e.getMessage());
 				} catch (IsOwnCountryException e) {
-					this.errorDialog(e.getMessage());
+					MMessageBox.error(e.getMessage());
 				}
 			} catch (NumberFormatException e1) {
 				//no need, just to make sure that the method doesn't end
@@ -307,11 +332,11 @@ public class GamePanel extends JLayeredPane {
 				try {
 					this.currentTurn.moveArmies(this.source, this.destination, wert);
 				} catch (CountriesNotInRelationException e) {
-					this.errorDialog(e.getMessage());
+					MMessageBox.error(e.getMessage());
 				} catch (NotEnoughArmiesException e) {
-					this.errorDialog(e.getMessage());
+					MMessageBox.error(e.getMessage());
 				} catch (CountryOwnerException e) {
-					this.errorDialog(e.getMessage());
+					MMessageBox.error(e.getMessage());
 				}
 			} catch (NumberFormatException e1) {
 				//no need, just to make sure that the methods doesn't end
@@ -325,6 +350,9 @@ public class GamePanel extends JLayeredPane {
 	/**
 	 * Opens JDialog with given error text
 	 * @param errorText String of error text
+	 * 
+	 * @deprecated Use MMessageBox.error() instead.
+	 * 
 	 */
 	public void errorDialog(String errorText) {
 		JOptionPane.showMessageDialog(this,
@@ -348,8 +376,14 @@ public class GamePanel extends JLayeredPane {
 		this.slidePanel.getControlBar().updateButtons();
 		this.slidePanel.getControlBar().setCurrentPlayerLabel(this.currentTurn.getCurrentPlayer());
 		this.slidePanel.getControlBar().setAllocatableArmiesLabel(" "+this.currentTurn.getAllocatableArmyCount()+" ");
-		this.slidePanel.getControlBar().updateMissionText();
 		this.slidePanel.getControlBar().updateCardList(this.currentTurn.getCurrentPlayer().getCountryCards());
+
+		searchPlayerMission : for (Mission mission : this.getGame().getMissions()) {
+			if (mission.getOwner() == this.getGame().getTurns().lastElement().getCurrentPlayer()) {
+				this.missionLabel.setText(mission.getDescription());
+				break searchPlayerMission;
+			}
+		}
 		
 		this.repaint();
 		this.updateUI();
