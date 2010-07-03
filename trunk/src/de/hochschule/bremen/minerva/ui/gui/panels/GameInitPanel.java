@@ -51,7 +51,6 @@ import de.hochschule.bremen.minerva.ui.gui.controls.MButton;
 import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
 import de.hochschule.bremen.minerva.ui.gui.listener.MMouseListener;
 import de.hochschule.bremen.minerva.ui.gui.listener.MMouseMotionListener;
-import de.hochschule.bremen.minerva.ui.gui.panels.prototype.GamePanel;
 import de.hochschule.bremen.minerva.ui.gui.panels.subpanels.PlayerInitPanel;
 import de.hochschule.bremen.minerva.ui.gui.panels.subpanels.WorldInitPanel;
 import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;

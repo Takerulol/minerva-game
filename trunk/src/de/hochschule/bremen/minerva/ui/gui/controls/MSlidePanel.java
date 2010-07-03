@@ -37,7 +37,7 @@ import java.awt.Rectangle;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-import de.hochschule.bremen.minerva.ui.gui.panels.prototype.ControlBarPanel;
+import de.hochschule.bremen.minerva.ui.gui.panels.subpanels.GamePanelControlbar;
 
 /**
  * DOCME
@@ -48,7 +48,7 @@ import de.hochschule.bremen.minerva.ui.gui.panels.prototype.ControlBarPanel;
  */
 public class MSlidePanel extends JPanel {
 
-	private ControlBarPanel controlBar;
+	private GamePanelControlbar controlBar;
 	private boolean minimized = true;
 	
 	/**
@@ -61,7 +61,7 @@ public class MSlidePanel extends JPanel {
 	 * 
 	 * @param controlBar
 	 */
-	public MSlidePanel(ControlBarPanel controlBar) {
+	public MSlidePanel(GamePanelControlbar controlBar) {
 		this.controlBar = controlBar;
 		this.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
 		this.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(19, 20, 22)));
@@ -98,7 +98,7 @@ public class MSlidePanel extends JPanel {
 	 * Returns embedded ControlBarPanel.
 	 * @return control bar panel
 	 */
-	public ControlBarPanel getControlBar() {
+	public GamePanelControlbar getControlBar() {
 		return controlBar;
 	}
 	
