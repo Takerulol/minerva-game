@@ -56,6 +56,7 @@ import de.hochschule.bremen.minerva.exceptions.NotEnoughArmiesException;
 import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.manager.SessionManager;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
+import de.hochschule.bremen.minerva.ui.gui.controls.MArmyCountIcon;
 import de.hochschule.bremen.minerva.ui.gui.controls.MControl;
 import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
 import de.hochschule.bremen.minerva.ui.gui.controls.MSlidePanel;

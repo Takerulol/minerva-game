@@ -28,7 +28,7 @@
  * 
  */
 
-package de.hochschule.bremen.minerva.ui.gui.panels.prototype;
+package de.hochschule.bremen.minerva.ui.gui.controls;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
