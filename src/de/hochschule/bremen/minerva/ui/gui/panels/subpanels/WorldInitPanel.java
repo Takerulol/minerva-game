@@ -70,7 +70,8 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 
 	private Vector<World> worlds = new Vector<World>();
 	
-	private JLabel currentWorldThumbnail = new JLabel();
+	// TODO: Implement thumbnails in release 1.1
+	//private JLabel currentWorldThumbnail = new JLabel();
 	private JLabel currentWorldName = new JLabel();
 	private JLabel currentWorldDescription = new JLabel();
 	private JLabel currentWorldVersion = new JLabel();
@@ -115,21 +116,21 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 		JPanel worldInfo = new JPanel();
 		worldInfo.setLayout(new MigLayout("fillx, insets 15", "[]10[]"));
 
-		this.currentWorldThumbnail.setText("thumb");
-		worldInfo.add(this.currentWorldThumbnail, "span 1 5, gapright 10");
+		//this.currentWorldThumbnail.setText("thumb");
+		//worldInfo.add(this.currentWorldThumbnail, "span 1 5, gapright 10");
 
 		this.currentWorldName.setFont(new Font(FONT.getFamily(), Font.BOLD, FONT.getSize()));
 		this.currentWorldName.setForeground(Color.WHITE);
 		worldInfo.add(this.currentWorldName, "width 200!, wrap");
 
 		this.currentWorldDescription.setFont(FONT);
-		worldInfo.add(this.currentWorldDescription, "width 200!, wrap 15");
+		worldInfo.add(this.currentWorldDescription, "wrap 15");
 
 		this.currentWorldVersion.setFont(FONT);
-		worldInfo.add(this.currentWorldVersion, "width 200!, wrap 20");
+		worldInfo.add(this.currentWorldVersion, "wrap 20");
 
 		this.currentWorldAuthor.setFont(FONT);
-		worldInfo.add(this.currentWorldAuthor, "width 150!, wrap 10");
+		worldInfo.add(this.currentWorldAuthor, "wrap 10");
 
 		worldInfo.setBackground(new Color(14, 15, 17));
 		worldInfo.setBorder(BorderFactory.createLineBorder(new Color(35, 36, 40)));
@@ -159,14 +160,14 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 	private void fillWorldInfo() {
 		World selectedWorld = this.getSelectedWorld();
 
-		String thumbnailPath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + selectedWorld.getThumbnail();
 
+		/*String thumbnailPath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + selectedWorld.getThumbnail();
 	 	try {
 	 		this.currentWorldThumbnail.setText("");
 			this.currentWorldThumbnail.getGraphics().drawImage(ImageIO.read(new File(thumbnailPath)), 0, 0, null);
 		} catch (IOException e) {
 			this.currentWorldThumbnail.setText("THUMB");
-		} 
+		}*/
 		
 		this.currentWorldName.setText(selectedWorld.getName());
 		this.currentWorldDescription.setText("<html>"+selectedWorld.getDescription());

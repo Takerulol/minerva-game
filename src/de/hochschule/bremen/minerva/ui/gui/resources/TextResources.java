@@ -73,8 +73,12 @@ public interface TextResources {
 	public static final String WORLD_INIT_PANEL_VERSION      = "Version:";
 	public static final String WORLD_INIT_PANEL_AUTHOR       = "Autor(en):";
 	
+	// GamePanel
+	public static final String GAME_PANEL_YOUR_MISSION = "Deine Mission: ";
+
+
 	// -- Controls
-	
+
 	// MPlayerIcon
 	public static final String MPLAYERICON_USERNAME = "Benutzername:";
 	public static final String MPLAYERICON_EMAIL = "E-Mail:";
