@@ -35,7 +35,13 @@ import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
 import de.hochschule.bremen.minerva.vo.ValueObject;
 
-// Not implemented. Only for demonstration purposes.
+/**
+ * Class stub for a filebased persistence world handler.
+ * 
+ * @version $Id$
+ * @since 1.0
+ *
+ */
 public class WorldHandler implements Handler {
 
 	@Override
