@@ -40,11 +40,9 @@ import javax.swing.*;
 
 import de.hochschule.bremen.minerva.core.GameEngine;
 import de.hochschule.bremen.minerva.core.GameEngineLocal;
-import de.hochschule.bremen.minerva.core.logic.Game;
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotReadableException;
 import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
-import de.hochschule.bremen.minerva.manager.SessionManager;
 import de.hochschule.bremen.minerva.ui.UserInterface;
 import de.hochschule.bremen.minerva.ui.gui.panels.*;
 
@@ -116,9 +114,6 @@ public class MinervaGUI extends JFrame implements UserInterface {
 		this.setContentPane(this.currentPanel);
 		this.currentPanel.updateUI();
 
-		// create game for new session id.
-		MinervaGUI.setSessionId(SessionManager.set(new Game()));
-
 		//login screen after 5 seconds
 		Timer timer = new Timer(this.INTRO_DELAY, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -151,8 +146,7 @@ public class MinervaGUI extends JFrame implements UserInterface {
 		int Y = (screen.height / 2) - (this.getHeight() / 2); // Center vertically.
 		this.setBounds(X,Y , this.getWidth(),getHeight());
 	}
-	
-	
+
 	/**
 	 * Changes main panel to another one
 	 * 
@@ -183,7 +177,7 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	public static void setSessionId(String sessionID) {
 		MinervaGUI.GAME_SESSION_ID = sessionID;
 	}
-	
+
 	/**
 	 * Returns the game engine.
 	 * 
