@@ -32,7 +32,8 @@ package de.hochschule.bremen.minerva.exceptions;
 import java.io.File;
 
 /**
- * DOCME
+ * The world from the import file was not parsable, so it is not well-formed.
+ * Can occur if some nodes are missing in the xml file.
  *
  * @since 1.0
  * @version $Id$
@@ -40,25 +41,12 @@ import java.io.File;
  */
 public class WorldFileParseException extends Exception {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 530495849894359920L;
 
-	/**
-	 * 
-	 * @param worldFile
-	 * @param node
-	 * 
-	 */
 	public WorldFileParseException(File worldFile, String missingNode) {
 		super("Die Datei '"+worldFile.getAbsolutePath()+"' ist nicht wohlgeformt. Die Konfiguration '"+missingNode+"' wurde nicht gefunden.");
 	}
 
-	/**
-	 * DOCME
-	 * @param message
-	 */
 	public WorldFileParseException(String message) {
 		super("Beim Auslesen der World-Datei ist ein technisches Problem aufgetreten: "+message);
 	}

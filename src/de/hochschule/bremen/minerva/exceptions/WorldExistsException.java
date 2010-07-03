@@ -32,7 +32,7 @@ package de.hochschule.bremen.minerva.exceptions;
 import de.hochschule.bremen.minerva.vo.World;
 
 /**
- * DOCME
+ * Tried to save an world that already exists.
  *
  * @since 1.0
  * @version $Id$
@@ -40,15 +40,9 @@ import de.hochschule.bremen.minerva.vo.World;
  */
 public class WorldExistsException extends Exception {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3112375516184260775L;
 
-	/**
-	 * DOCME
-	 */
 	public WorldExistsException(World world) {
-		super("Die Welt '"+world.getName()+"' existiert bereits.");
+		super("Die Welt '"+world.getName()+"' existiert bereits und kann somit nicht erneut gespeichert werden.");
 	}
 }

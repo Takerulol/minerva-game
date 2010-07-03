@@ -30,7 +30,7 @@
 package de.hochschule.bremen.minerva.exceptions;
 
 /**
- * DOCME
+ * If the application configuration was not readable.
  * 
  * @version $Id$
  * @since 1.0
@@ -38,16 +38,14 @@ package de.hochschule.bremen.minerva.exceptions;
  */
 public class AppConfigurationNotReadableException extends Exception {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2500309913939436304L;
 
 	/**
-	 * DOCME
+	 * The given app configuration file was not readable.
 	 * 
-	 * @param filename
-	 * @param reason
+	 * @param filename The app configuration file.
+	 * @param reason The technical reason.
+	 *
 	 */
 	public AppConfigurationNotReadableException(String filename, String reason) {
 		super("Die Minerva Konfigurationsdatei ("+filename

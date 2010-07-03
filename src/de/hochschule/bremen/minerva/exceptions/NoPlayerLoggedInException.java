@@ -30,7 +30,8 @@
 package de.hochschule.bremen.minerva.exceptions;
 
 /**
- * DOCME
+ * Exception that will thrown if no player is logged but tried to
+ * start a new game session.
  *
  * @since 1.0
  * @version $Id$
@@ -38,16 +39,8 @@ package de.hochschule.bremen.minerva.exceptions;
  */
 public class NoPlayerLoggedInException extends Exception {
 	
-	/**
-	 * DOCME
-	 * 
-	 */
 	private static final long serialVersionUID = 2618146650212037950L;
 
-	/**
-	 * DOCME
-	 * 
-	 */
 	public NoPlayerLoggedInException() {
 		super("Um ein Spiel starten zu können, muss mehr als ein Spieler eingeloggt sein.");
 	}

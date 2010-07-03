@@ -32,24 +32,16 @@ package de.hochschule.bremen.minerva.exceptions;
 import de.hochschule.bremen.minerva.vo.Player;
 
 /**
- * DOCME
+ * Entered a wrong password while login process.
  *
  * @since 1.0
  * @version $Id$
  * 
  */
 public class WrongPasswordException extends Exception {
-	
-	/**
-	 * DOCME
-	 * 
-	 */
+
 	private static final long serialVersionUID = -1230371904260038828L;
 
-	/**
-	 * DOCME
-	 * 
-	 */
 	public WrongPasswordException(Player player) {
 		super("Das angegebene Passwort für den Spieler '"+player.getUsername()+"' ist nicht korrekt.");
 	}

@@ -32,24 +32,21 @@ package de.hochschule.bremen.minerva.exceptions;
 import de.hochschule.bremen.minerva.vo.Country;
 
 /**
- * DOCME
+ * Two given countries are no neighbours.
  *
  * @since 1.0
  * @version $Id$
  * 
  */
 public class CountriesNotInRelationException extends Exception {
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -1737514955696140981L;
 
 	/**
-	 * DOCME
+	 * Countries are not "connected".
 	 * 
-	 * @param one
-	 * @param two
+	 * @param one The first country.
+	 * @param two The second country.
 	 * 
 	 */
 	public CountriesNotInRelationException(Country one, Country two) {

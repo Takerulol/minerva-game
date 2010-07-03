@@ -29,6 +29,15 @@
  */
 package de.hochschule.bremen.minerva.exceptions;
 
+/**
+ * This exception is a heavy one. If this exception will be thrown
+ * it is an indication that something with the storage subsystem went wrong.
+ * The best way is to quit minerva and inform the admin ;)
+ *
+ * @since 1.0
+ * @version $Id$
+ * 
+ */
 public class DataAccessException extends Exception {
 
 	private static final long serialVersionUID = -5068821212470257120L;
