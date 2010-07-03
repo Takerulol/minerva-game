@@ -51,7 +51,8 @@ import de.hochschule.bremen.minerva.ui.gui.listener.MWindowListener;
 import de.hochschule.bremen.minerva.ui.gui.panels.*;
 
 /**
- * DOCME
+ * Main frame of the game filled with JLayeredPanes which represents the all
+ * crucial screens of the game.
  * 
  * @version $Id$
  * @since 1.0
@@ -93,7 +94,7 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	}
 
 	/**
-	 * 
+	 * Starts the UI and initializes the frame.
 	 */
 	public void run() {
 		try {
