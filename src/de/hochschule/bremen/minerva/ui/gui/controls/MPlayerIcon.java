@@ -74,9 +74,10 @@ public class MPlayerIcon extends JPanel implements MControl, TextResources {
 	 * Construct the layout.
 	 * 
 	 * @param player The player which represents the model for the icon.
+	 * @param liteView Show only the player icon, the full name and the username.
 	 * 
 	 */
-	public MPlayerIcon(Player player) {
+	public MPlayerIcon(Player player, boolean liteView) {
 		this.player = player;
 
 		// Loading the player
@@ -104,7 +105,7 @@ public class MPlayerIcon extends JPanel implements MControl, TextResources {
 		this.dataArea = new JPanel();
 		this.dataArea.setLayout(new MigLayout());
 		this.dataArea.setOpaque(false);
-		
+
 		this.name = new JLabel();
 		this.name.setFont(new Font(FONT.getName(), Font.BOLD, FONT.getSize()));
 		this.name.setForeground(Color.WHITE);
@@ -132,6 +133,7 @@ public class MPlayerIcon extends JPanel implements MControl, TextResources {
 		this.refresh();
 	}
 
+	
 	/**
 	 * Pushs the model data to the ui elements.
 	 * 
