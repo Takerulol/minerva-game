@@ -42,7 +42,9 @@ import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.vo.ApplicationConfiguration;
 
 /**
- * DOCME
+ * Represents the background image in all main panels.
+ * Usually will be set in a lower panel of a LayeredPane.
+ * This panel stays empty and just has a background image.
  * 
  * @version $Id$
  * @since 1.0
@@ -58,13 +60,13 @@ public class Background extends JPanel {
 	private Image image;
 	
 	/**
-	 * 
-	 * @param name
-	 * @param datatype
+	 * Constructs the background panel out of the class name of a main panel.
+	 * @param concernedPanel class name of a main panel
 	 */
 	public Background(Class<? extends JLayeredPane> concernedPanel) {
 		super();
 		
+		//getting the image file to the class name
 		ApplicationConfiguration configuration = ApplicationConfigurationManager.get();
 		File file = new File(configuration.getUIAssetsDirectory() + concernedPanel.getSimpleName() + configuration.getUIAssetsFileExtension());
 		
@@ -74,12 +76,12 @@ public class Background extends JPanel {
 			System.out.println(e.getMessage());
 		}
 		
+		//drawing the background
 		this.repaint();
 	}
 	
 	/**
-	 * DOCME
-	 * 
+	 * Paints the background image and sets the size of the panel.
 	 */
 	public void paint(Graphics g) {
 		g.drawImage(this.image, 0, 0, this.image.getWidth(this), this.image.getHeight(this), this);

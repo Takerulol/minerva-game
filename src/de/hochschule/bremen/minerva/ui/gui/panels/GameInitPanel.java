@@ -70,6 +70,9 @@ public class GameInitPanel extends JLayeredPane implements TextResources {
 
 	private static final long serialVersionUID = -8901679483780034723L;
 	
+	/**
+	 * Constructor
+	 */
 	public GameInitPanel() {
 		this.setPreferredSize(MinervaGUI.WINDOW_SIZE);
 		this.setOpaque(true);
@@ -127,7 +130,7 @@ public class GameInitPanel extends JLayeredPane implements TextResources {
 	}
 
 	/**
-	 * Register the event handler.
+	 * Register the event handlers.
 	 * 
 	 */
 	private void addListeners() {

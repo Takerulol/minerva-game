@@ -49,6 +49,7 @@ import net.miginfocom.swing.MigLayout;
 
 import de.hochschule.bremen.minerva.core.GameEngine;
 import de.hochschule.bremen.minerva.core.GameEngineLocal;
+import de.hochschule.bremen.minerva.core.logic.AttackResult;
 import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
 import de.hochschule.bremen.minerva.exceptions.CountryOwnerException;
 import de.hochschule.bremen.minerva.exceptions.IsOwnCountryException;
@@ -63,6 +64,7 @@ import de.hochschule.bremen.minerva.ui.gui.listener.MMouseListener;
 import de.hochschule.bremen.minerva.ui.gui.panels.subpanels.GamePanelControlbar;
 import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
 import de.hochschule.bremen.minerva.util.ColorTool;
+import de.hochschule.bremen.minerva.util.Die;
 import de.hochschule.bremen.minerva.util.MapTool;
 import de.hochschule.bremen.minerva.vo.Country;
 import de.hochschule.bremen.minerva.vo.CountryCard;
@@ -99,7 +101,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	private static final long serialVersionUID = -2906065533734117968L;
 	
 	/**
-	 * Contructor initializing screen.
+	 * Constructor initializing screen.
 	 *
 	 */
 	public GamePanel() {
@@ -121,6 +123,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		yourMissionLabel.setForeground(new Color(1, 174, 253));
 		missionPanel.add(yourMissionLabel);
 
+		//shows mission of current player (or client player if not GameEngineLocal)
 		this.missionLabel = new JLabel();
 		this.missionLabel.setFont(new Font(FONT.getFamily(), Font.ROMAN_BASELINE, 12));
 		this.missionLabel.setForeground(new Color(186, 187, 188));
@@ -187,7 +190,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	private void addMapListener() {
 		this.mapOverlay.addMouseListener(new MMouseListener() {
 			public void mouseClicked(MouseEvent e) {
-GamePanel.this.unmarkAll();
+				GamePanel.this.unmarkAll();
 				
 				Color color = ColorTool.fromInteger(GamePanel.this.mapUnderlay.getMapImage().getRGB(e.getX(), e.getY()));
 				Country country = GamePanel.this.engine.getGameWorld().getCountry(color);
@@ -223,7 +226,7 @@ GamePanel.this.unmarkAll();
 	
 	/**
 	 * Allocates one army on a destined country
-	 * @param country country toput an army on
+	 * @param country country to put an army on
 	 */
 	private void allocate(Country country) {
 		try {
@@ -242,16 +245,16 @@ GamePanel.this.unmarkAll();
 	}
 	
 	/**
-	 * 
-	 * @param card
+	 * Releases a single card
+	 * @param card Card
 	 */
 	public void TurnCardIn(CountryCard card) {
 		this.engine.releaseCard(card);
 	}
 	
 	/**
-	 * 
-	 * @param series
+	 * Releases a card series
+	 * @param series Vector of cards
 	 */
 	public void TurnSeriesIn(Vector<CountryCard> series) {
 		this.engine.releaseCards(series);
@@ -265,24 +268,32 @@ GamePanel.this.unmarkAll();
 	 */
 	private void attack(Country country) {
 		if (this.source == null) {
+			//setting source country
 			if (country.getArmyCount() > 1) {
 				this.source = country;
 				this.armyIcons.get(this.source).mark(Color.GREEN);
 				for (Country c : this.engine.getGameWorld().getNeighbours(this.source)) {
-					this.armyIcons.get(c).mark(Color.RED);
+					if (!this.currentPlayer.hasCountry(c)) {
+						this.armyIcons.get(c).mark(Color.RED);
+					}
 				}
 			}
 		} else {
+			//setting destination country
 			this.destination = country;
 			this.armyIcons.get(country).mark(Color.YELLOW);
 			try {
+				//army count input
 				int wert = Integer.parseInt(JOptionPane.showInputDialog("Wieviele Armeen " +
 						"sollen angreifen? (max: "+this.calcMaxAttackCount(this.source)+")",
 						""+(this.calcMaxAttackCount(this.source))));
 				
 				try {
-					//TODO: handle attack result
-					this.engine.attack(this.source, this.destination, wert);
+					//actually attack and showing attack result afterwards
+					AttackResult ar = this.engine.attack(this.source, this.destination, wert);
+					if (ar != null) {
+						this.showAttackResult(ar);
+					}
 				} catch (CountriesNotInRelationException e) {
 					MMessageBox.error(e.getMessage());
 				} catch (NotEnoughArmiesException e) {
@@ -300,6 +311,31 @@ GamePanel.this.unmarkAll();
 	}
 	
 	/**
+	 * Converts AttackResult into dialog box message
+	 * @param ar AttackResult
+	 */
+	private void showAttackResult(AttackResult ar) {
+		String text = ar.getAttacker().getUsername()+" (Würfel: ";
+		
+		for (Die die : ar.getAttackerDice()) {
+			text += die.getRollResult()+" ";
+		}
+		
+		text += ") hat "+ar.getDefender().getUsername()+" (Würfel: ";
+		
+		for (Die die : ar.getDefenderDice()) {
+			text += die.getRollResult()+" ";
+		}
+		
+		text += ") angegriffen.\n"+ar.getAttacker().getUsername()+" hat "
+					+ar.getLostAttackerArmies()+" und "+ar.getDefender().getUsername()
+					+" hat "+ar.getLostDefenderArmies()+" Armeen verloren.\n"
+					+ar.getAttacker().getUsername()+" hat das Land "
+					+(ar.isWin() ? "erobert." : "nicht erobert.");
+		MMessageBox.show(text);
+	}
+
+	/**
 	 * Moves units from one to another country.
 	 * Use it once to set the sources country and twice to set destination country.
 	 * After setting the destination you'll get an option pane to the army count.
@@ -307,23 +343,29 @@ GamePanel.this.unmarkAll();
 	 */
 	private void move(Country country) {
 		if (this.source == null) {
+			//setting source country
 			if (country.getArmyCount() > 1) {
 				this.source = country;
 				this.armyIcons.get(this.source).mark(Color.GREEN);
 				for (Country c : this.engine.getGameWorld().getNeighbours(this.source)) {
-					this.armyIcons.get(c).mark(Color.RED);
+					if (this.currentPlayer.hasCountry(c)) {
+						this.armyIcons.get(c).mark(Color.RED);
+					}
 				}
 			}
 		} else {
+			//setting destination country
 			this.destination = country;
 			this.armyIcons.get(this.source).mark(Color.GREEN);
 			this.armyIcons.get(country).mark(Color.YELLOW);
 			
 			try {
+				//army count input
 				int wert = Integer.parseInt(JOptionPane.showInputDialog("Wieviele Armeen " +
 						"sollen bewegt werden? (max: "+(this.source.getArmyCount()-1)+")",
 						""+(this.source.getArmyCount()-1)));
 				try {
+					//actually move
 					this.engine.move(this.source, this.destination, wert);
 				} catch (CountriesNotInRelationException e) {
 					MMessageBox.error(e.getMessage());
@@ -368,6 +410,8 @@ GamePanel.this.unmarkAll();
 //		this.repaint();
 //		this.updateUI();
 		
+		//setting of current player when GameEngineLocal is used
+		//otherwise stays the same as the owner of this client.
 		if (this.engine instanceof GameEngineLocal) {
 			for (Player player : this.engine.getPlayers()) {
 				if (player.getState() != PlayerState.IDLE)
@@ -375,16 +419,29 @@ GamePanel.this.unmarkAll();
 			}
 		}
 		
+		//source and destination will be reset when player is in wrong state
+		if ((this.currentPlayer.getState() == PlayerState.RELEASE_CARDS) || 
+				(this.currentPlayer.getState() == PlayerState.ALLOCATE_ARMIES)) {
+			this.source = null;
+			this.destination = null;
+		}
+		
+		//if current player has no cards, card release will be skipped
 		if ((this.currentPlayer.getState() == PlayerState.RELEASE_CARDS) && (GamePanel.this.currentPlayer.getCountryCards().isEmpty())) {
 			this.currentPlayer.setState(PlayerState.ALLOCATE_ARMIES);
 		}
 
+		//refreshing army count icons
 		this.refreshArmyCounts();
+		
+		//refreshing control bar
 		this.slidePanel.getControlBar().updateButtons();
 		this.slidePanel.getControlBar().setCurrentPlayerLabel(this.currentPlayer);
 		this.slidePanel.getControlBar().setAllocatableArmiesLabel(" "+this.engine.getAllocatableArmyCount()+" ");
 		this.slidePanel.getControlBar().updateCardList(this.currentPlayer.getCountryCards());
 
+		//refreshing mission text
+		//this happens only  in GameEngineLocal, otherwise current player doesn't change
 		searchPlayerMission : for (Mission mission : this.engine.getMissions()) {
 			if (mission.getOwner() == this.currentPlayer) {
 				this.missionLabel.setText(mission.getTitle());
@@ -421,8 +478,9 @@ GamePanel.this.unmarkAll();
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Gets the current player.
+	 * It is normally set once but in GameEngineLocal it will be set every new turn.
+	 * @return current player
 	 */
 	public Player getCurrentPlayer() {
 		return currentPlayer;
@@ -437,9 +495,9 @@ GamePanel.this.unmarkAll();
 	}
 	
 	/**
-	 * 
-	 * @param byCountry
-	 * @return
+	 * Gets a player by given country.
+	 * @param byCountry Country
+	 * @return Player of the given country
 	 */
 	public Player getPlayer(Country byCountry) {
 		for (Player player : this.engine.getPlayers()) {

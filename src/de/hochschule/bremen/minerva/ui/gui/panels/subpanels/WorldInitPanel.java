@@ -50,7 +50,7 @@ import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.World;
 
 /**
- * DOCME
+ * Represents the sub panel in GameInitPanel for choosing the map to play.
  * 
  * @version $Id$
  * @since 1.0
@@ -74,10 +74,11 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 	private JLabel currentWorldAuthor = new JLabel();
 
 	/**
-	 * DOCME
+	 * Constructs WorldInitPanel after a given number of worlds.
+	 * The game master is allowed the choose one.
 	 * 
-	 * @param worlds
-	 * 
+	 * @param gamemaster The game master, usually first player in the game.
+	 * @param worlds All loadable worlds.
 	 */
 	public WorldInitPanel(Player gamemaster, Vector<World> worlds) {
 		this.worlds = worlds;
@@ -171,6 +172,9 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 		this.currentWorldAuthor.setText("<html>"+WORLD_INIT_PANEL_AUTHOR + "<br />" + selectedWorld.getAuthor());
 	}
 
+	/**
+	 * Adds actions listeners.
+	 */
 	private void addListeners() {
 		this.worldComboBox.addActionListener(new ActionListener() {
 			

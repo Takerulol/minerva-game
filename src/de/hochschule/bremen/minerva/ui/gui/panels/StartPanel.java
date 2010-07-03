@@ -36,7 +36,8 @@ import javax.swing.JLayeredPane;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 
 /**
- * DOCME
+ * First Panel shown in the client.
+ * Contains the title screen.
  * 
  * @version $Id$
  * @since 1.0
@@ -52,7 +53,7 @@ public class StartPanel extends JLayeredPane {
 	private static final long serialVersionUID = -8815190687201347357L;
 
 	/**
-	 * 
+	 * Initialization
 	 */
 	public StartPanel() {
 		super();

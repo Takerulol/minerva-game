@@ -40,7 +40,7 @@ import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
 import de.hochschule.bremen.minerva.vo.Player;
 
 /**
- * DOCME
+ * This sub panel shows all logged in players.
  * 
  * @version $Id$
  * @since 1.0
@@ -51,9 +51,8 @@ public class PlayerInitPanel extends JPanel implements TextResources {
 	private static final long serialVersionUID = -344922633298919424L;
 
 	/**
-	 * DOCME
+	 * Initializing all player icons
 	 * 
-	 * @param playerIcons
 	 */
 	public PlayerInitPanel() {
 		Vector<Player> players = MinervaGUI.getEngine().getPlayers();
