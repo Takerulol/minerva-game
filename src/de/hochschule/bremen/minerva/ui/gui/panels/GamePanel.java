@@ -231,7 +231,9 @@ GamePanel.this.unmarkAll();
 		} catch (NotEnoughArmiesException e) {
 			MMessageBox.error(e.getMessage());
 		} catch (CountryOwnerException e) {
-			MMessageBox.error(e.getMessage());
+			if (country.getName() != null) {
+				MMessageBox.error(e.getMessage());
+			}
 		}
 		if (this.engine.getAllocatableArmyCount() == 0) {
 			this.currentPlayer.setState(PlayerState.ATTACK);
