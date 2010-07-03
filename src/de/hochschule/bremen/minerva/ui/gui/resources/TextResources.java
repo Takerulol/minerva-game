@@ -76,7 +76,17 @@ public interface TextResources {
 	// GamePanel
 	public static final String GAME_PANEL_YOUR_MISSION = "Deine Mission: ";
 
-
+	// GamePanelControlbar
+	public static final String GAME_PANEL_CONTROLBAR_BUTTON_SET_ARMIES      = "Armeen setzen";
+	public static final String GAME_PANEL_CONTROLBAR_BUTTON_TURN_CARDS_IN   = "Karten eintauschen";
+	public static final String GAME_PANEL_CONTROLBAR_BUTTON_ATTACK          = "Angriff";
+	public static final String GAME_PANEL_CONTROLBAR_BUTTON_ALLOCATE_ARMIES = "Armeen verschieben";
+	public static final String GAME_PANEL_CONTROLBAR_BUTTON_FINISH_TURN     = "Zug beenden";
+	public static final String GAME_PANEL_CONTROLBAR_BUTTON_SLIDE           = "Karten »";
+	public static final String GAME_PANEL_CONTROLBAR_CARD_SYMBOL_SOLDIER    = "Symbol: Soldier, Land: ";
+	public static final String GAME_PANEL_CONTROLBAR_CARD_SYMBOL_CAVALERIE  = "Symbol: Cavalerie, Land: ";
+	public static final String GAME_PANEL_CONTROLBAR_CARD_SYMBOL_CANON      = "Symbol: Canon, Land: ";
+	
 	// -- Controls
 
 	// MPlayerIcon
