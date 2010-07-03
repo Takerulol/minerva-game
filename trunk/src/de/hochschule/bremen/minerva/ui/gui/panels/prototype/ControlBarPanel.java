@@ -45,7 +45,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 
 import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
@@ -53,7 +52,6 @@ import de.hochschule.bremen.minerva.ui.gui.controls.MPlayerIcon;
 import de.hochschule.bremen.minerva.ui.gui.controls.MSlidePanel;
 import de.hochschule.bremen.minerva.vo.CavalerieCard;
 import de.hochschule.bremen.minerva.vo.CountryCard;
-import de.hochschule.bremen.minerva.vo.Mission;
 import de.hochschule.bremen.minerva.vo.Player;
 import de.hochschule.bremen.minerva.vo.SoldierCard;
 
@@ -62,10 +60,11 @@ import de.hochschule.bremen.minerva.vo.SoldierCard;
  * The upper half contains current player, allocatable army count, game state buttons
  * (allocate, turn cards in, attack, move, end turn) and a slide button.
  * 
- * The lower half contains game informations like missions, country cards ...
+ * The lower half contains game informations country cards ...
  *
  * @version $Id$
  * @since 1.0
+ *
  */
 public class ControlBarPanel extends JPanel implements ActionListener {
 
@@ -92,8 +91,7 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 	private JPanel lowerHalf;
 
 	private JPanel currentPlayerArea;
-	
-	
+
 	/**
 	 * 
 	 */
@@ -331,5 +329,4 @@ public class ControlBarPanel extends JPanel implements ActionListener {
 		}
 		this.gamePanel.updatePanel();
 	}
-
 }

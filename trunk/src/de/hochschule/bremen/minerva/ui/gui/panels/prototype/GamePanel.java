@@ -167,8 +167,6 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		
 		//initializing the first turn
 		this.currentTurn = this.game.nextTurn();
-
-		slidePanel.getControlBar().setCurrentPlayerLabel(this.currentTurn.getCurrentPlayer());
 		this.add(slidePanel, 10000);
 		
 		for (Country country : this.game.getWorld().getCountries()) {
@@ -372,7 +370,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 //		if (this.currentTurn.getCurrentPlayer() != MinervaGUI.getInstance().getPlayer()) {
 //			this.setGameState(GamePanel.OTHER_PLAYER);
 //		}
-		
+
 		this.refreshArmyCounts();
 		this.slidePanel.getControlBar().updateButtons();
 		this.slidePanel.getControlBar().setCurrentPlayerLabel(this.currentTurn.getCurrentPlayer());
@@ -385,7 +383,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 				break searchPlayerMission;
 			}
 		}
-		
+
 		this.repaint();
 		this.updateUI();
 	}
@@ -393,10 +391,10 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	/**
 	 * Repaints all ArmyCountIcons with correct parameters
 	 */
-	@SuppressWarnings("unchecked")
 	public void refreshArmyCounts() {
-		Iterator iter = this.armyIcons.entrySet().iterator();
+		Iterator<?> iter = this.armyIcons.entrySet().iterator();
 		while (iter.hasNext()) {
+			@SuppressWarnings("rawtypes")
 			Map.Entry pairs = (Map.Entry)iter.next();
 			((ArmyCountIcon)pairs.getValue()).setPlayer(((Country)pairs.getKey()), this.game.getPlayer(((Country)pairs.getKey())));
 		}
@@ -405,10 +403,10 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	/**
 	 * Removes markings of all countries.
 	 */
-	@SuppressWarnings("unchecked")
 	public void unmarkAll() {
-		Iterator iter = this.armyIcons.entrySet().iterator();
+		Iterator<?> iter = this.armyIcons.entrySet().iterator();
 		while (iter.hasNext()) {
+			@SuppressWarnings("rawtypes")
 			Map.Entry pairs = (Map.Entry)iter.next();
 			((ArmyCountIcon)pairs.getValue()).unmark();
 		}
