@@ -131,7 +131,7 @@ public class MArmyCountIcon extends JPanel implements MControl {
 		g.drawArc(1, 1, width, height, 0, 360);
 	
 		g.setFont(new Font(FONT.getFamily(), Font.ROMAN_BASELINE, 10));
-
+		
 		String armyCountText = String.valueOf(this.armyCount);
 
 		FontMetrics fMetrics = g.getFontMetrics();
@@ -146,7 +146,14 @@ public class MArmyCountIcon extends JPanel implements MControl {
 		}
 
 		//army count
-		int x = (width / 2) - (textWidth / 2);
+		int x = 0;
+		if (armyCountText.length() == 1) {
+			x = (int) ((width / 2) - (textWidth / 2)* 1);
+		} else if (armyCountText.length() == 2) {
+			x = (int) ((width / 2) - (textWidth / 2)* 1.75);
+		} else {
+			x = (int) ((width / 2) - (textWidth / 2)* 2);
+		}
 		int y = ((height / 2) + (textHeight - (descent / 2)));
 
 		g.drawString(armyCountText, x, y);
