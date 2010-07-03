@@ -283,7 +283,8 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 		        	LoginPanel.this.login();
 		        }
 			}
-		});this.password.addKeyListener(new MKeyListener() {
+		});
+		this.password.addKeyListener(new MKeyListener() {
 			public void keyPressed(KeyEvent e) {
 		        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 		        	LoginPanel.this.login();

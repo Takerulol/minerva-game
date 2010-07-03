@@ -88,6 +88,8 @@ public interface TextResources {
 	public static final String GAME_PANEL_CONTROLBAR_CARD_SYMBOL_CAVALERIE  = "Symbol: Cavalerie, Land: ";
 	public static final String GAME_PANEL_CONTROLBAR_CARD_SYMBOL_CANON      = "Symbol: Canon, Land: ";
 
+	// GamePanel Attack Result
+	
 	// -- Controls
 
 	// MPlayerIcon

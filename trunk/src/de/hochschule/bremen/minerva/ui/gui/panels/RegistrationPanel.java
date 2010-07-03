@@ -80,6 +80,9 @@ public class RegistrationPanel extends JLayeredPane implements TextResources {
 	 */
 	private static final long serialVersionUID = 6086001895310561512L;
 
+	/**
+	 * Initialization of the panel's construction
+	 */
 	public RegistrationPanel() {
 		this.setPreferredSize(MinervaGUI.WINDOW_SIZE);
 		this.setOpaque(true);
@@ -216,6 +219,13 @@ public class RegistrationPanel extends JLayeredPane implements TextResources {
 		this.registerButton.addActionListener(l);
 	}
 
+	/**
+	 * Test is all field of the registration sheet are filled in properly.
+	 * 
+	 * @param player Player with all transfered attributes
+	 * @param retypedPassword retyped password
+	 * @return if sheet is valid or not
+	 */
 	private boolean areRegistrationCredentialsValid(Player player, String retypedPassword) {
 		boolean valid = false;
 

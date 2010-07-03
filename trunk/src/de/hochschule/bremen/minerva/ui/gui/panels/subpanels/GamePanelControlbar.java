@@ -180,7 +180,7 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 		this.cardList.setOpaque(false);
 		this.cardList.setSelectionModel(selection);
 		this.cardList.setPreferredSize(new Dimension(250,125));
-		this.cardList.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(187, 186, 187)), GAME_PANEL_CARDS));
+		this.cardList.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(187, 186, 187)), GAME_PANEL_CARDS,0,0,FONT,Color.LIGHT_GRAY));
 		this.cardList.setFont(FONT);
 		this.cardList.setForeground(new Color(139, 140, 142));
 
