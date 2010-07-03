@@ -457,10 +457,10 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	/**
 	 * Repaints all ArmyCountIcons with correct parameters
 	 */
+	@SuppressWarnings("unchecked")
 	public void refreshArmyCounts() {
 		Iterator<?> iter = this.armyIcons.entrySet().iterator();
 		while (iter.hasNext()) {
-			@SuppressWarnings("rawtypes")
 			Map.Entry pairs = (Map.Entry)iter.next();
 			((MArmyCountIcon)pairs.getValue()).setPlayer(((Country)pairs.getKey()), this.getPlayer(((Country)pairs.getKey())));		}
 	}
@@ -468,10 +468,10 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	/**
 	 * Removes markings of all countries.
 	 */
+	@SuppressWarnings("unchecked")
 	public void unmarkAll() {
 		Iterator<?> iter = this.armyIcons.entrySet().iterator();
 		while (iter.hasNext()) {
-			@SuppressWarnings("rawtypes")
 			Map.Entry pairs = (Map.Entry)iter.next();
 			((MArmyCountIcon)pairs.getValue()).unmark();
 		}
