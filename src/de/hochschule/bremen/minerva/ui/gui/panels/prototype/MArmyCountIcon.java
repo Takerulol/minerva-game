@@ -49,7 +49,7 @@ import de.hochschule.bremen.minerva.vo.Player;
  * @since 1.0
  * 
  */
-public class ArmyCountIcon extends JPanel {
+public class MArmyCountIcon extends JPanel {
 	
 	private Color color;
 	private int armyCount = 0;
@@ -65,7 +65,7 @@ public class ArmyCountIcon extends JPanel {
 	 * @param p point on the map where it shall be put at.
 	 *
 	 */
-	public ArmyCountIcon(Color color, Point p) {
+	public MArmyCountIcon(Color color, Point p) {
 		this.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
 		this.color = color;
 		this.setSize(30,30);
