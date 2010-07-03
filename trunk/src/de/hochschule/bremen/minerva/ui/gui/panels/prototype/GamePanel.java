@@ -60,6 +60,7 @@ import de.hochschule.bremen.minerva.ui.gui.controls.MControl;
 import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
 import de.hochschule.bremen.minerva.ui.gui.controls.MSlidePanel;
 import de.hochschule.bremen.minerva.ui.gui.listener.MMouseListener;
+import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
 import de.hochschule.bremen.minerva.util.ColorTool;
 import de.hochschule.bremen.minerva.util.MapTool;
 import de.hochschule.bremen.minerva.vo.Country;
@@ -74,7 +75,7 @@ import de.hochschule.bremen.minerva.vo.World;
  * @since 1.0
  *
  */
-public class GamePanel extends JLayeredPane implements MControl {
+public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	public MapPanel mapOverlay;
 	public MapPanel mapUnderlay;
 	public MSlidePanel slidePanel;
@@ -122,7 +123,7 @@ public class GamePanel extends JLayeredPane implements MControl {
 		missionPanel.setBorder(BorderFactory.createMatteBorder (0, 0, 1, 0, new Color(71, 73, 75)));
 		this.add(missionPanel, 10000);
 
-		JLabel yourMissionLabel = new JLabel("Deine Mission: ");
+		JLabel yourMissionLabel = new JLabel(GAME_PANEL_YOUR_MISSION);
 		yourMissionLabel.setFont(new Font(FONT.getFamily(), Font.BOLD, 12));
 		yourMissionLabel.setForeground(new Color(1, 174, 253));
 		missionPanel.add(yourMissionLabel);
@@ -380,7 +381,7 @@ public class GamePanel extends JLayeredPane implements MControl {
 
 		searchPlayerMission : for (Mission mission : this.getGame().getMissions()) {
 			if (mission.getOwner() == this.getGame().getTurns().lastElement().getCurrentPlayer()) {
-				this.missionLabel.setText(mission.getDescription());
+				this.missionLabel.setText(mission.getTitle());
 				break searchPlayerMission;
 			}
 		}
