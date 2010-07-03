@@ -47,7 +47,8 @@ public class MButton extends JButton implements MControl {
 	/**
 	 * Constructor
 	 * 
-	 * @param caption
+	 * @param caption The button label.
+	 *
 	 */
 	public MButton(String caption) {
 		super(caption);
@@ -55,7 +56,7 @@ public class MButton extends JButton implements MControl {
 	}
 
 	/**
-	 * DOCME
+	 * Button initialization (e. g. font definition, etc.)
 	 * 
 	 */
 	private void init() {
