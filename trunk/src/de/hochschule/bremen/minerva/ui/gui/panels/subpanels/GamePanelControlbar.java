@@ -47,10 +47,12 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 
+import de.hochschule.bremen.minerva.ui.gui.controls.MControl;
 import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
 import de.hochschule.bremen.minerva.ui.gui.controls.MPlayerIcon;
 import de.hochschule.bremen.minerva.ui.gui.controls.MSlidePanel;
 import de.hochschule.bremen.minerva.ui.gui.panels.GamePanel;
+import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
 import de.hochschule.bremen.minerva.vo.CavalerieCard;
 import de.hochschule.bremen.minerva.vo.CountryCard;
 import de.hochschule.bremen.minerva.vo.Player;
@@ -67,7 +69,7 @@ import de.hochschule.bremen.minerva.vo.SoldierCard;
  * @since 1.0
  *
  */
-public class GamePanelControlbar extends JPanel implements ActionListener {
+public class GamePanelControlbar extends JPanel implements ActionListener, MControl, TextResources {
 
 	private int relativeHeight;
 	private MSlidePanel slidePanel;
@@ -135,13 +137,14 @@ public class GamePanelControlbar extends JPanel implements ActionListener {
 		this.currentPlayerArea = new JPanel();
 		this.currentPlayerArea.setOpaque(false);
 
-		// TODO: MOVE THIS TO THE TEXT RESOURCES!!!!!!
-		this.allocateButton = new JButton("Armeen setzen");
+		this.allocateButton = new JButton(GAME_PANEL_CONTROLBAR_BUTTON_SET_ARMIES);
 		this.allocatableArmies = new JLabel("0");
-		this.cardButton = new JButton("Karten eintauschen");
-		this.attackButton = new JButton("Angriff");
-		this.moveButton = new JButton("Armeen verschieben");
-		this.endTurnButton = new JButton("Zug beenden");
+		this.allocatableArmies.setForeground(new Color(187, 186, 187));
+
+		this.cardButton = new JButton(GAME_PANEL_CONTROLBAR_BUTTON_TURN_CARDS_IN);
+		this.attackButton = new JButton(GAME_PANEL_CONTROLBAR_BUTTON_ATTACK);
+		this.moveButton = new JButton(GAME_PANEL_CONTROLBAR_BUTTON_ALLOCATE_ARMIES);
+		this.endTurnButton = new JButton(GAME_PANEL_CONTROLBAR_BUTTON_FINISH_TURN);
 		
 		this.upperHalf.add(this.currentPlayerArea);
 		
@@ -171,9 +174,13 @@ public class GamePanelControlbar extends JPanel implements ActionListener {
 		this.cardList.setVisibleRowCount(5);
 		DefaultListSelectionModel selection = new DefaultListSelectionModel();
 		selection.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+		this.cardList.setOpaque(false);
 		this.cardList.setSelectionModel(selection);
 		this.cardList.setPreferredSize(new Dimension(250,125));
-		this.cardList.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.CYAN),"Cards"));
+		this.cardList.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(187, 186, 187)), "Cards"));
+		this.cardList.setFont(FONT);
+		this.cardList.setForeground(new Color(139, 140, 142));
 
 		this.lowerHalf.add(this.cardList);
 		this.lowerHalf.add(this.turnIn);
@@ -189,8 +196,7 @@ public class GamePanelControlbar extends JPanel implements ActionListener {
 		this.slidePanel = slidePanel;
 		this.relativeHeight = (int) lowerHalf.getPreferredSize().getHeight();
 
-		// TODO: MOVE TO TEXT RESOURCES!!!
-		this.slideButton = new JButton("Slide");
+		this.slideButton = new JButton(GAME_PANEL_CONTROLBAR_BUTTON_SLIDE);
 		this.upperHalf.add(this.slideButton);
 		this.addSlideListeners();
 	}
@@ -237,12 +243,11 @@ public class GamePanelControlbar extends JPanel implements ActionListener {
 		for (CountryCard card : cards) {
 			String text;
 			if (card instanceof SoldierCard) {
-				// TODO: MOVE THE STRINGS TO THE TEXT RESOURCES!!!
-				text = "Symbol: Soldier, Land: "+card.getReference().getName();
+				text = GAME_PANEL_CONTROLBAR_CARD_SYMBOL_SOLDIER+card.getReference().getName();
 			} else if (card instanceof CavalerieCard) {
-				text = "Symbol: Cavalerie, Land: "+card.getReference().getName();
+				text = GAME_PANEL_CONTROLBAR_CARD_SYMBOL_CAVALERIE+card.getReference().getName();
 			} else {
-				text = "Symbol: Canon, Land: "+card.getReference().getName();
+				text = GAME_PANEL_CONTROLBAR_CARD_SYMBOL_CANON+card.getReference().getName();
 			}
 			model.addElement(text);
 		}
