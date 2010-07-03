@@ -55,16 +55,15 @@ public class ArmyCountIcon extends JPanel {
 	private int armyCount = 0;
 	private boolean marked = false;
 	private Color markColor;
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1865891788129661164L;
 	
 	/**
 	 * Constructs the icon.
+	 *
 	 * @param color inner color of the icon
 	 * @param p point on the map where it shall be put at.
+	 *
 	 */
 	public ArmyCountIcon(Color color, Point p) {
 		this.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
@@ -77,8 +76,11 @@ public class ArmyCountIcon extends JPanel {
 	
 	/**
 	 * Sets the owner + the country itself where this icon is at.
-	 * @param country country
-	 * @param player country owner
+	 *
+	 * @param country The country on which the label should be placed.
+	 * @param player The country owner
+	 *
+	 *
 	 */
 	public void setPlayer(Country country, Player player) {
 		this.armyCount = country.getArmyCount();
@@ -88,7 +90,9 @@ public class ArmyCountIcon extends JPanel {
 	
 	/**
 	 * Marks the icon with a circle
+	 *
 	 * @param color color of the circle
+	 *
 	 */
 	public void mark(Color color) {
 		this.marked = true;
@@ -98,6 +102,7 @@ public class ArmyCountIcon extends JPanel {
 	
 	/**
 	 * Removes the mark.
+	 *
 	 */
 	public void unmark() {
 		marked = false;
@@ -106,6 +111,9 @@ public class ArmyCountIcon extends JPanel {
 	
 	/**
 	 * AWT/Swing paint method ... never use this manually
+	 * 
+	 * @param g The graphics context.
+	 * 
 	 */
 	public void paint(Graphics g) {
 		//inner color
@@ -126,5 +134,4 @@ public class ArmyCountIcon extends JPanel {
 			g.drawArc(0, 0, 22, 22, 0, 360);
 		}
 	}
-
 }
