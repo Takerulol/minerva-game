@@ -81,7 +81,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	public MSlidePanel slidePanel;
 	public JLabel missionLabel;
 
-	public HashMap<Country, ArmyCountIcon> armyIcons = new HashMap<Country, ArmyCountIcon>();
+	public HashMap<Country, MArmyCountIcon> armyIcons = new HashMap<Country, MArmyCountIcon>();
 	public World world;
 	private Game game;
 	private Turn currentTurn;
@@ -170,7 +170,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		this.add(slidePanel, 10000);
 		
 		for (Country country : this.game.getWorld().getCountries()) {
-			ArmyCountIcon aci = new ArmyCountIcon(Color.RED, countryAnchors.get(country));
+			MArmyCountIcon aci = new MArmyCountIcon(Color.RED, countryAnchors.get(country));
 			this.armyIcons.put(country,aci);
 			this.add(aci,-10000);
 		}
@@ -396,7 +396,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		while (iter.hasNext()) {
 			@SuppressWarnings("rawtypes")
 			Map.Entry pairs = (Map.Entry)iter.next();
-			((ArmyCountIcon)pairs.getValue()).setPlayer(((Country)pairs.getKey()), this.game.getPlayer(((Country)pairs.getKey())));
+			((MArmyCountIcon)pairs.getValue()).setPlayer(((Country)pairs.getKey()), this.game.getPlayer(((Country)pairs.getKey())));
 		}
 	}
 	
@@ -408,7 +408,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		while (iter.hasNext()) {
 			@SuppressWarnings("rawtypes")
 			Map.Entry pairs = (Map.Entry)iter.next();
-			((ArmyCountIcon)pairs.getValue()).unmark();
+			((MArmyCountIcon)pairs.getValue()).unmark();
 		}
 	}
 	
