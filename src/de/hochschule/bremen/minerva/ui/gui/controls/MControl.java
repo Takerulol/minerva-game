@@ -41,5 +41,5 @@ import java.awt.Font;
 public interface MControl {
 
 	// The common control font.
-	static final Font FONT = new Font("Tahoma", 0, 11);
+	static final Font FONT = new Font("Tahoma", Font.ROMAN_BASELINE, 11);
 }
