@@ -35,6 +35,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 
@@ -42,8 +43,11 @@ import de.hochschule.bremen.minerva.core.GameEngine;
 import de.hochschule.bremen.minerva.core.GameEngineLocal;
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotFoundException;
 import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotReadableException;
+import de.hochschule.bremen.minerva.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.ui.UserInterface;
+import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
+import de.hochschule.bremen.minerva.ui.gui.listener.MWindowListener;
 import de.hochschule.bremen.minerva.ui.gui.panels.*;
 
 /**
@@ -135,6 +139,8 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	
 		//lets show the frame .. yeeeaaaahhh =D
 		this.setVisible(true);
+
+		this.addListeners();
 	}
 	
 	/**
@@ -185,5 +191,22 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	 */
 	public static GameEngine getEngine() {
 		return MinervaGUI.GAME_ENGINE;
+	}
+
+	/**
+	 * Add event listeners.
+	 *
+	 */
+	private void addListeners() {
+		// Kill the game while closing the window.
+		this.addWindowListener(new MWindowListener() {
+			public void windowClosing(WindowEvent arg0) {
+				try {
+					MinervaGUI.getEngine().killGame(false);
+				} catch (DataAccessException e) {
+					MMessageBox.error(e.getMessage());
+				}
+			}
+		});
 	}
 }

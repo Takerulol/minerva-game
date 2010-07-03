@@ -239,9 +239,12 @@ public class GameEngineLocal implements GameEngine {
 	 * 
 	 */
 	@Override
-	public void killGame() throws DataAccessException {
+	public void killGame(boolean createNewOne) throws DataAccessException {
 		AccountManager.getInstance().logout();
-		this.game = new Game();
+
+		if (createNewOne) {
+			this.game = new Game();
+		}
 	}
 
 	/**
