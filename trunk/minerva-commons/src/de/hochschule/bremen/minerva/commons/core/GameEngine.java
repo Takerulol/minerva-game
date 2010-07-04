@@ -72,7 +72,7 @@ public interface GameEngine {
 	// --------------------------------------
 	public void login(Player player) throws PlayerAlreadyLoggedInException, GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException;
 
-	public void register(Player player) throws PlayerExistsException, DataAccessException ;
+	public void register(Player player) throws PlayerExistsException, DataAccessException;
 
 	// ---------------------
 	// -- world subsystem --
