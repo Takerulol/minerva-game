@@ -38,6 +38,8 @@ package de.hochschule.bremen.minerva.commons.vo;
  */
 public class Continent extends ValueObject {
 
+	private static final long serialVersionUID = -4858293118667350977L;
+
 	private int id = DEFAULT_ID;
 	private String name = "";
 

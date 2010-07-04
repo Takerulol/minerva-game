@@ -48,7 +48,9 @@ import de.hochschule.bremen.minerva.commons.util.CountryGraph;
  *
  */
 public class World extends ValueObject {
-	
+
+	private static final long serialVersionUID = 3126671644706327448L;
+
 	private int id = DEFAULT_ID;
 	private String token = null;
 	private String name = null;

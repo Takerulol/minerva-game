@@ -27,58 +27,20 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.commons.vo;
+package de.hochschule.bremen.minerva.commons.net;
+
+import de.root1.simon.SimonRemote;
 
 /**
- * The Neighbour is a marker class, which extends the
- * Country class. It represents the mapping between a country
- * and ONE neighbour (1:1 relation).
+ * The server protocol.
+ * Contains methods, which are callable via minerva clients.
+ * 
+ * @since 1.0
+ * @version $Id$
  * 
  */
-public class Neighbour extends Country {
+public interface ServerProtocol extends SimonRemote {
 
-	private static final long serialVersionUID = -7663264459771331672L;
-
-	private int mappingID = DEFAULT_ID;
-
-	private Country reference = new Country();
-
-	/**
-	 * Sets the mapping id. It identifies
-	 * the neighbour/country relationship.
-	 * 
-	 * @param mappingId
-	 */
-	public void setMappingId(int mappingId) {
-		this.mappingID = mappingId;
-	}
-
-	/**
-	 * Returns the mapping id.
-	 * 
-	 * @return
-	 */
-	public int getMappingId() {
-		return this.mappingID;
-	}
-
-	/**
-	 * Sets the referenced country. The neighbour/country
-	 * mapping represents a 1:1 relation. So the neighbour
-	 * and ONE nearby country.
-	 * 
-	 * @param country
-	 */
-	public void setReference(Country country) {
-		this.reference = country;
-	}
-
-	/**
-	 * Returns the referenced country.
-	 * 
-	 * @return
-	 */
-	public Country getReference() {
-		return this.reference;
-	}
+	
+	
 }

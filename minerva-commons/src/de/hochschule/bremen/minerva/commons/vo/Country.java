@@ -41,6 +41,8 @@ import java.util.Vector;
  */
 public class Country extends ValueObject {
 
+	private static final long serialVersionUID = -170169514455685462L;
+
 	protected int id = DEFAULT_ID;
 	protected String token = null;
 	protected String name = null;

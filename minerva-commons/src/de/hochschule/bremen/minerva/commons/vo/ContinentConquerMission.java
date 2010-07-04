@@ -42,6 +42,8 @@ import java.util.Vector;
  */
 public class ContinentConquerMission extends Mission {
 
+	private static final long serialVersionUID = 3274869455432429506L;
+
 	Vector<Country> countriesOfContinentOne = new Vector<Country>();
 	Vector<Country> countriesOfContinentTwo = new Vector<Country>();
 	

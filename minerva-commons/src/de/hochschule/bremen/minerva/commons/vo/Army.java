@@ -38,6 +38,8 @@ package de.hochschule.bremen.minerva.commons.vo;
  */
 public class Army extends ValueObject {
 
+	private static final long serialVersionUID = -6473599005331475995L;
+
 	private boolean moved = false;
 
 	/**

@@ -41,6 +41,8 @@ package de.hochschule.bremen.minerva.commons.vo;
  */
 public class DefeatPlayerMission extends Mission {
 
+	private static final long serialVersionUID = -9029869714888269591L;
+
 	private Player enemy;
 	
 	/**
