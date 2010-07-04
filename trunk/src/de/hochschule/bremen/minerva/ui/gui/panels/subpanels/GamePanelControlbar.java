@@ -97,13 +97,11 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 
 	private JPanel currentPlayerArea;
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2420450895831821731L;
 	
 	/**
 	 * Constructor
+	 *
 	 */
 	public GamePanelControlbar() {
 		this.init();
@@ -111,6 +109,7 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 	
 	/**
 	 * Initializes ControlBarPanel.
+	 *
 	 */
 	private void init() {
 		this.setLayout(new BorderLayout());
@@ -129,6 +128,7 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 
 	/**
 	 * Initialization of the UPPER half of the control bar
+	 *
 	 */
 	private void initUpperHalf() {
 		//upper half
@@ -160,6 +160,7 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 
 	/**
 	 * Initialization of the LOWER half of the control bar
+	 *
 	 */
 	private void initLowerHalf() {
 		//lower half
@@ -191,8 +192,9 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 	/**
 	 * Sets slide panel if this panel is inside one. This method is automatically used
 	 * if the control bar is deployed in a slide panel.
-	 * 
+	 *
 	 * @param slidePanel the slide panel
+	 *
 	 */
 	public void setSlidePanel(MSlidePanel slidePanel) {
 		this.slidePanel = slidePanel;
@@ -205,6 +207,7 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 	
 	/**
 	 * Adds action listeners to the slide button if control bar is inside a slide panel
+	 *
 	 */
 	private void addSlideListeners() {
 		this.slideButton.addActionListener(new ActionListener() {	
@@ -221,15 +224,19 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 	
 	/**
 	 * Gets relative height of the control bar.
+	 *
 	 * @return relative height
+	 *
 	 */
 	public int getRelativeHeight() {
 		return this.relativeHeight;	
 	}
 	
 	/**
-	 * sets the label for the current player
+	 * Sets the label for the current player
+	 *
 	 * @param currentPlayer name of current player
+	 *
 	 */
 	public void setCurrentPlayerLabel(Player currentPlayer) {
 		this.currentPlayerArea.removeAll();
@@ -237,8 +244,10 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 	}
 
 	/**
-	 * update the card list of the current player to the given one.
+	 * Update the card list of the current player to the given one.
+	 *
 	 * @param cards card list
+	 *
 	 */
 	public void updateCardList(Vector<CountryCard> cards) {
 		this.model.clear();
@@ -257,7 +266,9 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 	
 	/**
 	 * Adds listeners to all Buttons and sets the game panel needed for their states.
+	 *
 	 * @param gamePanel game panel
+	 *
 	 */
 	public void addListeners(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
@@ -271,7 +282,9 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 	
 	/**
 	 * Sets text of the label for allocatable armies.
+	 *
 	 * @param allocatableArmies count as string
+	 *
 	 */
 	public void setAllocatableArmiesLabel(String allocatableArmies) {
 		this.allocatableArmies.setText(" "+allocatableArmies+" ");
@@ -279,6 +292,7 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 	
 	/**
 	 * Updates the state of all buttons
+	 *
 	 */
 	public void updateButtons() {
 		if (this.gamePanel.getCurrentPlayer().getState() == PlayerState.RELEASE_CARDS) {
@@ -316,6 +330,7 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 
 	/**
 	 * Buttons actions of this panel
+	 *
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -349,7 +364,7 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 				MMessageBox.error("Das geht nicht.");
 			}
 		}
-	
+
 		this.gamePanel.updatePanel();
 	}
 }
