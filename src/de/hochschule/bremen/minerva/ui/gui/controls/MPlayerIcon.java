@@ -31,6 +31,7 @@ package de.hochschule.bremen.minerva.ui.gui.controls;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -67,7 +68,7 @@ public class MPlayerIcon extends JPanel implements MControl, TextResources {
 	private JLabel username;
 	private JLabel email;
 	
-	private JPanel iconArea;
+	private PlayerImage iconArea;
 	private JPanel dataArea;
 	
 	/**
@@ -84,19 +85,7 @@ public class MPlayerIcon extends JPanel implements MControl, TextResources {
 		this.setOpaque(false);
 
 		// Loading the player icon
-		this.iconArea = new JPanel() {
-			private static final long serialVersionUID = -3484770437177556562L;
-
-			public void paint(java.awt.Graphics g) {
-				String color = "_" + MPlayerIcon.this.determinePlayerColor(MPlayerIcon.this.player);
-				String iconPath = ApplicationConfigurationManager.get().getUIAssetsDirectory() + MPlayerIcon.class.getSimpleName() + color + ApplicationConfigurationManager.get().getUIAssetsFileExtension();
-				try {
-					g.drawImage(ImageIO.read(new File(iconPath)), 0, 0, this);
-				} catch (IOException e) {
-					// If a error occurred while loading the player icon, well, do nothing.
-				}
-			};
-		};
+		this.iconArea = new PlayerImage();
 
 		this.iconArea.setOpaque(false);
 		this.add(this.iconArea, "width 62, height 76");
@@ -188,5 +177,53 @@ public class MPlayerIcon extends JPanel implements MControl, TextResources {
 		} else {
 			return "default";
 		}
+	}
+	
+	/**
+	 * Updates the whole icon to a "new" player.
+	 * @param player
+	 */
+	public void updatePlayerIcon(Player player) {
+		this.player = player;
+		this.iconArea.updatePlayerImage();
+		this.refresh();
+	}
+	
+	/**
+	 * Internal class representing the player image inside the player icon.
+	 *
+	 */
+	class PlayerImage extends JPanel {
+		
+			private static final long serialVersionUID = -3484770437177556562L;
+			
+			private BufferedImage playerImage;
+			
+			/**
+			 * constructing the image
+			 */
+			public PlayerImage() {
+				this.updatePlayerImage();
+			}
+			
+			/**
+			 * Updates the image to the player of the player icon.
+			 */
+			public void updatePlayerImage() {
+				String color = "_" + MPlayerIcon.this.determinePlayerColor(MPlayerIcon.this.player);
+				String iconPath = ApplicationConfigurationManager.get().getUIAssetsDirectory() + MPlayerIcon.class.getSimpleName() + color + ApplicationConfigurationManager.get().getUIAssetsFileExtension();
+				try {
+					this.playerImage = ImageIO.read(new File(iconPath));
+				} catch (IOException e) {
+					// If a error occurred while loading the player icon, well, do nothing.;
+				}
+			}
+			
+			/**
+			 * casual paint method
+			 */
+			public void paint(java.awt.Graphics g) {
+					g.drawImage(this.playerImage, 0, 0, this);
+			}
 	}
 }
