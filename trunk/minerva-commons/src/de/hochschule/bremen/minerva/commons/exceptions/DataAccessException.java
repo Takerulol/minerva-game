@@ -29,6 +29,8 @@
  */
 package de.hochschule.bremen.minerva.commons.exceptions;
 
+import java.io.Serializable;
+
 /**
  * This exception is a heavy one. If this exception will be thrown
  * it is an indication that something with the storage subsystem went wrong.
@@ -38,7 +40,7 @@ package de.hochschule.bremen.minerva.commons.exceptions;
  * @version $Id$
  * 
  */
-public class DataAccessException extends Exception {
+public class DataAccessException extends Exception implements Serializable {
 
 	private static final long serialVersionUID = -5068821212470257120L;
 

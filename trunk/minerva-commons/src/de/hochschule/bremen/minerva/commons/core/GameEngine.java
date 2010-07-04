@@ -78,7 +78,7 @@ public interface GameEngine {
 	// ---------------------
 	public Vector<World> getWorldList() throws DataAccessException;
 
-	public Vector<World> getWorldList(boolean lite) throws DataAccessException ;
+	public Vector<World> getWorldList(boolean lite) throws DataAccessException;
 
 	public void importWorld(File worldFile) throws WorldNotStorable, WorldFileNotFoundException, WorldFileExtensionException, WorldFileParseException, DataAccessException;
 

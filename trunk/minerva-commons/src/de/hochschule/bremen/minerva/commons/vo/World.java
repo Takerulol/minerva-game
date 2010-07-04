@@ -63,7 +63,7 @@ public class World extends ValueObject {
 	private String thumbnail = null;
 
 	private Vector<Country> countries = new Vector<Country>();
-	private CountryGraph countryGraph = new CountryGraph();
+	private transient CountryGraph countryGraph = new CountryGraph();
 	
 	/**
 	 * Sets the world id.
