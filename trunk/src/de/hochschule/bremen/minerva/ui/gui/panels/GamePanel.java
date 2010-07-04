@@ -159,7 +159,6 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 					Color color = ColorTool.fromInteger(GamePanel.this.mapUnderlay.getMapImage().getRGB(((MArmyCountIcon)e.getSource()).getX()+15, ((MArmyCountIcon)e.getSource()).getY()+15));
 					Country country = GamePanel.this.engine.getGameWorld().getCountry(color);
 					GamePanel.this.mapInteraction(country);
-					GamePanel.this.updatePanel();
 				}
 			});
 			this.armyIcons.put(country,aci);
@@ -192,7 +191,6 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 				Country country = GamePanel.this.engine.getGameWorld().getCountry(color);
 
 				GamePanel.this.mapInteraction(country);
-				GamePanel.this.updatePanel();
 			}
 		});
 	}
@@ -228,7 +226,9 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	public void TurnCardIn(CountryCard card) {
 		if (this.currentPlayer.hasCountry(card.getReference())) {
 			this.engine.releaseCard(card);
+			GamePanel.this.updatePanel();
 		} else {
+			GamePanel.this.updatePanel();
 			MMessageBox.error(GAME_CARD_RELEASE_ERROR_COUNTRY_UNCONQUERED);
 		}
 	}
@@ -241,6 +241,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	 */
 	public void TurnSeriesIn(Vector<CountryCard> series) {
 		this.engine.releaseCards(series);
+		GamePanel.this.updatePanel();
 	}
 
 	/**
@@ -263,6 +264,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 					}
 				}
 			}
+			GamePanel.this.updatePanel();
 		} else {
 			this.destination = country;
 			if (!(this.destination == this.source)) {
@@ -281,17 +283,24 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 					try {
 						//actually attack and showing attack result afterwards
 						AttackResult ar = this.engine.attack(this.source, this.destination, wert);
+						GamePanel.this.updatePanel();
 						if (ar != null) {
 							this.showAttackResult(ar);
 						}
 					} catch (CountriesNotInRelationException e) {
+						GamePanel.this.updatePanel();
 						MMessageBox.error(e.getMessage());
+						GamePanel.this.updatePanel();
 					} catch (NotEnoughArmiesException e) {
+						GamePanel.this.updatePanel();
 						MMessageBox.error(e.getMessage());
+						GamePanel.this.updatePanel();
 					} catch (IsOwnCountryException e) {
+						GamePanel.this.updatePanel();
 						MMessageBox.error(e.getMessage());
 					}
 				} catch (NumberFormatException e1) {
+					GamePanel.this.updatePanel();
 					//no need, just to make sure that the method doesn't end
 				}
 			
@@ -301,6 +310,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 				this.unmarkAll();
 				this.source = null;
 				this.destination = null;
+				GamePanel.this.updatePanel();
 				MMessageBox.error(GAME_ATTACK_ERROR_SAME_COUNTRY);
 			}
 		}	
@@ -355,6 +365,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 					}
 				}
 			}
+			GamePanel.this.updatePanel();
 		} else {
 			//setting destination country
 			this.destination = country;
@@ -372,14 +383,20 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 					try {
 						//actually move
 						this.engine.move(this.source, this.destination, wert);
+						GamePanel.this.updatePanel();
 					} catch (CountriesNotInRelationException e) {
+						GamePanel.this.updatePanel();
 						MMessageBox.error(e.getMessage());
+						GamePanel.this.updatePanel();
 					} catch (NotEnoughArmiesException e) {
+						GamePanel.this.updatePanel();
 						MMessageBox.error(e.getMessage());
 					} catch (CountryOwnerException e) {
+						GamePanel.this.updatePanel();
 						MMessageBox.error(e.getMessage());
 					}
 				} catch (NumberFormatException e1) {
+					GamePanel.this.updatePanel();
 					//no need, just to make sure that the methods doesn't end
 				}
 				
@@ -389,6 +406,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 				this.unmarkAll();
 				this.source = null;
 				this.destination = null;
+				GamePanel.this.updatePanel();
 				MMessageBox.error(GAME_MOVE_ERROR_SAME_COUNTRY);
 			}
 			
