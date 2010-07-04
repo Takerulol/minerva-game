@@ -32,6 +32,11 @@ package de.hochschule.bremen.minerva.core;
 import java.io.File;
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.commons.vo.Country;
+import de.hochschule.bremen.minerva.commons.vo.CountryCard;
+import de.hochschule.bremen.minerva.commons.vo.Mission;
+import de.hochschule.bremen.minerva.commons.vo.Player;
+import de.hochschule.bremen.minerva.commons.vo.World;
 import de.hochschule.bremen.minerva.core.logic.AttackResult;
 import de.hochschule.bremen.minerva.core.logic.Game;
 import de.hochschule.bremen.minerva.core.logic.Turn;
@@ -55,11 +60,6 @@ import de.hochschule.bremen.minerva.exceptions.WorldNotStorable;
 import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.manager.AccountManager;
 import de.hochschule.bremen.minerva.manager.WorldManager;
-import de.hochschule.bremen.minerva.vo.Country;
-import de.hochschule.bremen.minerva.vo.CountryCard;
-import de.hochschule.bremen.minerva.vo.Mission;
-import de.hochschule.bremen.minerva.vo.Player;
-import de.hochschule.bremen.minerva.vo.World;
 
 /**
  * The local game engine.

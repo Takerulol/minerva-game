@@ -32,6 +32,11 @@ package de.hochschule.bremen.minerva.core;
 import java.io.File;
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.commons.vo.Country;
+import de.hochschule.bremen.minerva.commons.vo.CountryCard;
+import de.hochschule.bremen.minerva.commons.vo.Mission;
+import de.hochschule.bremen.minerva.commons.vo.Player;
+import de.hochschule.bremen.minerva.commons.vo.World;
 import de.hochschule.bremen.minerva.core.logic.AttackResult;
 import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
 import de.hochschule.bremen.minerva.exceptions.CountryOwnerException;
@@ -50,11 +55,6 @@ import de.hochschule.bremen.minerva.exceptions.WorldFileParseException;
 import de.hochschule.bremen.minerva.exceptions.WorldNotDefinedException;
 import de.hochschule.bremen.minerva.exceptions.WorldNotStorable;
 import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
-import de.hochschule.bremen.minerva.vo.Country;
-import de.hochschule.bremen.minerva.vo.CountryCard;
-import de.hochschule.bremen.minerva.vo.Mission;
-import de.hochschule.bremen.minerva.vo.Player;
-import de.hochschule.bremen.minerva.vo.World;
 
 /**
  * The game engine.

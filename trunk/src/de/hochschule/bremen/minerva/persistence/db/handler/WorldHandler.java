@@ -34,8 +34,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
 
-import de.hochschule.bremen.minerva.vo.ValueObject;
-import de.hochschule.bremen.minerva.vo.World;
+import de.hochschule.bremen.minerva.commons.vo.ValueObject;
+import de.hochschule.bremen.minerva.commons.vo.World;
 import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldExistsException;

@@ -40,8 +40,8 @@ import java.util.Vector;
 
 import javax.swing.JPanel;
 
-import de.hochschule.bremen.minerva.vo.Country;
-import de.hochschule.bremen.minerva.vo.Player;
+import de.hochschule.bremen.minerva.commons.vo.Country;
+import de.hochschule.bremen.minerva.commons.vo.Player;
 
 /**
  * Represents a filled circle with an army count which is placed on each country. It

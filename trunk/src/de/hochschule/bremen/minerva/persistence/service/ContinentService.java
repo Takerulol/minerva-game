@@ -31,14 +31,14 @@ package de.hochschule.bremen.minerva.persistence.service;
 
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.commons.vo.Continent;
+import de.hochschule.bremen.minerva.commons.vo.ValueObject;
 import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.exceptions.ContinentExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.ContinentNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
 import de.hochschule.bremen.minerva.persistence.exceptions.EntryExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.EntryNotFoundException;
-import de.hochschule.bremen.minerva.vo.Continent;
-import de.hochschule.bremen.minerva.vo.ValueObject;
 
 /**
  * Provides methods for continent I/O operations, like:

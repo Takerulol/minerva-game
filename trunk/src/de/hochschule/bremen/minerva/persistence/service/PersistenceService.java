@@ -31,13 +31,13 @@ package de.hochschule.bremen.minerva.persistence.service;
 
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.commons.vo.ValueObject;
 import de.hochschule.bremen.minerva.persistence.Persistence;
 import de.hochschule.bremen.minerva.persistence.db.DatabasePersistence;
 import de.hochschule.bremen.minerva.persistence.exceptions.EntryExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.EntryNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
 import de.hochschule.bremen.minerva.persistence.file.FilebasedPersistence;
-import de.hochschule.bremen.minerva.vo.ValueObject;
 
 /**
  * Abstract class that hold the used persistence engine

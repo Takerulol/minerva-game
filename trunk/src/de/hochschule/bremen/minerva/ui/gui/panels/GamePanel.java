@@ -47,6 +47,11 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
+import de.hochschule.bremen.minerva.commons.vo.Country;
+import de.hochschule.bremen.minerva.commons.vo.CountryCard;
+import de.hochschule.bremen.minerva.commons.vo.Mission;
+import de.hochschule.bremen.minerva.commons.vo.Player;
+import de.hochschule.bremen.minerva.commons.vo.PlayerState;
 import de.hochschule.bremen.minerva.core.GameEngine;
 import de.hochschule.bremen.minerva.core.GameEngineLocal;
 import de.hochschule.bremen.minerva.core.logic.AttackResult;
@@ -67,11 +72,6 @@ import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
 import de.hochschule.bremen.minerva.util.ColorTool;
 import de.hochschule.bremen.minerva.util.Die;
 import de.hochschule.bremen.minerva.util.MapTool;
-import de.hochschule.bremen.minerva.vo.Country;
-import de.hochschule.bremen.minerva.vo.CountryCard;
-import de.hochschule.bremen.minerva.vo.Mission;
-import de.hochschule.bremen.minerva.vo.Player;
-import de.hochschule.bremen.minerva.vo.PlayerState;
 
 /**
  * Prototype of the actual game screen.

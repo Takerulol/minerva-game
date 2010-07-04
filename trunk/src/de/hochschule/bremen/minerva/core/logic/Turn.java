@@ -33,21 +33,21 @@ package de.hochschule.bremen.minerva.core.logic;
 import java.util.Collections;
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.commons.vo.Army;
+import de.hochschule.bremen.minerva.commons.vo.CanonCard;
+import de.hochschule.bremen.minerva.commons.vo.CavalerieCard;
+import de.hochschule.bremen.minerva.commons.vo.Continent;
+import de.hochschule.bremen.minerva.commons.vo.Country;
+import de.hochschule.bremen.minerva.commons.vo.CountryCard;
+import de.hochschule.bremen.minerva.commons.vo.Player;
+import de.hochschule.bremen.minerva.commons.vo.SoldierCard;
+import de.hochschule.bremen.minerva.commons.vo.World;
 import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
 import de.hochschule.bremen.minerva.exceptions.CountryOwnerException;
 import de.hochschule.bremen.minerva.exceptions.IsOwnCountryException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughArmiesException;
 import de.hochschule.bremen.minerva.util.Die;
-import de.hochschule.bremen.minerva.vo.Army;
-import de.hochschule.bremen.minerva.vo.CanonCard;
 import de.hochschule.bremen.minerva.vo.CardSeriesCounter;
-import de.hochschule.bremen.minerva.vo.CavalerieCard;
-import de.hochschule.bremen.minerva.vo.Continent;
-import de.hochschule.bremen.minerva.vo.Country;
-import de.hochschule.bremen.minerva.vo.CountryCard;
-import de.hochschule.bremen.minerva.vo.Player;
-import de.hochschule.bremen.minerva.vo.SoldierCard;
-import de.hochschule.bremen.minerva.vo.World;
 
 /**
  * This represents a single turn by the current player inside a game/match.

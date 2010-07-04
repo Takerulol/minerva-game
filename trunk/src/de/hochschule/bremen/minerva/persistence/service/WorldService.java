@@ -31,14 +31,14 @@ package de.hochschule.bremen.minerva.persistence.service;
 
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.commons.vo.ValueObject;
+import de.hochschule.bremen.minerva.commons.vo.World;
 import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
 import de.hochschule.bremen.minerva.persistence.exceptions.EntryExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.EntryNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
-import de.hochschule.bremen.minerva.vo.ValueObject;
-import de.hochschule.bremen.minerva.vo.World;
 
 /**
  * Provides methods for world I/O operations, like:

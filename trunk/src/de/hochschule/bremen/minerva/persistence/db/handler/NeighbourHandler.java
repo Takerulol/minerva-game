@@ -34,15 +34,15 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.commons.vo.Country;
+import de.hochschule.bremen.minerva.commons.vo.Neighbour;
+import de.hochschule.bremen.minerva.commons.vo.ValueObject;
 import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateRecordException;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
 import de.hochschule.bremen.minerva.persistence.exceptions.NeighbourExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.NeighbourNotFoundException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
-import de.hochschule.bremen.minerva.vo.Country;
-import de.hochschule.bremen.minerva.vo.Neighbour;
-import de.hochschule.bremen.minerva.vo.ValueObject;
 
 /**
  * Handler, which provides the functionality to select, save or deletes

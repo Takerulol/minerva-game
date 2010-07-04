@@ -40,6 +40,7 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
 
+import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.exceptions.GameAlreadyStartedException;
 import de.hochschule.bremen.minerva.exceptions.NoPlayerSlotAvailableException;
@@ -54,7 +55,6 @@ import de.hochschule.bremen.minerva.ui.gui.listener.MKeyListener;
 import de.hochschule.bremen.minerva.ui.gui.listener.MMouseListener;
 import de.hochschule.bremen.minerva.ui.gui.listener.MMouseMotionListener;
 import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
-import de.hochschule.bremen.minerva.vo.Player;
 
 /**
  * Panel for the login screen

@@ -33,6 +33,9 @@ package de.hochschule.bremen.minerva.manager;
 import java.io.File;
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.commons.vo.Country;
+import de.hochschule.bremen.minerva.commons.vo.Neighbour;
+import de.hochschule.bremen.minerva.commons.vo.World;
 import de.hochschule.bremen.minerva.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.exceptions.WorldDoesNotExistException;
 import de.hochschule.bremen.minerva.exceptions.WorldFileExtensionException;
@@ -51,9 +54,6 @@ import de.hochschule.bremen.minerva.persistence.service.CountryService;
 import de.hochschule.bremen.minerva.persistence.service.NeighbourService;
 import de.hochschule.bremen.minerva.persistence.service.WorldService;
 import de.hochschule.bremen.minerva.util.WorldFile;
-import de.hochschule.bremen.minerva.vo.Country;
-import de.hochschule.bremen.minerva.vo.Neighbour;
-import de.hochschule.bremen.minerva.vo.World;
 
 /**
  * The world manager is a singleton, which summarizes the functionality

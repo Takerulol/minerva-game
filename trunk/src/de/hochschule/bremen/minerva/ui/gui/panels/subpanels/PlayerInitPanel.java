@@ -36,10 +36,10 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
+import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MPlayerIcon;
 import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
-import de.hochschule.bremen.minerva.vo.Player;
 
 /**
  * This sub panel shows all logged in players.
