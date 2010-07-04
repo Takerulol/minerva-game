@@ -251,8 +251,11 @@ public class GamePanelControlbar extends JPanel implements ActionListener,
 	 * 
 	 */
 	public void setCurrentPlayerLabel(Player currentPlayer) {
-		this.currentPlayerArea.removeAll();
-		this.currentPlayerArea.add(new MPlayerIcon(currentPlayer));
+		if (this.currentPlayerArea.getComponentCount() == 0) {
+			this.currentPlayerArea.add(new MPlayerIcon(currentPlayer));
+		} else {
+			((MPlayerIcon)this.currentPlayerArea.getComponent(0)).updatePlayerIcon(currentPlayer);
+		}
 	}
 
 	/**
