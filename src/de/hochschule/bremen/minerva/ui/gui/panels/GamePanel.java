@@ -557,6 +557,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		if (this.currentPlayer.getState() == PlayerState.ALLOCATE_ARMIES) {
 			this.allocate(country);
 		} else if (this.currentPlayer.getState() == PlayerState.RELEASE_CARDS) {
+			this.updatePanel();
 			/*
 			 * Nothing will happen here.
 			 * You can't interact with the map, when you're trying to
