@@ -38,6 +38,8 @@ package de.hochschule.bremen.minerva.commons.vo;
  */
 public class CanonCard extends CountryCard {
 
+	private static final long serialVersionUID = 3622640914910443394L;
+
 	/**
 	 * The constructor gets a country.
 	 * 

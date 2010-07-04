@@ -38,6 +38,8 @@ package de.hochschule.bremen.minerva.commons.vo;
  */
 public class CavalerieCard extends CountryCard {
 
+	private static final long serialVersionUID = -8763019093161289281L;
+
 	/**
 	 * The constructor gets a country.
 	 * 

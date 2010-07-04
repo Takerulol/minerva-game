@@ -38,6 +38,8 @@ package de.hochschule.bremen.minerva.commons.vo;
  */
 public class CountryCard extends ValueObject {
 
+	private static final long serialVersionUID = 9007285166742175852L;
+
 	private Country reference = new Country();
 	
 	/**

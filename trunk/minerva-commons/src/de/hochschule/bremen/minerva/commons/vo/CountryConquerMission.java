@@ -39,7 +39,9 @@ package de.hochschule.bremen.minerva.commons.vo;
  * 
  */
 public class CountryConquerMission extends Mission  {
-	
+
+	private static final long serialVersionUID = -2210702472421754330L;
+
 	private short countOfCountriesToConquer;
 	
 	/**

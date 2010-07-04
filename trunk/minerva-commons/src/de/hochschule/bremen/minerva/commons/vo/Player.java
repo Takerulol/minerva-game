@@ -34,6 +34,8 @@ import java.util.Vector;
 
 public class Player extends ValueObject {
 
+	private static final long serialVersionUID = 7418077623158348704L;
+
 	private int id = DEFAULT_ID;
 	private String username = null;
 	private String password = null;

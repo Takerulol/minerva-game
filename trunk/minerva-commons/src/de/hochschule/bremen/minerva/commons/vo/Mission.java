@@ -38,6 +38,8 @@ package de.hochschule.bremen.minerva.commons.vo;
  */
 public class Mission extends ValueObject {
 
+	private static final long serialVersionUID = -3477343098235969938L;
+
 	private Player missionOwner = null;
 
 	protected String title = null;

@@ -29,7 +29,12 @@
  */
 package de.hochschule.bremen.minerva.commons.vo;
 
-public abstract class ValueObject {
+import java.io.Serializable;
+
+public abstract class ValueObject implements Serializable {
+
+	private static final long serialVersionUID = -2766664536655536808L;
+
 	protected static final int DEFAULT_ID = -1;
 	
 	/**

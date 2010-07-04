@@ -70,6 +70,8 @@ import de.hochschule.bremen.minerva.commons.vo.World;
  */
 public class WorldFile extends World {
 
+	private static final long serialVersionUID = 2897911590755137328L;
+
 	private static final String WORLD_FILE_EXTENSION = ".world";
 	private static final String WORLD_FILE_XML = "data.xml";
 	private static final File TEMP_DIR = new File("importer-workspace");

@@ -30,6 +30,7 @@
 
 package de.hochschule.bremen.minerva.commons.vo;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.commons.util.Die;
@@ -42,7 +43,9 @@ import de.hochschule.bremen.minerva.commons.util.Die;
  * @version $Id$
  *
  */
-public class AttackResult {
+public class AttackResult implements Serializable {
+
+	private static final long serialVersionUID = 4368417989195227318L;
 
 	private Player attacker = null;
 	private Player defender = null;
