@@ -39,7 +39,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 import de.hochschule.bremen.minerva.server.manager.ApplicationConfigurationManager;
-import de.hochschule.bremen.minerva.vo.ApplicationConfiguration;
+import de.hochschule.bremen.minerva.server.vo.ApplicationConfiguration;
 
 /**
  * Represents the background image in all main panels.

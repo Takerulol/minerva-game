@@ -45,7 +45,7 @@ import java.util.Map.Entry;
 import de.hochschule.bremen.minerva.commons.exceptions.AppConfigurationNotFoundException;
 import de.hochschule.bremen.minerva.commons.exceptions.AppConfigurationNotReadableException;
 import de.hochschule.bremen.minerva.commons.exceptions.AppConfigurationNotWritableException;
-import de.hochschule.bremen.minerva.vo.ApplicationConfiguration;
+import de.hochschule.bremen.minerva.server.vo.ApplicationConfiguration;
 
 /**
  * The application configuration manager.

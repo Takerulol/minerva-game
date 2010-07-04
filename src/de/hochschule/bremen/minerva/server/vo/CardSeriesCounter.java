@@ -28,7 +28,7 @@
  * 
  */
 
-package de.hochschule.bremen.minerva.vo;
+package de.hochschule.bremen.minerva.server.vo;
 
 /**
  * Counter for released card series.
