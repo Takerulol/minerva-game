@@ -27,7 +27,10 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.vo;
+package de.hochschule.bremen.minerva.server.vo;
+
+import de.hochschule.bremen.minerva.commons.vo.ValueObject;
+import de.hochschule.bremen.minerva.server.manager.ApplicationConfigurationManager;
 
 /**
  * A value object that encapsulate the configuration from the

@@ -27,8 +27,7 @@
  *     http://minerva.idira.de
  * 
  */
-
-package de.hochschule.bremen.minerva.ui.gui.panels.subpanels;
+package de.hochschule.bremen.minerva.client.ui.gui.panels.subpanels;
 
 import java.awt.Color;
 import java.awt.Font;

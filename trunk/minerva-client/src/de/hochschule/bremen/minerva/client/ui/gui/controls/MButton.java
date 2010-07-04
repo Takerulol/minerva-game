@@ -27,7 +27,7 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.ui.gui.controls;
+package de.hochschule.bremen.minerva.client.ui.gui.controls;
 
 import java.awt.Font;
 

@@ -27,12 +27,12 @@
  *     http://minerva.idira.de
  * 
  */
-
-package de.hochschule.bremen.minerva.core.logic;
+package de.hochschule.bremen.minerva.server.core.logic;
 
 import java.util.Collections;
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.commons.vo.AttackResult;
 import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
 import de.hochschule.bremen.minerva.exceptions.CountryOwnerException;
 import de.hochschule.bremen.minerva.exceptions.IsOwnCountryException;

@@ -27,7 +27,7 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.ui.gui.controls;
+package de.hochschule.bremen.minerva.client.ui.gui.controls;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -39,11 +39,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import net.miginfocom.swing.MigLayout;
-
-import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
-import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
-import de.hochschule.bremen.minerva.vo.Player;
+import de.hochschule.bremen.minerva.client.ui.gui.resources.TextResources;
+import de.hochschule.bremen.minerva.commons.vo.Player;
 
 /**
  * The MPlayerIcon represents the detailed player view for the game
