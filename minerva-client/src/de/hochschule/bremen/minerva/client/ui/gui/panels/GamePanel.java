@@ -70,7 +70,6 @@ import de.hochschule.bremen.minerva.commons.vo.CountryCard;
 import de.hochschule.bremen.minerva.commons.vo.Mission;
 import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.PlayerState;
-import de.hochschule.bremen.minerva.client.manager.ApplicationConfigurationManager;
 
 /**
  * Prototype of the actual game screen.
@@ -130,12 +129,18 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		missionPanel.add(missionLabel);
 
 		//lower map
-		filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + this.engine.getGameWorld().getMapUnderlay();
+		//filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + this.engine.getGameWorld().getMapUnderlay();
+
+		// TODO: CLIENT-SERVER
+		filepath = null;
 		this.mapUnderlay = new MapPanel(filepath);
 		this.mapUnderlay.setBounds(0,0,500,500);
 		
 		//upper map
-		filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + this.engine.getGameWorld().getMap();
+		//filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + this.engine.getGameWorld().getMap();
+
+		// TODO: CLIENT-SERVER
+		filepath = null;
 		this.mapOverlay = new MapPanel(filepath);
 		this.mapOverlay.setBounds(0,0,500,500);
 		
