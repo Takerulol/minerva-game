@@ -97,6 +97,10 @@ public interface GameEngine {
 
 	public World getGameWorld();
 
+	public boolean isGameFinished();
+
+	public Player getGameWinner();
+
 	public void releaseCard(CountryCard card);
 
 	public void releaseCards(Vector<CountryCard> cards);
