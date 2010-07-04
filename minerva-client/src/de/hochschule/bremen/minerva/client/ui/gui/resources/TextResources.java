@@ -79,7 +79,7 @@ public interface TextResources {
 	// GamePanelControlbar
 	public static final String GAME_PANEL_CARDS = "Karten";
 	public static final String GAME_PANEL_CONTROLBAR_BUTTON_SET_ARMIES      = "Armeen setzen";
-	public static final String GAME_PANEL_CONTROLBAR_BUTTON_TURN_CARDS_IN   = "Karten eintauschen";
+	public static final String GAME_PANEL_CONTROLBAR_BUTTON_TURN_CARDS_IN   = "Karten abgeben";
 	public static final String GAME_PANEL_CONTROLBAR_BUTTON_ATTACK          = "Angriff";
 	public static final String GAME_PANEL_CONTROLBAR_BUTTON_ALLOCATE_ARMIES = "Armeen verschieben";
 	public static final String GAME_PANEL_CONTROLBAR_BUTTON_FINISH_TURN     = "Zug beenden";
