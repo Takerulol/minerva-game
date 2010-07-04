@@ -83,7 +83,7 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 	private JButton cardButton;
 	private JButton attackButton;
 	private JButton moveButton;
-	private JButton endTurnButton;
+	private JButton finishTurnButton;
 	
 	//lower half
 	private JList cardList;
@@ -146,7 +146,7 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 		this.cardButton = new JButton(GAME_PANEL_CONTROLBAR_BUTTON_TURN_CARDS_IN);
 		this.attackButton = new JButton(GAME_PANEL_CONTROLBAR_BUTTON_ATTACK);
 		this.moveButton = new JButton(GAME_PANEL_CONTROLBAR_BUTTON_ALLOCATE_ARMIES);
-		this.endTurnButton = new JButton(GAME_PANEL_CONTROLBAR_BUTTON_FINISH_TURN);
+		this.finishTurnButton = new JButton(GAME_PANEL_CONTROLBAR_BUTTON_FINISH_TURN);
 		
 		this.upperHalf.add(this.currentPlayerArea);
 		
@@ -155,7 +155,7 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 		this.upperHalf.add(this.allocatableArmies);
 		this.upperHalf.add(this.attackButton);
 		this.upperHalf.add(this.moveButton);
-		this.upperHalf.add(this.endTurnButton);
+		this.upperHalf.add(this.finishTurnButton);
 	}
 
 	/**
@@ -272,7 +272,7 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 	 */
 	public void addListeners(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
-		this.endTurnButton.addActionListener(this);
+		this.finishTurnButton.addActionListener(this);
 		this.allocateButton.addActionListener(this);
 		this.cardButton.addActionListener(this);
 		this.attackButton.addActionListener(this);
@@ -334,7 +334,7 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == this.endTurnButton) {
+		if (e.getSource() == this.finishTurnButton) {
 			MinervaGUI.getEngine().finishTurn();
 			this.gamePanel.unmarkAll();
 		} else if (e.getSource() == this.allocateButton) {
@@ -364,7 +364,6 @@ public class GamePanelControlbar extends JPanel implements ActionListener, MCont
 				MMessageBox.error("Das geht nicht.");
 			}
 		}
-
 		this.gamePanel.updatePanel();
 	}
 }
