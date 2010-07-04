@@ -218,7 +218,8 @@ public class MinervaCUI implements UserInterface {
 		try {
 			selectedWorld = this.initWorld();
 			this.game = new Game(selectedWorld, players);
-
+			this.game.start();
+			
 			this.outln(true, "## Missionen ##");
 			this.outln();
 
