@@ -1,12 +1,8 @@
 -- Common configuration
-app.name=minerva - the game
-app.version=1.0 beta
-app.icon.path=assets/userinterface/app-icon.png
-
--- Directory configuration
-directory.assets.worlds=assets/worlds/
-directory.assets.userinterface=assets/userinterface/
-directory.assets.userinterface.fileextension=.png
+app.name=minerva - the game -- server
+app.version=1.0
 
 -- Server configuration
+server.name=minerva
 server.port=9090
+server.welcome=Hier wird die Willkommensnachricht des Servers stehen.
