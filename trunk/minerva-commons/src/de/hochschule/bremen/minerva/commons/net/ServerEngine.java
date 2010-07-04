@@ -43,7 +43,7 @@ import de.hochschule.bremen.minerva.commons.vo.World;
  * @version $Id$
  * 
  */
-public interface ServerProtocol extends SimonRemote {
+public interface ServerEngine extends SimonRemote {
 
 	public Vector<World> getWorlds(boolean flatView) throws DataAccessException;
 
