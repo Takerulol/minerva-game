@@ -34,7 +34,7 @@ package de.hochschule.bremen.minerva.server.persistence.exceptions;
  * occurred. For example: file not writable (filebased persistence), database
  * not reachable (database persistence).
  * 
- * @version $Id: AppConfigurationNotFoundException.java 584 2010-07-03 18:18:01Z andre.koenig $
+ * @version $Id$
  * @since 1.0
  *
  */
