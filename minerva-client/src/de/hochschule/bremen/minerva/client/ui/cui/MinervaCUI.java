@@ -27,7 +27,7 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.ui.cui;
+package de.hochschule.bremen.minerva.client.ui.cui;
 
 import java.io.BufferedReader;
 import java.io.File;

@@ -27,8 +27,7 @@
  *     http://minerva.idira.de
  * 
  */
-
-package de.hochschule.bremen.minerva.ui.gui.panels.subpanels;
+package de.hochschule.bremen.minerva.client.ui.gui.panels.subpanels;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -47,18 +46,18 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 
-import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
-import de.hochschule.bremen.minerva.ui.gui.controls.MControl;
-import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
-import de.hochschule.bremen.minerva.ui.gui.controls.MPlayerIcon;
-import de.hochschule.bremen.minerva.ui.gui.controls.MSlidePanel;
-import de.hochschule.bremen.minerva.ui.gui.panels.GamePanel;
-import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
-import de.hochschule.bremen.minerva.vo.CavalerieCard;
-import de.hochschule.bremen.minerva.vo.CountryCard;
-import de.hochschule.bremen.minerva.vo.Player;
-import de.hochschule.bremen.minerva.vo.PlayerState;
-import de.hochschule.bremen.minerva.vo.SoldierCard;
+import de.hochschule.bremen.minerva.client.ui.gui.MinervaGUI;
+import de.hochschule.bremen.minerva.client.ui.gui.controls.MControl;
+import de.hochschule.bremen.minerva.client.ui.gui.controls.MMessageBox;
+import de.hochschule.bremen.minerva.client.ui.gui.controls.MPlayerIcon;
+import de.hochschule.bremen.minerva.client.ui.gui.controls.MSlidePanel;
+import de.hochschule.bremen.minerva.client.ui.gui.panels.GamePanel;
+import de.hochschule.bremen.minerva.client.ui.gui.resources.TextResources;
+import de.hochschule.bremen.minerva.commons.vo.CavalerieCard;
+import de.hochschule.bremen.minerva.commons.vo.CountryCard;
+import de.hochschule.bremen.minerva.commons.vo.Player;
+import de.hochschule.bremen.minerva.commons.vo.PlayerState;
+import de.hochschule.bremen.minerva.commons.vo.SoldierCard;
 
 /**
  * Panel sliced in halves. The upper half contains current player, allocatable
@@ -71,8 +70,7 @@ import de.hochschule.bremen.minerva.vo.SoldierCard;
  * @since 1.0
  * 
  */
-public class GamePanelControlbar extends JPanel implements ActionListener,
-		MControl, TextResources {
+public class GamePanelControlbar extends JPanel implements ActionListener, MControl, TextResources {
 
 	private int relativeHeight;
 	private MSlidePanel slidePanel;

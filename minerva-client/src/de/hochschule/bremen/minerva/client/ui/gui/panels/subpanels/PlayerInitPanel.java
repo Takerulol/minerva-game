@@ -27,19 +27,16 @@
  *     http://minerva.idira.de
  * 
  */
-
-package de.hochschule.bremen.minerva.ui.gui.panels.subpanels;
+package de.hochschule.bremen.minerva.client.ui.gui.panels.subpanels;
 
 import java.util.Vector;
 
 import javax.swing.JPanel;
 
-import net.miginfocom.swing.MigLayout;
-
-import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
-import de.hochschule.bremen.minerva.ui.gui.controls.MPlayerIcon;
-import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
-import de.hochschule.bremen.minerva.vo.Player;
+import de.hochschule.bremen.minerva.client.ui.gui.MinervaGUI;
+import de.hochschule.bremen.minerva.client.ui.gui.controls.MPlayerIcon;
+import de.hochschule.bremen.minerva.client.ui.gui.resources.TextResources;
+import de.hochschule.bremen.minerva.commons.vo.Player;
 
 /**
  * This sub panel shows all logged in players.

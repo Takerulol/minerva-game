@@ -27,8 +27,7 @@
  *     http://minerva.idira.de
  * 
  */
-
-package de.hochschule.bremen.minerva.manager;
+package de.hochschule.bremen.minerva.server.manager;
 
 import java.io.File;
 import java.util.Vector;

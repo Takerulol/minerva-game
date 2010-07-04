@@ -27,8 +27,7 @@
  *     http://minerva.idira.de
  * 
  */
-
-package de.hochschule.bremen.minerva.ui.gui.controls;
+package de.hochschule.bremen.minerva.client.ui.gui.controls;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -37,7 +36,7 @@ import java.awt.Rectangle;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-import de.hochschule.bremen.minerva.ui.gui.panels.subpanels.GamePanelControlbar;
+import de.hochschule.bremen.minerva.client.ui.gui.panels.subpanels.GamePanelControlbar;
 
 /**
  * A slide panel, which can, well, slide up and slide down.

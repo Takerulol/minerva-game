@@ -27,11 +27,11 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.ui.gui.controls;
+package de.hochschule.bremen.minerva.client.ui.gui.controls;
 
 import javax.swing.JOptionPane;
 
-import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
+import de.hochschule.bremen.minerva.client.ui.gui.resources.TextResources;
 
 /**
  * Own minerva message box. The "M" stands for Minerva ;)
