@@ -34,6 +34,8 @@ import java.util.Vector;
 
 import javax.swing.JPanel;
 
+import net.miginfocom.swing.MigLayout;
+
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MPlayerIcon;
 import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
@@ -57,9 +59,10 @@ public class PlayerInitPanel extends JPanel implements TextResources {
 	public PlayerInitPanel() {
 		Vector<Player> players = MinervaGUI.getEngine().getPlayers();
 		this.setOpaque(false);
+		this.setLayout(new MigLayout());
 
 		for (Player player : players) {
-			this.add(new MPlayerIcon(player));
+			this.add(new MPlayerIcon(player), "wrap");
 		}
 	}
 }
