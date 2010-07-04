@@ -29,6 +29,8 @@
  */
 package de.hochschule.bremen.minerva.commons.exceptions;
 
+import java.io.Serializable;
+
 import de.hochschule.bremen.minerva.commons.vo.Player;
 
 /**
@@ -38,7 +40,7 @@ import de.hochschule.bremen.minerva.commons.vo.Player;
  * @version $Id$
  * 
  */
-public class WrongPasswordException extends Exception {
+public class WrongPasswordException extends Exception implements Serializable {
 
 	private static final long serialVersionUID = -1230371904260038828L;
 

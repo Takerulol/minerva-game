@@ -29,6 +29,8 @@
  */
 package de.hochschule.bremen.minerva.commons.exceptions;
 
+import java.io.Serializable;
+
 import de.hochschule.bremen.minerva.commons.vo.Player;
 
 /**
@@ -39,7 +41,7 @@ import de.hochschule.bremen.minerva.commons.vo.Player;
  * @since 1.0
  *
  */
-public class NoPlayerSlotAvailableException extends Exception {
+public class NoPlayerSlotAvailableException extends Exception implements Serializable {
 
 	private static final long serialVersionUID = -8232340455822078275L;
 

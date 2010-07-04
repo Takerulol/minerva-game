@@ -31,6 +31,8 @@ package de.hochschule.bremen.minerva.commons.exceptions;
 
 import java.io.Serializable;
 
+import de.root1.simon.exceptions.SimonRemoteException;
+
 /**
  * This exception is a heavy one. If this exception will be thrown
  * it is an indication that something with the storage subsystem went wrong.
@@ -54,4 +56,8 @@ public class DataAccessException extends Exception implements Serializable {
 		super("Beim Zugriff auf gespeicherte Daten ist ein schwerwiegender Fehler aufgetreten: \n\n"+message);
 	}
 
+	public DataAccessException(SimonRemoteException e) {
+		super("Bei der Kommunikation mit dem Server ist ein schwerwiegender Fehler aufgetreten: \n\n"+e.getMessage());
+	}
+	
 }
