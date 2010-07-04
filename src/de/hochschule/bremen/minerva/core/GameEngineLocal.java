@@ -57,8 +57,8 @@ import de.hochschule.bremen.minerva.commons.vo.Mission;
 import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.World;
 import de.hochschule.bremen.minerva.commons.vo.AttackResult;
-import de.hochschule.bremen.minerva.core.logic.Game;
-import de.hochschule.bremen.minerva.core.logic.Turn;
+import de.hochschule.bremen.minerva.server.core.logic.Game;
+import de.hochschule.bremen.minerva.server.core.logic.Turn;
 import de.hochschule.bremen.minerva.server.manager.AccountManager;
 import de.hochschule.bremen.minerva.server.manager.WorldManager;
 
