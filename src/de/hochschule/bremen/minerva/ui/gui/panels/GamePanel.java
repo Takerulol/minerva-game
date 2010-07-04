@@ -152,6 +152,15 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 
 		for (Country country : this.engine.getGameWorld().getCountries()) {
 			MArmyCountIcon aci = new MArmyCountIcon(Color.RED, countryAnchors.get(country));
+			aci.addMouseListener(new MMouseListener() {
+				public void mouseClicked(MouseEvent e) {
+					GamePanel.this.unmarkAll();
+					Color color = ColorTool.fromInteger(GamePanel.this.mapUnderlay.getMapImage().getRGB(((MArmyCountIcon)e.getSource()).getX()+15, ((MArmyCountIcon)e.getSource()).getY()+15));
+					Country country = GamePanel.this.engine.getGameWorld().getCountry(color);
+					GamePanel.this.mapInteraction(country);
+					GamePanel.this.updatePanel();
+				}
+			});
 			this.armyIcons.put(country,aci);
 			this.add(aci,-10000);
 		}
@@ -181,19 +190,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 				Color color = ColorTool.fromInteger(GamePanel.this.mapUnderlay.getMapImage().getRGB(e.getX(), e.getY()));
 				Country country = GamePanel.this.engine.getGameWorld().getCountry(color);
 
-				if (GamePanel.this.currentPlayer.getState() == PlayerState.ALLOCATE_ARMIES) {
-					GamePanel.this.allocate(country);
-				} else if (GamePanel.this.currentPlayer.getState() == PlayerState.RELEASE_CARDS) {
-					/*
-					 * Nothing will happen here.
-					 * You can't interact with the map, when you're trying to
-					 * release cards.
-					 */
-				} else if (GamePanel.this.currentPlayer.getState() == PlayerState.ATTACK) {
-					GamePanel.this.attack(country);
-				} else if (GamePanel.this.currentPlayer.getState() == PlayerState.MOVE) {
-					GamePanel.this.move(country);
-				}
+				GamePanel.this.mapInteraction(country);
 				GamePanel.this.updatePanel();
 			}
 		});
@@ -228,7 +225,11 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	 *
 	 */
 	public void TurnCardIn(CountryCard card) {
-		this.engine.releaseCard(card);
+		if (this.currentPlayer.hasCountry(card.getReference())) {
+			this.engine.releaseCard(card);
+		} else {
+			MMessageBox.error(GAME_CARD_RELEASE_ERROR_COUNTRY_UNCONQUERED);
+		}
 	}
 
 	/**
@@ -262,37 +263,44 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 				}
 			}
 		} else {
-			//setting destination country
-			this.destination = country;
-			this.armyIcons.get(country).mark(Color.YELLOW);
-			
-			this.armyIcons.get(this.source).mark(Color.YELLOW);
-			this.updatePanel();
-			try {
-				//army count input
-				int wert = Integer.parseInt(JOptionPane.showInputDialog("Wieviele Armeen " +
-						"sollen angreifen? (max: "+this.calcMaxAttackCount(this.source)+")",
-						""+(this.calcMaxAttackCount(this.source))));
+			if (!this.currentPlayer.hasCountry(country)) {
+				//setting destination country
+				this.destination = country;
+				this.armyIcons.get(country).mark(Color.YELLOW);
 				
+				this.armyIcons.get(this.source).mark(Color.YELLOW);
+				this.updatePanel();
 				try {
-					//actually attack and showing attack result afterwards
-					AttackResult ar = this.engine.attack(this.source, this.destination, wert);
-					if (ar != null) {
-						this.showAttackResult(ar);
+					//army count input
+					int wert = Integer.parseInt(JOptionPane.showInputDialog("Wieviele Armeen " +
+							"sollen angreifen? (max: "+this.calcMaxAttackCount(this.source)+")",
+							""+(this.calcMaxAttackCount(this.source))));
+					
+					try {
+						//actually attack and showing attack result afterwards
+						AttackResult ar = this.engine.attack(this.source, this.destination, wert);
+						if (ar != null) {
+							this.showAttackResult(ar);
+						}
+					} catch (CountriesNotInRelationException e) {
+						MMessageBox.error(e.getMessage());
+					} catch (NotEnoughArmiesException e) {
+						MMessageBox.error(e.getMessage());
+					} catch (IsOwnCountryException e) {
+						MMessageBox.error(e.getMessage());
 					}
-				} catch (CountriesNotInRelationException e) {
-					MMessageBox.error(e.getMessage());
-				} catch (NotEnoughArmiesException e) {
-					MMessageBox.error(e.getMessage());
-				} catch (IsOwnCountryException e) {
-					MMessageBox.error(e.getMessage());
+				} catch (NumberFormatException e1) {
+					//no need, just to make sure that the method doesn't end
 				}
-			} catch (NumberFormatException e1) {
-				//no need, just to make sure that the method doesn't end
+			
+				this.source = null;
+				this.destination = null;
+			} else {
+				this.unmarkAll();
+				this.source = null;
+				this.destination = null;
+				MMessageBox.error(GAME_ATTACK_ERROR_SAME_COUNTRY);
 			}
-		
-			this.source = null;
-			this.destination = null;
 		}	
 	}
 
@@ -500,6 +508,26 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 			return 3;
 		} else {
 			return armyCount-1;
+		}
+	}
+
+	/**
+	 * Interaction with the map when clicking on it.
+	 * @param country country clicked on
+	 */
+	private void mapInteraction(Country country) {
+		if (this.currentPlayer.getState() == PlayerState.ALLOCATE_ARMIES) {
+			this.allocate(country);
+		} else if (this.currentPlayer.getState() == PlayerState.RELEASE_CARDS) {
+			/*
+			 * Nothing will happen here.
+			 * You can't interact with the map, when you're trying to
+			 * release cards.
+			 */
+		} else if (this.currentPlayer.getState() == PlayerState.ATTACK) {
+			this.attack(country);
+		} else if (this.currentPlayer.getState() == PlayerState.MOVE) {
+			this.move(country);
 		}
 	}
 }
