@@ -1,0 +1,40 @@
+<project name="minerva-game" basedir="." default="install-database">
+	<property file="build.properties" />
+
+	<path id="libraries">
+    	<fileset dir="${lib.dir}">
+      		<include name="*.jar"/>
+    	</fileset>
+  	</path>
+ 
+	<target name="clean-database">
+    	<delete dir="${db.dir}"/>
+  	</target>
+ 
+	<target name="install-database" depends="clean-database">
+    	<java fork="true" classname="org.apache.derby.tools.ij" classpathref="libraries">
+      		<sysproperty key="ij.connection.myDB" value="jdbc:derby:${db.dir};create=true" />
+      		<arg value="${sql.dir}/databasemodel.sql"/>
+		</java>
+	</target>
+
+	<target name="clean-importable-worlds">
+		  <delete file="${importer.dir}/original.world"/>
+		  <delete file="${importer.dir}/bremen.world"/>
+		  <delete file="${importer.dir}/germany.world"/>
+	</target>
+		
+	<target name="build-importable-worlds" depends="clean-importable-worlds, _build-importable-world-original, _build-importable-world-bremen, _build-importable-world-germany"></target>
+	
+	<target name="_build-importable-world-original">
+		<zip destfile="${importer.dir}/original.world" basedir="${importer.original.dir}" excludes="${importer.excludes}" />
+	</target>
+
+	<target name="_build-importable-world-bremen">
+		<zip destfile="${importer.dir}/bremen.world" basedir="${importer.bremen.dir}" excludes="${importer.excludes}" />
+	</target>
+
+	<target name="_build-importable-world-germany">
+		<zip destfile="${importer.dir}/germany.world" basedir="${importer.germany.dir}" excludes="${importer.excludes}" />
+	</target>
+</project>
