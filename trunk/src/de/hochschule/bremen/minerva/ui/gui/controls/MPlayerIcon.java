@@ -42,7 +42,7 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 
 import de.hochschule.bremen.minerva.commons.vo.Player;
-import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
+import de.hochschule.bremen.minerva.server.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
 
 /**

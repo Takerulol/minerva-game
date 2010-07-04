@@ -44,7 +44,7 @@ import de.hochschule.bremen.minerva.commons.exceptions.AppConfigurationNotFoundE
 import de.hochschule.bremen.minerva.commons.exceptions.AppConfigurationNotReadableException;
 import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.core.GameEngineLocal;
-import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
+import de.hochschule.bremen.minerva.server.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.ui.UserInterface;
 import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
 import de.hochschule.bremen.minerva.ui.gui.listener.MWindowListener;
