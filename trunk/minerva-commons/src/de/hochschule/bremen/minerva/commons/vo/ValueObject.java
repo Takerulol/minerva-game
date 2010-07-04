@@ -27,7 +27,7 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.vo;
+package de.hochschule.bremen.minerva.commons.vo;
 
 public abstract class ValueObject {
 	protected static final int DEFAULT_ID = -1;

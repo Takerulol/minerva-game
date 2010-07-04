@@ -27,7 +27,7 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.vo;
+package de.hochschule.bremen.minerva.commons.vo;
 /**
  * The Mission.class is the upper class of the three sub classes and 
  * contains the method isFulfilled. 

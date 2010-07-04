@@ -27,14 +27,13 @@
  *     http://minerva.idira.de
  * 
  */
-
-package de.hochschule.bremen.minerva.vo;
+package de.hochschule.bremen.minerva.commons.vo;
 
 import java.awt.Color;
 import java.util.Vector;
 
-import de.hochschule.bremen.minerva.util.ColorTool;
-import de.hochschule.bremen.minerva.util.CountryGraph;
+import de.hochschule.bremen.minerva.commons.util.ColorTool;
+import de.hochschule.bremen.minerva.commons.util.CountryGraph;
 
 /**
  * Represents a world with countries and a country graph, which

@@ -27,16 +27,16 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.util;
+package de.hochschule.bremen.minerva.commons.util;
 
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
-import de.hochschule.bremen.minerva.vo.Country;
-import de.hochschule.bremen.minerva.vo.ValueObject;
-import de.hochschule.bremen.minerva.vo.World;
+import de.hochschule.bremen.minerva.commons.vo.Country;
+import de.hochschule.bremen.minerva.commons.vo.ValueObject;
+import de.hochschule.bremen.minerva.commons.vo.World;
 
 /**
  * Provides some helper methods for map processing.
