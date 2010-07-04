@@ -47,6 +47,14 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
+import de.hochschule.bremen.minerva.commons.exceptions.CountriesNotInRelationException;
+import de.hochschule.bremen.minerva.commons.exceptions.CountryOwnerException;
+import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.commons.exceptions.IsOwnCountryException;
+import de.hochschule.bremen.minerva.commons.exceptions.NotEnoughArmiesException;
+import de.hochschule.bremen.minerva.commons.util.ColorTool;
+import de.hochschule.bremen.minerva.commons.util.Die;
+import de.hochschule.bremen.minerva.commons.util.MapTool;
 import de.hochschule.bremen.minerva.commons.vo.Country;
 import de.hochschule.bremen.minerva.commons.vo.CountryCard;
 import de.hochschule.bremen.minerva.commons.vo.Mission;
@@ -55,11 +63,6 @@ import de.hochschule.bremen.minerva.commons.vo.PlayerState;
 import de.hochschule.bremen.minerva.core.GameEngine;
 import de.hochschule.bremen.minerva.core.GameEngineLocal;
 import de.hochschule.bremen.minerva.core.logic.AttackResult;
-import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
-import de.hochschule.bremen.minerva.exceptions.CountryOwnerException;
-import de.hochschule.bremen.minerva.exceptions.DataAccessException;
-import de.hochschule.bremen.minerva.exceptions.IsOwnCountryException;
-import de.hochschule.bremen.minerva.exceptions.NotEnoughArmiesException;
 import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MArmyCountIcon;
@@ -69,9 +72,6 @@ import de.hochschule.bremen.minerva.ui.gui.controls.MSlidePanel;
 import de.hochschule.bremen.minerva.ui.gui.listener.MMouseListener;
 import de.hochschule.bremen.minerva.ui.gui.panels.subpanels.GamePanelControlbar;
 import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
-import de.hochschule.bremen.minerva.util.ColorTool;
-import de.hochschule.bremen.minerva.util.Die;
-import de.hochschule.bremen.minerva.util.MapTool;
 
 /**
  * Prototype of the actual game screen.

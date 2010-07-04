@@ -27,29 +27,22 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
+package de.hochschule.bremen.minerva.commons.exceptions;
 
-import de.hochschule.bremen.minerva.commons.vo.Country;
+import de.hochschule.bremen.minerva.commons.vo.Player;
 
 /**
- * Two given countries are no neighbours.
+ * Tried to create a player that already exists.
  *
  * @since 1.0
  * @version $Id$
  * 
  */
-public class CountriesNotInRelationException extends Exception {
+public class PlayerExistsException extends Exception {
 
-	private static final long serialVersionUID = -1737514955696140981L;
+	private static final long serialVersionUID = 8837960380733208195L;
 
-	/**
-	 * Countries are not "connected".
-	 * 
-	 * @param one The first country.
-	 * @param two The second country.
-	 * 
-	 */
-	public CountriesNotInRelationException(Country one, Country two) {
-		super("Die Länder '"+one.getName()+"' und '"+two.getName()+"' sind nicht benachbart.");
+	public PlayerExistsException(Player player) {
+		super("Der Account mit dem Usernamen '"+player.getUsername()+"' existiert bereits und kann nicht erneut erstellt werden.");
 	}
 }

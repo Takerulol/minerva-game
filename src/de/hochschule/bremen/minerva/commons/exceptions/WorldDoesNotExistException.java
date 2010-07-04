@@ -27,22 +27,26 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
+package de.hochschule.bremen.minerva.commons.exceptions;
 
-import de.hochschule.bremen.minerva.commons.vo.Player;
+import de.hochschule.bremen.minerva.commons.vo.World;
 
 /**
- * Tried to create a player that already exists.
+ * Tried to request an world that does not exist.
  *
  * @since 1.0
  * @version $Id$
  * 
  */
-public class PlayerExistsException extends Exception {
+public class WorldDoesNotExistException extends Exception {
 
-	private static final long serialVersionUID = 8837960380733208195L;
+	private static final long serialVersionUID = 358043147516691019L;
 
-	public PlayerExistsException(Player player) {
-		super("Der Account mit dem Usernamen '"+player.getUsername()+"' existiert bereits und kann nicht erneut erstellt werden.");
+	public WorldDoesNotExistException(World world) {
+		super("Die Welt '"+world.getName()+"' existiert nicht.");
+	}
+
+	public WorldDoesNotExistException(int id) {
+		super("Die Welt mit der ID '"+id+"' existiert nicht.");
 	}
 }

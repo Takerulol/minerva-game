@@ -42,9 +42,9 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotFoundException;
-import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotReadableException;
-import de.hochschule.bremen.minerva.exceptions.AppConfigurationNotWritableException;
+import de.hochschule.bremen.minerva.commons.exceptions.AppConfigurationNotFoundException;
+import de.hochschule.bremen.minerva.commons.exceptions.AppConfigurationNotReadableException;
+import de.hochschule.bremen.minerva.commons.exceptions.AppConfigurationNotWritableException;
 import de.hochschule.bremen.minerva.vo.ApplicationConfiguration;
 
 /**

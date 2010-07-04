@@ -27,27 +27,29 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
+package de.hochschule.bremen.minerva.commons.exceptions;
 
-import java.io.File;
+import de.hochschule.bremen.minerva.commons.vo.Player;
 
 /**
- * Exception that will be thrown if it is not possible to
- * store an world (e. g. hurt a unique-constraint, etc.).
- *  
+ * Exception that will thrown if someone tried to do something
+ * that is not possible while the game is running.
+ * 
  * @since 1.0
  * @version $Id$
  *
  */
-public class WorldNotStorable extends Exception {
+public class GameAlreadyStartedException extends Exception {
 
-	private static final long serialVersionUID = 8868184972756654993L;
+	private static final long serialVersionUID = -4647868292826391391L;
 
-	public WorldNotStorable(String reason) {
-		super("Beim Speichern einer Welt ist ein schwerwiegender Fehler aufgetreten. Grund: "+reason);
-	}
-
-	public WorldNotStorable(File worldFile, boolean playerIsntMaster) {
-		super("Die Welt: '"+worldFile.getName()+"' kann nicht gespeichert werden, weil der Spieler nicht der Gamemaster ist.");
+	/**
+	 * Exception if we try to add a new player to a already running game.
+	 * 
+	 * @param player Tried to add this player.
+	 * 
+	 */
+	public GameAlreadyStartedException(Player player) {
+		super("Die Spiel-Session wurde bereits gestartet. Der Spieler '" + player.getUsername() + "' kann somit nicht mehr hinzugefügt werden.");
 	}
 }

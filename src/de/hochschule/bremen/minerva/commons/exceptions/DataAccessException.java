@@ -27,21 +27,29 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
+package de.hochschule.bremen.minerva.commons.exceptions;
 
 /**
- * Exception that will thrown if no player is logged but tried to
- * start a new game session.
+ * This exception is a heavy one. If this exception will be thrown
+ * it is an indication that something with the storage subsystem went wrong.
+ * The best way is to quit minerva and inform the admin ;)
  *
  * @since 1.0
  * @version $Id$
  * 
  */
-public class NoPlayerLoggedInException extends Exception {
-	
-	private static final long serialVersionUID = 2618146650212037950L;
+public class DataAccessException extends Exception {
 
-	public NoPlayerLoggedInException() {
-		super("Um ein Spiel starten zu können, muss mehr als ein Spieler eingeloggt sein.");
+	private static final long serialVersionUID = -5068821212470257120L;
+
+	/**
+	 * A common data access error occurred.
+	 * 
+	 * @param message The reason.
+	 * 
+	 */
+	public DataAccessException(String message) {
+		super("Beim Zugriff auf gespeicherte Daten ist ein schwerwiegender Fehler aufgetreten: \n\n"+message);
 	}
+
 }

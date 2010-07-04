@@ -27,24 +27,27 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
-
-import de.hochschule.bremen.minerva.commons.vo.Country;
-import de.hochschule.bremen.minerva.commons.vo.Player;
+package de.hochschule.bremen.minerva.commons.exceptions;
 
 /**
- * Exception that will thrown if a player tried to attack an own country.
- *
- * @since 1.0
- * @version $Id$
+ * If the application configuration is not available.
  * 
+ * @version $Id$
+ * @since 1.0
+ *
  */
-public class IsOwnCountryException extends Exception{
+public class AppConfigurationNotFoundException extends Exception {
 
-	private static final long serialVersionUID = 7190313840475162965L;
+	private static final long serialVersionUID = -7196558872252940085L;
 
-	public IsOwnCountryException(Player player, Country country) {
-		super("Das Land: '"+country.getName()+"' gehört dem Spieler '"+player.getUsername()+"' selbst und kann somit nicht angegriffen werden.");
+	/**
+	 * The given application configuration file wasn't found.
+	 * 
+	 * @param filename The app configuration file.
+	 *
+	 */
+	public AppConfigurationNotFoundException(String filename) {
+		super("Die Minerva Konfigurationsdatei ("+filename
+			   +") wurde nicht gefunden. Bitte stellen Sie sicher, dass die Datei im Hauptverzeichnis der Anwendung existiert.");
 	}
-
 }

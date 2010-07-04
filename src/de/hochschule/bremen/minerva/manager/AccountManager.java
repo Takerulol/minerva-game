@@ -31,16 +31,16 @@ package de.hochschule.bremen.minerva.manager;
 
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.commons.exceptions.PlayerAlreadyLoggedInException;
+import de.hochschule.bremen.minerva.commons.exceptions.PlayerDoesNotExistException;
+import de.hochschule.bremen.minerva.commons.exceptions.PlayerExistsException;
+import de.hochschule.bremen.minerva.commons.exceptions.WrongPasswordException;
+import de.hochschule.bremen.minerva.commons.util.HashTool;
 import de.hochschule.bremen.minerva.commons.vo.Player;
-import de.hochschule.bremen.minerva.exceptions.DataAccessException;
-import de.hochschule.bremen.minerva.exceptions.PlayerAlreadyLoggedInException;
-import de.hochschule.bremen.minerva.exceptions.PlayerDoesNotExistException;
-import de.hochschule.bremen.minerva.exceptions.PlayerExistsException;
-import de.hochschule.bremen.minerva.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
 import de.hochschule.bremen.minerva.persistence.exceptions.PlayerNotFoundException;
 import de.hochschule.bremen.minerva.persistence.service.PlayerService;
-import de.hochschule.bremen.minerva.util.HashTool;
 
 /**
  * The login and registration subsystem.

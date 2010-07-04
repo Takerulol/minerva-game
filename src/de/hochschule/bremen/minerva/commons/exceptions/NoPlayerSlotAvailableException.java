@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id$
+ * $Id: NoPlayerLoggedInException.java 306 2010-06-01 17:13:10Z andre.koenig $
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,32 +27,23 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
+package de.hochschule.bremen.minerva.commons.exceptions;
 
 import de.hochschule.bremen.minerva.commons.vo.Player;
 
 /**
- * Tried to do a operation on an non-existing player.
+ * Exception, that will thrown if no player slot is available
+ * in a existing game (full).
  *
+ * @version $Id: MPlayerIcon.java 550 2010-07-02 15:36:51Z andre.koenig $
  * @since 1.0
- * @version $Id$
- * 
+ *
  */
-public class PlayerDoesNotExistException extends Exception {
+public class NoPlayerSlotAvailableException extends Exception {
 
-	private static final String MESSAGE_VERIFY_YOUR_INPUT = "Bitte überprüfen Sie Ihre Angaben.";
+	private static final long serialVersionUID = -8232340455822078275L;
 
-	private static final long serialVersionUID = 6034698563212835072L;
-
-	public PlayerDoesNotExistException(Player player) {
-		super("Der Spieler '"+player.getUsername()+"' existiert nicht. "+MESSAGE_VERIFY_YOUR_INPUT);
-	}
-
-	public PlayerDoesNotExistException(int id) {
-		super("Der Spieler mit der ID '"+id+"' existiert nicht. "+MESSAGE_VERIFY_YOUR_INPUT);
-	}
-
-	public PlayerDoesNotExistException(String username) {
-		super("Der Spieler mit dem Benutzernamen '"+username+"' existiert nicht. "+MESSAGE_VERIFY_YOUR_INPUT);
+	public NoPlayerSlotAvailableException(Player player) {
+		super("Der Spieler '"+player.getUsername()+"' kann dem Spiel nicht mehr hinzugefügt werden. Kein freier Platz verfügbar.");
 	}
 }

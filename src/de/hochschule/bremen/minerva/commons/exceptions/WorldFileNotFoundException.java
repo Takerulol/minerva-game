@@ -27,21 +27,23 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
+package de.hochschule.bremen.minerva.commons.exceptions;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 
 /**
- * Exception that will thrown if someone tried to do something
- * that is not possible if no world was defined (e. g. starting a game).
- * 
+ * The importable world file was not found.
+ *
  * @since 1.0
  * @version $Id$
- *
+ * 
  */
-public class WorldNotDefinedException extends Exception {
+public class WorldFileNotFoundException extends FileNotFoundException {
 
-	private static final long serialVersionUID = 8968129980548498952L;
+	private static final long serialVersionUID = -5573616752872323846L;
 
-	public WorldNotDefinedException() {
-		super("Es wurde keine Welt definiert.");
-	}	
+	public WorldFileNotFoundException(File worldFile) {
+		super("Die World-Datei: '"+worldFile.getAbsolutePath()+"' wurde nicht gefunden.");
+	}
 }

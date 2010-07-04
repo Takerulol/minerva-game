@@ -2,7 +2,7 @@
  * Minerva - Game, Copyright 2010 Christian Bollmann, Carina Strempel, André König
  * Hochschule Bremen - University of Applied Sciences - All Rights Reserved.
  *
- * $Id: NoPlayerLoggedInException.java 306 2010-06-01 17:13:10Z andre.koenig $
+ * $Id$
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,23 +27,21 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
-
-import de.hochschule.bremen.minerva.commons.vo.Player;
+package de.hochschule.bremen.minerva.commons.exceptions;
 
 /**
- * Exception, that will thrown if no player slot is available
- * in a existing game (full).
+ * Exception that will thrown if no player is logged but tried to
+ * start a new game session.
  *
- * @version $Id: MPlayerIcon.java 550 2010-07-02 15:36:51Z andre.koenig $
  * @since 1.0
- *
+ * @version $Id$
+ * 
  */
-public class NoPlayerSlotAvailableException extends Exception {
+public class NoPlayerLoggedInException extends Exception {
+	
+	private static final long serialVersionUID = 2618146650212037950L;
 
-	private static final long serialVersionUID = -8232340455822078275L;
-
-	public NoPlayerSlotAvailableException(Player player) {
-		super("Der Spieler '"+player.getUsername()+"' kann dem Spiel nicht mehr hinzugefügt werden. Kein freier Platz verfügbar.");
+	public NoPlayerLoggedInException() {
+		super("Um ein Spiel starten zu können, muss mehr als ein Spieler eingeloggt sein.");
 	}
 }

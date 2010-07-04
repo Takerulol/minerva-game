@@ -27,24 +27,30 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
+package de.hochschule.bremen.minerva.commons.exceptions;
 
-import java.util.Vector;
-
-import de.hochschule.bremen.minerva.commons.vo.Player;
+import de.hochschule.bremen.minerva.commons.vo.Country;
 
 /**
- * Not enough players logged in for starting a new game.
+ * Tried to attack a country with no enough armies.
  *
  * @since 1.0
  * @version $Id$
  * 
  */
-public class NotEnoughPlayersLoggedInException extends Exception {
+public class NotEnoughArmiesException extends Exception{
 
-	private static final long serialVersionUID = 7058149089226110325L;
+	private static final long serialVersionUID = 1508846470029928606L;
 
-	public NotEnoughPlayersLoggedInException(Vector<Player> players) {
-		super("Es wird mehr als ein Spieler benötigt, um das Spiel starten zu können.");
+	public NotEnoughArmiesException() {
+		super();
+	}
+	
+	public NotEnoughArmiesException(Country attackerCountry, Country defenderCountry) {
+		super("Das Land '"+attackerCountry.getName()+"' besitzt nur noch "+attackerCountry.getArmyCount()+" Einheiten und kann das Land '"+defenderCountry.getName()+"' somit nicht angreifen.");
+	}
+
+	public NotEnoughArmiesException(Country from, int armyCount, boolean move) {
+		super(armyCount+" Einheite(n) sind nicht auf dem Land '"+from.getName()+"' zum Verschieben verfügbar.");
 	}
 }

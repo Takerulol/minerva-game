@@ -27,30 +27,28 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
-
-import de.hochschule.bremen.minerva.commons.vo.Country;
+package de.hochschule.bremen.minerva.commons.exceptions;
 
 /**
- * Tried to attack a country with no enough armies.
- *
- * @since 1.0
- * @version $Id$
+ * If the application configuration was not readable.
  * 
+ * @version $Id$
+ * @since 1.0
+ *
  */
-public class NotEnoughArmiesException extends Exception{
+public class AppConfigurationNotReadableException extends Exception {
 
-	private static final long serialVersionUID = 1508846470029928606L;
+	private static final long serialVersionUID = -2500309913939436304L;
 
-	public NotEnoughArmiesException() {
-		super();
-	}
-	
-	public NotEnoughArmiesException(Country attackerCountry, Country defenderCountry) {
-		super("Das Land '"+attackerCountry.getName()+"' besitzt nur noch "+attackerCountry.getArmyCount()+" Einheiten und kann das Land '"+defenderCountry.getName()+"' somit nicht angreifen.");
-	}
-
-	public NotEnoughArmiesException(Country from, int armyCount, boolean move) {
-		super(armyCount+" Einheite(n) sind nicht auf dem Land '"+from.getName()+"' zum Verschieben verfügbar.");
+	/**
+	 * The given app configuration file was not readable.
+	 * 
+	 * @param filename The app configuration file.
+	 * @param reason The technical reason.
+	 *
+	 */
+	public AppConfigurationNotReadableException(String filename, String reason) {
+		super("Die Minerva Konfigurationsdatei ("+filename
+			   +") kann nicht gelesen werden. Grund: "+reason);
 	}
 }

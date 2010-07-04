@@ -39,9 +39,9 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
 
+import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.commons.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.commons.vo.Player;
-import de.hochschule.bremen.minerva.exceptions.DataAccessException;
-import de.hochschule.bremen.minerva.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
 import de.hochschule.bremen.minerva.ui.gui.controls.MPasswordField;

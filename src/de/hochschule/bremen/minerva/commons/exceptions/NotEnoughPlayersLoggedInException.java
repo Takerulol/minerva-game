@@ -27,22 +27,24 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
+package de.hochschule.bremen.minerva.commons.exceptions;
+
+import java.util.Vector;
 
 import de.hochschule.bremen.minerva.commons.vo.Player;
 
 /**
- * Tried to login a player twice.
+ * Not enough players logged in for starting a new game.
  *
  * @since 1.0
  * @version $Id$
  * 
  */
-public class PlayerAlreadyLoggedInException extends Exception {
+public class NotEnoughPlayersLoggedInException extends Exception {
 
-	private static final long serialVersionUID = 2986054247353082420L;
+	private static final long serialVersionUID = 7058149089226110325L;
 
-	public PlayerAlreadyLoggedInException(Player player) {
-		super("Der Spieler '"+player.getUsername()+"' ist bereits eingeloggt.");
-	}	
+	public NotEnoughPlayersLoggedInException(Vector<Player> players) {
+		super("Es wird mehr als ein Spieler benötigt, um das Spiel starten zu können.");
+	}
 }

@@ -27,28 +27,22 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
+package de.hochschule.bremen.minerva.commons.exceptions;
+
+import de.hochschule.bremen.minerva.commons.vo.World;
 
 /**
- * If the application configuration was not writable.
- * 
- * @version $Id$
- * @since 1.0
+ * Tried to save an world that already exists.
  *
+ * @since 1.0
+ * @version $Id$
+ * 
  */
-public class AppConfigurationNotWritableException extends Exception {
+public class WorldExistsException extends Exception {
 
-	private static final long serialVersionUID = 2924757645981690790L;
+	private static final long serialVersionUID = 3112375516184260775L;
 
-	/**
-	 * Was not able to write the given app configuration file.
-	 * 
-	 * @param filename The app configuration file.
-	 * @param reason The technical reason why it was not possible to write the file.
-	 *
-	 */
-	public AppConfigurationNotWritableException(String filename, String reason) {
-		super("Die Minerva Konfigurationsdatei ("+filename
-				   +") kann nicht geschrieben werden. Grund: "+reason);
+	public WorldExistsException(World world) {
+		super("Die Welt '"+world.getName()+"' existiert bereits und kann somit nicht erneut gespeichert werden.");
 	}
 }

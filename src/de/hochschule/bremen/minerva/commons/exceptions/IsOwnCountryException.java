@@ -27,26 +27,24 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
+package de.hochschule.bremen.minerva.commons.exceptions;
 
-import de.hochschule.bremen.minerva.commons.vo.World;
+import de.hochschule.bremen.minerva.commons.vo.Country;
+import de.hochschule.bremen.minerva.commons.vo.Player;
 
 /**
- * Tried to request an world that does not exist.
+ * Exception that will thrown if a player tried to attack an own country.
  *
  * @since 1.0
  * @version $Id$
  * 
  */
-public class WorldDoesNotExistException extends Exception {
+public class IsOwnCountryException extends Exception{
 
-	private static final long serialVersionUID = 358043147516691019L;
+	private static final long serialVersionUID = 7190313840475162965L;
 
-	public WorldDoesNotExistException(World world) {
-		super("Die Welt '"+world.getName()+"' existiert nicht.");
+	public IsOwnCountryException(Player player, Country country) {
+		super("Das Land: '"+country.getName()+"' gehört dem Spieler '"+player.getUsername()+"' selbst und kann somit nicht angegriffen werden.");
 	}
 
-	public WorldDoesNotExistException(int id) {
-		super("Die Welt mit der ID '"+id+"' existiert nicht.");
-	}
 }
