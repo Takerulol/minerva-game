@@ -29,7 +29,6 @@
  */
 package de.hochschule.bremen.minerva.client.ui;
 
-import de.hochschule.bremen.minerva.client.ui.cui.MinervaCUI;
 import de.hochschule.bremen.minerva.client.ui.gui.MinervaGUI;
 
 /**
@@ -49,9 +48,9 @@ public class UserInterfaceFactory {
 	 *
 	 */
 	public static UserInterface create(String[] type) {
-		if ((type.length > 0) && type[0].equals("cui")) {
+		/*if ((type.length > 0) && type[0].equals("cui")) {
 			return new MinervaCUI();
-		}
+		}*/
 		return new MinervaGUI();
 	}
 }
