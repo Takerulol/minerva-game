@@ -97,6 +97,15 @@ public class ApplicationConfigurationManager {
 
 		voReadMethodInvocationMapping.put("directory.assets.userinterface.fileextension", "setUIAssetsFileExtension");
 		voStoreMethodInvocationMapping.put("directory.assets.userinterface.fileextension", "getUIAssetsFileExtension");
+
+		voReadMethodInvocationMapping.put("server.name", "setServerName");
+		voStoreMethodInvocationMapping.put("server.name", "getServerName");
+
+		voReadMethodInvocationMapping.put("server.host", "setServerHost");
+		voStoreMethodInvocationMapping.put("server.host", "getServerHost");
+
+		voReadMethodInvocationMapping.put("server.port", "setServerPort");
+		voStoreMethodInvocationMapping.put("server.port", "getServerPort");
 	}
 
 	// The manager instance

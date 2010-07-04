@@ -6,3 +6,8 @@ app.icon.path=assets/userinterface/app-icon.png
 -- Directory configuration
 directory.assets.userinterface=assets/userinterface/
 directory.assets.userinterface.fileextension=.png
+
+-- Server configuration
+server.name=minerva
+server.host=localhost
+server.port=9090
