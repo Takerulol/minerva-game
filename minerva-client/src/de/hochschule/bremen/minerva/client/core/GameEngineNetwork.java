@@ -45,6 +45,7 @@ import de.hochschule.bremen.minerva.commons.exceptions.NoPlayerLoggedInException
 import de.hochschule.bremen.minerva.commons.exceptions.NoPlayerSlotAvailableException;
 import de.hochschule.bremen.minerva.commons.exceptions.NotEnoughArmiesException;
 import de.hochschule.bremen.minerva.commons.exceptions.NotEnoughPlayersLoggedInException;
+import de.hochschule.bremen.minerva.commons.exceptions.PlayerAlreadyLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.commons.exceptions.WorldFileExtensionException;
@@ -132,15 +133,21 @@ public class GameEngineNetwork implements GameEngine {
 	}
 
 	@Override
-	public void login(Player player) throws GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException {
-		// TODO Auto-generated method stub
-		
+	public void login(Player player) throws PlayerAlreadyLoggedInException, GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException {
+		try {
+			this.serverEngine.login(player);
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
 	}
 
 	@Override
-	public void register(Player player) throws PlayerExistsException, DataAccessException {
-		// TODO Auto-generated method stub
-		
+	public void register(Player player) throws PlayerExistsException, DataAccessException{
+		try {
+			this.serverEngine.register(player);
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
 	}
 
 	@Override
