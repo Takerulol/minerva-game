@@ -52,6 +52,7 @@ import de.hochschule.bremen.minerva.core.GameEngineLocal;
 import de.hochschule.bremen.minerva.core.logic.AttackResult;
 import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
 import de.hochschule.bremen.minerva.exceptions.CountryOwnerException;
+import de.hochschule.bremen.minerva.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.exceptions.IsOwnCountryException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughArmiesException;
 import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
@@ -441,6 +442,19 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 
 		this.repaint();
 		this.updateUI();
+		
+		//game finished?
+		if (this.engine.isGameFinished()) {
+			MMessageBox.show(GAME_FINISHED_ANNOUCEMENT+"\n"
+					+this.engine.getGameWinner().getUsername()
+					+GAME_FINISHED_WINNER);
+			try {
+				this.engine.killGame(true);
+			} catch (DataAccessException e) {
+				MMessageBox.error(e.getMessage());
+			}
+			MinervaGUI.getInstance().changePanel(new LoginPanel());
+		}
 	}
 	
 	/**

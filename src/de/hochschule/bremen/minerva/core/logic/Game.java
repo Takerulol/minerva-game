@@ -335,6 +335,13 @@ public class Game {
 				finished = true;
 			}
 		}
+		
+		//sets all players idle when game is finished.
+		if (finished) {
+			for (Player player : this.players) {
+				player.setState(PlayerState.IDLE);
+			}
+		}
 
 		return finished;
 	}
