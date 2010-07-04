@@ -5,4 +5,4 @@ app.version=1.0
 -- Server configuration
 server.name=minerva
 server.port=9090
-server.welcome=Welcome, Master. Don't be evil ... :)
+server.welcome=Welcome, Master. Yes, i'm up and running ... :)
