@@ -43,17 +43,17 @@ import de.hochschule.bremen.minerva.commons.util.WorldFile;
 import de.hochschule.bremen.minerva.commons.vo.Country;
 import de.hochschule.bremen.minerva.commons.vo.Neighbour;
 import de.hochschule.bremen.minerva.commons.vo.World;
-import de.hochschule.bremen.minerva.persistence.exceptions.ContinentExistsException;
-import de.hochschule.bremen.minerva.persistence.exceptions.ContinentNotFoundException;
-import de.hochschule.bremen.minerva.persistence.exceptions.CountryExistsException;
-import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
-import de.hochschule.bremen.minerva.persistence.exceptions.NeighbourExistsException;
-import de.hochschule.bremen.minerva.persistence.exceptions.WorldExistsException;
-import de.hochschule.bremen.minerva.persistence.exceptions.WorldNotFoundException;
-import de.hochschule.bremen.minerva.persistence.service.ContinentService;
-import de.hochschule.bremen.minerva.persistence.service.CountryService;
-import de.hochschule.bremen.minerva.persistence.service.NeighbourService;
-import de.hochschule.bremen.minerva.persistence.service.WorldService;
+import de.hochschule.bremen.minerva.server.persistence.exceptions.ContinentExistsException;
+import de.hochschule.bremen.minerva.server.persistence.exceptions.ContinentNotFoundException;
+import de.hochschule.bremen.minerva.server.persistence.exceptions.CountryExistsException;
+import de.hochschule.bremen.minerva.server.persistence.exceptions.NeighbourExistsException;
+import de.hochschule.bremen.minerva.server.persistence.exceptions.PersistenceException;
+import de.hochschule.bremen.minerva.server.persistence.exceptions.WorldExistsException;
+import de.hochschule.bremen.minerva.server.persistence.exceptions.WorldNotFoundException;
+import de.hochschule.bremen.minerva.server.persistence.service.ContinentService;
+import de.hochschule.bremen.minerva.server.persistence.service.CountryService;
+import de.hochschule.bremen.minerva.server.persistence.service.NeighbourService;
+import de.hochschule.bremen.minerva.server.persistence.service.WorldService;
 
 /**
  * The world manager is a singleton, which summarizes the functionality
