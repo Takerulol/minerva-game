@@ -54,15 +54,12 @@ public class ApplicationConfiguration extends ValueObject {
 	// # AppConfigurationManager (see: NICE SOLUTION).
 	// #
 	// #########################################################
-
 	private String appName = null;
 	private String appVersion = null;
-	private String appIconPath = null;
-	private String worldsAssetsDirectory = null;
-	private String uiAssetsDirectory = null;
-	private String uiAssetsFileExtension = null;
-	
+
+	private String serverName = null;
 	private int serverPort = 0;
+	private String serverWelcomeMessage = null;
 
 	/**
 	 * Sets the minerva application name.
@@ -104,87 +101,25 @@ public class ApplicationConfiguration extends ValueObject {
 	}
 
 	/**
-	 * Sets the app icon path.
-	 * 
-	 * @param appIconPath The icon path.
-	 * 
+	 * Sets the server name.
+	 *
+	 * @param serverName The server name.
+	 *
 	 */
-	public void setAppIconPath(String appIconPath) {
-		this.appIconPath = appIconPath;
+	public void setServerName(String serverName) {
+		this.serverName = serverName;
 	}
 
 	/**
-	 * Returns the app icon path.
-	 * 
-	 * @return The icon path.
-	 * 
+	 * Gets the server name.
+	 *
+	 * @return The server name.
+	 *
 	 */
-	public String getAppIconPath() {
-		return this.appIconPath;
-	}
-	
-	/**
-	 * Sets the worlds assets directory path.
-	 * This directory contains all the worlds related resources (e. g. map images, thumbnail, etc.)
-	 *  
-	 * @param path The string with the full path to the worlds assets.
-	 * 
-	 */
-	public void setWorldsAssetsDirectory(String path) {
-		this.worldsAssetsDirectory = path;
+	public String getServerName() {
+		return serverName;
 	}
 
-	/**
-	 * Returns the worlds assets directory path.
-	 * 
-	 * @return The path to the worlds assets.
-	 * 
-	 */
-	public String getWorldsAssetsDirectory() {
-		return worldsAssetsDirectory;
-	}
-
-	/**
-	 * Sets the user interface assets directory path.
-	 * This directory holds all user interface related resources.
-	 * 
-	 * @param path The string with the full path to the ui assets.
-	 * 
-	 */
-	public void setUIAssetsDirectory(String path) {
-		this.uiAssetsDirectory = path;
-	}
-
-	/**
-	 * Returns the ui assets directory path.
-	 * 
-	 * @return The path to the ui assets.
-	 * 
-	 */
-	public String getUIAssetsDirectory() {
-		return uiAssetsDirectory;
-	}
-
-	/**
-	 * Sets the user interface assets file extension.
-	 * 
-	 * @param fileExtension The ui assets file extension (e.g. ".jpg").
-	 * 
-	 */
-	public void setUIAssetsFileExtension(String fileExtension) {
-		this.uiAssetsFileExtension = fileExtension;
-	}
-
-	/**
-	 * Returns the user interface assets file extension.
-	 * 
-	 * @return The ui assets file extension.
-	 * 
-	 */
-	public String getUIAssetsFileExtension() {
-		return this.uiAssetsFileExtension;
-	}
-	
 	/**
 	 * Sets the socket server port.
 	 * 
@@ -205,13 +140,22 @@ public class ApplicationConfiguration extends ValueObject {
 	}
 
 	/**
-	 * Returns the application configuration in a single string.
-	 * 
-	 * @return The application configuration in a single string.
-	 * 
+	 * Sets the server welcome message.
+	 *
+	 * @param serverWelcomeMessage
+	 *
 	 */
-	@Override
-	public String toString() {
-		return this.getClass().getName() + ": [appName="+this.getAppName() + ", appVersion="+this.getAppVersion() + ", appIconPath=" + this.getAppIconPath() +", worldAssetsDir="+this.getWorldsAssetsDirectory()+ ", uiAssetsDir="+this.getUIAssetsDirectory()+", serverPort="+this.getServerPort()+"]";
+	public void setServerWelcomeMessage(String serverWelcomeMessage) {
+		this.serverWelcomeMessage = serverWelcomeMessage;
+	}
+
+	/**
+	 * Gets the server welcome message.
+	 * 
+	 * @return The server welcome message.
+	 *
+	 */
+	public String getServerWelcomeMessage() {
+		return serverWelcomeMessage;
 	}
 }
