@@ -216,7 +216,8 @@ public class WorldManager {
 	 * 
 	 */
 	public void store(File worldFile) throws WorldFileExtensionException, WorldFileNotFoundException, WorldFileParseException, WorldNotStorable, DataAccessException {
-		WorldFile world = new WorldFile(worldFile, ApplicationConfigurationManager.get().getWorldsAssetsDirectory());
+		// TODO: CLIENT-SERVER
+		WorldFile world = new WorldFile(worldFile, "");// ApplicationConfigurationManager.get().getWorldsAssetsDirectory());
 
 		world.parse();
 		this.store(world);
