@@ -40,7 +40,7 @@ import javax.swing.JPanel;
 import de.hochschule.bremen.minerva.ui.gui.panels.subpanels.GamePanelControlbar;
 
 /**
- * DOCME
+ * A slide panel, which can, well, slide up and slide down.
  *
  * @version $Id$
  * @since 1.0
@@ -55,8 +55,10 @@ public class MSlidePanel extends JPanel {
 	
 
 	/**
+	 * The constructor.
 	 * 
-	 * @param controlBar
+	 * @param controlBar The bar, which should be placed in this slider.
+	 *
 	 */
 	public MSlidePanel(GamePanelControlbar controlBar) {
 		this.controlBar = controlBar;
@@ -70,7 +72,11 @@ public class MSlidePanel extends JPanel {
 		
 		this.updateUI();
 	}
-	
+
+	/**
+	 * Slide the panel up :)
+	 *
+	 */
 	public void slideUp() {
 		if (this.isMinimized()) {
 			this.minimized = false;
@@ -78,7 +84,11 @@ public class MSlidePanel extends JPanel {
 			this.setBounds(0, r.y - this.controlBar.getRelativeHeight(), this.getPreferredSize().width, this.getPreferredSize().height);
 		}
 	}
-	
+
+	/**
+	 * Slide the panel down :)
+	 *
+	 */
 	public void slideDown() {
 		if (!this.isMinimized()) {
 			this.minimized = true;
@@ -86,21 +96,34 @@ public class MSlidePanel extends JPanel {
 			this.setBounds(0, r.y + this.controlBar.getRelativeHeight(), this.getPreferredSize().width, this.getPreferredSize().height);
 		}
 	}
-	
+
+	/**
+	 * Is the panel minimized?
+	 *
+	 * @return boolean
+	 *
+	 */
 	public boolean isMinimized() {
 		return this.minimized;
 	}
 	
 	/**
 	 * Returns embedded ControlBarPanel.
+	 *
 	 * @return control bar panel
+	 *
 	 */
 	public GamePanelControlbar getControlBar() {
 		return controlBar;
 	}
-	
+
+	/**
+	 * Returns the relative height.
+	 *
+	 * @return The height in px.
+	 *
+	 */
 	public int getRelativeHeight() {
 		return (this.controlBar.getPreferredSize().height - this.controlBar.getRelativeHeight());
 	}
-
 }
