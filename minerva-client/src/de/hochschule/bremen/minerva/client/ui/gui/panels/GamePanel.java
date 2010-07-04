@@ -47,7 +47,6 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
-import de.hochschule.bremen.minerva.client.core.GameEngineLocal;
 import de.hochschule.bremen.minerva.client.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.client.ui.gui.controls.MArmyCountIcon;
 import de.hochschule.bremen.minerva.client.ui.gui.controls.MControl;
@@ -71,7 +70,7 @@ import de.hochschule.bremen.minerva.commons.vo.CountryCard;
 import de.hochschule.bremen.minerva.commons.vo.Mission;
 import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.PlayerState;
-import de.hochschule.bremen.minerva.server.manager.ApplicationConfigurationManager;
+import de.hochschule.bremen.minerva.client.manager.ApplicationConfigurationManager;
 
 /**
  * Prototype of the actual game screen.
@@ -442,12 +441,12 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	public void updatePanel() {
 		//setting of current player when GameEngineLocal is used
 		//otherwise stays the same as the owner of this client.
-		if (this.engine instanceof GameEngineLocal) {
+		/*if (this.engine instanceof GameEngineLocal) {
 			for (Player player : this.engine.getPlayers()) {
 				if (player.getState() != PlayerState.IDLE)
 				this.currentPlayer = player;
 			}
-		}
+		}*/
 		
 		//source and destination will be reset when player is in wrong state
 		if ((this.currentPlayer.getState() == PlayerState.RELEASE_CARDS) || 

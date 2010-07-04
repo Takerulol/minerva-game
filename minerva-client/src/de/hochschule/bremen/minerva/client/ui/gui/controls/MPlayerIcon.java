@@ -42,8 +42,8 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 
 import de.hochschule.bremen.minerva.client.ui.gui.resources.TextResources;
+import de.hochschule.bremen.minerva.client.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.commons.vo.Player;
-import de.hochschule.bremen.minerva.server.manager.ApplicationConfigurationManager;
 
 /**
  * The MPlayerIcon represents the detailed player view for the game

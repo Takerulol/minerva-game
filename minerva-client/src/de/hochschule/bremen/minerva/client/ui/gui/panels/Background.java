@@ -38,8 +38,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-import de.hochschule.bremen.minerva.server.manager.ApplicationConfigurationManager;
-import de.hochschule.bremen.minerva.server.vo.ApplicationConfiguration;
+import de.hochschule.bremen.minerva.client.manager.ApplicationConfigurationManager;
+import de.hochschule.bremen.minerva.client.vo.ApplicationConfiguration;
 
 /**
  * Represents the background image in all main panels.
