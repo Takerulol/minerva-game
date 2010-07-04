@@ -94,6 +94,8 @@ public interface TextResources {
 	public static final String GAME_CARD_RELEASE_ERROR_COUNTRY_UNCONQUERED	= "Das der Länderkarte zugehörige Land ist nicht von dir besetzt.";
 	public static final String GAME_ATTACK_ERROR_SAME_COUNTRY				= "Du kannst dein eigenes Land nicht angreifen.";
 	public static final String GAME_MOVE_ERROR_SAME_COUNTRY					= "Du kannst nicht auf das selbe Land Armeen verschieben.";
+	public static final String GAME_FINISHED_ANNOUCEMENT					= "Das Spiel ist vorbei!";
+	public static final String GAME_FINISHED_WINNER							= " hat das Spiel gewonnen.";
 	
 	// -- Controls
 
