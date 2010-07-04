@@ -5,4 +5,4 @@ app.version=1.0
 -- Server configuration
 server.name=minerva
 server.port=9090
-server.welcome=Hier wird die Willkommensnachricht des Servers stehen.
+server.welcome=Welcome, Master. Don't be evil ... :)
