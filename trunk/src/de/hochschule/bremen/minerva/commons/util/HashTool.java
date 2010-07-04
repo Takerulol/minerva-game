@@ -27,57 +27,39 @@
  *     http://minerva.idira.de
  * 
  */
+package de.hochschule.bremen.minerva.commons.util;
 
-package de.hochschule.bremen.minerva.util;
-
-import java.util.Vector;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
- * A game die.
- *  
+ * Tool, that creates hashes from strings (md5 for example).
+ *
  * @since 1.0
  * @version $Id$
- *
+ * 
  */
-public class Die {
+public class HashTool {
 
-	private int number = 0;
-
+	private static String MD5_HASH_ALGORITHM = "MD5";
+	
 	/**
-	 * Rolls the dice.
+	 * Converts a string to an md5 hash
+	 * 
+	 * @param hashable The hashable string.
+	 * @return The hashed string.
 	 * 
 	 */
-	public void dice() {
-		this.number = (int)((Math.random() * 6) + 1);
-	}
-
-	/**
-	 * 
-	 * Returns the roll result.
-	 * 
-	 * @return A random value in the range: 1 - 6
-	 */
-	public int getRollResult() {
-		return this.number;
-	}
-
-	/**
-	 * Helper method, that compares a vector with dice
-	 * and returns the die with the biggest roll result.
-	 * 
-	 * @param dice The vector with dice.
-	 * @return The die with the biggest roll result.
-	 * 
-	 */
-	public static Die getLargest(Vector<Die> dice) {
-		Die output = new Die();
-		int largest = 0;
-		for (Die die : dice) {
-			if (die.getRollResult() > largest) {
-				largest = die.getRollResult();
-				output = die;
-			}
-		}
-		return output;
+	public static String md5(String hashable) {
+		MessageDigest m = null;
+		try {
+			m = MessageDigest.getInstance(MD5_HASH_ALGORITHM);
+		} catch (NoSuchAlgorithmException e) {}
+		
+		
+		m.update(hashable.getBytes(), 0, hashable.length() );
+		
+		return new BigInteger(1, m.digest()).toString(16);
 	}	
 }

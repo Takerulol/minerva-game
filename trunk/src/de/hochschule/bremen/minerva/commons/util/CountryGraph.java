@@ -28,7 +28,7 @@
  * 
  */
 
-package de.hochschule.bremen.minerva.util;
+package de.hochschule.bremen.minerva.commons.util;
 
 import de.hochschule.bremen.minerva.commons.vo.Country;
 
