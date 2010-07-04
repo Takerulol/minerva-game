@@ -30,7 +30,8 @@
 
 package de.hochschule.bremen.minerva.util;
 
-import de.hochschule.bremen.minerva.vo.Country;
+import de.hochschule.bremen.minerva.commons.vo.Country;
+
 import java.util.HashMap;
 import java.util.Vector;
 
