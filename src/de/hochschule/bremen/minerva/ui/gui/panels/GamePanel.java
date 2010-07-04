@@ -299,28 +299,30 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	/**
 	 * Converts AttackResult into dialog box message
 	 *
-	 * @param ar AttackResult
+	 * @param attackResult AttackResult
 	 *
 	 */
-	private void showAttackResult(AttackResult ar) {
-		String text = ar.getAttacker().getUsername()+" (Würfel: ";
-		
-		for (Die die : ar.getAttackerDice()) {
-			text += die.getRollResult()+" ";
+	private void showAttackResult(AttackResult attackResult) {
+		StringBuilder message = new StringBuilder();
+		message.append(attackResult.getAttacker().getUsername()).append(" (Würfel: ");
+
+		for (Die die : attackResult.getAttackerDice()) {
+			message.append(die.getRollResult()).append(" ");
 		}
-		
-		text += ") hat "+ar.getDefender().getUsername()+" (Würfel: ";
-		
-		for (Die die : ar.getDefenderDice()) {
-			text += die.getRollResult()+" ";
+
+		message.append(") hat ").append(attackResult.getDefender().getUsername()).append(" (Würfel: ");
+
+		for (Die die : attackResult.getDefenderDice()) {
+			message.append(die.getRollResult()).append(" ");
 		}
-		
-		text += ") angegriffen.\n"+ar.getAttacker().getUsername()+" hat "
-					+ar.getLostAttackerArmies()+" und "+ar.getDefender().getUsername()
-					+" hat "+ar.getLostDefenderArmies()+" Armeen verloren.\n"
-					+ar.getAttacker().getUsername()+" hat das Land "
-					+(ar.isWin() ? "erobert." : "nicht erobert.");
-		MMessageBox.show(text);
+
+		message.append(") angegriffen.\n").append(attackResult.getAttacker().getUsername()).append(" hat ");
+		message.append(attackResult.getLostAttackerArmies()).append(" und ").append(attackResult.getDefender().getUsername());
+		message.append(" hat ").append(attackResult.getLostDefenderArmies()).append(" Armeen verloren.\n");
+		message.append(attackResult.getAttacker().getUsername()).append(" hat das Land ");
+		message.append((attackResult.isWin() ? "erobert." : "nicht erobert."));
+
+		MMessageBox.show(message.toString());
 	}
 
 	/**
@@ -396,12 +398,11 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 			this.source = null;
 			this.destination = null;
 		}
-		
+
 		//if current player has no cards, card release will be skipped
 		if ((this.currentPlayer.getState() == PlayerState.RELEASE_CARDS) && (GamePanel.this.currentPlayer.getCountryCards().isEmpty())) {
 			this.currentPlayer.setState(PlayerState.ALLOCATE_ARMIES);
-		}
-		
+		}		
 
 		//refreshing army count icons
 		this.refreshArmyCounts();
