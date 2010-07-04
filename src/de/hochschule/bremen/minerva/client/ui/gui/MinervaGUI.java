@@ -50,7 +50,6 @@ import de.hochschule.bremen.minerva.commons.exceptions.AppConfigurationNotReadab
 import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.core.GameEngineLocal;
 import de.hochschule.bremen.minerva.server.manager.ApplicationConfigurationManager;
-import de.hochschule.bremen.minerva.ui.gui.panels.*;
 
 /**
  * Main frame of the game filled with JLayeredPanes which represents the all
