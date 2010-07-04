@@ -28,12 +28,11 @@
  * 
  */
 
-package de.hochschule.bremen.minerva.core.logic;
+package de.hochschule.bremen.minerva.commons.vo;
 
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.commons.util.Die;
-import de.hochschule.bremen.minerva.commons.vo.Player;
 
 /**
  * Result of one attack saving the attacker,

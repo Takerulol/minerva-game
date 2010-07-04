@@ -27,7 +27,7 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.core;
+package de.hochschule.bremen.minerva.commons.core;
 
 import java.io.File;
 import java.util.Vector;
@@ -49,12 +49,12 @@ import de.hochschule.bremen.minerva.commons.exceptions.WorldFileParseException;
 import de.hochschule.bremen.minerva.commons.exceptions.WorldNotDefinedException;
 import de.hochschule.bremen.minerva.commons.exceptions.WorldNotStorable;
 import de.hochschule.bremen.minerva.commons.exceptions.WrongPasswordException;
+import de.hochschule.bremen.minerva.commons.vo.AttackResult;
 import de.hochschule.bremen.minerva.commons.vo.Country;
 import de.hochschule.bremen.minerva.commons.vo.CountryCard;
 import de.hochschule.bremen.minerva.commons.vo.Mission;
 import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.World;
-import de.hochschule.bremen.minerva.core.logic.AttackResult;
 
 /**
  * The game engine.

@@ -32,6 +32,7 @@ package de.hochschule.bremen.minerva.core;
 import java.io.File;
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.commons.core.GameEngine;
 import de.hochschule.bremen.minerva.commons.exceptions.CountriesNotInRelationException;
 import de.hochschule.bremen.minerva.commons.exceptions.CountryOwnerException;
 import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
@@ -55,7 +56,7 @@ import de.hochschule.bremen.minerva.commons.vo.CountryCard;
 import de.hochschule.bremen.minerva.commons.vo.Mission;
 import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.World;
-import de.hochschule.bremen.minerva.core.logic.AttackResult;
+import de.hochschule.bremen.minerva.commons.vo.AttackResult;
 import de.hochschule.bremen.minerva.core.logic.Game;
 import de.hochschule.bremen.minerva.core.logic.Turn;
 import de.hochschule.bremen.minerva.manager.AccountManager;

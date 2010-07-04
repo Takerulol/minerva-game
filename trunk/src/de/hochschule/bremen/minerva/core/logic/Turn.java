@@ -39,6 +39,7 @@ import de.hochschule.bremen.minerva.commons.exceptions.IsOwnCountryException;
 import de.hochschule.bremen.minerva.commons.exceptions.NotEnoughArmiesException;
 import de.hochschule.bremen.minerva.commons.util.Die;
 import de.hochschule.bremen.minerva.commons.vo.Army;
+import de.hochschule.bremen.minerva.commons.vo.AttackResult;
 import de.hochschule.bremen.minerva.commons.vo.CanonCard;
 import de.hochschule.bremen.minerva.commons.vo.CavalerieCard;
 import de.hochschule.bremen.minerva.commons.vo.Continent;

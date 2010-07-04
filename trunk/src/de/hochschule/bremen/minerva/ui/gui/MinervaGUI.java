@@ -39,10 +39,10 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 
+import de.hochschule.bremen.minerva.commons.core.GameEngine;
 import de.hochschule.bremen.minerva.commons.exceptions.AppConfigurationNotFoundException;
 import de.hochschule.bremen.minerva.commons.exceptions.AppConfigurationNotReadableException;
 import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
-import de.hochschule.bremen.minerva.core.GameEngine;
 import de.hochschule.bremen.minerva.core.GameEngineLocal;
 import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.ui.UserInterface;
