@@ -47,6 +47,11 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 
+import de.hochschule.bremen.minerva.commons.vo.CavalerieCard;
+import de.hochschule.bremen.minerva.commons.vo.CountryCard;
+import de.hochschule.bremen.minerva.commons.vo.Player;
+import de.hochschule.bremen.minerva.commons.vo.PlayerState;
+import de.hochschule.bremen.minerva.commons.vo.SoldierCard;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MControl;
 import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;
@@ -54,11 +59,6 @@ import de.hochschule.bremen.minerva.ui.gui.controls.MPlayerIcon;
 import de.hochschule.bremen.minerva.ui.gui.controls.MSlidePanel;
 import de.hochschule.bremen.minerva.ui.gui.panels.GamePanel;
 import de.hochschule.bremen.minerva.ui.gui.resources.TextResources;
-import de.hochschule.bremen.minerva.vo.CavalerieCard;
-import de.hochschule.bremen.minerva.vo.CountryCard;
-import de.hochschule.bremen.minerva.vo.Player;
-import de.hochschule.bremen.minerva.vo.PlayerState;
-import de.hochschule.bremen.minerva.vo.SoldierCard;
 
 /**
  * Panel sliced in halves. The upper half contains current player, allocatable

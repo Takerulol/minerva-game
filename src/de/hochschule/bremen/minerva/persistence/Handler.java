@@ -31,10 +31,10 @@ package de.hochschule.bremen.minerva.persistence;
 
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.commons.vo.ValueObject;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
 import de.hochschule.bremen.minerva.persistence.exceptions.EntryExistsException;
 import de.hochschule.bremen.minerva.persistence.exceptions.EntryNotFoundException;
-import de.hochschule.bremen.minerva.vo.ValueObject;
 
 /**
  * Each persistence handler needs the basic "CRUD" operations.

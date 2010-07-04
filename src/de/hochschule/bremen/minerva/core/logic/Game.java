@@ -33,25 +33,25 @@ import java.awt.Color;
 import java.util.Collections;
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.commons.vo.CanonCard;
+import de.hochschule.bremen.minerva.commons.vo.CavalerieCard;
+import de.hochschule.bremen.minerva.commons.vo.Continent;
+import de.hochschule.bremen.minerva.commons.vo.ContinentConquerMission;
+import de.hochschule.bremen.minerva.commons.vo.Country;
+import de.hochschule.bremen.minerva.commons.vo.CountryCard;
+import de.hochschule.bremen.minerva.commons.vo.CountryConquerMission;
+import de.hochschule.bremen.minerva.commons.vo.DefeatPlayerMission;
+import de.hochschule.bremen.minerva.commons.vo.Mission;
+import de.hochschule.bremen.minerva.commons.vo.Player;
+import de.hochschule.bremen.minerva.commons.vo.PlayerState;
+import de.hochschule.bremen.minerva.commons.vo.SoldierCard;
+import de.hochschule.bremen.minerva.commons.vo.World;
 import de.hochschule.bremen.minerva.exceptions.GameAlreadyStartedException;
 import de.hochschule.bremen.minerva.exceptions.NoPlayerSlotAvailableException;
 import de.hochschule.bremen.minerva.exceptions.WorldNotDefinedException;
 import de.hochschule.bremen.minerva.exceptions.NoPlayerLoggedInException;
 import de.hochschule.bremen.minerva.exceptions.NotEnoughPlayersLoggedInException;
-import de.hochschule.bremen.minerva.vo.CanonCard;
 import de.hochschule.bremen.minerva.vo.CardSeriesCounter;
-import de.hochschule.bremen.minerva.vo.CavalerieCard;
-import de.hochschule.bremen.minerva.vo.Continent;
-import de.hochschule.bremen.minerva.vo.ContinentConquerMission;
-import de.hochschule.bremen.minerva.vo.Country;
-import de.hochschule.bremen.minerva.vo.CountryCard;
-import de.hochschule.bremen.minerva.vo.CountryConquerMission;
-import de.hochschule.bremen.minerva.vo.DefeatPlayerMission;
-import de.hochschule.bremen.minerva.vo.Mission;
-import de.hochschule.bremen.minerva.vo.Player;
-import de.hochschule.bremen.minerva.vo.PlayerState;
-import de.hochschule.bremen.minerva.vo.SoldierCard;
-import de.hochschule.bremen.minerva.vo.World;
 
 /**
  * The core game class.

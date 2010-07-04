@@ -29,6 +29,8 @@
  */
 package de.hochschule.bremen.minerva.vo;
 
+import de.hochschule.bremen.minerva.commons.vo.ValueObject;
+
 /**
  * A value object that encapsulate the configuration from the
  * "application configuration file".<br /><br />

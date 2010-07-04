@@ -29,7 +29,7 @@
  */
 package de.hochschule.bremen.minerva.exceptions;
 
-import de.hochschule.bremen.minerva.vo.World;
+import de.hochschule.bremen.minerva.commons.vo.World;
 
 /**
  * Tried to save an world that already exists.

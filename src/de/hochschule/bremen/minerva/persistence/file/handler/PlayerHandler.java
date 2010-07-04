@@ -31,9 +31,9 @@ package de.hochschule.bremen.minerva.persistence.file.handler;
 
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.commons.vo.ValueObject;
 import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
-import de.hochschule.bremen.minerva.vo.ValueObject;
 
 /**
  * Class stub for a filebased persistence player handler.

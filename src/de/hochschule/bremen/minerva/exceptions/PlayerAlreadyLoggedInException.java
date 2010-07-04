@@ -29,7 +29,7 @@
  */
 package de.hochschule.bremen.minerva.exceptions;
 
-import de.hochschule.bremen.minerva.vo.Player;
+import de.hochschule.bremen.minerva.commons.vo.Player;
 
 /**
  * Tried to login a player twice.

@@ -29,7 +29,7 @@
  */
 package de.hochschule.bremen.minerva.exceptions;
 
-import de.hochschule.bremen.minerva.vo.Country;
+import de.hochschule.bremen.minerva.commons.vo.Country;
 
 /**
  * Two given countries are no neighbours.

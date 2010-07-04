@@ -36,10 +36,10 @@ import java.sql.SQLException;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
+import de.hochschule.bremen.minerva.commons.vo.ValueObject;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseConnectionException;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseDuplicateRecordException;
 import de.hochschule.bremen.minerva.persistence.db.exceptions.DatabaseIOException;
-import de.hochschule.bremen.minerva.vo.ValueObject;
 
 /**
  * The abstract database handler, which every database handler should inherit from.

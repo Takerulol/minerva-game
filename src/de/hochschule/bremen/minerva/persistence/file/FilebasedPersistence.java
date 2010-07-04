@@ -29,6 +29,11 @@
  */
 package de.hochschule.bremen.minerva.persistence.file;
 
+import de.hochschule.bremen.minerva.commons.vo.Continent;
+import de.hochschule.bremen.minerva.commons.vo.Country;
+import de.hochschule.bremen.minerva.commons.vo.Neighbour;
+import de.hochschule.bremen.minerva.commons.vo.Player;
+import de.hochschule.bremen.minerva.commons.vo.World;
 import de.hochschule.bremen.minerva.persistence.Handler;
 import de.hochschule.bremen.minerva.persistence.Persistence;
 import de.hochschule.bremen.minerva.persistence.file.handler.ContinentHandler;
@@ -36,11 +41,6 @@ import de.hochschule.bremen.minerva.persistence.file.handler.CountryHandler;
 import de.hochschule.bremen.minerva.persistence.file.handler.PlayerHandler;
 import de.hochschule.bremen.minerva.persistence.file.handler.WorldHandler;
 import de.hochschule.bremen.minerva.persistence.file.handler.NeighbourHandler;
-import de.hochschule.bremen.minerva.vo.Continent;
-import de.hochschule.bremen.minerva.vo.Country;
-import de.hochschule.bremen.minerva.vo.Neighbour;
-import de.hochschule.bremen.minerva.vo.Player;
-import de.hochschule.bremen.minerva.vo.World;
 
 public class FilebasedPersistence implements Persistence {
 
