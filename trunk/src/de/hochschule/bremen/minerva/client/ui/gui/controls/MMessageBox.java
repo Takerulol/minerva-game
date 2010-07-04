@@ -27,28 +27,40 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva;
+package de.hochschule.bremen.minerva.client.ui.gui.controls;
 
-import de.hochschule.bremen.minerva.client.ui.UserInterface;
-import de.hochschule.bremen.minerva.client.ui.UserInterfaceFactory;
+import javax.swing.JOptionPane;
+
+import de.hochschule.bremen.minerva.client.ui.gui.resources.TextResources;
 
 /**
- * The starter class with the main method.
- *
- * @since 1.0
- * @version $Id$
+ * Own minerva message box. The "M" stands for Minerva ;)
  * 
+ * @version $Id$
+ * @since 1.0
+ *
  */
-public class App {
+public class MMessageBox implements TextResources {
+
+	private static final long serialVersionUID = -5590613142565702637L;
 
 	/**
-	 * Starts the user interface by param.
+	 * Show a information box with the given message.
 	 * 
-	 * @param args [0] "cui" or "gui"
+	 * @param message The message string.
+	 */
+	public static void show(String message) {
+		JOptionPane.showMessageDialog(null, message, MMESSAGE_INFO_TITLE, JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	/**
+	 * Show a error box.
+	 * 
+	 * @param message The error message.
 	 *
 	 */
-	public static void main(String[] args) {
-		UserInterface ui = UserInterfaceFactory.create(args);
-		ui.run();
+	public static void error(String message) {
+		JOptionPane.showMessageDialog(null, message, MMESSAGE_ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
 	}
+	
 }

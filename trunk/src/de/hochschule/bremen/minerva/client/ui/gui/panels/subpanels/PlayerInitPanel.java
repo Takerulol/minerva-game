@@ -27,28 +27,42 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva;
 
-import de.hochschule.bremen.minerva.client.ui.UserInterface;
-import de.hochschule.bremen.minerva.client.ui.UserInterfaceFactory;
+package de.hochschule.bremen.minerva.client.ui.gui.panels.subpanels;
+
+import java.util.Vector;
+
+import javax.swing.JPanel;
+
+import net.miginfocom.swing.MigLayout;
+
+import de.hochschule.bremen.minerva.client.ui.gui.MinervaGUI;
+import de.hochschule.bremen.minerva.client.ui.gui.controls.MPlayerIcon;
+import de.hochschule.bremen.minerva.client.ui.gui.resources.TextResources;
+import de.hochschule.bremen.minerva.commons.vo.Player;
 
 /**
- * The starter class with the main method.
- *
- * @since 1.0
- * @version $Id$
+ * This sub panel shows all logged in players.
  * 
+ * @version $Id$
+ * @since 1.0
+ *
  */
-public class App {
+public class PlayerInitPanel extends JPanel implements TextResources {
+
+	private static final long serialVersionUID = -344922633298919424L;
 
 	/**
-	 * Starts the user interface by param.
+	 * Initializing all player icons
 	 * 
-	 * @param args [0] "cui" or "gui"
-	 *
 	 */
-	public static void main(String[] args) {
-		UserInterface ui = UserInterfaceFactory.create(args);
-		ui.run();
+	public PlayerInitPanel() {
+		Vector<Player> players = MinervaGUI.getEngine().getPlayers();
+		this.setOpaque(false);
+		this.setLayout(new MigLayout());
+
+		for (Player player : players) {
+			this.add(new MPlayerIcon(player), "wrap");
+		}
 	}
 }

@@ -27,28 +27,39 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva;
+package de.hochschule.bremen.minerva.client.ui.gui.panels;
 
-import de.hochschule.bremen.minerva.client.ui.UserInterface;
-import de.hochschule.bremen.minerva.client.ui.UserInterfaceFactory;
+import java.awt.BorderLayout;
+
+import javax.swing.JLayeredPane;
+
+import de.hochschule.bremen.minerva.client.ui.gui.MinervaGUI;
 
 /**
- * The starter class with the main method.
- *
- * @since 1.0
- * @version $Id$
+ * First Panel shown in the client.
+ * Contains the title screen.
  * 
+ * @version $Id$
+ * @since 1.0
+ *
  */
-public class App {
+public class StartPanel extends JLayeredPane {
+
+	private Background background;
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8815190687201347357L;
 
 	/**
-	 * Starts the user interface by param.
-	 * 
-	 * @param args [0] "cui" or "gui"
-	 *
+	 * Initialization
 	 */
-	public static void main(String[] args) {
-		UserInterface ui = UserInterfaceFactory.create(args);
-		ui.run();
+	public StartPanel() {
+		super();
+		this.setLayout(new BorderLayout());
+		this.background = new Background(this.getClass());
+		this.add(this.background,BorderLayout.NORTH,DEFAULT_LAYER);
+		this.setPreferredSize(MinervaGUI.WINDOW_SIZE);
 	}
 }

@@ -27,28 +27,19 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva;
+package de.hochschule.bremen.minerva.client.ui.gui.controls;
 
-import de.hochschule.bremen.minerva.client.ui.UserInterface;
-import de.hochschule.bremen.minerva.client.ui.UserInterfaceFactory;
+import java.awt.Font;
 
 /**
- * The starter class with the main method.
- *
- * @since 1.0
- * @version $Id$
+ * Interface that defines common look&feel properties, like fonts.
  * 
+ * @version $Id$
+ * @since 1.0
+ *
  */
-public class App {
+public interface MControl {
 
-	/**
-	 * Starts the user interface by param.
-	 * 
-	 * @param args [0] "cui" or "gui"
-	 *
-	 */
-	public static void main(String[] args) {
-		UserInterface ui = UserInterfaceFactory.create(args);
-		ui.run();
-	}
+	// The common control font.
+	static final Font FONT = new Font("Tahoma", Font.ROMAN_BASELINE, 11);
 }
