@@ -58,11 +58,8 @@ public class ApplicationConfiguration extends ValueObject {
 	private String appName = null;
 	private String appVersion = null;
 	private String appIconPath = null;
-	private String worldsAssetsDirectory = null;
 	private String uiAssetsDirectory = null;
 	private String uiAssetsFileExtension = null;
-	
-	private int serverPort = 0;
 
 	/**
 	 * Sets the minerva application name.
@@ -122,27 +119,6 @@ public class ApplicationConfiguration extends ValueObject {
 	public String getAppIconPath() {
 		return this.appIconPath;
 	}
-	
-	/**
-	 * Sets the worlds assets directory path.
-	 * This directory contains all the worlds related resources (e. g. map images, thumbnail, etc.)
-	 *  
-	 * @param path The string with the full path to the worlds assets.
-	 * 
-	 */
-	public void setWorldsAssetsDirectory(String path) {
-		this.worldsAssetsDirectory = path;
-	}
-
-	/**
-	 * Returns the worlds assets directory path.
-	 * 
-	 * @return The path to the worlds assets.
-	 * 
-	 */
-	public String getWorldsAssetsDirectory() {
-		return worldsAssetsDirectory;
-	}
 
 	/**
 	 * Sets the user interface assets directory path.
@@ -184,25 +160,6 @@ public class ApplicationConfiguration extends ValueObject {
 	public String getUIAssetsFileExtension() {
 		return this.uiAssetsFileExtension;
 	}
-	
-	/**
-	 * Sets the socket server port.
-	 * 
-	 * @param serverPort The socket port
-	 * 
-	 */
-	public void setServerPort(String serverPort) {
-		this.serverPort = Integer.parseInt(serverPort);
-	}
-
-	/**
-	 * Returns the socket port.
-	 * 
-	 * @return
-	 */
-	public String getServerPort() {
-		return (String.valueOf(this.serverPort));
-	}
 
 	/**
 	 * Returns the application configuration in a single string.
@@ -212,6 +169,6 @@ public class ApplicationConfiguration extends ValueObject {
 	 */
 	@Override
 	public String toString() {
-		return this.getClass().getName() + ": [appName="+this.getAppName() + ", appVersion="+this.getAppVersion() + ", appIconPath=" + this.getAppIconPath() +", worldAssetsDir="+this.getWorldsAssetsDirectory()+ ", uiAssetsDir="+this.getUIAssetsDirectory()+", serverPort="+this.getServerPort()+"]";
+		return this.getClass().getName() + ": [appName="+this.getAppName() + ", appVersion="+this.getAppVersion() + ", appIconPath=" + this.getAppIconPath() +"]";
 	}
 }

@@ -92,17 +92,11 @@ public class ApplicationConfigurationManager {
 		voReadMethodInvocationMapping.put("app.icon.path", "setAppIconPath");
 		voStoreMethodInvocationMapping.put("app.icon.path", "getAppIconPath");
 
-		voReadMethodInvocationMapping.put("directory.assets.worlds", "setWorldsAssetsDirectory");
-		voStoreMethodInvocationMapping.put("directory.assets.worlds", "getWorldsAssetsDirectory");
-		
 		voReadMethodInvocationMapping.put("directory.assets.userinterface", "setUIAssetsDirectory");
 		voStoreMethodInvocationMapping.put("directory.assets.userinterface", "getUIAssetsDirectory");
 
 		voReadMethodInvocationMapping.put("directory.assets.userinterface.fileextension", "setUIAssetsFileExtension");
 		voStoreMethodInvocationMapping.put("directory.assets.userinterface.fileextension", "getUIAssetsFileExtension");
-
-		voReadMethodInvocationMapping.put("server.port", "setServerPort");
-		voStoreMethodInvocationMapping.put("server.port", "getServerPort");
 	}
 
 	// The manager instance
