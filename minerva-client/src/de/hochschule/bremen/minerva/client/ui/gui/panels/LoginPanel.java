@@ -52,6 +52,7 @@ import de.hochschule.bremen.minerva.client.ui.gui.resources.TextResources;
 import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.commons.exceptions.GameAlreadyStartedException;
 import de.hochschule.bremen.minerva.commons.exceptions.NoPlayerSlotAvailableException;
+import de.hochschule.bremen.minerva.commons.exceptions.PlayerAlreadyLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.commons.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.commons.vo.Player;
@@ -179,6 +180,8 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 
 			try {
 				MinervaGUI.getEngine().login(player);
+			} catch (PlayerAlreadyLoggedInException e) {
+				MMessageBox.show(e.getMessage());
 			} catch (GameAlreadyStartedException e) {
 				MMessageBox.show(e.getMessage());
 			} catch (WrongPasswordException e) {
