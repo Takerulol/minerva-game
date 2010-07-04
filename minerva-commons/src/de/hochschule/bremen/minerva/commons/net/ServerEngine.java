@@ -34,6 +34,13 @@ import java.util.Vector;
 import de.root1.simon.SimonRemote;
 import de.root1.simon.exceptions.SimonRemoteException;
 import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.commons.exceptions.GameAlreadyStartedException;
+import de.hochschule.bremen.minerva.commons.exceptions.NoPlayerSlotAvailableException;
+import de.hochschule.bremen.minerva.commons.exceptions.PlayerAlreadyLoggedInException;
+import de.hochschule.bremen.minerva.commons.exceptions.PlayerDoesNotExistException;
+import de.hochschule.bremen.minerva.commons.exceptions.PlayerExistsException;
+import de.hochschule.bremen.minerva.commons.exceptions.WrongPasswordException;
+import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.World;
 
 /**
@@ -46,6 +53,12 @@ import de.hochschule.bremen.minerva.commons.vo.World;
  */
 public interface ServerEngine extends SimonRemote {
 
-	public Vector<World> getWorlds(boolean flatView) throws SimonRemoteException, DataAccessException;
+	// Login a player and define the callback method, which will be called if the player is the next player.
+	public Player login(Player player) throws SimonRemoteException, PlayerAlreadyLoggedInException, GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException;
 
+	// Registers a new player.
+	public void register(Player player) throws SimonRemoteException, PlayerExistsException, DataAccessException;
+
+	// Returns all available world (flatView = no country dependencies)
+	public Vector<World> getWorlds(boolean flatView) throws SimonRemoteException, DataAccessException;
 }
