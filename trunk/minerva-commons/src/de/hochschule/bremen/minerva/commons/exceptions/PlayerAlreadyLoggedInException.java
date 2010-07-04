@@ -43,6 +43,6 @@ public class PlayerAlreadyLoggedInException extends Exception {
 	private static final long serialVersionUID = 2986054247353082420L;
 
 	public PlayerAlreadyLoggedInException(Player player) {
-		super("Der Spieler '"+player.getUsername()+"' ist bereits eingeloggt.");
+		super("Der Spieler '"+player.getUsername()+"' ist bereits eingeloggt auf einem anderen Client eingeloggt.");
 	}	
 }
