@@ -27,39 +27,57 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.util;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+package de.hochschule.bremen.minerva.commons.util;
+
+import java.util.Vector;
 
 /**
- * Tool, that creates hashes from strings (md5 for example).
- *
+ * A game die.
+ *  
  * @since 1.0
  * @version $Id$
- * 
+ *
  */
-public class HashTool {
+public class Die {
 
-	private static String MD5_HASH_ALGORITHM = "MD5";
-	
+	private int number = 0;
+
 	/**
-	 * Converts a string to an md5 hash
-	 * 
-	 * @param hashable The hashable string.
-	 * @return The hashed string.
+	 * Rolls the dice.
 	 * 
 	 */
-	public static String md5(String hashable) {
-		MessageDigest m = null;
-		try {
-			m = MessageDigest.getInstance(MD5_HASH_ALGORITHM);
-		} catch (NoSuchAlgorithmException e) {}
-		
-		
-		m.update(hashable.getBytes(), 0, hashable.length() );
-		
-		return new BigInteger(1, m.digest()).toString(16);
+	public void dice() {
+		this.number = (int)((Math.random() * 6) + 1);
+	}
+
+	/**
+	 * 
+	 * Returns the roll result.
+	 * 
+	 * @return A random value in the range: 1 - 6
+	 */
+	public int getRollResult() {
+		return this.number;
+	}
+
+	/**
+	 * Helper method, that compares a vector with dice
+	 * and returns the die with the biggest roll result.
+	 * 
+	 * @param dice The vector with dice.
+	 * @return The die with the biggest roll result.
+	 * 
+	 */
+	public static Die getLargest(Vector<Die> dice) {
+		Die output = new Die();
+		int largest = 0;
+		for (Die die : dice) {
+			if (die.getRollResult() > largest) {
+				largest = die.getRollResult();
+				output = die;
+			}
+		}
+		return output;
 	}	
 }
