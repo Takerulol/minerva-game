@@ -40,6 +40,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 import de.hochschule.bremen.minerva.client.ui.UserInterface;
+import de.hochschule.bremen.minerva.client.core.GameEngineLocal;
 import de.hochschule.bremen.minerva.client.ui.gui.controls.MMessageBox;
 import de.hochschule.bremen.minerva.client.ui.gui.listener.MWindowListener;
 import de.hochschule.bremen.minerva.client.ui.gui.panels.LoginPanel;
@@ -48,7 +49,6 @@ import de.hochschule.bremen.minerva.commons.core.GameEngine;
 import de.hochschule.bremen.minerva.commons.exceptions.AppConfigurationNotFoundException;
 import de.hochschule.bremen.minerva.commons.exceptions.AppConfigurationNotReadableException;
 import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
-import de.hochschule.bremen.minerva.core.GameEngineLocal;
 import de.hochschule.bremen.minerva.server.manager.ApplicationConfigurationManager;
 
 /**
