@@ -61,4 +61,7 @@ public interface ServerEngine extends SimonRemote {
 
 	// Returns all available world (flatView = no country dependencies)
 	public Vector<World> getWorlds(boolean flatView) throws SimonRemoteException, DataAccessException;
+
+	// Kills the current game and logs all players out.
+	public void killGame(boolean createNewOne) throws SimonRemoteException, DataAccessException;
 }

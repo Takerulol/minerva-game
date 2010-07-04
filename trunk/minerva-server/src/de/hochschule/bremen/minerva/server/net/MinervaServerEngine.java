@@ -84,7 +84,7 @@ public class MinervaServerEngine implements ServerEngine {
 		AccountManager.getInstance().login(player);
 
 		this.game.addPlayer(player);
-		
+
 		return player;
 	}
 
@@ -109,5 +109,12 @@ public class MinervaServerEngine implements ServerEngine {
 	@Override
 	public Vector<World> getWorlds(boolean flatView) throws DataAccessException {
 		return WorldManager.getInstance().getList(flatView);
+	}
+
+	@Override
+	public void killGame(boolean createNewOne) throws SimonRemoteException, DataAccessException {
+		// TODO: Kill Game
+		// TODO: Remove all client connections.
+		AccountManager.getInstance().logout();
 	}
 }
