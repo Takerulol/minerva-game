@@ -27,11 +27,11 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
+package de.hochschule.bremen.minerva.commons.exceptions;
 
 import java.util.Vector;
 
-import de.hochschule.bremen.minerva.vo.Player;
+import de.hochschule.bremen.minerva.commons.vo.Player;
 
 /**
  * Not enough players logged in for starting a new game.

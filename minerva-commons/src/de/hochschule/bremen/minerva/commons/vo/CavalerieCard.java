@@ -27,7 +27,7 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.vo;
+package de.hochschule.bremen.minerva.commons.vo;
 
 /**
  * The CavalerieCard is a sub class of CountryCard.

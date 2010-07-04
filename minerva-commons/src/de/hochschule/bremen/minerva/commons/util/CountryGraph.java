@@ -28,11 +28,12 @@
  * 
  */
 
-package de.hochschule.bremen.minerva.util;
+package de.hochschule.bremen.minerva.commons.util;
 
-import de.hochschule.bremen.minerva.vo.Country;
 import java.util.HashMap;
 import java.util.Vector;
+
+import de.hochschule.bremen.minerva.commons.vo.Country;
 
 /**
  * Represents a graph adt, which we use for country

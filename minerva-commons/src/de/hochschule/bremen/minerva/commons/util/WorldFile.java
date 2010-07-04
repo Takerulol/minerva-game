@@ -27,7 +27,7 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.util;
+package de.hochschule.bremen.minerva.commons.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -37,8 +37,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Vector;
 import java.util.Map.Entry;
+import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -53,12 +53,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import de.hochschule.bremen.minerva.exceptions.WorldFileExtensionException;
-import de.hochschule.bremen.minerva.exceptions.WorldFileNotFoundException;
-import de.hochschule.bremen.minerva.exceptions.WorldFileParseException;
-import de.hochschule.bremen.minerva.vo.Continent;
-import de.hochschule.bremen.minerva.vo.Country;
-import de.hochschule.bremen.minerva.vo.World;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldFileExtensionException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldFileNotFoundException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldFileParseException;
+import de.hochschule.bremen.minerva.commons.vo.Continent;
+import de.hochschule.bremen.minerva.commons.vo.Country;
+import de.hochschule.bremen.minerva.commons.vo.World;
 
 /**
  * Represents a physical file that contains the data structure to describe

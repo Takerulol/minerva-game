@@ -27,9 +27,9 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
+package de.hochschule.bremen.minerva.commons.exceptions;
 
-import de.hochschule.bremen.minerva.vo.World;
+import de.hochschule.bremen.minerva.commons.vo.World;
 
 /**
  * Tried to request an world that does not exist.
