@@ -34,12 +34,22 @@ import java.net.UnknownHostException;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.commons.exceptions.GameAlreadyStartedException;
+import de.hochschule.bremen.minerva.commons.exceptions.NoPlayerSlotAvailableException;
+import de.hochschule.bremen.minerva.commons.exceptions.PlayerAlreadyLoggedInException;
+import de.hochschule.bremen.minerva.commons.exceptions.PlayerDoesNotExistException;
+import de.hochschule.bremen.minerva.commons.exceptions.PlayerExistsException;
+import de.hochschule.bremen.minerva.commons.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.commons.net.ServerEngine;
+import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.World;
+import de.hochschule.bremen.minerva.server.core.logic.Game;
+import de.hochschule.bremen.minerva.server.manager.AccountManager;
 import de.hochschule.bremen.minerva.server.manager.WorldManager;
 import de.root1.simon.Registry;
 import de.root1.simon.Simon;
 import de.root1.simon.exceptions.NameBindingException;
+import de.root1.simon.exceptions.SimonRemoteException;
 
 /**
  * The server engine, which implements the server protocol.
@@ -53,15 +63,11 @@ public class MinervaServerEngine implements ServerEngine {
 
 	private static final long serialVersionUID = 1911446743019185828L;
 	
+	private Game game = new Game();
+
 	/**
 	 * DOCME
 	 * 
-	 * @param name
-	 * @param port
-	 * @throws UnknownHostException
-	 * @throws IOException
-	 * @throws NameBindingException
-	 *
 	 */
 	public MinervaServerEngine(String name, int port) throws UnknownHostException, IOException, NameBindingException {
 		Registry registry = Simon.createRegistry(port);
@@ -70,9 +76,35 @@ public class MinervaServerEngine implements ServerEngine {
 
 	/**
 	 * DOCME
-	 *
-	 * @throws DataAccessException 
 	 * 
+	 */
+	@Override
+	public Player login(Player player) throws SimonRemoteException, PlayerAlreadyLoggedInException, GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException {
+		// TODO: Implement client callback method, which will be called if the user is the current player.
+		AccountManager.getInstance().login(player);
+
+		this.game.addPlayer(player);
+		
+		return player;
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	public void register(Player player) throws SimonRemoteException, PlayerExistsException, DataAccessException {
+		AccountManager.getInstance().createPlayer(player);
+	}
+	
+	/**
+	 * Returns a vector with all available worlds.
+	 *
+	 * @param flatView Should each world provides the whole country dependency graph? 
+	 * @return A vector with all available worlds.
+	 *
+	 * @throws SimonRemoteException
+	 * @throws DataAccessException
+	 *
 	 */
 	@Override
 	public Vector<World> getWorlds(boolean flatView) throws DataAccessException {
