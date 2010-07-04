@@ -290,11 +290,9 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 					} catch (CountriesNotInRelationException e) {
 						GamePanel.this.updatePanel();
 						MMessageBox.error(e.getMessage());
-						GamePanel.this.updatePanel();
 					} catch (NotEnoughArmiesException e) {
 						GamePanel.this.updatePanel();
 						MMessageBox.error(e.getMessage());
-						GamePanel.this.updatePanel();
 					} catch (IsOwnCountryException e) {
 						GamePanel.this.updatePanel();
 						MMessageBox.error(e.getMessage());
@@ -387,7 +385,6 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 					} catch (CountriesNotInRelationException e) {
 						GamePanel.this.updatePanel();
 						MMessageBox.error(e.getMessage());
-						GamePanel.this.updatePanel();
 					} catch (NotEnoughArmiesException e) {
 						GamePanel.this.updatePanel();
 						MMessageBox.error(e.getMessage());
