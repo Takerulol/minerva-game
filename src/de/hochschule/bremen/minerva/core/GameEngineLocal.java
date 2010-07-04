@@ -257,7 +257,27 @@ public class GameEngineLocal implements GameEngine {
 	public World getGameWorld() {
 		return this.game.getWorld();
 	}
-	
+
+	/**
+	 * Is the current game session terminated?
+	 *
+	 * @return boolean
+	 *
+	 */
+	public boolean isGameFinished() {
+		return this.game.isFinished();
+	}
+
+	/**
+	 * Returns the game winner if the game is terminated.
+	 *
+	 * @return The game winner. null if the game is still running.
+	 *
+	 */
+	public Player getGameWinner() {
+		return this.game.getWinner();
+	}
+
 	/**
 	 * Release a country card.
 	 *
