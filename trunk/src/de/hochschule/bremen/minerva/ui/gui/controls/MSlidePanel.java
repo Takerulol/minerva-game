@@ -65,8 +65,7 @@ public class MSlidePanel extends JPanel {
 		this.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
 		this.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(19, 20, 22)));
 		this.setBackground(new Color(255, 255, 255, 30));
-		//this.setOpaque(false);
-		
+
 		controlBar.setSlidePanel(this);
 		this.add(controlBar);
 		
