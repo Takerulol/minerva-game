@@ -500,6 +500,7 @@ public class Game {
 			}
 			this.countryCards.add(card);
 		}
+		Collections.shuffle(this.countryCards);
 	}
 
 	/**
