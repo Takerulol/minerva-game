@@ -193,7 +193,11 @@ public class GameEngineNetwork implements GameEngine {
 
 	@Override
 	public void killGame(boolean createNewOne) throws DataAccessException {
-		// TODO Auto-generated method stub
+		try {
+			this.serverEngine.killGame(false);
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
 	}
 
 	@Override
