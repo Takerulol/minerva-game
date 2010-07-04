@@ -253,10 +253,68 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	 *
 	 */
 	private void attack(Country country) {
-		if (this.source == null) {
-			//setting source country
-			if (country.getArmyCount() > 1) {
-				this.source = country;
+		if (country.getId() > -1) {
+			if (this.source == null) {
+				//setting source country
+				if (country.getArmyCount() > 1) {
+					this.source = country;
+					this.armyIcons.get(this.source).mark(Color.GREEN);
+					for (Country c : this.engine.getGameWorld().getNeighbours(this.source)) {
+						if (!this.currentPlayer.hasCountry(c)) {
+							this.armyIcons.get(c).mark(Color.RED);
+						}
+					}
+				}
+				GamePanel.this.updatePanel();
+			} else {
+				this.destination = country;
+				if (!(this.destination == this.source)) {
+					//setting destination country
+					
+					this.armyIcons.get(country).mark(Color.YELLOW);
+					
+					this.armyIcons.get(this.source).mark(Color.YELLOW);
+					this.updatePanel();
+					try {
+						//army count input
+						int wert = Integer.parseInt(JOptionPane.showInputDialog("Wieviele Armeen " +
+								"sollen angreifen? (max: "+this.calcMaxAttackCount(this.source)+")",
+								""+(this.calcMaxAttackCount(this.source))));
+						
+						try {
+							//actually attack and showing attack result afterwards
+							AttackResult ar = this.engine.attack(this.source, this.destination, wert);
+							GamePanel.this.updatePanel();
+							if (ar != null) {
+								this.showAttackResult(ar);
+							}
+						} catch (CountriesNotInRelationException e) {
+							GamePanel.this.updatePanel();
+							MMessageBox.error(e.getMessage());
+						} catch (NotEnoughArmiesException e) {
+							GamePanel.this.updatePanel();
+							MMessageBox.error(e.getMessage());
+						} catch (IsOwnCountryException e) {
+							GamePanel.this.updatePanel();
+							MMessageBox.error(e.getMessage());
+						}
+					} catch (NumberFormatException e1) {
+						GamePanel.this.updatePanel();
+						//no need, just to make sure that the method doesn't end
+					}
+				
+					this.source = null;
+					this.destination = null;
+				} else {
+					this.unmarkAll();
+					this.source = null;
+					this.destination = null;
+					GamePanel.this.updatePanel();
+					MMessageBox.error(GAME_ATTACK_ERROR_SAME_COUNTRY);
+				}
+			}	
+		} else {
+			if (this.source != null) {
 				this.armyIcons.get(this.source).mark(Color.GREEN);
 				for (Country c : this.engine.getGameWorld().getNeighbours(this.source)) {
 					if (!this.currentPlayer.hasCountry(c)) {
@@ -264,54 +322,8 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 					}
 				}
 			}
-			GamePanel.this.updatePanel();
-		} else {
-			this.destination = country;
-			if (!(this.destination == this.source)) {
-				//setting destination country
-				
-				this.armyIcons.get(country).mark(Color.YELLOW);
-				
-				this.armyIcons.get(this.source).mark(Color.YELLOW);
-				this.updatePanel();
-				try {
-					//army count input
-					int wert = Integer.parseInt(JOptionPane.showInputDialog("Wieviele Armeen " +
-							"sollen angreifen? (max: "+this.calcMaxAttackCount(this.source)+")",
-							""+(this.calcMaxAttackCount(this.source))));
-					
-					try {
-						//actually attack and showing attack result afterwards
-						AttackResult ar = this.engine.attack(this.source, this.destination, wert);
-						GamePanel.this.updatePanel();
-						if (ar != null) {
-							this.showAttackResult(ar);
-						}
-					} catch (CountriesNotInRelationException e) {
-						GamePanel.this.updatePanel();
-						MMessageBox.error(e.getMessage());
-					} catch (NotEnoughArmiesException e) {
-						GamePanel.this.updatePanel();
-						MMessageBox.error(e.getMessage());
-					} catch (IsOwnCountryException e) {
-						GamePanel.this.updatePanel();
-						MMessageBox.error(e.getMessage());
-					}
-				} catch (NumberFormatException e1) {
-					GamePanel.this.updatePanel();
-					//no need, just to make sure that the method doesn't end
-				}
-			
-				this.source = null;
-				this.destination = null;
-			} else {
-				this.unmarkAll();
-				this.source = null;
-				this.destination = null;
-				GamePanel.this.updatePanel();
-				MMessageBox.error(GAME_ATTACK_ERROR_SAME_COUNTRY);
-			}
-		}	
+			this.updatePanel();
+		}
 	}
 
 	/**
@@ -352,10 +364,65 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	 *
 	 */
 	private void move(Country country) {
-		if (this.source == null) {
-			//setting source country
-			if (country.getArmyCount() > 1) {
-				this.source = country;
+		if (country.getId() > -1) {
+			if (this.source == null) {
+				//setting source country
+				if (country.getArmyCount() > 1) {
+					this.source = country;
+					this.armyIcons.get(this.source).mark(Color.GREEN);
+					for (Country c : this.engine.getGameWorld().getNeighbours(this.source)) {
+						if (this.currentPlayer.hasCountry(c)) {
+							this.armyIcons.get(c).mark(Color.RED);
+						}
+					}
+				}
+				GamePanel.this.updatePanel();
+			} else {
+				//setting destination country
+				this.destination = country;
+				if (!(this.destination == this.source)) {
+					this.armyIcons.get(this.source).mark(Color.GREEN);
+					this.armyIcons.get(country).mark(Color.YELLOW);
+					
+					this.armyIcons.get(this.source).mark(Color.YELLOW);
+					this.updatePanel();
+					try {
+						//army count input
+						int wert = Integer.parseInt(JOptionPane.showInputDialog("Wieviele Armeen " +
+								"sollen bewegt werden? (max: "+(this.source.getArmyCount()-1)+")",
+								""+(this.source.getArmyCount()-1)));
+						try {
+							//actually move
+							this.engine.move(this.source, this.destination, wert);
+							GamePanel.this.updatePanel();
+						} catch (CountriesNotInRelationException e) {
+							GamePanel.this.updatePanel();
+							MMessageBox.error(e.getMessage());
+						} catch (NotEnoughArmiesException e) {
+							GamePanel.this.updatePanel();
+							MMessageBox.error(e.getMessage());
+						} catch (CountryOwnerException e) {
+							GamePanel.this.updatePanel();
+							MMessageBox.error(e.getMessage());
+						}
+					} catch (NumberFormatException e1) {
+						GamePanel.this.updatePanel();
+						//no need, just to make sure that the methods doesn't end
+					}
+					
+					this.source = null;
+					this.destination = null;
+				} else {
+					this.unmarkAll();
+					this.source = null;
+					this.destination = null;
+					GamePanel.this.updatePanel();
+					MMessageBox.error(GAME_MOVE_ERROR_SAME_COUNTRY);
+				}
+				
+			}
+		} else {
+			if (this.source != null) {
 				this.armyIcons.get(this.source).mark(Color.GREEN);
 				for (Country c : this.engine.getGameWorld().getNeighbours(this.source)) {
 					if (this.currentPlayer.hasCountry(c)) {
@@ -363,51 +430,9 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 					}
 				}
 			}
-			GamePanel.this.updatePanel();
-		} else {
-			//setting destination country
-			this.destination = country;
-			if (!(this.destination == this.source)) {
-				this.armyIcons.get(this.source).mark(Color.GREEN);
-				this.armyIcons.get(country).mark(Color.YELLOW);
-				
-				this.armyIcons.get(this.source).mark(Color.YELLOW);
-				this.updatePanel();
-				try {
-					//army count input
-					int wert = Integer.parseInt(JOptionPane.showInputDialog("Wieviele Armeen " +
-							"sollen bewegt werden? (max: "+(this.source.getArmyCount()-1)+")",
-							""+(this.source.getArmyCount()-1)));
-					try {
-						//actually move
-						this.engine.move(this.source, this.destination, wert);
-						GamePanel.this.updatePanel();
-					} catch (CountriesNotInRelationException e) {
-						GamePanel.this.updatePanel();
-						MMessageBox.error(e.getMessage());
-					} catch (NotEnoughArmiesException e) {
-						GamePanel.this.updatePanel();
-						MMessageBox.error(e.getMessage());
-					} catch (CountryOwnerException e) {
-						GamePanel.this.updatePanel();
-						MMessageBox.error(e.getMessage());
-					}
-				} catch (NumberFormatException e1) {
-					GamePanel.this.updatePanel();
-					//no need, just to make sure that the methods doesn't end
-				}
-				
-				this.source = null;
-				this.destination = null;
-			} else {
-				this.unmarkAll();
-				this.source = null;
-				this.destination = null;
-				GamePanel.this.updatePanel();
-				MMessageBox.error(GAME_MOVE_ERROR_SAME_COUNTRY);
-			}
-			
+			this.updatePanel();
 		}
+		
 	}
 
 	/**
