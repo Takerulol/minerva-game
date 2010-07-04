@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.client.ui.UserInterface;
 import de.hochschule.bremen.minerva.commons.exceptions.AppConfigurationNotFoundException;
 import de.hochschule.bremen.minerva.commons.exceptions.AppConfigurationNotReadableException;
 import de.hochschule.bremen.minerva.commons.exceptions.CountriesNotInRelationException;
@@ -70,7 +71,6 @@ import de.hochschule.bremen.minerva.server.core.logic.Turn;
 import de.hochschule.bremen.minerva.server.manager.AccountManager;
 import de.hochschule.bremen.minerva.server.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.server.manager.WorldManager;
-import de.hochschule.bremen.minerva.ui.UserInterface;
 
 /**
  * Represents the Minerva "command line user interface".
