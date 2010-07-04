@@ -83,7 +83,7 @@ public class GameInitPanel extends JLayeredPane implements TextResources {
 		// player list
 		this.playerInitPanel = new PlayerInitPanel();
 		this.playerInitPanel.setOpaque(false);
-		this.playerInitPanel.setBounds(40, 150, 350, 500);
+		this.playerInitPanel.setBounds(75, 150, 350, 500);
 		this.playerInitPanel.setBorder(BorderFactory.createEmptyBorder());
 	
 		// game init
