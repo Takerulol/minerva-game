@@ -27,29 +27,24 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
+package de.hochschule.bremen.minerva.commons.exceptions;
+
+import java.io.File;
 
 /**
- * This exception is a heavy one. If this exception will be thrown
- * it is an indication that something with the storage subsystem went wrong.
- * The best way is to quit minerva and inform the admin ;)
+ * Tried to import an world file that does not have the correct file extension.
  *
  * @since 1.0
  * @version $Id$
  * 
  */
-public class DataAccessException extends Exception {
+public class WorldFileExtensionException extends Exception {
 
-	private static final long serialVersionUID = -5068821212470257120L;
+	private static final long serialVersionUID = 6507674073849573747L;
 
-	/**
-	 * A common data access error occurred.
-	 * 
-	 * @param message The reason.
-	 * 
-	 */
-	public DataAccessException(String message) {
-		super("Beim Zugriff auf gespeicherte Daten ist ein schwerwiegender Fehler aufgetreten: \n\n"+message);
+	public WorldFileExtensionException(File worldFile, String worldFileExtension) {
+		super("Die Datei '"+worldFile.getAbsolutePath() +
+		      "' ist nicht vom richtigen Typ. " +
+		      "Bitte verifizieren Sie, dass die Datei, die richtige Endung besitzt (*"+worldFileExtension+").");
 	}
-
 }

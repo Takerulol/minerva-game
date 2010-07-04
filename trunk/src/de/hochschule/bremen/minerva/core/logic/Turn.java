@@ -33,6 +33,11 @@ package de.hochschule.bremen.minerva.core.logic;
 import java.util.Collections;
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.commons.exceptions.CountriesNotInRelationException;
+import de.hochschule.bremen.minerva.commons.exceptions.CountryOwnerException;
+import de.hochschule.bremen.minerva.commons.exceptions.IsOwnCountryException;
+import de.hochschule.bremen.minerva.commons.exceptions.NotEnoughArmiesException;
+import de.hochschule.bremen.minerva.commons.util.Die;
 import de.hochschule.bremen.minerva.commons.vo.Army;
 import de.hochschule.bremen.minerva.commons.vo.CanonCard;
 import de.hochschule.bremen.minerva.commons.vo.CavalerieCard;
@@ -42,11 +47,6 @@ import de.hochschule.bremen.minerva.commons.vo.CountryCard;
 import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.SoldierCard;
 import de.hochschule.bremen.minerva.commons.vo.World;
-import de.hochschule.bremen.minerva.exceptions.CountriesNotInRelationException;
-import de.hochschule.bremen.minerva.exceptions.CountryOwnerException;
-import de.hochschule.bremen.minerva.exceptions.IsOwnCountryException;
-import de.hochschule.bremen.minerva.exceptions.NotEnoughArmiesException;
-import de.hochschule.bremen.minerva.util.Die;
 import de.hochschule.bremen.minerva.vo.CardSeriesCounter;
 
 /**

@@ -33,7 +33,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
-import de.hochschule.bremen.minerva.util.ColorTool;
+
+import de.hochschule.bremen.minerva.commons.util.ColorTool;
 import de.hochschule.bremen.minerva.commons.vo.Continent;
 import de.hochschule.bremen.minerva.commons.vo.Country;
 import de.hochschule.bremen.minerva.commons.vo.ValueObject;

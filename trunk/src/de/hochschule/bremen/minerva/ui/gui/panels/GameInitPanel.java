@@ -39,12 +39,12 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JLayeredPane;
 
+import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.commons.exceptions.NoPlayerLoggedInException;
+import de.hochschule.bremen.minerva.commons.exceptions.NotEnoughPlayersLoggedInException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldNotDefinedException;
 import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.World;
-import de.hochschule.bremen.minerva.exceptions.DataAccessException;
-import de.hochschule.bremen.minerva.exceptions.NoPlayerLoggedInException;
-import de.hochschule.bremen.minerva.exceptions.NotEnoughPlayersLoggedInException;
-import de.hochschule.bremen.minerva.exceptions.WorldNotDefinedException;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MButton;
 import de.hochschule.bremen.minerva.ui.gui.controls.MMessageBox;

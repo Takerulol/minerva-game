@@ -27,24 +27,21 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
-
-import java.io.File;
+package de.hochschule.bremen.minerva.commons.exceptions;
 
 /**
- * Tried to import an world file that does not have the correct file extension.
- *
+ * Exception that will thrown if someone tried to do something
+ * that is not possible if no world was defined (e. g. starting a game).
+ * 
  * @since 1.0
  * @version $Id$
- * 
+ *
  */
-public class WorldFileExtensionException extends Exception {
+public class WorldNotDefinedException extends Exception {
 
-	private static final long serialVersionUID = 6507674073849573747L;
+	private static final long serialVersionUID = 8968129980548498952L;
 
-	public WorldFileExtensionException(File worldFile, String worldFileExtension) {
-		super("Die Datei '"+worldFile.getAbsolutePath() +
-		      "' ist nicht vom richtigen Typ. " +
-		      "Bitte verifizieren Sie, dass die Datei, die richtige Endung besitzt (*"+worldFileExtension+").");
-	}
+	public WorldNotDefinedException() {
+		super("Es wurde keine Welt definiert.");
+	}	
 }

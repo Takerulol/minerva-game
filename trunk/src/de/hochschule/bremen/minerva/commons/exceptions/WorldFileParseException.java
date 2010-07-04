@@ -27,23 +27,27 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
+package de.hochschule.bremen.minerva.commons.exceptions;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 /**
- * The importable world file was not found.
+ * The world from the import file was not parsable, so it is not well-formed.
+ * Can occur if some nodes are missing in the xml file.
  *
  * @since 1.0
  * @version $Id$
  * 
  */
-public class WorldFileNotFoundException extends FileNotFoundException {
+public class WorldFileParseException extends Exception {
 
-	private static final long serialVersionUID = -5573616752872323846L;
+	private static final long serialVersionUID = 530495849894359920L;
 
-	public WorldFileNotFoundException(File worldFile) {
-		super("Die World-Datei: '"+worldFile.getAbsolutePath()+"' wurde nicht gefunden.");
+	public WorldFileParseException(File worldFile, String missingNode) {
+		super("Die Datei '"+worldFile.getAbsolutePath()+"' ist nicht wohlgeformt. Die Konfiguration '"+missingNode+"' wurde nicht gefunden.");
+	}
+
+	public WorldFileParseException(String message) {
+		super("Beim Auslesen der World-Datei ist ein technisches Problem aufgetreten: "+message);
 	}
 }

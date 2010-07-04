@@ -27,29 +27,28 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
-
-import de.hochschule.bremen.minerva.commons.vo.Player;
+package de.hochschule.bremen.minerva.commons.exceptions;
 
 /**
- * Exception that will thrown if someone tried to do something
- * that is not possible while the game is running.
+ * If the application configuration was not writable.
  * 
- * @since 1.0
  * @version $Id$
+ * @since 1.0
  *
  */
-public class GameAlreadyStartedException extends Exception {
+public class AppConfigurationNotWritableException extends Exception {
 
-	private static final long serialVersionUID = -4647868292826391391L;
+	private static final long serialVersionUID = 2924757645981690790L;
 
 	/**
-	 * Exception if we try to add a new player to a already running game.
+	 * Was not able to write the given app configuration file.
 	 * 
-	 * @param player Tried to add this player.
-	 * 
+	 * @param filename The app configuration file.
+	 * @param reason The technical reason why it was not possible to write the file.
+	 *
 	 */
-	public GameAlreadyStartedException(Player player) {
-		super("Die Spiel-Session wurde bereits gestartet. Der Spieler '" + player.getUsername() + "' kann somit nicht mehr hinzugefügt werden.");
+	public AppConfigurationNotWritableException(String filename, String reason) {
+		super("Die Minerva Konfigurationsdatei ("+filename
+				   +") kann nicht geschrieben werden. Grund: "+reason);
 	}
 }

@@ -27,22 +27,32 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
+package de.hochschule.bremen.minerva.commons.exceptions;
 
 import de.hochschule.bremen.minerva.commons.vo.Player;
 
 /**
- * Entered a wrong password while login process.
+ * Tried to do a operation on an non-existing player.
  *
  * @since 1.0
  * @version $Id$
  * 
  */
-public class WrongPasswordException extends Exception {
+public class PlayerDoesNotExistException extends Exception {
 
-	private static final long serialVersionUID = -1230371904260038828L;
+	private static final String MESSAGE_VERIFY_YOUR_INPUT = "Bitte überprüfen Sie Ihre Angaben.";
 
-	public WrongPasswordException(Player player) {
-		super("Das angegebene Passwort für den Spieler '"+player.getUsername()+"' ist nicht korrekt.");
+	private static final long serialVersionUID = 6034698563212835072L;
+
+	public PlayerDoesNotExistException(Player player) {
+		super("Der Spieler '"+player.getUsername()+"' existiert nicht. "+MESSAGE_VERIFY_YOUR_INPUT);
+	}
+
+	public PlayerDoesNotExistException(int id) {
+		super("Der Spieler mit der ID '"+id+"' existiert nicht. "+MESSAGE_VERIFY_YOUR_INPUT);
+	}
+
+	public PlayerDoesNotExistException(String username) {
+		super("Der Spieler mit dem Benutzernamen '"+username+"' existiert nicht. "+MESSAGE_VERIFY_YOUR_INPUT);
 	}
 }

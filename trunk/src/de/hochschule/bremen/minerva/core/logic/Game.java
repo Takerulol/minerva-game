@@ -33,6 +33,11 @@ import java.awt.Color;
 import java.util.Collections;
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.commons.exceptions.GameAlreadyStartedException;
+import de.hochschule.bremen.minerva.commons.exceptions.NoPlayerLoggedInException;
+import de.hochschule.bremen.minerva.commons.exceptions.NoPlayerSlotAvailableException;
+import de.hochschule.bremen.minerva.commons.exceptions.NotEnoughPlayersLoggedInException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldNotDefinedException;
 import de.hochschule.bremen.minerva.commons.vo.CanonCard;
 import de.hochschule.bremen.minerva.commons.vo.CavalerieCard;
 import de.hochschule.bremen.minerva.commons.vo.Continent;
@@ -46,11 +51,6 @@ import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.PlayerState;
 import de.hochschule.bremen.minerva.commons.vo.SoldierCard;
 import de.hochschule.bremen.minerva.commons.vo.World;
-import de.hochschule.bremen.minerva.exceptions.GameAlreadyStartedException;
-import de.hochschule.bremen.minerva.exceptions.NoPlayerSlotAvailableException;
-import de.hochschule.bremen.minerva.exceptions.WorldNotDefinedException;
-import de.hochschule.bremen.minerva.exceptions.NoPlayerLoggedInException;
-import de.hochschule.bremen.minerva.exceptions.NotEnoughPlayersLoggedInException;
 import de.hochschule.bremen.minerva.vo.CardSeriesCounter;
 
 /**

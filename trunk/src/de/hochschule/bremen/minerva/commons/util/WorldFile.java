@@ -53,12 +53,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import de.hochschule.bremen.minerva.commons.exceptions.WorldFileExtensionException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldFileNotFoundException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldFileParseException;
 import de.hochschule.bremen.minerva.commons.vo.Continent;
 import de.hochschule.bremen.minerva.commons.vo.Country;
 import de.hochschule.bremen.minerva.commons.vo.World;
-import de.hochschule.bremen.minerva.exceptions.WorldFileExtensionException;
-import de.hochschule.bremen.minerva.exceptions.WorldFileNotFoundException;
-import de.hochschule.bremen.minerva.exceptions.WorldFileParseException;
 
 /**
  * Represents a physical file that contains the data structure to describe

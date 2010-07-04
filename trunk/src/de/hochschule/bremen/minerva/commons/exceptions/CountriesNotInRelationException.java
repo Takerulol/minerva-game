@@ -27,27 +27,29 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
+package de.hochschule.bremen.minerva.commons.exceptions;
+
+import de.hochschule.bremen.minerva.commons.vo.Country;
 
 /**
- * If the application configuration is not available.
- * 
- * @version $Id$
- * @since 1.0
+ * Two given countries are no neighbours.
  *
+ * @since 1.0
+ * @version $Id$
+ * 
  */
-public class AppConfigurationNotFoundException extends Exception {
+public class CountriesNotInRelationException extends Exception {
 
-	private static final long serialVersionUID = -7196558872252940085L;
+	private static final long serialVersionUID = -1737514955696140981L;
 
 	/**
-	 * The given application configuration file wasn't found.
+	 * Countries are not "connected".
 	 * 
-	 * @param filename The app configuration file.
-	 *
+	 * @param one The first country.
+	 * @param two The second country.
+	 * 
 	 */
-	public AppConfigurationNotFoundException(String filename) {
-		super("Die Minerva Konfigurationsdatei ("+filename
-			   +") wurde nicht gefunden. Bitte stellen Sie sicher, dass die Datei im Hauptverzeichnis der Anwendung existiert.");
+	public CountriesNotInRelationException(Country one, Country two) {
+		super("Die Länder '"+one.getName()+"' und '"+two.getName()+"' sind nicht benachbart.");
 	}
 }

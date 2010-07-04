@@ -27,28 +27,27 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
+package de.hochschule.bremen.minerva.commons.exceptions;
+
+import java.io.File;
 
 /**
- * If the application configuration was not readable.
- * 
- * @version $Id$
+ * Exception that will be thrown if it is not possible to
+ * store an world (e. g. hurt a unique-constraint, etc.).
+ *  
  * @since 1.0
+ * @version $Id$
  *
  */
-public class AppConfigurationNotReadableException extends Exception {
+public class WorldNotStorable extends Exception {
 
-	private static final long serialVersionUID = -2500309913939436304L;
+	private static final long serialVersionUID = 8868184972756654993L;
 
-	/**
-	 * The given app configuration file was not readable.
-	 * 
-	 * @param filename The app configuration file.
-	 * @param reason The technical reason.
-	 *
-	 */
-	public AppConfigurationNotReadableException(String filename, String reason) {
-		super("Die Minerva Konfigurationsdatei ("+filename
-			   +") kann nicht gelesen werden. Grund: "+reason);
+	public WorldNotStorable(String reason) {
+		super("Beim Speichern einer Welt ist ein schwerwiegender Fehler aufgetreten. Grund: "+reason);
+	}
+
+	public WorldNotStorable(File worldFile, boolean playerIsntMaster) {
+		super("Die Welt: '"+worldFile.getName()+"' kann nicht gespeichert werden, weil der Spieler nicht der Gamemaster ist.");
 	}
 }

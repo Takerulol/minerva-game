@@ -27,27 +27,22 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
+package de.hochschule.bremen.minerva.commons.exceptions;
 
-import java.io.File;
+import de.hochschule.bremen.minerva.commons.vo.Player;
 
 /**
- * The world from the import file was not parsable, so it is not well-formed.
- * Can occur if some nodes are missing in the xml file.
+ * Tried to login a player twice.
  *
  * @since 1.0
  * @version $Id$
  * 
  */
-public class WorldFileParseException extends Exception {
+public class PlayerAlreadyLoggedInException extends Exception {
 
-	private static final long serialVersionUID = 530495849894359920L;
+	private static final long serialVersionUID = 2986054247353082420L;
 
-	public WorldFileParseException(File worldFile, String missingNode) {
-		super("Die Datei '"+worldFile.getAbsolutePath()+"' ist nicht wohlgeformt. Die Konfiguration '"+missingNode+"' wurde nicht gefunden.");
-	}
-
-	public WorldFileParseException(String message) {
-		super("Beim Auslesen der World-Datei ist ein technisches Problem aufgetreten: "+message);
-	}
+	public PlayerAlreadyLoggedInException(Player player) {
+		super("Der Spieler '"+player.getUsername()+"' ist bereits eingeloggt.");
+	}	
 }

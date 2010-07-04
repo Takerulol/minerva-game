@@ -34,7 +34,7 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JPasswordField;
 
-import de.hochschule.bremen.minerva.util.ColorTool;
+import de.hochschule.bremen.minerva.commons.util.ColorTool;
 
 /**
  * Our special MPasswordField. The "M" stands for Minerva ;)

@@ -27,22 +27,31 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.exceptions;
+package de.hochschule.bremen.minerva.commons.exceptions;
 
-import de.hochschule.bremen.minerva.commons.vo.World;
+import de.hochschule.bremen.minerva.commons.vo.Country;
+import de.hochschule.bremen.minerva.commons.vo.Player;
 
 /**
- * Tried to save an world that already exists.
+ * A player does not own a given country.
  *
  * @since 1.0
  * @version $Id$
  * 
  */
-public class WorldExistsException extends Exception {
+public class CountryOwnerException extends Exception {
 
-	private static final long serialVersionUID = 3112375516184260775L;
+	private static final long serialVersionUID = 1054976220627063505L;
 
-	public WorldExistsException(World world) {
-		super("Die Welt '"+world.getName()+"' existiert bereits und kann somit nicht erneut gespeichert werden.");
+	/**
+	 * The player does not owns the country.
+	 * 
+	 * @param country
+	 * @param player
+	 * 
+	 */
+	public CountryOwnerException(Country country, Player player) {
+		super("Das Land '"+country.getName()+"' ist nicht von '"+player.getUsername()+"' besetzt. Bitte noch einmal versuchen.");
 	}
+	
 }
