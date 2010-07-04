@@ -73,7 +73,7 @@ public class MinervaGUI extends JFrame implements UserInterface {
 
 	private static MinervaGUI instance = null;	
 	
-	private static final GameEngine GAME_ENGINE = GameEngineNetwork.getEngine();
+	private static GameEngine GAME_ENGINE = null;
 
 	
 	/**
@@ -98,6 +98,7 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	 * Starts the UI and initializes the frame.
 	 */
 	public void run() {
+		// Application configuration manager setup.
 		try {
 			ApplicationConfigurationManager.setup();
 		} catch (AppConfigurationNotFoundException e) {
@@ -108,6 +109,9 @@ public class MinervaGUI extends JFrame implements UserInterface {
 			Runtime.getRuntime().exit(ERROR);
 		}
 
+		// Init the game engine.
+		MinervaGUI.GAME_ENGINE = GameEngineNetwork.getEngine();
+		
 		//initialization
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBackground(Color.black);

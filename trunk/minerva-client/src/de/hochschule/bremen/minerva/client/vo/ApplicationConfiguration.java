@@ -55,11 +55,17 @@ public class ApplicationConfiguration extends ValueObject {
 	// #
 	// #########################################################
 
+	private static final long serialVersionUID = -6277211242792174861L;
+
 	private String appName = null;
 	private String appVersion = null;
 	private String appIconPath = null;
 	private String uiAssetsDirectory = null;
 	private String uiAssetsFileExtension = null;
+
+	private String serverName = null;
+	private String serverHost = null;
+	private String serverPort = null;
 
 	/**
 	 * Sets the minerva application name.
@@ -159,6 +165,66 @@ public class ApplicationConfiguration extends ValueObject {
 	 */
 	public String getUIAssetsFileExtension() {
 		return this.uiAssetsFileExtension;
+	}
+
+	/**
+	 * Sets the server name.
+	 *
+	 * @param serverName
+	 *
+	 */
+	public void setServerName(String serverName) {
+		this.serverName = serverName;
+	}
+
+	/**
+	 * Returns the server name.
+	 *
+	 * @return The server name (rmi registry name)
+	 *
+	 */
+	public String getServerName() {
+		return serverName;
+	}
+
+	/**
+	 * Sets the server name.
+	 *
+	 * @param serverHost The server name (rmi registry name)
+	 *
+	 */
+	public void setServerHost(String serverHost) {
+		this.serverHost = serverHost;
+	}
+
+	/**
+	 * Returns the server host.
+	 *
+	 * @return ip address or hostname
+	 *
+	 */
+	public String getServerHost() {
+		return serverHost;
+	}
+
+	/**
+	 * Sets the server port
+	 *
+	 * @param serverPort The server port.
+	 *
+	 */
+	public void setServerPort(String serverPort) {
+		this.serverPort = serverPort;
+	}
+
+	/**
+	 * Returns the server port.
+	 *
+	 * @return The server port.
+	 *
+	 */
+	public String getServerPort() {
+		return serverPort;
 	}
 
 	/**

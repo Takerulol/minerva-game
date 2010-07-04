@@ -30,8 +30,11 @@
 package de.hochschule.bremen.minerva.client.core;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.client.manager.ApplicationConfigurationManager;
+import de.hochschule.bremen.minerva.client.vo.ApplicationConfiguration;
 import de.hochschule.bremen.minerva.commons.core.GameEngine;
 import de.hochschule.bremen.minerva.commons.exceptions.CountriesNotInRelationException;
 import de.hochschule.bremen.minerva.commons.exceptions.CountryOwnerException;
@@ -50,12 +53,17 @@ import de.hochschule.bremen.minerva.commons.exceptions.WorldFileParseException;
 import de.hochschule.bremen.minerva.commons.exceptions.WorldNotDefinedException;
 import de.hochschule.bremen.minerva.commons.exceptions.WorldNotStorable;
 import de.hochschule.bremen.minerva.commons.exceptions.WrongPasswordException;
+import de.hochschule.bremen.minerva.commons.net.ServerEngine;
 import de.hochschule.bremen.minerva.commons.vo.AttackResult;
 import de.hochschule.bremen.minerva.commons.vo.Country;
 import de.hochschule.bremen.minerva.commons.vo.CountryCard;
 import de.hochschule.bremen.minerva.commons.vo.Mission;
 import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.World;
+import de.root1.simon.Simon;
+import de.root1.simon.exceptions.EstablishConnectionFailed;
+import de.root1.simon.exceptions.LookupFailedException;
+import de.root1.simon.exceptions.SimonRemoteException;
 
 /**
  * The network game engine.
@@ -67,12 +75,60 @@ import de.hochschule.bremen.minerva.commons.vo.World;
  */
 public class GameEngineNetwork implements GameEngine {
 
-	public static GameEngineNetwork getEngine(){return null;}
+	private static GameEngineNetwork instance = null;
+	
+	private ServerEngine serverEngine = null;
+	
+	/**
+	 * DOCME
+	 *
+	 * @throws LookupFailedException 
+	 * @throws IOException 
+	 * @throws SimonRemoteException 
+	 * @throws EstablishConnectionFailed 
+	 * 
+	 */
+	private GameEngineNetwork() throws EstablishConnectionFailed, SimonRemoteException, IOException, LookupFailedException {
+		ApplicationConfiguration appConfg = ApplicationConfigurationManager.get();
+
+		String serverHost = appConfg.getServerHost();
+		String serverName = appConfg.getServerName();
+		int serverPort = Integer.parseInt(appConfg.getServerPort());
+
+		this.serverEngine = (ServerEngine)Simon.lookup(serverHost, serverPort, serverName);		
+	}
+	
+	/**
+	 * DOCME
+	 * 
+	 * @return
+	 *
+	 * @throws EstablishConnectionFailed
+	 * @throws SimonRemoteException
+	 * @throws IOException
+	 * @throws LookupFailedException
+	 *
+	 */
+	public static GameEngineNetwork getEngine() {
+		if (GameEngineNetwork.instance == null) {
+			try {
+				GameEngineNetwork.instance = new GameEngineNetwork();
+			} catch (EstablishConnectionFailed e) {
+				// TODO: Handle exception
+			} catch (SimonRemoteException e) {
+				// TODO: Handle exception				
+			} catch (IOException e) {
+				// TODO: Handle exception
+			} catch (LookupFailedException e) {
+				// TODO: Handle exception
+			}
+		}
+
+		return GameEngineNetwork.instance;
+	}
 
 	@Override
-	public void login(Player player) throws GameAlreadyStartedException,
-			WrongPasswordException, PlayerDoesNotExistException,
-			NoPlayerSlotAvailableException, DataAccessException {
+	public void login(Player player) throws GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException {
 		// TODO Auto-generated method stub
 		
 	}
@@ -86,14 +142,12 @@ public class GameEngineNetwork implements GameEngine {
 
 	@Override
 	public Vector<World> getWorldList() throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.serverEngine.getWorlds(false);
 	}
 
 	@Override
 	public Vector<World> getWorldList(boolean lite) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.serverEngine.getWorlds(lite);
 	}
 
 	@Override

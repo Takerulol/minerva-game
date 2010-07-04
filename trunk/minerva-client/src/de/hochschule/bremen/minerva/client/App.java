@@ -33,7 +33,7 @@ import de.hochschule.bremen.minerva.client.ui.UserInterface;
 import de.hochschule.bremen.minerva.client.ui.UserInterfaceFactory;
 
 /**
- * The starter class with the main method.
+ * The client starter class with the main method.
  *
  * @since 1.0
  * @version $Id$
