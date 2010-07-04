@@ -51,7 +51,7 @@ import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.PlayerState;
 import de.hochschule.bremen.minerva.commons.vo.SoldierCard;
 import de.hochschule.bremen.minerva.commons.vo.World;
-import de.hochschule.bremen.minerva.vo.CardSeriesCounter;
+import de.hochschule.bremen.minerva.server.vo.CardSeriesCounter;
 
 /**
  * The core game class.

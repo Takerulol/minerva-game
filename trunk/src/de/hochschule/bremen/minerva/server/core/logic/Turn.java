@@ -48,7 +48,7 @@ import de.hochschule.bremen.minerva.commons.vo.CountryCard;
 import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.SoldierCard;
 import de.hochschule.bremen.minerva.commons.vo.World;
-import de.hochschule.bremen.minerva.vo.CardSeriesCounter;
+import de.hochschule.bremen.minerva.server.vo.CardSeriesCounter;
 
 /**
  * This represents a single turn by the current player inside a game/match.
