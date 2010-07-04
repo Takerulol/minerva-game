@@ -27,28 +27,33 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva;
+package de.hochschule.bremen.minerva.client.ui.gui.listener;
 
-import de.hochschule.bremen.minerva.client.ui.UserInterface;
-import de.hochschule.bremen.minerva.client.ui.UserInterfaceFactory;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
- * The starter class with the main method.
- *
- * @since 1.0
- * @version $Id$
+ * Usual MouseListener with empty methods for easier listener creation.
  * 
+ * @version $Id$
+ * @since 1.0
+ *
  */
-public class App {
+public class MMouseListener implements MouseListener {
 
-	/**
-	 * Starts the user interface by param.
-	 * 
-	 * @param args [0] "cui" or "gui"
-	 *
-	 */
-	public static void main(String[] args) {
-		UserInterface ui = UserInterfaceFactory.create(args);
-		ui.run();
-	}
+	@Override
+	public void mouseClicked(MouseEvent e) {}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
+
+	@Override
+	public void mousePressed(MouseEvent e) {}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {}
+	
 }

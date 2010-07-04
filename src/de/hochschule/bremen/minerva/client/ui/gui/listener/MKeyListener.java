@@ -27,28 +27,26 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva;
+package de.hochschule.bremen.minerva.client.ui.gui.listener;
 
-import de.hochschule.bremen.minerva.client.ui.UserInterface;
-import de.hochschule.bremen.minerva.client.ui.UserInterfaceFactory;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
- * The starter class with the main method.
- *
- * @since 1.0
- * @version $Id$
+ * Usual KeyListener with empty methods for easier listener creation.
  * 
+ * @version $Id$
+ * @since 1.0
+ *
  */
-public class App {
+public class MKeyListener implements KeyListener {
 
-	/**
-	 * Starts the user interface by param.
-	 * 
-	 * @param args [0] "cui" or "gui"
-	 *
-	 */
-	public static void main(String[] args) {
-		UserInterface ui = UserInterfaceFactory.create(args);
-		ui.run();
-	}
+	@Override
+	public void keyTyped(KeyEvent e) {}
+	
+	@Override
+	public void keyReleased(KeyEvent e) {}
+	
+	@Override
+	public void keyPressed(KeyEvent e) {}
 }

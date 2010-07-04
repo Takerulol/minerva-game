@@ -27,28 +27,31 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva;
+package de.hochschule.bremen.minerva.client.ui;
 
-import de.hochschule.bremen.minerva.client.ui.UserInterface;
-import de.hochschule.bremen.minerva.client.ui.UserInterfaceFactory;
+import de.hochschule.bremen.minerva.client.ui.cui.MinervaCUI;
+import de.hochschule.bremen.minerva.client.ui.gui.MinervaGUI;
 
 /**
- * The starter class with the main method.
+ * Factory that creates the user interface.
  *
  * @since 1.0
  * @version $Id$
  * 
  */
-public class App {
+public class UserInterfaceFactory {
 
 	/**
-	 * Starts the user interface by param.
-	 * 
-	 * @param args [0] "cui" or "gui"
+	 * Creates the user interface by the given type.
+	 *
+	 * @param type The parameter array from the main method. First cell should be "cui". If not the gui will be generated.
+	 * @return The correct ui object.
 	 *
 	 */
-	public static void main(String[] args) {
-		UserInterface ui = UserInterfaceFactory.create(args);
-		ui.run();
+	public static UserInterface create(String[] type) {
+		if ((type.length > 0) && type[0].equals("cui")) {
+			return new MinervaCUI();
+		}
+		return new MinervaGUI();
 	}
 }

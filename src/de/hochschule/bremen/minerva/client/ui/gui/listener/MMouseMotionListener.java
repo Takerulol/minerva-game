@@ -27,28 +27,23 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva;
+package de.hochschule.bremen.minerva.client.ui.gui.listener;
 
-import de.hochschule.bremen.minerva.client.ui.UserInterface;
-import de.hochschule.bremen.minerva.client.ui.UserInterfaceFactory;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 /**
- * The starter class with the main method.
- *
- * @since 1.0
- * @version $Id$
+ * Usual MouseMotionListener with empty methods for easier listener creation.
  * 
+ * @version $Id$
+ * @since 1.0
+ *
  */
-public class App {
-
-	/**
-	 * Starts the user interface by param.
-	 * 
-	 * @param args [0] "cui" or "gui"
-	 *
-	 */
-	public static void main(String[] args) {
-		UserInterface ui = UserInterfaceFactory.create(args);
-		ui.run();
-	}
+public class MMouseMotionListener implements MouseMotionListener {
+	
+	@Override
+	public void mouseMoved(MouseEvent e) {}
+	
+	@Override
+	public void mouseDragged(MouseEvent e) {}
 }

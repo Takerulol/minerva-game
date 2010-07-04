@@ -27,28 +27,17 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva;
-
-import de.hochschule.bremen.minerva.client.ui.UserInterface;
-import de.hochschule.bremen.minerva.client.ui.UserInterfaceFactory;
+package de.hochschule.bremen.minerva.client.ui;
 
 /**
- * The starter class with the main method.
+ * A user interface should implement this methods.
  *
  * @since 1.0
  * @version $Id$
  * 
  */
-public class App {
+public interface UserInterface {
 
-	/**
-	 * Starts the user interface by param.
-	 * 
-	 * @param args [0] "cui" or "gui"
-	 *
-	 */
-	public static void main(String[] args) {
-		UserInterface ui = UserInterfaceFactory.create(args);
-		ui.run();
-	}
+	public void run();
+
 }

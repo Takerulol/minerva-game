@@ -27,28 +27,39 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva;
+package de.hochschule.bremen.minerva.client.ui.gui.controls;
 
-import de.hochschule.bremen.minerva.client.ui.UserInterface;
-import de.hochschule.bremen.minerva.client.ui.UserInterfaceFactory;
+import java.awt.Font;
+
+import javax.swing.JButton;
 
 /**
- * The starter class with the main method.
- *
- * @since 1.0
- * @version $Id$
+ * Our special MButton. The "M" stands for Minerva ;)
  * 
+ * @version $Id$
+ * @since 1.0
+ *
  */
-public class App {
+public class MButton extends JButton implements MControl {
+
+	private static final long serialVersionUID = -354154441855499481L;
 
 	/**
-	 * Starts the user interface by param.
+	 * Constructor
 	 * 
-	 * @param args [0] "cui" or "gui"
+	 * @param caption The button label.
 	 *
 	 */
-	public static void main(String[] args) {
-		UserInterface ui = UserInterfaceFactory.create(args);
-		ui.run();
+	public MButton(String caption) {
+		super(caption);
+		this.init();
+	}
+
+	/**
+	 * Button initialization (e. g. font definition, etc.)
+	 * 
+	 */
+	private void init() {
+		this.setFont(FONT.deriveFont(Font.BOLD));
 	}
 }
