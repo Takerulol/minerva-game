@@ -74,6 +74,7 @@ import de.hochschule.bremen.minerva.util.Die;
 
 /**
  * Represents the Minerva "command line user interface".
+ * Is only available in the "hotseat" minerva version.
  *
  * @since 1.0
  * @version $Id$
