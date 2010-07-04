@@ -85,16 +85,16 @@ public class Game {
 	 */
 	public Game() {
 		this.availablePlayerColors.add(Color.BLUE);
-		this.availablePlayerColors.add(Color.GRAY);
 		this.availablePlayerColors.add(Color.GREEN);
-		this.availablePlayerColors.add(Color.MAGENTA);
+		this.availablePlayerColors.add(Color.ORANGE);
+		this.availablePlayerColors.add(Color.RED);
 
 		// TODO: Release 1.1
 		// Should be possible to play with more than 4 players
 		// The "available colors" defines the player slots.
 		// 4 Colors = 4 possible players
-		// this.availablePlayerColors.add(Color.ORANGE);
-		// this.availablePlayerColors.add(Color.RED);
+		// this.availablePlayerColors.add(Color.MAGENTA);
+		// this.availablePlayerColors.add(Color.GRAY);
 		// this.availablePlayerColors.add(Color.YELLOW);*/
 	}
 	
