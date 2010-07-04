@@ -63,7 +63,7 @@ import de.hochschule.bremen.minerva.commons.vo.Mission;
 import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.PlayerState;
 import de.hochschule.bremen.minerva.core.GameEngineLocal;
-import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
+import de.hochschule.bremen.minerva.server.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.ui.gui.controls.MArmyCountIcon;
 import de.hochschule.bremen.minerva.ui.gui.controls.MControl;

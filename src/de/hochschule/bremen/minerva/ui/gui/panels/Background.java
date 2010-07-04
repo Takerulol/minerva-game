@@ -38,7 +38,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-import de.hochschule.bremen.minerva.manager.ApplicationConfigurationManager;
+import de.hochschule.bremen.minerva.server.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.vo.ApplicationConfiguration;
 
 /**
