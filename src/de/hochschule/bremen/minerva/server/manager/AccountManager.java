@@ -38,9 +38,9 @@ import de.hochschule.bremen.minerva.commons.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.commons.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.commons.util.HashTool;
 import de.hochschule.bremen.minerva.commons.vo.Player;
-import de.hochschule.bremen.minerva.persistence.exceptions.PersistenceException;
-import de.hochschule.bremen.minerva.persistence.exceptions.PlayerNotFoundException;
-import de.hochschule.bremen.minerva.persistence.service.PlayerService;
+import de.hochschule.bremen.minerva.server.persistence.exceptions.PersistenceException;
+import de.hochschule.bremen.minerva.server.persistence.exceptions.PlayerNotFoundException;
+import de.hochschule.bremen.minerva.server.persistence.service.PlayerService;
 
 /**
  * The login and registration subsystem.
@@ -98,7 +98,7 @@ public class AccountManager {
 
 		try {
 			service.save(player);
-		} catch (de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException e) {
+		} catch (de.hochschule.bremen.minerva.server.persistence.exceptions.PlayerExistsException e) {
 			throw new PlayerExistsException(player);
 		} catch (PersistenceException e) {
 			throw new DataAccessException(e.getMessage());
@@ -253,7 +253,7 @@ public class AccountManager {
 			
 			try {
 				service.save(temp);
-			} catch (de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException e) {
+			} catch (de.hochschule.bremen.minerva.server.persistence.exceptions.PlayerExistsException e) {
 				// It is not possible, that the player does not exist.
 				// We loaded it a few code lines before. So it must exist.
 				// So the catch area will never be thrown.				
@@ -284,7 +284,7 @@ public class AccountManager {
 
 		try {
 			service.save(player);
-		} catch (de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException e) {
+		} catch (de.hochschule.bremen.minerva.server.persistence.exceptions.PlayerExistsException e) {
 			// It is not possible, that the player does not exist.
 			// We loaded it a few code lines before. So it must exist.
 			// So the catch area will never be reached.
@@ -306,7 +306,7 @@ public class AccountManager {
 
 			try {
 				service.save(player);
-			} catch (de.hochschule.bremen.minerva.persistence.exceptions.PlayerExistsException e) {				
+			} catch (de.hochschule.bremen.minerva.server.persistence.exceptions.PlayerExistsException e) {				
 				// It is not possible, that the player does not exist.
 				// We loaded it a few code lines before. So it must exist.
 				// So the catch area will never be thrown.
