@@ -265,7 +265,11 @@ public class GameEngineLocal implements GameEngine {
 	 *
 	 */
 	public boolean isGameFinished() {
-		return this.game.isFinished();
+		if (this.game != null) {
+			return this.game.isFinished();
+		} else {
+			return true;
+		}
 	}
 
 	/**
