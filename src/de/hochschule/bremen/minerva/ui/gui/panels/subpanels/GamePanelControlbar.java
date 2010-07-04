@@ -67,8 +67,7 @@ import de.hochschule.bremen.minerva.vo.SoldierCard;
  * 
  * The lower half contains game informations country cards ...
  * 
- * @version $Id: GamePanelControlbar.java 626 2010-07-04 09:12:23Z andre.koenig
- *          $
+ * @version $Id$
  * @since 1.0
  * 
  */
