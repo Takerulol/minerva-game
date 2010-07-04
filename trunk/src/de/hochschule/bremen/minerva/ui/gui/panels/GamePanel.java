@@ -263,9 +263,10 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 				}
 			}
 		} else {
-			if (!this.currentPlayer.hasCountry(country)) {
+			this.destination = country;
+			if (!(this.destination == this.source)) {
 				//setting destination country
-				this.destination = country;
+				
 				this.armyIcons.get(country).mark(Color.YELLOW);
 				
 				this.armyIcons.get(this.source).mark(Color.YELLOW);
@@ -356,32 +357,40 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		} else {
 			//setting destination country
 			this.destination = country;
-			this.armyIcons.get(this.source).mark(Color.GREEN);
-			this.armyIcons.get(country).mark(Color.YELLOW);
-			
-			this.armyIcons.get(this.source).mark(Color.YELLOW);
-			this.updatePanel();
-			try {
-				//army count input
-				int wert = Integer.parseInt(JOptionPane.showInputDialog("Wieviele Armeen " +
-						"sollen bewegt werden? (max: "+(this.source.getArmyCount()-1)+")",
-						""+(this.source.getArmyCount()-1)));
+			if (!(this.destination == this.source)) {
+				this.armyIcons.get(this.source).mark(Color.GREEN);
+				this.armyIcons.get(country).mark(Color.YELLOW);
+				
+				this.armyIcons.get(this.source).mark(Color.YELLOW);
+				this.updatePanel();
 				try {
-					//actually move
-					this.engine.move(this.source, this.destination, wert);
-				} catch (CountriesNotInRelationException e) {
-					MMessageBox.error(e.getMessage());
-				} catch (NotEnoughArmiesException e) {
-					MMessageBox.error(e.getMessage());
-				} catch (CountryOwnerException e) {
-					MMessageBox.error(e.getMessage());
+					//army count input
+					int wert = Integer.parseInt(JOptionPane.showInputDialog("Wieviele Armeen " +
+							"sollen bewegt werden? (max: "+(this.source.getArmyCount()-1)+")",
+							""+(this.source.getArmyCount()-1)));
+					try {
+						//actually move
+						this.engine.move(this.source, this.destination, wert);
+					} catch (CountriesNotInRelationException e) {
+						MMessageBox.error(e.getMessage());
+					} catch (NotEnoughArmiesException e) {
+						MMessageBox.error(e.getMessage());
+					} catch (CountryOwnerException e) {
+						MMessageBox.error(e.getMessage());
+					}
+				} catch (NumberFormatException e1) {
+					//no need, just to make sure that the methods doesn't end
 				}
-			} catch (NumberFormatException e1) {
-				//no need, just to make sure that the methods doesn't end
+				
+				this.source = null;
+				this.destination = null;
+			} else {
+				this.unmarkAll();
+				this.source = null;
+				this.destination = null;
+				MMessageBox.error(GAME_MOVE_ERROR_SAME_COUNTRY);
 			}
 			
-			this.source = null;
-			this.destination = null;
 		}
 	}
 
