@@ -31,8 +31,12 @@ package de.hochschule.bremen.minerva.server.net;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Vector;
 
-import de.hochschule.bremen.minerva.commons.net.ServerProtocol;
+import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.commons.net.ServerEngine;
+import de.hochschule.bremen.minerva.commons.vo.World;
+import de.hochschule.bremen.minerva.server.manager.WorldManager;
 import de.root1.simon.Registry;
 import de.root1.simon.Simon;
 import de.root1.simon.exceptions.NameBindingException;
@@ -45,10 +49,10 @@ import de.root1.simon.exceptions.NameBindingException;
  * @version $Id$
  * 
  */
-public class ServerEngine implements ServerProtocol {
+public class MinervaServerEngine implements ServerEngine {
 
 	private static final long serialVersionUID = 1911446743019185828L;
-
+	
 	/**
 	 * DOCME
 	 * 
@@ -59,8 +63,19 @@ public class ServerEngine implements ServerProtocol {
 	 * @throws NameBindingException
 	 *
 	 */
-	public ServerEngine(String name, int port) throws UnknownHostException, IOException, NameBindingException {
+	public MinervaServerEngine(String name, int port) throws UnknownHostException, IOException, NameBindingException {
 		Registry registry = Simon.createRegistry(port);
 		registry.bind(name, this);
+	}
+
+	/**
+	 * DOCME
+	 *
+	 * @throws DataAccessException 
+	 * 
+	 */
+	@Override
+	public Vector<World> getWorlds(boolean flatView) throws DataAccessException {
+		return WorldManager.getInstance().getList(flatView);
 	}
 }

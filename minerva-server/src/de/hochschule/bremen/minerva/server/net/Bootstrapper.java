@@ -62,7 +62,7 @@ public class Bootstrapper {
 			int serverPort = Integer.parseInt(appConfig.getServerPort());
 			
 			// 2. Init the server.
-			new ServerEngine(appConfig.getServerName(), serverPort);
+			new MinervaServerEngine(appConfig.getServerName(), serverPort);
 
 			// 3. Show the server welcome message.
 			Bootstrapper.showWelcomeMessage();

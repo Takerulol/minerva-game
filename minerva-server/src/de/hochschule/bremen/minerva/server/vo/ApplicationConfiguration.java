@@ -44,6 +44,8 @@ import de.hochschule.bremen.minerva.commons.vo.ValueObject;
  */
 public class ApplicationConfiguration extends ValueObject {
 
+	private static final long serialVersionUID = -4632671967532487127L;
+
 	// #########################################################
 	// #
 	// # DON'T FORGET TO MODIFY THE MANAGER
