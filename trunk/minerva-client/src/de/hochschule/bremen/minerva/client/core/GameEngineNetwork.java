@@ -115,12 +115,16 @@ public class GameEngineNetwork implements GameEngine {
 				GameEngineNetwork.instance = new GameEngineNetwork();
 			} catch (EstablishConnectionFailed e) {
 				// TODO: Handle exception
+				e.printStackTrace();
 			} catch (SimonRemoteException e) {
-				// TODO: Handle exception				
+				// TODO: Handle exception
+				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO: Handle exception
+				e.printStackTrace();
 			} catch (LookupFailedException e) {
 				// TODO: Handle exception
+				e.printStackTrace();
 			}
 		}
 
@@ -134,26 +138,31 @@ public class GameEngineNetwork implements GameEngine {
 	}
 
 	@Override
-	public void register(Player player) throws PlayerExistsException,
-			DataAccessException {
+	public void register(Player player) throws PlayerExistsException, DataAccessException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public Vector<World> getWorldList() throws DataAccessException {
-		return this.serverEngine.getWorlds(false);
+		try {
+			return this.serverEngine.getWorlds(false);
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e.getMessage());
+		}
 	}
 
 	@Override
 	public Vector<World> getWorldList(boolean lite) throws DataAccessException {
-		return this.serverEngine.getWorlds(lite);
+		try {
+			return this.serverEngine.getWorlds(lite);
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e.getMessage());
+		}
 	}
 
 	@Override
-	public void importWorld(File worldFile) throws WorldNotStorable,
-			WorldFileNotFoundException, WorldFileExtensionException,
-			WorldFileParseException, DataAccessException {
+	public void importWorld(File worldFile) throws WorldNotStorable, WorldFileNotFoundException, WorldFileExtensionException, WorldFileParseException, DataAccessException {
 		// TODO Auto-generated method stub
 		
 	}
@@ -171,22 +180,18 @@ public class GameEngineNetwork implements GameEngine {
 	}
 
 	@Override
-	public void startGame() throws NotEnoughPlayersLoggedInException,
-			NoPlayerLoggedInException, WorldNotDefinedException {
+	public void startGame() throws NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void killGame(boolean createNewOne) throws DataAccessException {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void setGameWorld(World world) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -210,13 +215,11 @@ public class GameEngineNetwork implements GameEngine {
 	@Override
 	public void releaseCard(CountryCard card) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void releaseCards(Vector<CountryCard> cards) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -226,32 +229,23 @@ public class GameEngineNetwork implements GameEngine {
 	}
 
 	@Override
-	public void allocateArmy(Country allocatable)
-			throws NotEnoughArmiesException, CountryOwnerException {
+	public void allocateArmy(Country allocatable) throws NotEnoughArmiesException, CountryOwnerException {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
-	public AttackResult attack(Country source, Country destination,
-			int armyCount) throws CountriesNotInRelationException,
-			NotEnoughArmiesException, IsOwnCountryException {
+	public AttackResult attack(Country source, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void move(Country source, Country destination, int armyCount)
-			throws CountriesNotInRelationException, NotEnoughArmiesException,
-			CountryOwnerException {
+	public void move(Country source, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, CountryOwnerException {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void finishTurn() {
 		// TODO Auto-generated method stub
-		
 	}
-	
 }
