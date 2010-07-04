@@ -29,7 +29,11 @@
  */
 package de.hochschule.bremen.minerva.commons.net;
 
+import java.util.Vector;
+
 import de.root1.simon.SimonRemote;
+import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.commons.vo.World;
 
 /**
  * The server protocol.
@@ -41,6 +45,6 @@ import de.root1.simon.SimonRemote;
  */
 public interface ServerProtocol extends SimonRemote {
 
-	
-	
+	public Vector<World> getWorlds(boolean flatView) throws DataAccessException;
+
 }
