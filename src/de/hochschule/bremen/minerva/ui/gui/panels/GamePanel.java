@@ -285,7 +285,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 							//actually attack and showing attack result afterwards
 							AttackResult ar = this.engine.attack(this.source, this.destination, wert);
 							GamePanel.this.updatePanel();
-							if (ar != null) {
+							if ((ar != null) && (!this.engine.isGameFinished())) {
 								this.showAttackResult(ar);
 							}
 						} catch (CountriesNotInRelationException e) {
@@ -489,7 +489,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 					+this.engine.getGameWinner().getUsername()
 					+GAME_FINISHED_WINNER);
 			try {
-				this.engine.killGame(true);
+				this.engine.killGame(false);
 			} catch (DataAccessException e) {
 				MMessageBox.error(e.getMessage());
 			}
