@@ -27,7 +27,7 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva;
+package de.hochschule.bremen.minerva.client;
 
 import de.hochschule.bremen.minerva.client.ui.UserInterface;
 import de.hochschule.bremen.minerva.client.ui.UserInterfaceFactory;
