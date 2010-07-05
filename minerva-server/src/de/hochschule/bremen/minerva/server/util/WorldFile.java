@@ -60,6 +60,7 @@ import de.hochschule.bremen.minerva.commons.util.ColorTool;
 import de.hochschule.bremen.minerva.commons.vo.Continent;
 import de.hochschule.bremen.minerva.commons.vo.Country;
 import de.hochschule.bremen.minerva.commons.vo.World;
+import de.hochschule.bremen.minerva.server.manager.ApplicationConfigurationManager;
 
 /**
  * Represents a physical file that contains the data structure to describe
@@ -75,7 +76,7 @@ public class WorldFile extends World {
 
 	private static final String WORLD_FILE_EXTENSION = ".world";
 	private static final String WORLD_FILE_XML = "data.xml";
-	private static final File TEMP_DIR = new File("importer-workspace");
+	private static final File TEMP_DIR = new File(ApplicationConfigurationManager.get().getImporterWorkspaceDirectory());
 
 	// The "Importable" represents at the very beginning the "*.world file", but while the import process is running
 	// and all the data was extracted into the workspace directory, this object represents the xml import file (data.xml)
