@@ -35,11 +35,15 @@ import de.root1.simon.SimonRemote;
 import de.root1.simon.exceptions.SimonRemoteException;
 import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.commons.exceptions.GameAlreadyStartedException;
+import de.hochschule.bremen.minerva.commons.exceptions.NoPlayerLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.NoPlayerSlotAvailableException;
+import de.hochschule.bremen.minerva.commons.exceptions.NotEnoughPlayersLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerAlreadyLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerExistsException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldNotDefinedException;
 import de.hochschule.bremen.minerva.commons.exceptions.WrongPasswordException;
+import de.hochschule.bremen.minerva.commons.vo.Mission;
 import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.World;
 
@@ -63,4 +67,28 @@ public interface ServerExecutables extends SimonRemote {
 
 	// Returns all available world (flatView = no country dependencies)
 	public Vector<World> getWorlds(boolean flatView) throws SimonRemoteException, DataAccessException;
+
+	// Start the game (the gamemaster can do this!)
+	public void startGame() throws SimonRemoteException, NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException, DataAccessException;
+
+	// Kill the running game and log all players out.
+	public void killGame(boolean createNewOne) throws SimonRemoteException, DataAccessException;
+
+	// Sets the world to play on.
+	public void setGameWorld(World world) throws SimonRemoteException, DataAccessException;
+
+	// Return the world the current game is running on.
+	public World getGameWorld() throws SimonRemoteException, DataAccessException;
+
+	// Returns the current game players (logged in and assigned to the game).-
+	public Vector<Player> getGamePlayers() throws SimonRemoteException;
+
+	// Returns the game missions.
+	public Vector<Mission> getGameMissions() throws SimonRemoteException;
+
+	// Game session finished?
+	public boolean isGameFinished() throws SimonRemoteException;
+
+	// Return the game winner.
+	public Player getGameWinner() throws SimonRemoteException;
 }
