@@ -30,7 +30,11 @@
 package de.hochschule.bremen.minerva.client.core;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
@@ -64,6 +68,7 @@ import de.hochschule.bremen.minerva.commons.vo.CountryCard;
 import de.hochschule.bremen.minerva.commons.vo.Mission;
 import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.World;
+import de.root1.simon.RawChannel;
 import de.root1.simon.Simon;
 import de.root1.simon.exceptions.EstablishConnectionFailed;
 import de.root1.simon.exceptions.LookupFailedException;
@@ -141,6 +146,9 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 			this.serverEngine.login(player, GameEngineNetwork.getEngine());
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
+		} finally {
+			Simon.release(this.serverEngine);
+			System.out.println("release");
 		}
 	}
 
@@ -154,6 +162,8 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 			this.serverEngine.register(player);
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
+		} finally {
+			Simon.release(this.serverEngine);
 		}
 	}
 
@@ -163,24 +173,71 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	 */
 	@Override
 	public Vector<World> getWorldList() throws DataAccessException {
+		Vector<World> worlds = new Vector<World>();
+
 		try {
-			return this.serverEngine.getWorlds(false);
+			worlds = this.serverEngine.getWorlds(false);
+			
+			return worlds;
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e.getMessage());
+		} finally {
+			Simon.release(this.serverEngine);
 		}
 	}
 
 	@Override
-	public Vector<World> getWorldList(boolean lite) throws DataAccessException {
+	public Vector<World> getWorldList(boolean flatView) throws DataAccessException {
+		Vector<World> worlds = new Vector<World>();
+
 		try {
-			return this.serverEngine.getWorlds(lite);
+			worlds = this.serverEngine.getWorlds(flatView);
+			
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e.getMessage());
+		} finally {
+			Simon.release(this.serverEngine);
 		}
+
+		return worlds;
 	}
 
+	/**
+	 * DOCME
+	 *
+	 */
 	@Override
-	public void importWorld(File worldFile) throws WorldNotStorable, WorldFileNotFoundException, WorldFileExtensionException, WorldFileParseException, DataAccessException {}
+	public void importWorld(File worldFile) throws WorldNotStorable, WorldFileNotFoundException, WorldFileExtensionException, WorldFileParseException, DataAccessException {
+		// Writing the world import file to the server.
+		try {
+			int pipeToken = this.serverEngine.prepareWorldFileTransfer(worldFile.getAbsolutePath());
+			RawChannel rawChannel = Simon.openRawChannel(pipeToken, this.serverEngine);
+			FileChannel fileChannel = new FileInputStream(worldFile).getChannel();
+			
+			ByteBuffer data = ByteBuffer.allocate(512);
+			while (fileChannel.read(data) != -1) {
+				rawChannel.write(data);
+				data.clear();
+			}
+
+			fileChannel.close();
+			rawChannel.close();
+		} catch (SimonRemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			Simon.release(this.serverEngine);
+		}
+	}
 
 	/**
 	 * DOCME
@@ -192,6 +249,8 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 			this.serverEngine.startGame();
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
+		} finally {
+			Simon.release(this.serverEngine);
 		}
 	}
 
@@ -205,16 +264,24 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 			this.serverEngine.killGame(createNewOne);
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
+		} finally {
+			Simon.release(this.serverEngine);
 		}
 	}
 
 	@Override
 	public Vector<Player> getGamePlayers() throws DataAccessException {
+		Vector<Player> players = new Vector<Player>();
+		
 		try {
-			return this.serverEngine.getGamePlayers();
+			players = this.serverEngine.getGamePlayers();
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
+		} finally {
+			Simon.release(this.serverEngine);
 		}
+		
+		return players;
 	}
 
 	@Override
@@ -228,39 +295,62 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 
 	@Override
 	public World getGameWorld() throws DataAccessException {
+		World world = new World();
+
 		try {
-			return this.serverEngine.getGameWorld();
+			world = this.serverEngine.getGameWorld();
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
+		} finally {
+			Simon.release(this.clientPlayer);
 		}
+		
+		return world;
 	}
-
 
 	@Override
 	public Vector<Mission> getGameMissions() throws DataAccessException {
+		Vector<Mission> missions = new Vector<Mission>();
+
 		try {
-			return this.serverEngine.getGameMissions();
+			missions = this.serverEngine.getGameMissions();
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
+		} finally {
+			Simon.release(this.serverEngine);
 		}
+		
+		return missions;
 	}
 
 	@Override
 	public boolean isGameFinished() throws DataAccessException {
+		boolean isFinished = false;
+
 		try {
-			return this.serverEngine.isGameFinished();
+			isFinished = this.serverEngine.isGameFinished();
 		} catch (SimonRemoteException e) {
 			 throw new DataAccessException(e);
+		} finally {
+			Simon.release(this.serverEngine);
 		}
+
+		return isFinished;
 	}
 
 	@Override
 	public Player getGameWinner() throws DataAccessException {
+		Player champ = null;
+		
 		try {
-			return this.serverEngine.getGameWinner();
+			champ = this.serverEngine.getGameWinner();
 		} catch (SimonRemoteException e) {
 			 throw new DataAccessException(e);
+		} finally {
+			Simon.release(this.serverEngine);
 		}
+		
+		return champ;
 	}
 
 	@Override
@@ -269,6 +359,8 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 			this.serverEngine.releaseCard(card);
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
+		} finally {
+			Simon.release(this.serverEngine);
 		}
 	}
 
@@ -278,16 +370,24 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 			this.serverEngine.releaseCards(cards);
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
+		} finally {
+			Simon.release(this.serverEngine);
 		}
 	}
 
 	@Override
 	public int getAllocatableArmyCount() throws DataAccessException {
+		int allocatableCountries = 0;
+		
 		try {
-			return this.serverEngine.getAllocatableArmyCount();
+			allocatableCountries = this.serverEngine.getAllocatableArmyCount();
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
+		} finally {
+			Simon.release(this.serverEngine);
 		}
+
+		return allocatableCountries;
 	}
 
 	@Override
@@ -296,16 +396,24 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 			this.serverEngine.allocateArmy(allocatable);
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
+		} finally {
+			Simon.release(this.serverEngine);
 		}
 	}
 
 	@Override
 	public AttackResult attack(Country source, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException, DataAccessException {
+		AttackResult result = null;
+
 		try {
-			return this.serverEngine.attack(source, destination, armyCount);
+			result = this.serverEngine.attack(source, destination, armyCount);
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
+		} finally {
+			Simon.release(this.serverEngine);
 		}
+
+		return result;
 	}
 
 	@Override
@@ -314,6 +422,8 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 			this.serverEngine.move(source, destination, armyCount);
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
+		} finally {
+			Simon.release(this.serverEngine);
 		}
 	}
 
@@ -323,6 +433,8 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 			this.serverEngine.finishTurn();
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
+		} finally {
+			Simon.release(this.serverEngine);
 		}
 	}
 
@@ -368,11 +480,16 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	 */
 	@Override
 	public int[][] getGameMapImage() throws DataAccessException {
+		int[][] map = null;
 		try {
-			return this.serverEngine.getGameMapImage();
+			map = this.serverEngine.getGameMapImage();
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
+		} finally {
+			Simon.release(this.serverEngine);
 		}
+		
+		return map;
 	}
 
 	/**
@@ -381,10 +498,15 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	 */
 	@Override
 	public int[][] getGameMapUnderlayImage() throws DataAccessException {
+		int[][] mapUnderlay = null;
 		try {
-			return this.serverEngine.getGameMapUnderlayImage();
+			mapUnderlay = this.serverEngine.getGameMapUnderlayImage();
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
+		} finally {
+			Simon.release(this.serverEngine);
 		}
+		
+		return mapUnderlay;
 	}
 }
