@@ -29,12 +29,18 @@
  */
 package de.hochschule.bremen.minerva.server.net;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.WritableRaster;
+import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Vector;
+
+import javax.imageio.ImageIO;
 
 import de.hochschule.bremen.minerva.commons.exceptions.CountriesNotInRelationException;
 import de.hochschule.bremen.minerva.commons.exceptions.CountryOwnerException;
@@ -62,8 +68,10 @@ import de.hochschule.bremen.minerva.commons.vo.World;
 import de.hochschule.bremen.minerva.server.core.logic.Game;
 import de.hochschule.bremen.minerva.server.core.logic.Turn;
 import de.hochschule.bremen.minerva.server.manager.AccountManager;
+import de.hochschule.bremen.minerva.server.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.server.manager.WorldManager;
 import de.hochschule.bremen.minerva.server.util.ConsoleLogger;
+import de.hochschule.bremen.minerva.server.vo.ApplicationConfiguration;
 import de.root1.simon.Registry;
 import de.root1.simon.Simon;
 import de.root1.simon.exceptions.NameBindingException;
@@ -184,6 +192,13 @@ public class MinervaServerEngine implements ServerExecutables {
 	@Override
 	public void setGameWorld(World world) throws SimonRemoteException, DataAccessException {
 		LOGGER.log("setGameWorld(): Gamemaster defined the following world to play on: '"+world.getName()+"'");
+		
+		ApplicationConfiguration appConfig = ApplicationConfigurationManager.get();
+		String filepath = appConfig.getAssetsWorldDirectory();
+
+		world.setMapImage(this.loadMapImage(filepath + world.getMap()));
+		world.setMapUnderlayImage(this.loadMapImage(filepath + world.getMapUnderlay()));
+
 		this.game.setWorld(world);
 	}
 
@@ -225,6 +240,30 @@ public class MinervaServerEngine implements ServerExecutables {
 	public boolean isGameFinished() throws SimonRemoteException {
 		LOGGER.log("isGameFinished(): Game finished? -> " + ((this.game.isFinished()) ? "Yes :(" : "No :)"));
 		return this.game.isFinished();
+	}
+
+	/**
+	 * DOCME
+	 *
+	 */
+	@Override
+	public byte[] getGameMapImage() throws SimonRemoteException {
+		LOGGER.log("getGameMapImage(): Load the map image (world = '" + this.game.getWorld().getName() + "').");
+
+		WritableRaster raster = this.game.getWorld().getMapImage().getRaster();
+		return ((DataBufferByte)raster.getDataBuffer()).getData();
+	}
+
+	/**
+	 * DOCME
+	 *
+	 */
+	@Override
+	public byte[] getGameMapUnderlayImage() throws SimonRemoteException {
+		LOGGER.log("getGameMapImage(): Load the map image underlay (world = '" + this.game.getWorld().getName() + "').");
+
+		WritableRaster raster = this.game.getWorld().getMapUnderlayImage().getRaster();
+		return ((DataBufferByte)raster.getDataBuffer()).getData();
 	}
 
 	/**
@@ -329,5 +368,21 @@ public class MinervaServerEngine implements ServerExecutables {
 			
 			client.refreshPlayer(entry.getKey());
 		}
+	}
+
+	/**
+	 * DOCME
+	 *
+	 * @param filepath
+	 * @return
+	 */
+	private BufferedImage loadMapImage(String filepath) {
+		BufferedImage map = null; 
+		try {
+			map = ImageIO.read(new File(filepath));
+		} catch (IOException e) {
+			LOGGER.error("Loading map image failed. Path: '"+filepath+"'. Reason: " + e.getMessage());
+		}
+		return map;
 	}
 }

@@ -63,6 +63,8 @@ public class ApplicationConfiguration extends ValueObject {
 	private int serverPort = 0;
 	private String serverWelcomeMessage = null;
 
+	private String assetsWorldDirectory = null;
+
 	/**
 	 * Sets the minerva application name.
 	 * 
@@ -159,5 +161,25 @@ public class ApplicationConfiguration extends ValueObject {
 	 */
 	public String getServerWelcomeMessage() {
 		return serverWelcomeMessage;
+	}
+
+	/**
+	 * Sets the worlds assets directory (contains maps, underlay maps, thumbnails).
+	 *
+	 * @param assetsWorldDirectory
+	 *
+	 */
+	public void setAssetsWorldDirectory(String assetsWorldDirectory) {
+		this.assetsWorldDirectory = assetsWorldDirectory;
+	}
+
+	/**
+	 * Returns the worlds assets directory (contains maps, underlay maps, thumbnails).
+	 *
+	 * @return The worlds assets directory.
+	 *
+	 */
+	public String getAssetsWorldDirectory() {
+		return assetsWorldDirectory;
 	}
 }
