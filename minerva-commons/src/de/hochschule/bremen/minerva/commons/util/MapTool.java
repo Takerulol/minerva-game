@@ -97,6 +97,12 @@ public class MapTool {
 		return image;
 	}
 	
+	/**
+	 * Creates a 2-dimensional integer array consisting of aRGB color values from
+	 * a buffered image map.
+	 * @param mapImage buffered image of map
+	 * @return integer array of image
+	 */
 	public static int[][] createArrayFromMapImage(BufferedImage mapImage) {
 		int[][] map = new int[mapImage.getWidth()][mapImage.getHeight()];
 		for (int x = 0; x < mapImage.getWidth(); x++) {
