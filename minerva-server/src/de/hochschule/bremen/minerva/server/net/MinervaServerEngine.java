@@ -32,6 +32,7 @@ package de.hochschule.bremen.minerva.server.net;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -319,9 +320,16 @@ public class MinervaServerEngine implements ServerExecutables {
 	@Override
 	public byte[] getGameMapImage() throws SimonRemoteException {
 		LOGGER.log("getGameMapImage(): Load the map image (world = '" + this.game.getWorld().getName() + "').");
+		
+		BufferedImage map = this.game.getWorld().getMapImage();
+		ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+		try {
+			ImageIO.write(map, "png", bStream);
+		} catch (IOException e) {
+			LOGGER.error("Loading map image failed. Reason: " + e.getMessage());
+		}
 
-		WritableRaster raster = this.game.getWorld().getMapImage().getRaster();
-		return ((DataBufferByte)raster.getDataBuffer()).getData();
+		return bStream.toByteArray();
 	}
 
 	/**
