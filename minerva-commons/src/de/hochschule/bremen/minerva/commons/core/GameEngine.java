@@ -97,7 +97,7 @@ public interface GameEngine {
 
 	public World getGameWorld() throws DataAccessException;
 
-	public Vector<Player> getGamePlayers();
+	public Vector<Player> getGamePlayers() throws DataAccessException;
 
 	public Vector<Mission> getGameMissions();
 
