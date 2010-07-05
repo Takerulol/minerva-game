@@ -31,6 +31,7 @@ package de.hochschule.bremen.minerva.commons.exceptions;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 
 /**
  * The importable world file was not found.
@@ -39,7 +40,7 @@ import java.io.FileNotFoundException;
  * @version $Id$
  * 
  */
-public class WorldFileNotFoundException extends FileNotFoundException {
+public class WorldFileNotFoundException extends FileNotFoundException implements Serializable {
 
 	private static final long serialVersionUID = -5573616752872323846L;
 

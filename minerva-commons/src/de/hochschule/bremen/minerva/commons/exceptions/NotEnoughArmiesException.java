@@ -29,6 +29,8 @@
  */
 package de.hochschule.bremen.minerva.commons.exceptions;
 
+import java.io.Serializable;
+
 import de.hochschule.bremen.minerva.commons.vo.Country;
 
 /**
@@ -38,7 +40,7 @@ import de.hochschule.bremen.minerva.commons.vo.Country;
  * @version $Id$
  * 
  */
-public class NotEnoughArmiesException extends Exception{
+public class NotEnoughArmiesException extends Exception implements Serializable {
 
 	private static final long serialVersionUID = 1508846470029928606L;
 

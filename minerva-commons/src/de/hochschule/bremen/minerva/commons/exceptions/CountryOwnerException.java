@@ -29,6 +29,8 @@
  */
 package de.hochschule.bremen.minerva.commons.exceptions;
 
+import java.io.Serializable;
+
 import de.hochschule.bremen.minerva.commons.vo.Country;
 import de.hochschule.bremen.minerva.commons.vo.Player;
 
@@ -39,7 +41,7 @@ import de.hochschule.bremen.minerva.commons.vo.Player;
  * @version $Id$
  * 
  */
-public class CountryOwnerException extends Exception {
+public class CountryOwnerException extends Exception implements Serializable {
 
 	private static final long serialVersionUID = 1054976220627063505L;
 

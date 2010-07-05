@@ -29,6 +29,7 @@
  */
 package de.hochschule.bremen.minerva.commons.exceptions;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.commons.vo.Player;
@@ -40,7 +41,7 @@ import de.hochschule.bremen.minerva.commons.vo.Player;
  * @version $Id$
  * 
  */
-public class NotEnoughPlayersLoggedInException extends Exception {
+public class NotEnoughPlayersLoggedInException extends Exception implements Serializable {
 
 	private static final long serialVersionUID = 7058149089226110325L;
 

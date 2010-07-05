@@ -30,6 +30,7 @@
 package de.hochschule.bremen.minerva.commons.exceptions;
 
 import java.io.File;
+import java.io.Serializable;
 
 /**
  * Tried to import an world file that does not have the correct file extension.
@@ -38,7 +39,7 @@ import java.io.File;
  * @version $Id$
  * 
  */
-public class WorldFileExtensionException extends Exception {
+public class WorldFileExtensionException extends Exception implements Serializable {
 
 	private static final long serialVersionUID = 6507674073849573747L;
 

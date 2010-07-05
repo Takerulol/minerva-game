@@ -30,6 +30,7 @@
 package de.hochschule.bremen.minerva.commons.exceptions;
 
 import java.io.File;
+import java.io.Serializable;
 
 /**
  * The world from the import file was not parsable, so it is not well-formed.
@@ -39,7 +40,7 @@ import java.io.File;
  * @version $Id$
  * 
  */
-public class WorldFileParseException extends Exception {
+public class WorldFileParseException extends Exception implements Serializable {
 
 	private static final long serialVersionUID = 530495849894359920L;
 

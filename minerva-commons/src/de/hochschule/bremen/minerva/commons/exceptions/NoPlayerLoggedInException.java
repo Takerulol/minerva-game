@@ -29,6 +29,8 @@
  */
 package de.hochschule.bremen.minerva.commons.exceptions;
 
+import java.io.Serializable;
+
 /**
  * Exception that will thrown if no player is logged but tried to
  * start a new game session.
@@ -37,7 +39,7 @@ package de.hochschule.bremen.minerva.commons.exceptions;
  * @version $Id$
  * 
  */
-public class NoPlayerLoggedInException extends Exception {
+public class NoPlayerLoggedInException extends Exception implements Serializable {
 	
 	private static final long serialVersionUID = 2618146650212037950L;
 
