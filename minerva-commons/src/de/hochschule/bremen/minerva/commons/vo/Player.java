@@ -296,15 +296,6 @@ public class Player extends ValueObject {
 	public Vector<CountryCard> getCountryCards() {
 		return countryCards;
 	}
-	
-	/**
-	 * Made out of all attributes one string
-	 * 
-	 * @return
-	 */
-	public String toString() {
-		return getClass().getName() + "[id=" + this.id + ",username=" + this.username + ",last_name=" + this.lastName + ",first_name=" + this.firstName + ",email=" + this.email + ", loggedIn=" + this.loggedIn + "]";
-	}
 
 	/**
 	 * Sets the current player state.
@@ -342,5 +333,12 @@ public class Player extends ValueObject {
 		return color;
 	}
 
-	
+	/**
+	 * Made out of all attributes one string
+	 * 
+	 * @return
+	 */
+	public String toString() {
+		return getClass().getName() + "[id=" + this.id + ",username=" + this.username + ",last_name=" + this.lastName + ",first_name=" + this.firstName + ",email=" + this.email + ",player_state=" + this.state + ", loggedIn=" + this.loggedIn + "]";
+	}
 }
