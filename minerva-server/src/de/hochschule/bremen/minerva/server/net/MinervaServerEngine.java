@@ -546,8 +546,7 @@ public class MinervaServerEngine implements ServerExecutables {
 	@Override
 	public int prepareWorldFileImport(String worldFileName) throws SimonRemoteException {
 		LOGGER.log("prepareWorldFileTransfer(): Preparing a world file transfer.");
-
-		ApplicationConfiguration appConfig = ApplicationConfigurationManager.get();		
+		
 		return Simon.prepareRawChannel(new WorldFileReceiver(worldFileName), this);
 	}
 
