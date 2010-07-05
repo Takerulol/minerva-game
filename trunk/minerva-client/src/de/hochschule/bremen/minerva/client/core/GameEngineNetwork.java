@@ -218,67 +218,112 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	}
 
 	@Override
-	public void setGameWorld(World world) throws DataAccessException {}
+	public void setGameWorld(World world) throws DataAccessException {
+		try {
+			this.serverEngine.setGameWorld(world);
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
+	}
 
 	@Override
 	public World getGameWorld() throws DataAccessException {
-		return null;
+		try {
+			return this.serverEngine.getGameWorld();
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
 	}
 
 
 	@Override
-	public Vector<Mission> getGameMissions() {
-		// TODO Auto-generated method stub
-		return null;
+	public Vector<Mission> getGameMissions() throws DataAccessException {
+		try {
+			return this.serverEngine.getGameMissions();
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
 	}
 
 	@Override
-	public boolean isGameFinished() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isGameFinished() throws DataAccessException {
+		try {
+			return this.serverEngine.isGameFinished();
+		} catch (SimonRemoteException e) {
+			 throw new DataAccessException(e);
+		}
 	}
 
 	@Override
-	public Player getGameWinner() {
-		// TODO Auto-generated method stub
-		return null;
+	public Player getGameWinner() throws DataAccessException {
+		try {
+			return this.serverEngine.getGameWinner();
+		} catch (SimonRemoteException e) {
+			 throw new DataAccessException(e);
+		}
 	}
 
 	@Override
-	public void releaseCard(CountryCard card) {
-		// TODO Auto-generated method stub
+	public void releaseCard(CountryCard card) throws DataAccessException {
+		try {
+			this.serverEngine.releaseCard(card);
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
 	}
 
 	@Override
-	public void releaseCards(Vector<CountryCard> cards) {
-		// TODO Auto-generated method stub
+	public void releaseCards(Vector<CountryCard> cards) throws DataAccessException {
+		try {
+			this.serverEngine.releaseCards(cards);
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
 	}
 
 	@Override
-	public int getAllocatableArmyCount() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getAllocatableArmyCount() throws DataAccessException {
+		try {
+			return this.serverEngine.getAllocatableArmyCount();
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
 	}
 
 	@Override
-	public void allocateArmy(Country allocatable) throws NotEnoughArmiesException, CountryOwnerException {
-		// TODO Auto-generated method stub
+	public void allocateArmy(Country allocatable) throws NotEnoughArmiesException, CountryOwnerException, DataAccessException {
+		try {
+			this.serverEngine.allocateArmy(allocatable);
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
 	}
 
 	@Override
-	public AttackResult attack(Country source, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException {
-		// TODO Auto-generated method stub
-		return null;
+	public AttackResult attack(Country source, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException, DataAccessException {
+		try {
+			return this.serverEngine.attack(source, destination, armyCount);
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
 	}
 
 	@Override
-	public void move(Country source, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, CountryOwnerException {
-		// TODO Auto-generated method stub
+	public void move(Country source, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, CountryOwnerException, DataAccessException {
+		try {
+			this.serverEngine.move(source, destination, armyCount);
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
 	}
 
 	@Override
-	public void finishTurn() {
-		// TODO Auto-generated method stub
+	public void finishTurn() throws DataAccessException {
+		try {
+			this.serverEngine.finishTurn();
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
 	}
 
 	/**
@@ -289,10 +334,18 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		return this.clientPlayer;
 	}
 
+	/**
+	 * DOCME
+	 *
+	 */
 	public void addObserver(Observer o) {
 		super.addObserver(o);
 	}
-	
+
+	/**
+	 * DOCME
+	 *
+	 */
 	@Override
 	public void refreshPlayer(Player player) {
 		System.out.println("Server hat refreshPlayer aufgerufen: "+player);
