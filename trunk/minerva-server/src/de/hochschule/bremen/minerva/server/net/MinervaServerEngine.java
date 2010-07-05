@@ -35,10 +35,13 @@ import java.util.Vector;
 
 import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.commons.exceptions.GameAlreadyStartedException;
+import de.hochschule.bremen.minerva.commons.exceptions.NoPlayerLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.NoPlayerSlotAvailableException;
+import de.hochschule.bremen.minerva.commons.exceptions.NotEnoughPlayersLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerAlreadyLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerExistsException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldNotDefinedException;
 import de.hochschule.bremen.minerva.commons.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.commons.net.ServerEngine;
 import de.hochschule.bremen.minerva.commons.vo.Player;
@@ -117,10 +120,37 @@ public class MinervaServerEngine implements ServerEngine {
 		return WorldManager.getInstance().getList(flatView);
 	}
 
+	/**
+	 * Starts the game and informs the client,
+	 * which is the current user.
+	 * 
+	 * @throws SimonRemoteException
+	 * @throws NotEnoughPlayersLoggedInException
+	 * @throws NoPlayerLoggedInException
+	 * @throws WorldNotDefinedException
+	 * 
+	 */
+	@Override
+	public void startGame() throws SimonRemoteException, NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException {
+		this.game.start();
+		
+		// TODO: Inform the "current user" client.
+	}
+
 	@Override
 	public void killGame(boolean createNewOne) throws SimonRemoteException, DataAccessException {
 		// TODO: Kill Game
 		// TODO: Remove all client connections.
+		// TODO: Inform all clients!
 		AccountManager.getInstance().logout();
+	}
+
+	@Override
+	public void setGameWorld(World world) {
+		this.game.setWorld(world);
+	}
+
+	public World getGameWorld() {
+		return this.game.getWorld();
 	}
 }
