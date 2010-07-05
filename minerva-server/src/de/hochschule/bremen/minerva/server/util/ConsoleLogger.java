@@ -60,7 +60,7 @@ public class ConsoleLogger {
 	}
 
 	/**
-	 * Prints a log message
+	 * Prints a log message.
 	 * 
 	 * @param message The log message.
 	 *
@@ -70,9 +70,9 @@ public class ConsoleLogger {
 	}
 
 	/**
-	 * DOCME
+	 * Prints error messages.
 	 *
-	 * @param message
+	 * @param message The error message.
 	 */
 	public void error(String message) {
 		System.err.println("[ERROR] "+message);
