@@ -6,3 +6,6 @@ app.version=1.0
 server.name=minerva
 server.port=50001
 server.welcome=Welcome, Master. Yes, i'm up and running ... :)
+
+-- Directory configuration (never forget the slash at the end of the path)
+directory.assets.worlds=assets/worlds/

@@ -97,6 +97,9 @@ public class ApplicationConfigurationManager {
 
 		voReadMethodInvocationMapping.put("server.welcome", "setServerWelcomeMessage");
 		voStoreMethodInvocationMapping.put("server.welcome", "getServerWelcomeMessage");
+
+		voReadMethodInvocationMapping.put("directory.assets.worlds", "setAssetsWorldDirectory");
+		voStoreMethodInvocationMapping.put("directory.assets.worlds", "getAssetsWorldDirectory");
 	}
 
 	// The manager instance
