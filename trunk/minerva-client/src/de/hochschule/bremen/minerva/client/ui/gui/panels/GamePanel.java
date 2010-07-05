@@ -559,10 +559,14 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	 *
 	 */
 	public Player getPlayer(Country byCountry) {
-		for (Player player : this.engine.getGamePlayers()) {
-			if (player.hasCountry(byCountry)) {
-				return player;
+		try {
+			for (Player player : this.engine.getGamePlayers()) {
+				if (player.hasCountry(byCountry)) {
+					return player;
+				}
 			}
+		} catch (DataAccessException e) {
+			MMessageBox.error(e.getMessage());
 		}
 		return null;
 	}

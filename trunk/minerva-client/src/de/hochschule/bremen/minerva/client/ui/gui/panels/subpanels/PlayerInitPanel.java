@@ -32,11 +32,18 @@ package de.hochschule.bremen.minerva.client.ui.gui.panels.subpanels;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Vector;
 
 import javax.swing.JPanel;
 
+import net.miginfocom.swing.MigLayout;
+
 import de.hochschule.bremen.minerva.client.ui.gui.MinervaGUI;
+import de.hochschule.bremen.minerva.client.ui.gui.controls.MMessageBox;
+import de.hochschule.bremen.minerva.client.ui.gui.controls.MPlayerIcon;
 import de.hochschule.bremen.minerva.client.ui.gui.resources.TextResources;
+import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.commons.vo.Player;
 
 /**
  * This sub panel shows all logged in players.
@@ -49,24 +56,49 @@ public class PlayerInitPanel extends JPanel implements TextResources, Observer {
 
 	private static final long serialVersionUID = -344922633298919424L;
 
+	private Vector<Player> currentPlayers;
+	
 	/**
 	 * Initializing all player icons
 	 * 
 	 */
 	public PlayerInitPanel() {
-		//Vector<Player> players = MinervaGUI.getEngine().getGamePlayers();
-		//this.setOpaque(false);
-		//this.setLayout(new MigLayout());
+		try {
+			this.currentPlayers = MinervaGUI.getEngine().getGamePlayers();
+		} catch (DataAccessException e) {
+			MMessageBox.error(e.getMessage());
+		}
+		this.setOpaque(false);
+		this.setLayout(new MigLayout());
 
-		//for (Player player : players) {
-			//this.add(new MPlayerIcon(player), "wrap");
-		//}
+		for (Player player : this.currentPlayers) {
+			this.add(new MPlayerIcon(player), "wrap");
+		}
 		MinervaGUI.getEngine().addObserver(this);
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		System.out.println("REFRESH IT!!!!");
+		
+		Vector<Player> players = new Vector<Player>();
+		try {
+			players = MinervaGUI.getEngine().getGamePlayers();
+		} catch (DataAccessException e) {
+			MMessageBox.error(e.getMessage());
+		}
+		
+		//idea 1:
+		for (int i = this.currentPlayers.size(); i < players.size(); i++) {
+			this.add(new MPlayerIcon(players.get(i)), "wrap");
+		}
+		this.currentPlayers = players;
+		
+//		//idea 2:
+//		players.removeAll(this.currentPlayers);
+//		for (Player player : players) {
+//			this.add(new MPlayerIcon(player), "wrap");
+//		}
+//		this.currentPlayers.addAll(players);
 		
 		
 	}
