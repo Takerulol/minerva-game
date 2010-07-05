@@ -10,4 +10,4 @@ directory.assets.userinterface.fileextension=.png
 -- Server configuration
 server.name=minerva
 server.host=localhost
-server.port=9090
+server.port=50001

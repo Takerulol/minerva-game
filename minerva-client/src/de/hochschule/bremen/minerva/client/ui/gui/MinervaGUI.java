@@ -98,55 +98,55 @@ public class MinervaGUI extends JFrame implements UserInterface {
 	 * Starts the UI and initializes the frame.
 	 */
 	public void run() {
-		// Application configuration manager setup.
 		try {
+			// Application configuration manager setup.
 			ApplicationConfigurationManager.setup();
-		} catch (AppConfigurationNotFoundException e) {
-			System.out.println(e.getMessage());
-			Runtime.getRuntime().exit(ERROR);
-		} catch (AppConfigurationNotReadableException e) {
-			System.out.println(e.getMessage());
-			Runtime.getRuntime().exit(ERROR);
-		}
 
-		// Init the game engine.
-		MinervaGUI.GAME_ENGINE = GameEngineNetwork.getEngine();
-		
-		//initialization
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setBackground(Color.black);
-		this.setResizable(false);
-		this.setTitle(ApplicationConfigurationManager.get().getAppName());
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage(ApplicationConfigurationManager.get().getAppIconPath()));
-	
-		//start screen
-		this.currentPanel = new StartPanel();
-		this.setContentPane(this.currentPanel);
-		this.currentPanel.updateUI();
+			// Init the game engine.
+			MinervaGUI.GAME_ENGINE = GameEngineNetwork.getEngine();
 
-		//login screen after 5 seconds
-		Timer timer = new Timer(this.INTRO_DELAY, new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() instanceof Timer) {
-					MinervaGUI.this.changePanel(new LoginPanel());
-					((Timer) e.getSource()).stop();
+			//initialization
+			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			this.setBackground(Color.black);
+			this.setResizable(false);
+			this.setTitle(ApplicationConfigurationManager.get().getAppName());
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage(ApplicationConfigurationManager.get().getAppIconPath()));
+			
+			//start screen
+			this.currentPanel = new StartPanel();
+			this.setContentPane(this.currentPanel);
+			this.currentPanel.updateUI();
+			
+			//login screen after 5 seconds
+			Timer timer = new Timer(this.INTRO_DELAY, new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (e.getSource() instanceof Timer) {
+						MinervaGUI.this.changePanel(new LoginPanel());
+						((Timer) e.getSource()).stop();
+					}
 				}
-			}
-		});
-
-		timer.start();
-		this.validate();
-
-		//packs frame to the size of its panel
-		this.pack();
-		
-		//centers frame on the screen
-		this.centerFrame();
-	
-		//lets show the frame .. yeeeaaaahhh =D
-		this.setVisible(true);
-
-		this.addListeners();
+			});
+			
+			timer.start();
+			this.validate();
+			
+			//packs frame to the size of its panel
+			this.pack();
+			
+			//centers frame on the screen
+			this.centerFrame();
+			
+			//lets show the frame .. yeeeaaaahhh =D
+			this.setVisible(true);
+			
+			this.addListeners();
+		} catch (DataAccessException e) {
+			MMessageBox.show(e.getMessage());
+		} catch (AppConfigurationNotFoundException e) {
+			MMessageBox.show(e.getMessage());
+		} catch (AppConfigurationNotReadableException e) {
+			MMessageBox.show(e.getMessage());
+		}
 	}
 	
 	/**
