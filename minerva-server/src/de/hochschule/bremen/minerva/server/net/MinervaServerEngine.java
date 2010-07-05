@@ -30,10 +30,7 @@
 package de.hochschule.bremen.minerva.server.net;
 
 import java.awt.image.BufferedImage;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -548,29 +545,5 @@ public class MinervaServerEngine implements ServerExecutables {
 		LOGGER.log("prepareWorldFileTransfer(): Preparing a world file transfer.");
 		
 		return Simon.prepareRawChannel(new WorldFileReceiver(worldFileName), this);
-	}
-
-	/**
-	 * DOCME
-	 *
-	 */
-	@Override
-	public byte[] getWorldFileBytes(String worldFileName) throws SimonRemoteException {
-		LOGGER.log("getWorldFileBytes(): Receiving the bytes from the world import file.");
-		File worldFile = new File(worldFileName);
-
-		 byte[] data = new byte[(int)worldFile.length()];
-
-		 DataInputStream datIStream;
-		 try {
-			 datIStream = new DataInputStream(new FileInputStream(worldFile));
-			 datIStream.readFully(data);
-		 } catch (FileNotFoundException e) {
-			 LOGGER.error("The world file pipe was not found. Created a pipe before?. Details: "+e.getMessage());
-		 } catch (IOException e) {
-			 LOGGER.error("Problem while reading the bytes from the world file. Reason: "+e.getMessage());
-		 }
- 
-		 return data;
 	}
 }
