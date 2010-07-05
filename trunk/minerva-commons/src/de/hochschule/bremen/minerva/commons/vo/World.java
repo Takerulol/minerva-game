@@ -487,6 +487,7 @@ public class World extends ValueObject {
 	 * Generates a buffered image out of a byte array and
 	 * sets the map image show to the player.
 	 * @param mapImage image of the map
+	 * @deprecated actually not in use
 	 */
 	public void setMapImage(byte[] mapImage) {
 		try {
@@ -516,6 +517,7 @@ public class World extends ValueObject {
 	 * Generates a buffered image out of a byte array and
 	 * sets the map image of the underlying map.
 	 * @param mapUnderlayImage image of map
+	 * @deprecated actually not in use
 	 */
 	public void setMapUnderlayImage(byte[] mapUnderlayImage) {
 		try {

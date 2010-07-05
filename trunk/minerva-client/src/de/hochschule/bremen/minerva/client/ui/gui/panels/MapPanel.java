@@ -32,10 +32,7 @@ package de.hochschule.bremen.minerva.client.ui.gui.panels;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 /**
@@ -58,13 +55,8 @@ public class MapPanel extends JPanel {
 	 * @param filepath path of map image file (overlay or underlay)
 	 *
 	 */
-	public MapPanel(String filepath) {
-		File file = new File(filepath);
-		try {
-			mapImage = ImageIO.read(file);
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
+	public MapPanel(BufferedImage mapImage) {
+		this.mapImage = mapImage;
 		this.repaint();
 	}
 
