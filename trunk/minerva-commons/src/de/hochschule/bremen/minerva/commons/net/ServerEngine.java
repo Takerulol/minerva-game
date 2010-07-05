@@ -35,10 +35,13 @@ import de.root1.simon.SimonRemote;
 import de.root1.simon.exceptions.SimonRemoteException;
 import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.commons.exceptions.GameAlreadyStartedException;
+import de.hochschule.bremen.minerva.commons.exceptions.NoPlayerLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.NoPlayerSlotAvailableException;
+import de.hochschule.bremen.minerva.commons.exceptions.NotEnoughPlayersLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerAlreadyLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerExistsException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldNotDefinedException;
 import de.hochschule.bremen.minerva.commons.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.World;
@@ -62,8 +65,15 @@ public interface ServerEngine extends SimonRemote {
 	// Returns all available world (flatView = no country dependencies)
 	public Vector<World> getWorlds(boolean flatView) throws SimonRemoteException, DataAccessException;
 
-	public Vector<Player> getGamePlayers();
+	// Starts a game. Note. This method is only executable by the gamemaster.
+	public void startGame() throws SimonRemoteException, NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException;
 	
 	// Kills the current game and logs all players out.
 	public void killGame(boolean createNewOne) throws SimonRemoteException, DataAccessException;
+
+	// Sets the world to play on.
+	public void setGameWorld(World world) throws SimonRemoteException;
+
+	// Returns the world the game is running on.
+	public World getGameWorld() throws SimonRemoteException;
 }
