@@ -27,7 +27,7 @@
  *     http://minerva.idira.de
  * 
  */
-package de.hochschule.bremen.minerva.commons.util;
+package de.hochschule.bremen.minerva.server.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -56,6 +56,7 @@ import org.xml.sax.SAXException;
 import de.hochschule.bremen.minerva.commons.exceptions.WorldFileExtensionException;
 import de.hochschule.bremen.minerva.commons.exceptions.WorldFileNotFoundException;
 import de.hochschule.bremen.minerva.commons.exceptions.WorldFileParseException;
+import de.hochschule.bremen.minerva.commons.util.ColorTool;
 import de.hochschule.bremen.minerva.commons.vo.Continent;
 import de.hochschule.bremen.minerva.commons.vo.Country;
 import de.hochschule.bremen.minerva.commons.vo.World;
