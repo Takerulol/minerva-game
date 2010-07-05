@@ -30,7 +30,6 @@
 package de.hochschule.bremen.minerva.commons.core;
 
 import java.io.File;
-import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
 
