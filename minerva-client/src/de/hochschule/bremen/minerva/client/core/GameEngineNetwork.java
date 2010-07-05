@@ -31,6 +31,8 @@ package de.hochschule.bremen.minerva.client.core;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.client.manager.ApplicationConfigurationManager;
@@ -54,7 +56,8 @@ import de.hochschule.bremen.minerva.commons.exceptions.WorldFileParseException;
 import de.hochschule.bremen.minerva.commons.exceptions.WorldNotDefinedException;
 import de.hochschule.bremen.minerva.commons.exceptions.WorldNotStorable;
 import de.hochschule.bremen.minerva.commons.exceptions.WrongPasswordException;
-import de.hochschule.bremen.minerva.commons.net.ServerEngine;
+import de.hochschule.bremen.minerva.commons.net.ClientExecutables;
+import de.hochschule.bremen.minerva.commons.net.ServerExecutables;
 import de.hochschule.bremen.minerva.commons.vo.AttackResult;
 import de.hochschule.bremen.minerva.commons.vo.Country;
 import de.hochschule.bremen.minerva.commons.vo.CountryCard;
@@ -74,11 +77,15 @@ import de.root1.simon.exceptions.SimonRemoteException;
  * @since 1.0
  * 
  */
-public class GameEngineNetwork implements GameEngine {
+public class GameEngineNetwork extends Observable implements GameEngine, ClientExecutables {
+
+	private static final long serialVersionUID = 7809319868203138075L;
 
 	private static GameEngineNetwork instance = null;
 	
-	private ServerEngine serverEngine = null;
+	private ServerExecutables serverEngine = null;
+	
+	private Player clientPlayer = null;
 	
 	/**
 	 * DOCME
@@ -96,7 +103,7 @@ public class GameEngineNetwork implements GameEngine {
 		String serverName = appConfg.getServerName();
 		int serverPort = Integer.parseInt(appConfg.getServerPort());
 
-		this.serverEngine = (ServerEngine)Simon.lookup(serverHost, serverPort, serverName);		
+		this.serverEngine = (ServerExecutables)Simon.lookup(serverHost, serverPort, serverName);		
 	}
 
 	/**
@@ -127,7 +134,7 @@ public class GameEngineNetwork implements GameEngine {
 	@Override
 	public void login(Player player) throws PlayerAlreadyLoggedInException, GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException {
 		try {
-			this.serverEngine.login(player);
+			this.serverEngine.login(player, GameEngineNetwork.getEngine());
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
 		}
@@ -161,25 +168,17 @@ public class GameEngineNetwork implements GameEngine {
 	}
 
 	@Override
-	public void importWorld(File worldFile) throws WorldNotStorable, WorldFileNotFoundException, WorldFileExtensionException, WorldFileParseException, DataAccessException {
-		// TODO Auto-generated method stub
-		
-	}
+	public void importWorld(File worldFile) throws WorldNotStorable, WorldFileNotFoundException, WorldFileExtensionException, WorldFileParseException, DataAccessException {}
 
 	@Override
-	public void startGame() throws NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException, DataAccessException {
-
-	}
+	public void startGame() throws NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException, DataAccessException {}
 
 	@Override
 	public void killGame(boolean createNewOne) throws DataAccessException {
-
 	}
 
 	@Override
-	public void setGameWorld(World world) throws DataAccessException {
-
-	}
+	public void setGameWorld(World world) throws DataAccessException {}
 
 	@Override
 	public World getGameWorld() throws DataAccessException {
@@ -245,5 +244,25 @@ public class GameEngineNetwork implements GameEngine {
 	@Override
 	public void finishTurn() {
 		// TODO Auto-generated method stub
+	}
+
+	/**
+	 * DOCME
+	 *
+	 */
+	public Player getClientPlayer() {
+		return this.clientPlayer;
+	}
+
+	public void addObserver(Observer o) {
+		super.addObserver(o);
+	}
+	
+	@Override
+	public void refreshPlayer(Player player) {
+		System.out.println("Server hat refreshPlayer aufgerufen: "+player);
+		this.clientPlayer = player;
+
+		this.notifyObservers();
 	}
 }

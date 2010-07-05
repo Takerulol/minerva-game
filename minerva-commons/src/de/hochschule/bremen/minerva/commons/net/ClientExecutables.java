@@ -27,47 +27,23 @@
  *     http://minerva.idira.de
  * 
  */
+package de.hochschule.bremen.minerva.commons.net;
 
-package de.hochschule.bremen.minerva.client.ui.gui.panels.subpanels;
-
-import java.util.Observable;
-import java.util.Observer;
-
-import javax.swing.JPanel;
-
-import de.hochschule.bremen.minerva.client.ui.gui.MinervaGUI;
-import de.hochschule.bremen.minerva.client.ui.gui.resources.TextResources;
+import de.hochschule.bremen.minerva.commons.vo.Player;
+import de.root1.simon.SimonRemote;
+import de.root1.simon.exceptions.SimonRemoteException;
 
 /**
- * This sub panel shows all logged in players.
+ * Methods, which are callable from the server engine on the client.
+ * Each game engine, which is an observable engine, should implement this interface.
  * 
- * @version $Id$
  * @since 1.0
- *
+ * @version $Id$
+ * 
  */
-public class PlayerInitPanel extends JPanel implements TextResources, Observer {
+public interface ClientExecutables extends SimonRemote {
 
-	private static final long serialVersionUID = -344922633298919424L;
+	// Refreshes the clients player object.
+	public void refreshPlayer(Player player) throws SimonRemoteException;
 
-	/**
-	 * Initializing all player icons
-	 * 
-	 */
-	public PlayerInitPanel() {
-		//Vector<Player> players = MinervaGUI.getEngine().getGamePlayers();
-		//this.setOpaque(false);
-		//this.setLayout(new MigLayout());
-
-		//for (Player player : players) {
-			//this.add(new MPlayerIcon(player), "wrap");
-		//}
-		MinervaGUI.getEngine().addObserver(this);
-	}
-
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		System.out.println("REFRESH IT!!!!");
-		
-		
-	}
 }

@@ -180,6 +180,8 @@ public class LoginPanel extends JLayeredPane implements TextResources {
 
 			try {
 				MinervaGUI.getEngine().login(player);
+				
+				player = MinervaGUI.getEngine().getClientPlayer();
 			} catch (PlayerAlreadyLoggedInException e) {
 				MMessageBox.show(e.getMessage());
 			} catch (GameAlreadyStartedException e) {

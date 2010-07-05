@@ -51,7 +51,6 @@ import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.commons.exceptions.NoPlayerLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.NotEnoughPlayersLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.WorldNotDefinedException;
-import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.World;
 
 /**
@@ -96,18 +95,19 @@ public class GameInitPanel extends JLayeredPane implements TextResources {
 			Runtime.getRuntime().exit(ERROR);
 		}
 
-		Player gamemaster = MinervaGUI.getEngine().getGamePlayers().firstElement();
+		// TODO: CLIENT-SERVER
+		/*Player gamemaster = MinervaGUI.getEngine().getGamePlayers().firstElement();
 		this.worldInitPanel = new WorldInitPanel(gamemaster, worlds);
 		this.worldInitPanel.setOpaque(false);
 		this.worldInitPanel.setBounds(585, 140, 300, 350);
 
 		this.buttonStartGame = new MButton(GAME_INIT_PANEL_BUTTON_START_GAME);
-		this.buttonStartGame.setBounds(720, 500, 150, 20);
+		this.buttonStartGame.setBounds(720, 500, 150, 20);*/
 
 		//adding panels to stage
+		//this.add(this.worldInitPanel, 20);
 		this.add(this.playerInitPanel, 20);
-		this.add(this.worldInitPanel, 20);
-		this.add(this.buttonStartGame, 20);
+		//this.add(this.buttonStartGame, 20);
 		this.add(this.background,10);
 		
 		this.addListeners();
