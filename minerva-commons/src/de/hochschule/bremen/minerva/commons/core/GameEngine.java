@@ -99,25 +99,25 @@ public interface GameEngine {
 
 	public Vector<Player> getGamePlayers() throws DataAccessException;
 
-	public Vector<Mission> getGameMissions();
+	public Vector<Mission> getGameMissions() throws DataAccessException;
 
-	public boolean isGameFinished();
+	public boolean isGameFinished() throws DataAccessException;
 
-	public Player getGameWinner();
+	public Player getGameWinner() throws DataAccessException;
 
-	public void releaseCard(CountryCard card);
+	public void releaseCard(CountryCard card) throws DataAccessException;
 
-	public void releaseCards(Vector<CountryCard> cards);
+	public void releaseCards(Vector<CountryCard> cards) throws DataAccessException;
 	
-	public int getAllocatableArmyCount();
+	public int getAllocatableArmyCount() throws DataAccessException;
 
-	public void allocateArmy(Country allocatable) throws NotEnoughArmiesException, CountryOwnerException;
+	public void allocateArmy(Country allocatable) throws NotEnoughArmiesException, CountryOwnerException, DataAccessException;
 
-	public AttackResult attack(Country source, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException;
+	public AttackResult attack(Country source, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException, DataAccessException;
 	
-	public void move(Country source, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, CountryOwnerException;
+	public void move(Country source, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, CountryOwnerException, DataAccessException;
 
 	public void addObserver(Observer o);
 
-	public void finishTurn();
+	public void finishTurn() throws DataAccessException;
 }
