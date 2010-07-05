@@ -142,26 +142,31 @@ public class GameInitPanel extends JLayeredPane implements TextResources {
 
 				World selectedWorld = GameInitPanel.this.worldInitPanel.getSelectedWorld();
 				
-				MinervaGUI.getEngine().setGameWorld(selectedWorld);
-
 				try {
+					MinervaGUI.getEngine().setGameWorld(selectedWorld);
 					MinervaGUI.getEngine().startGame();
-					nextPanel = new GamePanel();
+					
+					// Load the selected world with all country dependencies
+					// from the engine.
+					selectedWorld = MinervaGUI.getEngine().getGameWorld();
+					nextPanel = new GamePanel(selectedWorld);
+
+					MinervaGUI.getInstance().changePanel(nextPanel);
 				} catch (NotEnoughPlayersLoggedInException e) {
 					// Okay, back to the login panel
-					MMessageBox.show(e.getMessage());
+					MMessageBox.error(e.getMessage());
 					nextPanel = new LoginPanel();
 				} catch (NoPlayerLoggedInException e) {
 					// Okay, back to the login panel
-					MMessageBox.show(e.getMessage());
+					MMessageBox.error(e.getMessage());
 					nextPanel = new LoginPanel();
 				} catch (WorldNotDefinedException e) {
 					// Okay, back to the game init panel
-					MMessageBox.show(e.getMessage());
+					MMessageBox.error(e.getMessage());
 					nextPanel = new GameInitPanel();
+				} catch (DataAccessException e) {
+					MMessageBox.error(e.getMessage());
 				}
-
-				MinervaGUI.getInstance().changePanel(nextPanel);
 			}
 		});
 

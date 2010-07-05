@@ -70,6 +70,7 @@ import de.hochschule.bremen.minerva.commons.vo.CountryCard;
 import de.hochschule.bremen.minerva.commons.vo.Mission;
 import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.PlayerState;
+import de.hochschule.bremen.minerva.commons.vo.World;
 
 /**
  * Prototype of the actual game screen.
@@ -90,6 +91,8 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 
 	private Player currentPlayer;
 
+	private World world = null;
+	
 	private Country source = null;
 	private Country destination = null;
 	
@@ -103,7 +106,9 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	 * Constructor initializing screen.
 	 *
 	 */
-	public GamePanel() {
+	public GamePanel(World world) {
+		this.world = world;
+		
 		this.setPreferredSize(MinervaGUI.WINDOW_SIZE);
 		this.setOpaque(true);
 
@@ -151,24 +156,25 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		//adds mouse listener to the upper map
 		this.addMapListener();
 		
-		HashMap<Country, Point> countryAnchors = MapTool.getCountryAnchors(this.mapOverlay.getMapImage(), mapUnderlay.getMapImage(), this.engine.getGameWorld());
+		// get the world from the server.
+		HashMap<Country, Point> countryAnchors = MapTool.getCountryAnchors(this.mapOverlay.getMapImage(), mapUnderlay.getMapImage(), this.world);
 
 		this.add(slidePanel, 10000);
 
-		for (Country country : this.engine.getGameWorld().getCountries()) {
+		for (Country country : this.world.getCountries()) {
 			MArmyCountIcon aci = new MArmyCountIcon(Color.RED, countryAnchors.get(country));
 			aci.addMouseListener(new MMouseListener() {
 				public void mouseClicked(MouseEvent e) {
 					GamePanel.this.unmarkAll();
 					Color color = ColorTool.fromInteger(GamePanel.this.mapUnderlay.getMapImage().getRGB(((MArmyCountIcon)e.getSource()).getX()+15, ((MArmyCountIcon)e.getSource()).getY()+15));
-					Country country = GamePanel.this.engine.getGameWorld().getCountry(color);
+					Country country = GamePanel.this.world.getCountry(color);
 					GamePanel.this.mapInteraction(country);
 				}
 			});
 			this.armyIcons.put(country,aci);
 			this.add(aci,-10000);
 		}
-
+			
 		this.refreshArmyCounts();
 
 		//Adding everything up
@@ -192,7 +198,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 				GamePanel.this.unmarkAll();
 
 				Color color = ColorTool.fromInteger(GamePanel.this.mapUnderlay.getMapImage().getRGB(e.getX(), e.getY()));
-				Country country = GamePanel.this.engine.getGameWorld().getCountry(color);
+				Country country = GamePanel.this.world.getCountry(color);
 
 				GamePanel.this.mapInteraction(country);
 			}
@@ -263,7 +269,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 				if (country.getArmyCount() > 1) {
 					this.source = country;
 					this.armyIcons.get(this.source).mark(Color.GREEN);
-					for (Country c : this.engine.getGameWorld().getNeighbours(this.source)) {
+					for (Country c : GamePanel.this.world.getNeighbours(this.source)) {
 						if (!this.currentPlayer.hasCountry(c)) {
 							this.armyIcons.get(c).mark(Color.RED);
 						}
@@ -320,7 +326,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		} else {
 			if (this.source != null) {
 				this.armyIcons.get(this.source).mark(Color.GREEN);
-				for (Country c : this.engine.getGameWorld().getNeighbours(this.source)) {
+				for (Country c : GamePanel.this.world.getNeighbours(this.source)) {
 					if (!this.currentPlayer.hasCountry(c)) {
 						this.armyIcons.get(c).mark(Color.RED);
 					}
@@ -374,7 +380,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 				if (country.getArmyCount() > 1) {
 					this.source = country;
 					this.armyIcons.get(this.source).mark(Color.GREEN);
-					for (Country c : this.engine.getGameWorld().getNeighbours(this.source)) {
+					for (Country c : GamePanel.this.world.getNeighbours(this.source)) {
 						if (this.currentPlayer.hasCountry(c)) {
 							this.armyIcons.get(c).mark(Color.RED);
 						}
@@ -428,7 +434,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		} else {
 			if (this.source != null) {
 				this.armyIcons.get(this.source).mark(Color.GREEN);
-				for (Country c : this.engine.getGameWorld().getNeighbours(this.source)) {
+				for (Country c : GamePanel.this.world.getNeighbours(this.source)) {
 					if (this.currentPlayer.hasCountry(c)) {
 						this.armyIcons.get(c).mark(Color.RED);
 					}
