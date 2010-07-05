@@ -39,9 +39,19 @@ package de.hochschule.bremen.minerva.server.util;
 public class ConsoleLogger {
 
 	private static ConsoleLogger instance = null;
-	
+
+	/**
+	 * Singleton pattern.
+	 *
+	 */
 	private ConsoleLogger() {}
 	
+	/**
+	 * Returns a logger instance.
+	 *
+	 * @return The console logger instance.
+	 *
+	 */
 	public static ConsoleLogger getLogger() {
 		if (ConsoleLogger.instance == null) {
 			ConsoleLogger.instance = new ConsoleLogger();
@@ -49,8 +59,13 @@ public class ConsoleLogger {
 		return ConsoleLogger.instance;
 	}
 
+	/**
+	 * Prints a log message
+	 * 
+	 * @param message The log message.
+	 *
+	 */
 	public void log(String message) {
 		System.out.println("[LOG] "+message);
 	}
-	
 }
