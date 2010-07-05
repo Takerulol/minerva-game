@@ -168,38 +168,22 @@ public class GameEngineNetwork implements GameEngine {
 
 	@Override
 	public void startGame() throws NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException, DataAccessException {
-		try {
-			this.serverEngine.startGame();
-		} catch (SimonRemoteException e) {
-			throw new DataAccessException(e);
-		}
+
 	}
 
 	@Override
 	public void killGame(boolean createNewOne) throws DataAccessException {
-		try {
-			this.serverEngine.killGame(false);
-		} catch (SimonRemoteException e) {
-			throw new DataAccessException(e);
-		}
+
 	}
 
 	@Override
 	public void setGameWorld(World world) throws DataAccessException {
-		try {
-			this.serverEngine.setGameWorld(world);
-		} catch (SimonRemoteException e) {
-			throw new DataAccessException(e);
-		}
+
 	}
 
 	@Override
 	public World getGameWorld() throws DataAccessException {
-		try {
-			return this.serverEngine.getGameWorld();
-		} catch (SimonRemoteException e) {
-			throw new DataAccessException(e);
-		}
+		return null;
 	}
 
 	@Override
