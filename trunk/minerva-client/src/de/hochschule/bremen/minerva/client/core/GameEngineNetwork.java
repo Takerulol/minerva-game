@@ -354,4 +354,30 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		this.setChanged();
 		this.notifyObservers();
 	}
+
+	/**
+	 * DOCME
+	 *
+	 */
+	@Override
+	public byte[] getGameMapImage() throws DataAccessException {
+		try {
+			return this.serverEngine.getGameMapImage();
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
+	}
+
+	/**
+	 * DOCME
+	 *
+	 */
+	@Override
+	public byte[] getGameMapUnderlayImage() throws DataAccessException {
+		try {
+			return this.serverEngine.getGameMapUnderlayImage();
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
+	}
 }

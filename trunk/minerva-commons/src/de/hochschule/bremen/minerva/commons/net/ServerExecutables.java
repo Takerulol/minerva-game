@@ -94,11 +94,17 @@ public interface ServerExecutables extends SimonRemote {
 	public Vector<Mission> getGameMissions() throws SimonRemoteException;
 
 	// Return the game winner.
-	public Player getGameWinner() throws SimonRemoteException;
-
+	public Player getGameWinner() throws SimonRemoteException;	
+	
 	// Game session finished?
 	public boolean isGameFinished() throws SimonRemoteException;
 
+	// DOCME
+	public byte[] getGameMapImage() throws SimonRemoteException;
+
+	// DOCME
+	public byte[] getGameMapUnderlayImage() throws SimonRemoteException;	
+	
 	// -- Game core subsystem --
 
 	// Release a country card.
