@@ -127,4 +127,13 @@ public interface ServerExecutables extends SimonRemote {
 
 	// Finish the current turn.
 	public void finishTurn() throws SimonRemoteException;
+
+	// -- World importer subsystem --
+
+	// Open a raw channel pipe for transferring the world file.
+	// Returns a token, with which it is possible to initialize the transfer.
+	public int prepareWorldFileTransfer(String worldFileName) throws SimonRemoteException;
+
+	// Returns the world file bytes.
+	public byte[] getWorldFileBytes(String worldFileName) throws SimonRemoteException;
 }
