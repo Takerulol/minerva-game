@@ -225,6 +225,8 @@ public class MinervaServerEngine implements ServerExecutables {
 			this.game = new Game();
 		}
 		LOGGER.log("killGame(): THE GAME WAS KILLED! :o");
+		
+		this.notifyClients();
 	}
 
     /**
@@ -303,6 +305,7 @@ public class MinervaServerEngine implements ServerExecutables {
 	@Override
 	public boolean isGameFinished() throws SimonRemoteException {
 		LOGGER.log("isGameFinished(): Game finished? -> " + ((this.game.isFinished()) ? "Yes :(" : "No :)"));
+
 		return this.game.isFinished();
 	}
 
@@ -317,6 +320,8 @@ public class MinervaServerEngine implements ServerExecutables {
 	@Override
 	public int[][] getGameMapImage() throws SimonRemoteException {
 		LOGGER.log("getGameMapImage(): Load the map image (world = '" + this.game.getWorld().getName() + "').");
+		
+		// TODO: Use MapTool
 		BufferedImage mapImage = this.game.getWorld().getMapImage();
 		int[][] map = new int[mapImage.getWidth()][mapImage.getHeight()];
 		for (int x = 0; x < mapImage.getWidth(); x++) {
@@ -326,8 +331,6 @@ public class MinervaServerEngine implements ServerExecutables {
 		}
 		
 		return map;
-//		WritableRaster raster = this.game.getWorld().getMapImage().getRaster();
-//		return raster.getPixels(0, 0, 900, 675, (int[])null);
 	}
 
 	/**
@@ -342,6 +345,7 @@ public class MinervaServerEngine implements ServerExecutables {
 	public int[][] getGameMapUnderlayImage() throws SimonRemoteException {
 		LOGGER.log("getGameMapImage(): Load the map image underlay (world = '" + this.game.getWorld().getName() + "').");
 
+		// TODO: Use MapTool
 		BufferedImage mapImage = this.game.getWorld().getMapUnderlayImage();
 		int[][] map = new int[mapImage.getWidth()][mapImage.getHeight()];
 		for (int x = 0; x < mapImage.getWidth(); x++) {
@@ -351,9 +355,6 @@ public class MinervaServerEngine implements ServerExecutables {
 		}
 		
 		return map;
-		
-//		WritableRaster raster = this.game.getWorld().getMapUnderlayImage().getRaster();
-//		return raster.getPixels(0, 0, 900, 675, (int[])null);
 	}
 
     /**
@@ -383,6 +384,8 @@ public class MinervaServerEngine implements ServerExecutables {
 		LOGGER.log("releaseCard(): Release the card from country: '"+card.getReference().getName()+"'");
 		Turn turn = this.game.getCurrentTurn();
 		turn.releaseCard(card);
+
+		this.notifyClients();
 	}
 
     /**
@@ -398,6 +401,8 @@ public class MinervaServerEngine implements ServerExecutables {
 		LOGGER.log("releaseCards(): Release a card stack.");
 		Turn turn = this.game.getCurrentTurn();
 		turn.releaseCardSeries(cards);
+
+		this.notifyClients();
 	}
 
     /**
@@ -430,6 +435,8 @@ public class MinervaServerEngine implements ServerExecutables {
 		LOGGER.log("allocateArmy(): Allocate one army on country '"+ allocatable.getName() +"'");
         Turn turn = this.game.getCurrentTurn();
         turn.allocateArmy(allocatable);
+
+        this.notifyClients();
 	}
 
     /**
@@ -473,6 +480,8 @@ public class MinervaServerEngine implements ServerExecutables {
 
 		Turn turn = this.game.getCurrentTurn();
         turn.moveArmies(source, destination, armyCount);
+
+        this.notifyClients();
 	}
 
     /**
@@ -484,6 +493,8 @@ public class MinervaServerEngine implements ServerExecutables {
 	@Override
 	public void finishTurn() throws SimonRemoteException {
         this.game.nextTurn();
+
+        this.notifyClients();
 	}
 
 	/**
