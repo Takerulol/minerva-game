@@ -62,5 +62,14 @@ public class MMessageBox implements TextResources {
 	public static void error(String message) {
 		JOptionPane.showMessageDialog(null, message, MMESSAGE_ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
 	}
-	
+
+	/**
+	 * Wrapper for handling exceptions.
+	 *
+	 * @param e The exception.
+	 *
+	 */
+	public static void error(Exception e) {
+		MMessageBox.error(e.getMessage());
+	}
 }
