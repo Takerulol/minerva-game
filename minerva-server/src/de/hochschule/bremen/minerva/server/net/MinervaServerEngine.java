@@ -96,6 +96,10 @@ public class MinervaServerEngine implements ServerExecutables {
 	public void login(Player player, ClientExecutables clientExecutables) throws SimonRemoteException, PlayerAlreadyLoggedInException, GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException {
 		LOGGER.log("login this player: "+player.toString());
 		AccountManager.getInstance().login(player);
+
+		if (this.game.getPlayerCount() == 0) {
+			player.setMaster(true);
+		}
 		
 		player.setState(PlayerState.GAME_INIT);
 		
