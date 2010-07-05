@@ -100,11 +100,15 @@ public class MinervaServerEngine implements ServerExecutables {
 
 	/**
 	 * DOCME
+	 * @throws DataAccessException 
 	 * 
 	 */
-	public MinervaServerEngine(String name, int port) throws UnknownHostException, IOException, NameBindingException {
+	public MinervaServerEngine(String name, int port) throws UnknownHostException, IOException, NameBindingException, DataAccessException {
 		Registry registry = Simon.createRegistry(port);
 		registry.bind(name, this);
+		
+		// Log out all players (previous game sessions)
+		AccountManager.getInstance().logout();
 	}
 
 	/**
