@@ -74,6 +74,7 @@ import de.hochschule.bremen.minerva.server.manager.AccountManager;
 import de.hochschule.bremen.minerva.server.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.server.manager.WorldManager;
 import de.hochschule.bremen.minerva.server.util.ConsoleLogger;
+import de.hochschule.bremen.minerva.server.util.WorldFile;
 import de.hochschule.bremen.minerva.server.vo.ApplicationConfiguration;
 import de.root1.simon.Registry;
 import de.root1.simon.Simon;
@@ -175,7 +176,12 @@ public class MinervaServerEngine implements ServerExecutables {
 	}
 
 	/**
-	 * DOCME
+	 * Imports the given world file via the importer class.
+	 * Note that you have to upload the file before you can import it.
+	 * Use {@link ServerExecutables#prepareWorldFileImport(String)} and
+	 * write the file via FileChannel.
+	 * 
+	 * @see WorldFile
 	 *
 	 */
 	public void importWorld(String filename) throws SimonRemoteException, WorldFileNotFoundException, WorldFileExtensionException, WorldFileParseException, WorldNotStorable, DataAccessException {
@@ -504,7 +510,7 @@ public class MinervaServerEngine implements ServerExecutables {
 	 * "refreshPlayer" method on the client side.
 	 * The client knows then, that something has changed.
 	 *
-	 * @throws SimonRemoteException 
+	 * @throws SimonRemoteException
 	 *
 	 */
 	private void notifyClients() throws SimonRemoteException {
@@ -516,6 +522,22 @@ public class MinervaServerEngine implements ServerExecutables {
 			
 			client.refreshPlayer(entry.getKey());
 		}
+	}
+
+	/**
+	 * Prepares a world file upload.
+	 * This is a necessary process for import new worlds.
+	 * 
+	 * @param filename The file name, which will be used for saving the uploaded world import file.
+	 *
+	 * @throws SimonRemoteException
+	 *
+	 */
+	@Override
+	public int prepareWorldFileImport(String worldFileName) throws SimonRemoteException {
+		LOGGER.log("prepareWorldFileTransfer(): Preparing a world file transfer.");
+		
+		return Simon.prepareRawChannel(new WorldFileReceiver(worldFileName), this);
 	}
 
 	/**
@@ -534,16 +556,5 @@ public class MinervaServerEngine implements ServerExecutables {
 			LOGGER.error("Loading map image failed. Path: '"+filepath+"'. Reason: " + e.getMessage());
 		}
 		return map;
-	}
-
-	/**
-	 * DOCME
-	 *
-	 */
-	@Override
-	public int prepareWorldFileImport(String worldFileName) throws SimonRemoteException {
-		LOGGER.log("prepareWorldFileTransfer(): Preparing a world file transfer.");
-		
-		return Simon.prepareRawChannel(new WorldFileReceiver(worldFileName), this);
 	}
 }

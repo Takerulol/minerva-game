@@ -50,7 +50,8 @@ public class WorldFileReceiver implements RawChannelDataListener {
 	private FileChannel fileChannel;
 
 	/**
-	 * DOCME
+	 * Initialize the stream for writing the
+	 * world import file.
 	 *
 	 * @param filename
 	 *
@@ -64,7 +65,9 @@ public class WorldFileReceiver implements RawChannelDataListener {
 	}
 
 	/**
-	 * DOCME
+	 * Writes the data through the file channel.
+	 * 
+	 * @param Writes the data buffer through the file channel.
 	 *
 	 */
 	@Override
@@ -77,7 +80,7 @@ public class WorldFileReceiver implements RawChannelDataListener {
 	}
 
 	/**
-	 * DOCME
+	 * Closes the file channel.
 	 *
 	 */
 	@Override
