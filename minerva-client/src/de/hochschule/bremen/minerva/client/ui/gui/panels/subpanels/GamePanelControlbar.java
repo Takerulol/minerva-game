@@ -318,36 +318,41 @@ public class GamePanelControlbar extends JPanel implements ActionListener,
 	 * 
 	 */
 	public void updateButtons() {
-		if (this.gamePanel.getCurrentPlayer().getState() == PlayerState.RELEASE_CARDS) {
+		if (MinervaGUI.getEngine().getClientPlayer().getState() == PlayerState.RELEASE_CARDS) {
 			this.allocateButton.setEnabled(true);
 			this.cardButton.setEnabled(true);
 			this.attackButton.setEnabled(true);
 			this.moveButton.setEnabled(true);
 			this.buttonTurnIn.setEnabled(true);
-		} else if (this.gamePanel.getCurrentPlayer().getState() == PlayerState.ALLOCATE_ARMIES) {
+			this.finishTurnButton.setEnabled(true);
+		} else if (MinervaGUI.getEngine().getClientPlayer().getState() == PlayerState.ALLOCATE_ARMIES) {
 			this.allocateButton.setEnabled(true);
 			this.cardButton.setEnabled(false);
 			this.attackButton.setEnabled(true);
 			this.moveButton.setEnabled(true);
 			this.buttonTurnIn.setEnabled(false);
-		} else if (this.gamePanel.getCurrentPlayer().getState() == PlayerState.ATTACK) {
+			this.finishTurnButton.setEnabled(true);
+		} else if (MinervaGUI.getEngine().getClientPlayer().getState() == PlayerState.ATTACK) {
 			this.allocateButton.setEnabled(false);
 			this.cardButton.setEnabled(false);
 			this.attackButton.setEnabled(true);
 			this.moveButton.setEnabled(true);
 			this.buttonTurnIn.setEnabled(false);
-		} else if (this.gamePanel.getCurrentPlayer().getState() == PlayerState.MOVE) {
+			this.finishTurnButton.setEnabled(true);
+		} else if (MinervaGUI.getEngine().getClientPlayer().getState() == PlayerState.MOVE) {
 			this.allocateButton.setEnabled(false);
 			this.cardButton.setEnabled(false);
 			this.attackButton.setEnabled(false);
 			this.moveButton.setEnabled(true);
 			this.buttonTurnIn.setEnabled(false);
-		} else if (this.gamePanel.getCurrentPlayer().getState() == PlayerState.IDLE) {
+			this.finishTurnButton.setEnabled(true);
+		} else if (MinervaGUI.getEngine().getClientPlayer().getState() == PlayerState.IDLE) {
 			this.allocateButton.setEnabled(false);
 			this.cardButton.setEnabled(false);
 			this.attackButton.setEnabled(false);
 			this.moveButton.setEnabled(false);
 			this.buttonTurnIn.setEnabled(false);
+			this.finishTurnButton.setEnabled(false);
 		}
 	}
 
@@ -365,29 +370,29 @@ public class GamePanelControlbar extends JPanel implements ActionListener,
 			}
 			this.gamePanel.unmarkAll();
 		} else if (e.getSource() == this.allocateButton) {
-			this.gamePanel.getCurrentPlayer().setState(
+			MinervaGUI.getEngine().getClientPlayer().setState(
 					PlayerState.ALLOCATE_ARMIES);
 			this.gamePanel.unmarkAll();
 		} else if (e.getSource() == this.cardButton) {
-			this.gamePanel.getCurrentPlayer().setState(
+			MinervaGUI.getEngine().getClientPlayer().setState(
 					PlayerState.RELEASE_CARDS);
 			this.gamePanel.unmarkAll();
 		} else if (e.getSource() == this.attackButton) {
-			this.gamePanel.getCurrentPlayer().setState(PlayerState.ATTACK);
+			MinervaGUI.getEngine().getClientPlayer().setState(PlayerState.ATTACK);
 			this.gamePanel.unmarkAll();
 		} else if (e.getSource() == this.moveButton) {
-			this.gamePanel.getCurrentPlayer().setState(PlayerState.MOVE);
+			MinervaGUI.getEngine().getClientPlayer().setState(PlayerState.MOVE);
 			this.gamePanel.unmarkAll();
 		} else if (e.getSource() == this.buttonTurnIn) {
 
 			if (this.cardList.getSelectedIndices().length == 1) {
-				this.gamePanel.TurnCardIn(this.gamePanel.getCurrentPlayer()
+				this.gamePanel.TurnCardIn(MinervaGUI.getEngine().getClientPlayer()
 						.getCountryCards()
 						.get(this.cardList.getSelectedIndex()));
 			} else if (this.cardList.getSelectedIndices().length == 3) {
 				Vector<CountryCard> series = new Vector<CountryCard>();
 				for (int i = 0; i < 3; i++) {
-					series.add(this.gamePanel.getCurrentPlayer()
+					series.add(MinervaGUI.getEngine().getClientPlayer()
 							.getCountryCards()
 							.get(this.cardList.getSelectedIndices()[i]));
 				}

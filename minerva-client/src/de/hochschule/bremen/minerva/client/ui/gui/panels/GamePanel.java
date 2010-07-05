@@ -38,6 +38,8 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -80,7 +82,7 @@ import de.hochschule.bremen.minerva.commons.vo.World;
  * @since 1.0
  *
  */
-public class GamePanel extends JLayeredPane implements MControl, TextResources {
+public class GamePanel extends JLayeredPane implements MControl, TextResources, Observer {
 	public MapPanel mapOverlay;
 	public MapPanel mapUnderlay;
 	public MSlidePanel slidePanel;
@@ -132,17 +134,27 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		this.missionLabel = new JLabel();
 		this.missionLabel.setFont(new Font(FONT.getFamily(), Font.ROMAN_BASELINE, 12));
 		this.missionLabel.setForeground(new Color(186, 187, 188));
-		missionPanel.add(missionLabel);
-
-	
 		
-		try {
-			//upper map
-			mapImage = MapTool.createMapImageFromArray(this.engine.getGameMapImage());
+		//refreshing mission text
+		//this happens only in GameEngineLocal, otherwise current player doesn't change
+		try{
+		
+			searchPlayerMission : for (Mission mission : this.engine.getGameMissions()) {
+				if (mission.getOwner().getId() == this.engine.getClientPlayer().getId()) {
+					this.missionLabel.setText(mission.getTitle());
+					break searchPlayerMission;
+				}
+			}
+			
+			missionPanel.add(missionLabel);
+		
+		
+			//lower map
+			mapImage = MapTool.createMapImageFromArray(this.engine.getGameMapUnderlayImage());
 			this.mapUnderlay = new MapPanel(mapImage);
 			this.mapUnderlay.setBounds(0,0,500,500);
 			
-			//lower map
+			//upper map
 			mapImage = MapTool.createMapImageFromArray(this.engine.getGameMapImage());
 			this.mapOverlay = new MapPanel(mapImage);
 			this.mapOverlay.setBounds(0,0,500,500);
@@ -161,22 +173,22 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		
 		// get the world from the server.
 		HashMap<Country, Point> countryAnchors = MapTool.getCountryAnchors(this.mapOverlay.getMapImage(), mapUnderlay.getMapImage(), this.world);
-		
+
 		this.add(slidePanel, 10000);
 
-//		for (Country country : this.world.getCountries()) {
-//			MArmyCountIcon aci = new MArmyCountIcon(Color.RED, countryAnchors.get(country));
-//			aci.addMouseListener(new MMouseListener() {
-//				public void mouseClicked(MouseEvent e) {
-//					GamePanel.this.unmarkAll();
-//					Color color = ColorTool.fromInteger(GamePanel.this.mapUnderlay.getMapImage().getRGB(((MArmyCountIcon)e.getSource()).getX()+15, ((MArmyCountIcon)e.getSource()).getY()+15));
-//					Country country = GamePanel.this.world.getCountry(color);
-//					GamePanel.this.mapInteraction(country);
-//				}
-//			});
-//			this.armyIcons.put(country,aci);
-//			this.add(aci,-10000);
-//		}
+		for (Country country : this.world.getCountries()) {
+			MArmyCountIcon aci = new MArmyCountIcon(Color.RED, countryAnchors.get(country));
+			aci.addMouseListener(new MMouseListener() {
+				public void mouseClicked(MouseEvent e) {
+					GamePanel.this.unmarkAll();
+					Color color = ColorTool.fromInteger(GamePanel.this.mapUnderlay.getMapImage().getRGB(((MArmyCountIcon)e.getSource()).getX()+15, ((MArmyCountIcon)e.getSource()).getY()+15));
+					Country country = GamePanel.this.world.getCountry(color);
+					GamePanel.this.mapInteraction(country);
+				}
+			});
+			this.armyIcons.put(country,aci);
+			this.add(aci,-10000);
+		}
 			
 		this.refreshArmyCounts();
 
@@ -479,6 +491,8 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		}*/
 		try {
 			
+			this.world = this.engine.getGameWorld();
+			
 			for (Player player : this.engine.getGamePlayers()) {
 				if (player.getState() != PlayerState.IDLE)
 				this.currentPlayer = player;
@@ -507,19 +521,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 			this.slidePanel.getControlBar().updateButtons();
 			this.slidePanel.getControlBar().setCurrentPlayerLabel(this.currentPlayer);
 			this.slidePanel.getControlBar().setAllocatableArmiesLabel(" "+this.engine.getAllocatableArmyCount()+" ");
-			this.slidePanel.getControlBar().updateCardList(this.currentPlayer.getCountryCards());
-	
-			//refreshing mission text
-			//this happens only in GameEngineLocal, otherwise current player doesn't change
-			
-			
-			searchPlayerMission : for (Mission mission : this.engine.getGameMissions()) {
-				if (mission.getOwner() == this.currentPlayer) {
-					this.missionLabel.setText(mission.getTitle());
-					break searchPlayerMission;
-				}
-			}
-			
+			this.slidePanel.getControlBar().updateCardList(this.currentPlayer.getCountryCards());			
 			
 	
 			this.repaint();
@@ -548,7 +550,8 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		while (iter.hasNext()) {
 			@SuppressWarnings("rawtypes")
 			Map.Entry pairs = (Map.Entry)iter.next();
-			((MArmyCountIcon)pairs.getValue()).setPlayer(((Country)pairs.getKey()), this.getPlayer(((Country)pairs.getKey())));		}
+			((MArmyCountIcon)pairs.getValue()).setPlayer(((Country)pairs.getKey()), this.getPlayer(((Country)pairs.getKey())));	
+		}
 	}
 
 	/**
@@ -625,19 +628,27 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	 * @param country country clicked on
 	 */
 	private void mapInteraction(Country country) {
-		if (this.currentPlayer.getState() == PlayerState.ALLOCATE_ARMIES) {
+		if (MinervaGUI.getEngine().getClientPlayer().getState() == PlayerState.ALLOCATE_ARMIES) {
 			this.allocate(country);
-		} else if (this.currentPlayer.getState() == PlayerState.RELEASE_CARDS) {
+		} else if (MinervaGUI.getEngine().getClientPlayer().getState() == PlayerState.RELEASE_CARDS) {
 			this.updatePanel();
 			/*
 			 * Nothing will happen here.
 			 * You can't interact with the map, when you're trying to
 			 * release cards.
 			 */
-		} else if (this.currentPlayer.getState() == PlayerState.ATTACK) {
+		} else if (MinervaGUI.getEngine().getClientPlayer().getState() == PlayerState.ATTACK) {
 			this.attack(country);
-		} else if (this.currentPlayer.getState() == PlayerState.MOVE) {
+		} else if (MinervaGUI.getEngine().getClientPlayer().getState() == PlayerState.MOVE) {
 			this.move(country);
 		}
+	}
+	
+	/**
+	 * DOCME
+	 */
+	@Override
+	public void update(Observable o, Object arg) {
+		this.updatePanel();
 	}
 }

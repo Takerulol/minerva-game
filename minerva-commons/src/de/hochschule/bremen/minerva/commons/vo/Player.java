@@ -257,7 +257,13 @@ public class Player extends ValueObject {
 	 * @return
 	 */
 	public boolean hasCountry(Country country) {
-		return (this.countries.contains(country));
+		//ugly but references chance when transmitting via simon
+		for (Country c : this.countries) {
+			if (country.getId() == c.getId()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
