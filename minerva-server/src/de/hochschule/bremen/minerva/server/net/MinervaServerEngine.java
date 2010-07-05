@@ -46,6 +46,7 @@ import de.hochschule.bremen.minerva.commons.vo.World;
 import de.hochschule.bremen.minerva.server.core.logic.Game;
 import de.hochschule.bremen.minerva.server.manager.AccountManager;
 import de.hochschule.bremen.minerva.server.manager.WorldManager;
+import de.hochschule.bremen.minerva.server.util.ConsoleLogger;
 import de.root1.simon.Registry;
 import de.root1.simon.Simon;
 import de.root1.simon.exceptions.NameBindingException;
@@ -62,6 +63,8 @@ import de.root1.simon.exceptions.SimonRemoteException;
 public class MinervaServerEngine implements ServerEngine {
 
 	private static final long serialVersionUID = 1911446743019185828L;
+	
+	private static final ConsoleLogger LOGGER = ConsoleLogger.getLogger(); 
 	
 	private Game game = new Game();
 
@@ -81,6 +84,7 @@ public class MinervaServerEngine implements ServerEngine {
 	@Override
 	public Player login(Player player) throws SimonRemoteException, PlayerAlreadyLoggedInException, GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException {
 		// TODO: Implement client callback method, which will be called if the user is the current player.
+		LOGGER.log("login() this player: "+player.toString());
 		AccountManager.getInstance().login(player);
 
 		this.game.addPlayer(player);
@@ -93,6 +97,7 @@ public class MinervaServerEngine implements ServerEngine {
 	 * 
 	 */
 	public void register(Player player) throws SimonRemoteException, PlayerExistsException, DataAccessException {
+		LOGGER.log("register() this player: "+player.toString());
 		AccountManager.getInstance().createPlayer(player);
 	}
 	
@@ -108,6 +113,7 @@ public class MinervaServerEngine implements ServerEngine {
 	 */
 	@Override
 	public Vector<World> getWorlds(boolean flatView) throws DataAccessException {
+		LOGGER.log("getWorlds()");
 		return WorldManager.getInstance().getList(flatView);
 	}
 

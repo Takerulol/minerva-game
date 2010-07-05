@@ -100,5 +100,6 @@ public class Bootstrapper {
 		System.out.println(appConfig.getAppName() + " [ver."+ appConfig.getAppVersion() +"]");
 		System.out.println();
 		System.out.println(appConfig.getServerWelcomeMessage());
+		System.out.println();
 	}
 }
