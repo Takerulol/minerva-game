@@ -51,12 +51,12 @@ import de.hochschule.bremen.minerva.commons.vo.World;
  * @version $Id$
  * 
  */
-public interface ServerEngine extends SimonRemote {
+public interface ServerExecutables extends SimonRemote {
 
 	// Login a player and add this player to the game (if it was not started)
 	// define the callback interface, which will be called if the client has
 	// to change something.
-	public Player login(Player player) throws SimonRemoteException, PlayerAlreadyLoggedInException, GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException;
+	public void login(Player player, ClientExecutables clientExecutables) throws SimonRemoteException, PlayerAlreadyLoggedInException, GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException;
 
 	// Registers a new player.
 	public void register(Player player) throws SimonRemoteException, PlayerExistsException, DataAccessException;

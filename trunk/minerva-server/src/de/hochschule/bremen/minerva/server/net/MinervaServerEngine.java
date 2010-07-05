@@ -31,6 +31,9 @@ package de.hochschule.bremen.minerva.server.net;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
@@ -40,7 +43,8 @@ import de.hochschule.bremen.minerva.commons.exceptions.PlayerAlreadyLoggedInExce
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.commons.exceptions.WrongPasswordException;
-import de.hochschule.bremen.minerva.commons.net.ServerEngine;
+import de.hochschule.bremen.minerva.commons.net.ClientExecutables;
+import de.hochschule.bremen.minerva.commons.net.ServerExecutables;
 import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.World;
 import de.hochschule.bremen.minerva.server.core.logic.Game;
@@ -60,13 +64,16 @@ import de.root1.simon.exceptions.SimonRemoteException;
  * @version $Id$
  * 
  */
-public class MinervaServerEngine implements ServerEngine {
+public class MinervaServerEngine implements ServerExecutables {
 
 	private static final long serialVersionUID = 1911446743019185828L;
-	
+
 	private static final ConsoleLogger LOGGER = ConsoleLogger.getLogger(); 
-	
+
 	private Game game = new Game();
+
+	private HashMap<Player, ClientExecutables> clients = new HashMap<Player, ClientExecutables>();
+
 
 	/**
 	 * DOCME
@@ -82,14 +89,16 @@ public class MinervaServerEngine implements ServerEngine {
 	 * 
 	 */
 	@Override
-	public Player login(Player player) throws SimonRemoteException, PlayerAlreadyLoggedInException, GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException {
-		// TODO: Implement client callback method, which will be called if the user is the current player.
+	public void login(Player player, ClientExecutables clientExecutables) throws SimonRemoteException, PlayerAlreadyLoggedInException, GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException {
 		LOGGER.log("login() this player: "+player.toString());
-		AccountManager.getInstance().login(player);
 
+		AccountManager.getInstance().login(player);
 		this.game.addPlayer(player);
 
-		return player;
+		// Put the client in our central client map.
+		this.clients.put(player, clientExecutables);
+
+		this.notifyClients();
 	}
 
 	/**
@@ -119,5 +128,20 @@ public class MinervaServerEngine implements ServerEngine {
 
 	public World getGameWorld() {
 		return this.game.getWorld();
+	}
+
+	/**
+	 * DOCME
+	 * @throws SimonRemoteException 
+	 *
+	 */
+	private void notifyClients() throws SimonRemoteException {
+		Iterator<Entry<Player, ClientExecutables>> iter = this.clients.entrySet().iterator();
+		while (iter.hasNext()) {
+			Entry<Player, ClientExecutables> entry = iter.next();
+			ClientExecutables client = entry.getValue();
+			
+			client.refreshPlayer(entry.getKey());
+		}
 	}
 }

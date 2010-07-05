@@ -30,6 +30,8 @@
 package de.hochschule.bremen.minerva.commons.core;
 
 import java.io.File;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.commons.exceptions.CountriesNotInRelationException;
@@ -74,6 +76,8 @@ public interface GameEngine {
 
 	public void register(Player player) throws PlayerExistsException, DataAccessException;
 
+	public Player getClientPlayer();
+
 	// ---------------------
 	// -- world subsystem --
 	// ---------------------
@@ -113,6 +117,8 @@ public interface GameEngine {
 	public AttackResult attack(Country source, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException;
 	
 	public void move(Country source, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, CountryOwnerException;
+
+	public void addObserver(Observer o);
 
 	public void finishTurn();
 }
