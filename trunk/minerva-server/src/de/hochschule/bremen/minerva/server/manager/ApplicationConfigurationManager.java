@@ -100,6 +100,9 @@ public class ApplicationConfigurationManager {
 
 		voReadMethodInvocationMapping.put("directory.assets.worlds", "setAssetsWorldDirectory");
 		voStoreMethodInvocationMapping.put("directory.assets.worlds", "getAssetsWorldDirectory");
+
+		voReadMethodInvocationMapping.put("directory.importer.workspace", "setImporterWorkspaceDirectory");
+		voStoreMethodInvocationMapping.put("directory.importer.workspace", "getImporterWorkspaceDirectory");
 	}
 
 	// The manager instance

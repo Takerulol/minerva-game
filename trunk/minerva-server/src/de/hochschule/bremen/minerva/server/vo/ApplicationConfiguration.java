@@ -64,6 +64,7 @@ public class ApplicationConfiguration extends ValueObject {
 	private String serverWelcomeMessage = null;
 
 	private String assetsWorldDirectory = null;
+	private String importerWorkspaceDirectory = null;
 
 	/**
 	 * Sets the minerva application name.
@@ -181,5 +182,27 @@ public class ApplicationConfiguration extends ValueObject {
 	 */
 	public String getAssetsWorldDirectory() {
 		return assetsWorldDirectory;
+	}
+
+	/**
+	 * Sets the importer workspace directory.
+	 * Is the directory in which the world file importer will
+	 * place some temp files.
+	 *
+	 * @param importerWorkspaceDirectory The importer temp directory.
+	 *
+	 */
+	public void setImporterWorkspaceDirectory(String importerWorkspaceDirectory) {
+		this.importerWorkspaceDirectory = importerWorkspaceDirectory;
+	}
+
+	/**
+	 * Returns the importer workspace directory.
+	 *
+	 * @return The importer workspace directory.
+	 *
+	 */
+	public String getImporterWorkspaceDirectory() {
+		return importerWorkspaceDirectory;
 	}
 }

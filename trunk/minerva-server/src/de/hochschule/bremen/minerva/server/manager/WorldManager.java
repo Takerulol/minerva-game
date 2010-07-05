@@ -39,7 +39,6 @@ import de.hochschule.bremen.minerva.commons.exceptions.WorldFileExtensionExcepti
 import de.hochschule.bremen.minerva.commons.exceptions.WorldFileNotFoundException;
 import de.hochschule.bremen.minerva.commons.exceptions.WorldFileParseException;
 import de.hochschule.bremen.minerva.commons.exceptions.WorldNotStorable;
-import de.hochschule.bremen.minerva.commons.util.WorldFile;
 import de.hochschule.bremen.minerva.commons.vo.Country;
 import de.hochschule.bremen.minerva.commons.vo.Neighbour;
 import de.hochschule.bremen.minerva.commons.vo.World;
@@ -54,6 +53,7 @@ import de.hochschule.bremen.minerva.server.persistence.service.ContinentService;
 import de.hochschule.bremen.minerva.server.persistence.service.CountryService;
 import de.hochschule.bremen.minerva.server.persistence.service.NeighbourService;
 import de.hochschule.bremen.minerva.server.persistence.service.WorldService;
+import de.hochschule.bremen.minerva.server.util.WorldFile;
 
 /**
  * The world manager is a singleton, which summarizes the functionality
