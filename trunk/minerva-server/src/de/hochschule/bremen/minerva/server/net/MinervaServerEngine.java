@@ -36,10 +36,14 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Vector;
 
+import de.hochschule.bremen.minerva.commons.exceptions.CountriesNotInRelationException;
+import de.hochschule.bremen.minerva.commons.exceptions.CountryOwnerException;
 import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.commons.exceptions.GameAlreadyStartedException;
+import de.hochschule.bremen.minerva.commons.exceptions.IsOwnCountryException;
 import de.hochschule.bremen.minerva.commons.exceptions.NoPlayerLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.NoPlayerSlotAvailableException;
+import de.hochschule.bremen.minerva.commons.exceptions.NotEnoughArmiesException;
 import de.hochschule.bremen.minerva.commons.exceptions.NotEnoughPlayersLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerAlreadyLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerDoesNotExistException;
@@ -48,11 +52,15 @@ import de.hochschule.bremen.minerva.commons.exceptions.WorldNotDefinedException;
 import de.hochschule.bremen.minerva.commons.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.commons.net.ClientExecutables;
 import de.hochschule.bremen.minerva.commons.net.ServerExecutables;
+import de.hochschule.bremen.minerva.commons.vo.AttackResult;
+import de.hochschule.bremen.minerva.commons.vo.Country;
+import de.hochschule.bremen.minerva.commons.vo.CountryCard;
 import de.hochschule.bremen.minerva.commons.vo.Mission;
 import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.PlayerState;
 import de.hochschule.bremen.minerva.commons.vo.World;
 import de.hochschule.bremen.minerva.server.core.logic.Game;
+import de.hochschule.bremen.minerva.server.core.logic.Turn;
 import de.hochschule.bremen.minerva.server.manager.AccountManager;
 import de.hochschule.bremen.minerva.server.manager.WorldManager;
 import de.hochschule.bremen.minerva.server.util.ConsoleLogger;
@@ -63,7 +71,10 @@ import de.root1.simon.exceptions.SimonRemoteException;
 
 /**
  * The server engine, which implements the server protocol.
- * Methods, which can be invoked from any client.
+ * In other words: Contains methods, which can be invoked from any client.
+ * It's like a facade for accessing the minerva subsystems.
+ * 
+ * This facade was the 'GameEngineLocal' in the "hotseat" version ;)
  *
  * @since 1.0
  * @version $Id$
@@ -94,7 +105,7 @@ public class MinervaServerEngine implements ServerExecutables {
 	 */
 	@Override
 	public void login(Player player, ClientExecutables clientExecutables) throws SimonRemoteException, PlayerAlreadyLoggedInException, GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException {
-		LOGGER.log("login this player: "+player.toString());
+		LOGGER.log("login(): login this player: "+player.toString());
 		AccountManager.getInstance().login(player);
 
 		if (this.game.getPlayerCount() == 0) {
@@ -116,7 +127,7 @@ public class MinervaServerEngine implements ServerExecutables {
 	 * 
 	 */
 	public void register(Player player) throws SimonRemoteException, PlayerExistsException, DataAccessException {
-		LOGGER.log("register this player: "+player.toString());
+		LOGGER.log("register(): this player: "+player.toString());
 		AccountManager.getInstance().createPlayer(player);
 	}
 	
@@ -132,7 +143,7 @@ public class MinervaServerEngine implements ServerExecutables {
 	 */
 	@Override
 	public Vector<World> getWorlds(boolean flatView) throws SimonRemoteException, DataAccessException {
-		LOGGER.log("getWorlds - flatView: "+flatView);
+		LOGGER.log("getWorlds(): flatView:"+flatView);
 		return WorldManager.getInstance().getList(flatView);
 	}
 
@@ -144,7 +155,7 @@ public class MinervaServerEngine implements ServerExecutables {
 	 */
 	@Override
 	public void startGame() throws SimonRemoteException, NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException, DataAccessException {
-		LOGGER.log("startGame");
+		LOGGER.log("startGame(): THE GAME WAS STARTED!");
 		this.game.start();
 		
 		this.notifyClients();
@@ -158,6 +169,7 @@ public class MinervaServerEngine implements ServerExecutables {
 	 */
 	@Override
 	public void killGame(boolean createNewOne) throws SimonRemoteException, DataAccessException {
+		LOGGER.log("killGame(): THE GAME WAS KILLED! :o");
 		AccountManager.getInstance().logout();
 		
 		if (createNewOne) {
@@ -171,6 +183,7 @@ public class MinervaServerEngine implements ServerExecutables {
 	 */
 	@Override
 	public void setGameWorld(World world) throws SimonRemoteException, DataAccessException {
+		LOGGER.log("setGameWorld(): Gamemaster defined the following world to play on: '"+world.getName()+"'");
 		this.game.setWorld(world);
 	}
 
@@ -180,6 +193,7 @@ public class MinervaServerEngine implements ServerExecutables {
 	 */
 	@Override
 	public World getGameWorld() throws SimonRemoteException, DataAccessException {
+		LOGGER.log("getGameWorld(): The game world was requested ...");
 		return this.game.getWorld();
 	}
 
@@ -189,6 +203,7 @@ public class MinervaServerEngine implements ServerExecutables {
 	 */
 	@Override
 	public Vector<Player> getGamePlayers() throws SimonRemoteException {
+		LOGGER.log("getGamePlayers(): The game world players was requested ...");
 		return this.game.getPlayers();
 	}
 
@@ -198,6 +213,7 @@ public class MinervaServerEngine implements ServerExecutables {
 	 */
 	@Override
 	public Vector<Mission> getGameMissions() throws SimonRemoteException {
+		LOGGER.log("getGameMissions()");
 		return this.game.getMissions();
 	}
 	
@@ -207,6 +223,7 @@ public class MinervaServerEngine implements ServerExecutables {
 	 */
 	@Override
 	public boolean isGameFinished() throws SimonRemoteException {
+		LOGGER.log("isGameFinished(): Game finished? -> " + ((this.game.isFinished()) ? "Yes :(" : "No :)"));
 		return this.game.isFinished();
 	}
 
@@ -216,9 +233,88 @@ public class MinervaServerEngine implements ServerExecutables {
 	 */
 	@Override
 	public Player getGameWinner() throws SimonRemoteException {
+		LOGGER.log("getGameMissions(): AND THE WINNER IS: " + ((this.game.isFinished()) ? this.game.getWinner() : "nobody - Game is still running."));
 		return this.game.getWinner();
-	}	
-	
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	@Override
+	public void releaseCard(CountryCard card) throws SimonRemoteException {
+		LOGGER.log("releaseCard(): Release the card from country: '"+card.getReference().getName()+"'");
+		Turn turn = this.game.getCurrentTurn();
+		turn.releaseCard(card);
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	@Override
+	public void releaseCards(Vector<CountryCard> cards) throws SimonRemoteException {
+		LOGGER.log("releaseCards(): Release a card stack.");
+		Turn turn = this.game.getCurrentTurn();
+		turn.releaseCardSeries(cards);
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	@Override
+	public int getAllocatableArmyCount() throws SimonRemoteException {
+		int armyCount = this.game.getCurrentTurn().getAllocatableArmyCount();
+		LOGGER.log("getAllocatableArmyCount(): Allocatable armies in this turn: "+armyCount);
+		return armyCount;
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	@Override
+	public void allocateArmy(Country allocatable) throws SimonRemoteException, NotEnoughArmiesException, CountryOwnerException {
+		LOGGER.log("allocateArmy(): Allocate one army on country '"+ allocatable.getName() +"'");
+        Turn turn = this.game.getCurrentTurn();
+        turn.allocateArmy(allocatable);
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	@Override
+	public AttackResult attack(Country source, Country destination, int armyCount) throws SimonRemoteException, CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException {
+		Turn turn = this.game.getCurrentTurn();
+		AttackResult result = turn.attack(source, destination, armyCount);
+		LOGGER.log("attack(): Attacking '"+destination.getName()+"' from '"+source.getName()+"' with " + armyCount + " army units. Result: "+result.toString());
+
+        return turn.attack(source, destination, armyCount);
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	@Override
+	public void move(Country source, Country destination, int armyCount) throws SimonRemoteException, CountriesNotInRelationException, NotEnoughArmiesException, CountryOwnerException {
+		LOGGER.log("move(): Move "+armyCount+" army units from '"+source.getName()+"' to '"+destination.getName()+"'.");
+
+		Turn turn = this.game.getCurrentTurn();
+        turn.moveArmies(source, destination, armyCount);
+	}
+
+	/**
+	 * DOCME
+	 * 
+	 */
+	@Override
+	public void finishTurn() throws SimonRemoteException {
+        this.game.nextTurn();
+	}
+
 	/**
 	 * DOCME
 	 * @throws SimonRemoteException 
