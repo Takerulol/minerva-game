@@ -167,20 +167,12 @@ public class GameEngineNetwork implements GameEngine {
 	}
 
 	@Override
-	public Vector<Player> getGamePlayers() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Vector<Mission> getGameMissions() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void startGame() throws NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException {
-		// TODO Auto-generated method stub
+	public void startGame() throws NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException, DataAccessException {
+		try {
+			this.serverEngine.startGame();
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
 	}
 
 	@Override
@@ -193,12 +185,31 @@ public class GameEngineNetwork implements GameEngine {
 	}
 
 	@Override
-	public void setGameWorld(World world) {
-		// TODO Auto-generated method stub
+	public void setGameWorld(World world) throws DataAccessException {
+		try {
+			this.serverEngine.setGameWorld(world);
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
 	}
 
 	@Override
-	public World getGameWorld() {
+	public World getGameWorld() throws DataAccessException {
+		try {
+			return this.serverEngine.getGameWorld();
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
+	}
+
+	@Override
+	public Vector<Player> getGamePlayers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vector<Mission> getGameMissions() {
 		// TODO Auto-generated method stub
 		return null;
 	}
