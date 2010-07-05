@@ -30,10 +30,8 @@
 
 package de.hochschule.bremen.minerva.client.ui.gui.panels;
 
-import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -42,8 +40,6 @@ import javax.swing.JLayeredPane;
 import de.hochschule.bremen.minerva.client.ui.gui.MinervaGUI;
 import de.hochschule.bremen.minerva.client.ui.gui.controls.MButton;
 import de.hochschule.bremen.minerva.client.ui.gui.controls.MMessageBox;
-import de.hochschule.bremen.minerva.client.ui.gui.listener.MMouseListener;
-import de.hochschule.bremen.minerva.client.ui.gui.listener.MMouseMotionListener;
 import de.hochschule.bremen.minerva.client.ui.gui.panels.subpanels.PlayerInitPanel;
 import de.hochschule.bremen.minerva.client.ui.gui.panels.subpanels.GameWaitingPanel;
 import de.hochschule.bremen.minerva.client.ui.gui.panels.subpanels.WorldInitPanel;
