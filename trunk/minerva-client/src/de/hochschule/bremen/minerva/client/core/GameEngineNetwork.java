@@ -131,6 +131,10 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		return GameEngineNetwork.instance;
 	}
 
+	/**
+	 * DOCME
+	 *
+	 */
 	@Override
 	public void login(Player player) throws PlayerAlreadyLoggedInException, GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException {
 		try {
@@ -140,6 +144,10 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		}
 	}
 
+	/**
+	 * DOCME
+	 *
+	 */
 	@Override
 	public void register(Player player) throws PlayerExistsException, DataAccessException{
 		try {
@@ -149,6 +157,10 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		}
 	}
 
+	/**
+	 * DOCME
+	 *
+	 */
 	@Override
 	public Vector<World> getWorldList() throws DataAccessException {
 		try {
@@ -170,11 +182,39 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	@Override
 	public void importWorld(File worldFile) throws WorldNotStorable, WorldFileNotFoundException, WorldFileExtensionException, WorldFileParseException, DataAccessException {}
 
+	/**
+	 * DOCME
+	 *
+	 */
 	@Override
-	public void startGame() throws NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException, DataAccessException {}
+	public void startGame() throws NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException, DataAccessException {
+		try {
+			this.serverEngine.startGame();
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
+	}
 
+	/**
+	 * DOCME
+	 *
+	 */
 	@Override
 	public void killGame(boolean createNewOne) throws DataAccessException {
+		try {
+			this.serverEngine.killGame(createNewOne);
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
+	}
+
+	@Override
+	public Vector<Player> getGamePlayers() throws DataAccessException {
+		try {
+			return this.serverEngine.getGamePlayers();
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
 	}
 
 	@Override
@@ -185,11 +225,6 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		return null;
 	}
 
-	@Override
-	public Vector<Player> getGamePlayers() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public Vector<Mission> getGameMissions() {
@@ -263,6 +298,7 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		System.out.println("Server hat refreshPlayer aufgerufen: "+player);
 		this.clientPlayer = player;
 
+		this.setChanged();
 		this.notifyObservers();
 	}
 }
