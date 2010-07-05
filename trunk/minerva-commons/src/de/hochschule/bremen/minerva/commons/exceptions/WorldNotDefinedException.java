@@ -29,6 +29,8 @@
  */
 package de.hochschule.bremen.minerva.commons.exceptions;
 
+import java.io.Serializable;
+
 /**
  * Exception that will thrown if someone tried to do something
  * that is not possible if no world was defined (e. g. starting a game).
@@ -37,7 +39,7 @@ package de.hochschule.bremen.minerva.commons.exceptions;
  * @version $Id$
  *
  */
-public class WorldNotDefinedException extends Exception {
+public class WorldNotDefinedException extends Exception implements Serializable {
 
 	private static final long serialVersionUID = 8968129980548498952L;
 

@@ -30,6 +30,7 @@
 package de.hochschule.bremen.minerva.commons.exceptions;
 
 import java.io.File;
+import java.io.Serializable;
 
 /**
  * Exception that will be thrown if it is not possible to
@@ -39,7 +40,7 @@ import java.io.File;
  * @version $Id$
  *
  */
-public class WorldNotStorable extends Exception {
+public class WorldNotStorable extends Exception implements Serializable {
 
 	private static final long serialVersionUID = 8868184972756654993L;
 

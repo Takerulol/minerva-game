@@ -29,6 +29,8 @@
  */
 package de.hochschule.bremen.minerva.commons.exceptions;
 
+import java.io.Serializable;
+
 /**
  * If the application configuration is not available.
  * 
@@ -36,7 +38,7 @@ package de.hochschule.bremen.minerva.commons.exceptions;
  * @since 1.0
  *
  */
-public class AppConfigurationNotFoundException extends Exception {
+public class AppConfigurationNotFoundException extends Exception implements Serializable {
 
 	private static final long serialVersionUID = -7196558872252940085L;
 

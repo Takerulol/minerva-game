@@ -29,6 +29,8 @@
  */
 package de.hochschule.bremen.minerva.commons.exceptions;
 
+import java.io.Serializable;
+
 import de.hochschule.bremen.minerva.commons.vo.World;
 
 /**
@@ -38,7 +40,7 @@ import de.hochschule.bremen.minerva.commons.vo.World;
  * @version $Id$
  * 
  */
-public class WorldExistsException extends Exception {
+public class WorldExistsException extends Exception implements Serializable {
 
 	private static final long serialVersionUID = 3112375516184260775L;
 

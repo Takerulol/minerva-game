@@ -29,6 +29,8 @@
  */
 package de.hochschule.bremen.minerva.commons.exceptions;
 
+import java.io.Serializable;
+
 /**
  * If the application configuration was not readable.
  * 
@@ -36,7 +38,7 @@ package de.hochschule.bremen.minerva.commons.exceptions;
  * @since 1.0
  *
  */
-public class AppConfigurationNotReadableException extends Exception {
+public class AppConfigurationNotReadableException extends Exception implements Serializable {
 
 	private static final long serialVersionUID = -2500309913939436304L;
 
