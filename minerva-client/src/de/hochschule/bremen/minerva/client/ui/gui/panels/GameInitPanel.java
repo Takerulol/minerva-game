@@ -45,6 +45,7 @@ import de.hochschule.bremen.minerva.client.ui.gui.controls.MMessageBox;
 import de.hochschule.bremen.minerva.client.ui.gui.listener.MMouseListener;
 import de.hochschule.bremen.minerva.client.ui.gui.listener.MMouseMotionListener;
 import de.hochschule.bremen.minerva.client.ui.gui.panels.subpanels.PlayerInitPanel;
+import de.hochschule.bremen.minerva.client.ui.gui.panels.subpanels.GameWaitingPanel;
 import de.hochschule.bremen.minerva.client.ui.gui.panels.subpanels.WorldInitPanel;
 import de.hochschule.bremen.minerva.client.ui.gui.resources.TextResources;
 import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
@@ -66,6 +67,7 @@ public class GameInitPanel extends JLayeredPane implements TextResources {
 	private Background background;
 	private PlayerInitPanel playerInitPanel;
 	private WorldInitPanel worldInitPanel;
+	private GameWaitingPanel gameWaitingPanel;
 	private MButton buttonStartGame;
 
 	private static final long serialVersionUID = -8901679483780034723L;
@@ -106,33 +108,26 @@ public class GameInitPanel extends JLayeredPane implements TextResources {
 		this.worldInitPanel = new WorldInitPanel(gamemaster, worlds);
 		this.worldInitPanel.setOpaque(false);
 		this.worldInitPanel.setBounds(585, 140, 300, 350);
+		
+		this.gameWaitingPanel = new GameWaitingPanel();
+		this.gameWaitingPanel.setOpaque(false);
+		this.gameWaitingPanel.setBounds(585, 80, 300, 350);
 
 		this.buttonStartGame = new MButton(GAME_INIT_PANEL_BUTTON_START_GAME);
 		this.buttonStartGame.setBounds(720, 500, 150, 20);
 
 		//adding panels to stage
-		this.add(this.worldInitPanel, 20);
+		if (MinervaGUI.getEngine().getClientPlayer().isMaster()) {
+			this.add(this.worldInitPanel, 20);
+			this.add(this.buttonStartGame, 20);
+		} else {
+			this.add(this.gameWaitingPanel, 20);
+		}
+		
 		this.add(this.playerInitPanel, 20);
-		this.add(this.buttonStartGame, 20);
 		this.add(this.background,10);
 		
 		this.addListeners();
-	}
-
-	/**
-	 * Check if the coordinates represent the player add link.
-	 * 
-	 * @param x The checkable x coordinate.
-	 * @param y The checkable y coordinate.
-	 *
-	 * @return Is inside the "player add link rectangle"?
-	 *
-	 */
-	private boolean isPlayerAddLink(int x, int y) {
-		if ((x < 505) && (x > 350) && (y < 123) && (y > 110)) {
-			return true;
-		}
-		return false;
 	}
 
 	/**
@@ -172,27 +167,6 @@ public class GameInitPanel extends JLayeredPane implements TextResources {
 					nextPanel = new GameInitPanel();
 				} catch (DataAccessException e) {
 					MMessageBox.error(e.getMessage());
-				}
-			}
-		});
-
-		// MMouseListener for handling the click on the "player add link".
-		this.addMouseListener(new MMouseListener() {
-			public void mouseClicked(MouseEvent e) {
-				if (GameInitPanel.this.isPlayerAddLink(e.getX(), e.getY())) {
-					MinervaGUI.getInstance().changePanel(new LoginPanel());					
-				}
-			}
-		});
-
-		// MMouseMotionListener for sending a interaction feedback to the
-		// user if he move the mouse over the "add player link"
-		this.addMouseMotionListener(new MMouseMotionListener() {
-			public void mouseMoved(MouseEvent e) {
-				if (GameInitPanel.this.isPlayerAddLink(e.getX(), e.getY())) {
-					GameInitPanel.this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				} else {
-					GameInitPanel.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				}
 			}
 		});
