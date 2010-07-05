@@ -141,7 +141,4 @@ public interface ServerExecutables extends SimonRemote {
 	// Open a raw channel pipe for transferring the world file.
 	// Returns a token, with which it is possible to initialize the transfer.
 	public int prepareWorldFileImport(String worldFileName) throws SimonRemoteException;
-
-	// Returns the world file bytes.
-	public byte[] getWorldFileBytes(String worldFileName) throws SimonRemoteException;
 }
