@@ -38,7 +38,9 @@ import de.root1.simon.exceptions.SimonRemoteException;
 
 /**
  * This exception is a heavy one. If this exception will be thrown
- * it is an indication that something with the storage subsystem went wrong.
+ * it is an indication that something with the storage subsystem
+ * or the client-server communication went wrong.
+ *
  * The best way is to quit minerva and inform the admin ;)
  *
  * @since 1.0
