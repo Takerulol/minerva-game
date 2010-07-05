@@ -105,9 +105,9 @@ public interface GameEngine {
 
 	public Player getGameWinner() throws DataAccessException;
 
-	public byte[] getGameMapImage() throws DataAccessException;
+	public int[][] getGameMapImage() throws DataAccessException;
 
-	public byte[] getGameMapUnderlayImage() throws DataAccessException;
+	public int[][] getGameMapUnderlayImage() throws DataAccessException;
 
 	public void releaseCard(CountryCard card) throws DataAccessException;
 

@@ -100,10 +100,10 @@ public interface ServerExecutables extends SimonRemote {
 	public boolean isGameFinished() throws SimonRemoteException;
 
 	// Gets the current game map image from the server.
-	public byte[] getGameMapImage() throws SimonRemoteException;
+	public int[][] getGameMapImage() throws SimonRemoteException;
 
 	// Gets the current game map underlay image from the server.
-	public byte[] getGameMapUnderlayImage() throws SimonRemoteException;	
+	public int[][] getGameMapUnderlayImage() throws SimonRemoteException;	
 	
 	// -- Game core subsystem --
 

@@ -81,4 +81,19 @@ public class MapTool {
 		
 		return countryAnchors;
 	}
+	
+	/**
+	 * Creates a map image out of a 2-dimensional integer array equivalent in aRGB
+	 * @param map map as integer array
+	 * @return map as buffered image
+	 */
+	public static BufferedImage createMapImage(int[][] map) {
+		BufferedImage image = new BufferedImage(map.length, map[0].length, BufferedImage.TYPE_INT_ARGB_PRE);
+		for(int x = 0; x < map.length; x++) {
+			for(int y = 0; y < map[0].length; y++) {
+				image.setRGB(x, y, map[x][y]);
+			}
+		}
+		return image;
+	}
 }

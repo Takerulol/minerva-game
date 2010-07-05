@@ -134,21 +134,23 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		this.missionLabel.setForeground(new Color(186, 187, 188));
 		missionPanel.add(missionLabel);
 
-		//lower map
-		//filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + this.engine.getGameWorld().getMapUnderlay();
-
-		// TODO: CLIENT-SERVER
-		//mapImage = ImageIO.read(new ByteArrayInputStream(this.engine.getMapImage());
-		this.mapUnderlay = new MapPanel(mapImage);
-		this.mapUnderlay.setBounds(0,0,500,500);
+	
 		
-		//upper map
-		//filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + this.engine.getGameWorld().getMap();
-
-		// TODO: CLIENT-SERVER
-		//mapImage = ImageIO.read(new ByteArrayInputStream(this.engine.getMapUnderlayImage());
-		this.mapOverlay = new MapPanel(mapImage);
-		this.mapOverlay.setBounds(0,0,500,500);
+		try {
+			//upper map
+			mapImage = MapTool.createMapImage(this.engine.getGameMapImage());
+			this.mapUnderlay = new MapPanel(mapImage);
+			this.mapUnderlay.setBounds(0,0,500,500);
+			
+			//lower map
+			mapImage = MapTool.createMapImage(this.engine.getGameMapImage());
+			this.mapOverlay = new MapPanel(mapImage);
+			this.mapOverlay.setBounds(0,0,500,500);
+			
+		} catch (DataAccessException e) {
+			MMessageBox.error(e);
+		} 
+		
 		
 		//control bar
 		this.slidePanel = new MSlidePanel(new GamePanelControlbar());
@@ -213,16 +215,20 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	 *
 	 */
 	private void allocate(Country country) {
+		int armyCount = 0;
 		try {
 			this.engine.allocateArmy(country);
+			armyCount = this.engine.getAllocatableArmyCount();
 		} catch (NotEnoughArmiesException e) {
 			MMessageBox.error(e.getMessage());
 		} catch (CountryOwnerException e) {
 			if (country.getName() != null) {
 				MMessageBox.error(e.getMessage());
 			}
+		} catch (DataAccessException e) {
+			MMessageBox.error(e);
 		}
-		if (this.engine.getAllocatableArmyCount() == 0) {
+		if (armyCount == 0) {
 			this.currentPlayer.setState(PlayerState.ATTACK);
 		}
 		this.updatePanel();
@@ -236,7 +242,11 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	 */
 	public void TurnCardIn(CountryCard card) {
 		if (this.currentPlayer.hasCountry(card.getReference())) {
-			this.engine.releaseCard(card);
+			try {
+				this.engine.releaseCard(card);
+			} catch (DataAccessException e) {
+				MMessageBox.error(e);
+			}
 			GamePanel.this.updatePanel();
 		} else {
 			GamePanel.this.updatePanel();
@@ -251,7 +261,11 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	 *
 	 */
 	public void TurnSeriesIn(Vector<CountryCard> series) {
-		this.engine.releaseCards(series);
+		try {
+			this.engine.releaseCards(series);
+		} catch (DataAccessException e) {
+			MMessageBox.error(e);
+		}
 		GamePanel.this.updatePanel();
 	}
 
@@ -308,6 +322,8 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 						} catch (IsOwnCountryException e) {
 							GamePanel.this.updatePanel();
 							MMessageBox.error(e.getMessage());
+						} catch (DataAccessException e) {
+							MMessageBox.error(e);
 						}
 					} catch (NumberFormatException e1) {
 						GamePanel.this.updatePanel();
@@ -415,6 +431,8 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 						} catch (CountryOwnerException e) {
 							GamePanel.this.updatePanel();
 							MMessageBox.error(e.getMessage());
+						} catch (DataAccessException e) {
+							MMessageBox.error(e);
 						}
 					} catch (NumberFormatException e1) {
 						GamePanel.this.updatePanel();
@@ -476,35 +494,41 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		//refreshing army count icons
 		this.refreshArmyCounts();
 		
-		//refreshing control bar
-		this.slidePanel.getControlBar().updateButtons();
-		this.slidePanel.getControlBar().setCurrentPlayerLabel(this.currentPlayer);
-		this.slidePanel.getControlBar().setAllocatableArmiesLabel(" "+this.engine.getAllocatableArmyCount()+" ");
-		this.slidePanel.getControlBar().updateCardList(this.currentPlayer.getCountryCards());
-
-		//refreshing mission text
-		//this happens only in GameEngineLocal, otherwise current player doesn't change
-		searchPlayerMission : for (Mission mission : this.engine.getGameMissions()) {
-			if (mission.getOwner() == this.currentPlayer) {
-				this.missionLabel.setText(mission.getTitle());
-				break searchPlayerMission;
-			}
-		}
-
-		this.repaint();
-		this.updateUI();
+		try {
 		
-		//game finished?
-		if (this.engine.isGameFinished()) {
-			MMessageBox.show(GAME_FINISHED_ANNOUCEMENT+"\n"
-					+this.engine.getGameWinner().getUsername()
-					+GAME_FINISHED_WINNER);
-			try {
-				this.engine.killGame(false);
-			} catch (DataAccessException e) {
-				MMessageBox.error(e.getMessage());
+			//refreshing control bar
+			this.slidePanel.getControlBar().updateButtons();
+			this.slidePanel.getControlBar().setCurrentPlayerLabel(this.currentPlayer);
+			this.slidePanel.getControlBar().setAllocatableArmiesLabel(" "+this.engine.getAllocatableArmyCount()+" ");
+			this.slidePanel.getControlBar().updateCardList(this.currentPlayer.getCountryCards());
+	
+			//refreshing mission text
+			//this happens only in GameEngineLocal, otherwise current player doesn't change
+			
+			
+			searchPlayerMission : for (Mission mission : this.engine.getGameMissions()) {
+				if (mission.getOwner() == this.currentPlayer) {
+					this.missionLabel.setText(mission.getTitle());
+					break searchPlayerMission;
+				}
 			}
-			MinervaGUI.getInstance().changePanel(new LoginPanel());
+			
+			
+	
+			this.repaint();
+			this.updateUI();
+			
+			//game finished?
+			if (this.engine.isGameFinished()) {
+				MMessageBox.show(GAME_FINISHED_ANNOUCEMENT+"\n"
+						+this.engine.getGameWinner().getUsername()
+						+GAME_FINISHED_WINNER);
+				this.engine.killGame(false);
+				
+				MinervaGUI.getInstance().changePanel(new LoginPanel());
+			}
+		} catch (DataAccessException e) {
+			MMessageBox.error(e);
 		}
 	}
 	

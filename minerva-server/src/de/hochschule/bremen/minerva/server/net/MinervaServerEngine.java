@@ -30,8 +30,6 @@
 package de.hochschule.bremen.minerva.server.net;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -317,11 +315,19 @@ public class MinervaServerEngine implements ServerExecutables {
      *
 	 */
 	@Override
-	public byte[] getGameMapImage() throws SimonRemoteException {
+	public int[][] getGameMapImage() throws SimonRemoteException {
 		LOGGER.log("getGameMapImage(): Load the map image (world = '" + this.game.getWorld().getName() + "').");
-
-		WritableRaster raster = this.game.getWorld().getMapImage().getRaster();
-		return ((DataBufferByte)raster.getDataBuffer()).getData();
+		BufferedImage mapImage = this.game.getWorld().getMapImage();
+		int[][] map = new int[mapImage.getWidth()][mapImage.getHeight()];
+		for (int x = 0; x < mapImage.getWidth(); x++) {
+			for (int y = 0; y < mapImage.getHeight(); y++) {
+				map[x][y] = mapImage.getRGB(x, y);
+			}
+		}
+		
+		return map;
+//		WritableRaster raster = this.game.getWorld().getMapImage().getRaster();
+//		return raster.getPixels(0, 0, 900, 675, (int[])null);
 	}
 
 	/**
@@ -333,11 +339,21 @@ public class MinervaServerEngine implements ServerExecutables {
      *
 	 */
 	@Override
-	public byte[] getGameMapUnderlayImage() throws SimonRemoteException {
+	public int[][] getGameMapUnderlayImage() throws SimonRemoteException {
 		LOGGER.log("getGameMapImage(): Load the map image underlay (world = '" + this.game.getWorld().getName() + "').");
 
-		WritableRaster raster = this.game.getWorld().getMapUnderlayImage().getRaster();
-		return ((DataBufferByte)raster.getDataBuffer()).getData();
+		BufferedImage mapImage = this.game.getWorld().getMapUnderlayImage();
+		int[][] map = new int[mapImage.getWidth()][mapImage.getHeight()];
+		for (int x = 0; x < mapImage.getWidth(); x++) {
+			for (int y = 0; y < mapImage.getHeight(); y++) {
+				map[x][y] = mapImage.getRGB(x, y);
+			}
+		}
+		
+		return map;
+		
+//		WritableRaster raster = this.game.getWorld().getMapUnderlayImage().getRaster();
+//		return raster.getPixels(0, 0, 900, 675, (int[])null);
 	}
 
     /**
