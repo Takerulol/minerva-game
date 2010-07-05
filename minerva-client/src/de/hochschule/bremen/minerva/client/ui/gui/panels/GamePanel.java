@@ -138,12 +138,12 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		
 		try {
 			//upper map
-			mapImage = MapTool.createMapImage(this.engine.getGameMapImage());
+			mapImage = MapTool.createMapImageFromArray(this.engine.getGameMapImage());
 			this.mapUnderlay = new MapPanel(mapImage);
 			this.mapUnderlay.setBounds(0,0,500,500);
 			
 			//lower map
-			mapImage = MapTool.createMapImage(this.engine.getGameMapImage());
+			mapImage = MapTool.createMapImageFromArray(this.engine.getGameMapImage());
 			this.mapOverlay = new MapPanel(mapImage);
 			this.mapOverlay.setBounds(0,0,500,500);
 			
@@ -161,22 +161,22 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		
 		// get the world from the server.
 		HashMap<Country, Point> countryAnchors = MapTool.getCountryAnchors(this.mapOverlay.getMapImage(), mapUnderlay.getMapImage(), this.world);
-
+		
 		this.add(slidePanel, 10000);
 
-		for (Country country : this.world.getCountries()) {
-			MArmyCountIcon aci = new MArmyCountIcon(Color.RED, countryAnchors.get(country));
-			aci.addMouseListener(new MMouseListener() {
-				public void mouseClicked(MouseEvent e) {
-					GamePanel.this.unmarkAll();
-					Color color = ColorTool.fromInteger(GamePanel.this.mapUnderlay.getMapImage().getRGB(((MArmyCountIcon)e.getSource()).getX()+15, ((MArmyCountIcon)e.getSource()).getY()+15));
-					Country country = GamePanel.this.world.getCountry(color);
-					GamePanel.this.mapInteraction(country);
-				}
-			});
-			this.armyIcons.put(country,aci);
-			this.add(aci,-10000);
-		}
+//		for (Country country : this.world.getCountries()) {
+//			MArmyCountIcon aci = new MArmyCountIcon(Color.RED, countryAnchors.get(country));
+//			aci.addMouseListener(new MMouseListener() {
+//				public void mouseClicked(MouseEvent e) {
+//					GamePanel.this.unmarkAll();
+//					Color color = ColorTool.fromInteger(GamePanel.this.mapUnderlay.getMapImage().getRGB(((MArmyCountIcon)e.getSource()).getX()+15, ((MArmyCountIcon)e.getSource()).getY()+15));
+//					Country country = GamePanel.this.world.getCountry(color);
+//					GamePanel.this.mapInteraction(country);
+//				}
+//			});
+//			this.armyIcons.put(country,aci);
+//			this.add(aci,-10000);
+//		}
 			
 		this.refreshArmyCounts();
 
@@ -477,24 +477,31 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 				this.currentPlayer = player;
 			}
 		}*/
-		
-		//source and destination will be reset when player is in wrong state
-		if ((this.currentPlayer.getState() == PlayerState.RELEASE_CARDS) || 
-				(this.currentPlayer.getState() == PlayerState.ALLOCATE_ARMIES)) {
-			this.unmarkAll();
-			this.source = null;
-			this.destination = null;
-		}
-
-		//if current player has no cards, card release will be skipped
-		if ((this.currentPlayer.getState() == PlayerState.RELEASE_CARDS) && (GamePanel.this.currentPlayer.getCountryCards().isEmpty())) {
-			this.currentPlayer.setState(PlayerState.ALLOCATE_ARMIES);
-		}		
-
-		//refreshing army count icons
-		this.refreshArmyCounts();
-		
 		try {
+			
+			for (Player player : this.engine.getGamePlayers()) {
+				if (player.getState() != PlayerState.IDLE)
+				this.currentPlayer = player;
+			}
+		
+			
+			
+			//source and destination will be reset when player is in wrong state
+			if ((this.currentPlayer.getState() == PlayerState.RELEASE_CARDS) || 
+					(this.currentPlayer.getState() == PlayerState.ALLOCATE_ARMIES)) {
+				this.unmarkAll();
+				this.source = null;
+				this.destination = null;
+			}
+	
+			//if current player has no cards, card release will be skipped
+			if ((this.currentPlayer.getState() == PlayerState.RELEASE_CARDS) && (GamePanel.this.currentPlayer.getCountryCards().isEmpty())) {
+				this.currentPlayer.setState(PlayerState.ALLOCATE_ARMIES);
+			}		
+	
+			//refreshing army count icons
+			this.refreshArmyCounts();
+			
 		
 			//refreshing control bar
 			this.slidePanel.getControlBar().updateButtons();

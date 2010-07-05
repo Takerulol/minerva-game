@@ -32,6 +32,8 @@ package de.hochschule.bremen.minerva.client.ui.gui.panels;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -58,7 +60,7 @@ import de.hochschule.bremen.minerva.commons.vo.World;
  * @since 1.0
  *
  */
-public class GameInitPanel extends JLayeredPane implements TextResources {
+public class GameInitPanel extends JLayeredPane implements TextResources, Observer {
 
 	private Background background;
 	private PlayerInitPanel playerInitPanel;
@@ -124,6 +126,9 @@ public class GameInitPanel extends JLayeredPane implements TextResources {
 		this.add(this.background,10);
 		
 		this.addListeners();
+		
+		MinervaGUI.getEngine().addObserver(this);
+		MinervaGUI.getEngine().addObserver(this.playerInitPanel);
 	}
 
 	/**
@@ -166,5 +171,25 @@ public class GameInitPanel extends JLayeredPane implements TextResources {
 				}
 			}
 		});
+	}
+
+	/**
+	 * DOCME
+	 */
+	@Override
+	public void update(Observable o, Object arg) {
+		try {
+			World loadedWorld = MinervaGUI.getEngine().getGameWorld();
+			if (loadedWorld != null) {
+				MinervaGUI.getEngine().deleteObserver(this);
+				MinervaGUI.getEngine().deleteObserver(this.playerInitPanel);
+				MinervaGUI.getInstance().changePanel(new GamePanel(loadedWorld));
+			}
+			
+		} catch (DataAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		if(MinervaGUI.getEngine().getGamePlayers())
 	}
 }
