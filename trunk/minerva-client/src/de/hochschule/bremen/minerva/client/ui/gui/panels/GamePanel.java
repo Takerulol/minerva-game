@@ -477,7 +477,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 
 		//refreshing mission text
 		//this happens only in GameEngineLocal, otherwise current player doesn't change
-		searchPlayerMission : for (Mission mission : this.engine.getMissions()) {
+		searchPlayerMission : for (Mission mission : this.engine.getGameMissions()) {
 			if (mission.getOwner() == this.currentPlayer) {
 				this.missionLabel.setText(mission.getTitle());
 				break searchPlayerMission;
@@ -553,7 +553,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 	 *
 	 */
 	public Player getPlayer(Country byCountry) {
-		for (Player player : this.engine.getPlayers()) {
+		for (Player player : this.engine.getGamePlayers()) {
 			if (player.hasCountry(byCountry)) {
 				return player;
 			}
