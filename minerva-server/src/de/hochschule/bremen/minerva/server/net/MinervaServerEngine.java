@@ -38,14 +38,19 @@ import java.util.Vector;
 
 import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.commons.exceptions.GameAlreadyStartedException;
+import de.hochschule.bremen.minerva.commons.exceptions.NoPlayerLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.NoPlayerSlotAvailableException;
+import de.hochschule.bremen.minerva.commons.exceptions.NotEnoughPlayersLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerAlreadyLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerExistsException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldNotDefinedException;
 import de.hochschule.bremen.minerva.commons.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.commons.net.ClientExecutables;
 import de.hochschule.bremen.minerva.commons.net.ServerExecutables;
+import de.hochschule.bremen.minerva.commons.vo.Mission;
 import de.hochschule.bremen.minerva.commons.vo.Player;
+import de.hochschule.bremen.minerva.commons.vo.PlayerState;
 import de.hochschule.bremen.minerva.commons.vo.World;
 import de.hochschule.bremen.minerva.server.core.logic.Game;
 import de.hochschule.bremen.minerva.server.manager.AccountManager;
@@ -74,7 +79,6 @@ public class MinervaServerEngine implements ServerExecutables {
 
 	private HashMap<Player, ClientExecutables> clients = new HashMap<Player, ClientExecutables>();
 
-
 	/**
 	 * DOCME
 	 * 
@@ -90,9 +94,11 @@ public class MinervaServerEngine implements ServerExecutables {
 	 */
 	@Override
 	public void login(Player player, ClientExecutables clientExecutables) throws SimonRemoteException, PlayerAlreadyLoggedInException, GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException {
-		LOGGER.log("login() this player: "+player.toString());
-
+		LOGGER.log("login this player: "+player.toString());
 		AccountManager.getInstance().login(player);
+		
+		player.setState(PlayerState.GAME_INIT);
+		
 		this.game.addPlayer(player);
 
 		// Put the client in our central client map.
@@ -106,7 +112,7 @@ public class MinervaServerEngine implements ServerExecutables {
 	 * 
 	 */
 	public void register(Player player) throws SimonRemoteException, PlayerExistsException, DataAccessException {
-		LOGGER.log("register() this player: "+player.toString());
+		LOGGER.log("register this player: "+player.toString());
 		AccountManager.getInstance().createPlayer(player);
 	}
 	
@@ -121,21 +127,101 @@ public class MinervaServerEngine implements ServerExecutables {
 	 *
 	 */
 	@Override
-	public Vector<World> getWorlds(boolean flatView) throws DataAccessException {
-		LOGGER.log("getWorlds()");
+	public Vector<World> getWorlds(boolean flatView) throws SimonRemoteException, DataAccessException {
+		LOGGER.log("getWorlds - flatView: "+flatView);
 		return WorldManager.getInstance().getList(flatView);
 	}
 
-	public World getGameWorld() {
+	/**
+	 * DOCME
+	 *
+	 * @return
+	 *
+	 */
+	@Override
+	public void startGame() throws SimonRemoteException, NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException, DataAccessException {
+		LOGGER.log("startGame");
+		this.game.start();
+		
+		this.notifyClients();
+	}
+
+	/**
+	 * DOCME
+	 *
+	 * @return
+	 *
+	 */
+	@Override
+	public void killGame(boolean createNewOne) throws SimonRemoteException, DataAccessException {
+		AccountManager.getInstance().logout();
+		
+		if (createNewOne) {
+			this.game = new Game();
+		}
+	}
+
+	/**
+	 * DOCME
+	 *
+	 */
+	@Override
+	public void setGameWorld(World world) throws SimonRemoteException, DataAccessException {
+		this.game.setWorld(world);
+	}
+
+	/**
+	 * DOCME
+	 *
+	 */
+	@Override
+	public World getGameWorld() throws SimonRemoteException, DataAccessException {
 		return this.game.getWorld();
 	}
 
+	/**
+	 * DOCME
+	 *
+	 */
+	@Override
+	public Vector<Player> getGamePlayers() throws SimonRemoteException {
+		return this.game.getPlayers();
+	}
+
+	/**
+	 * DOCME
+	 *
+	 */
+	@Override
+	public Vector<Mission> getGameMissions() throws SimonRemoteException {
+		return this.game.getMissions();
+	}
+	
+	/**
+	 * DOCME
+	 *
+	 */
+	@Override
+	public boolean isGameFinished() throws SimonRemoteException {
+		return this.game.isFinished();
+	}
+
+	/**
+	 * DOCME
+	 *
+	 */
+	@Override
+	public Player getGameWinner() throws SimonRemoteException {
+		return this.game.getWinner();
+	}	
+	
 	/**
 	 * DOCME
 	 * @throws SimonRemoteException 
 	 *
 	 */
 	private void notifyClients() throws SimonRemoteException {
+		LOGGER.log("notifyClients");
 		Iterator<Entry<Player, ClientExecutables>> iter = this.clients.entrySet().iterator();
 		while (iter.hasNext()) {
 			Entry<Player, ClientExecutables> entry = iter.next();
