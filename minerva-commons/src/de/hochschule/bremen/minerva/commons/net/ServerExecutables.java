@@ -33,16 +33,23 @@ import java.util.Vector;
 
 import de.root1.simon.SimonRemote;
 import de.root1.simon.exceptions.SimonRemoteException;
+import de.hochschule.bremen.minerva.commons.exceptions.CountriesNotInRelationException;
+import de.hochschule.bremen.minerva.commons.exceptions.CountryOwnerException;
 import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.commons.exceptions.GameAlreadyStartedException;
+import de.hochschule.bremen.minerva.commons.exceptions.IsOwnCountryException;
 import de.hochschule.bremen.minerva.commons.exceptions.NoPlayerLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.NoPlayerSlotAvailableException;
+import de.hochschule.bremen.minerva.commons.exceptions.NotEnoughArmiesException;
 import de.hochschule.bremen.minerva.commons.exceptions.NotEnoughPlayersLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerAlreadyLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerExistsException;
 import de.hochschule.bremen.minerva.commons.exceptions.WorldNotDefinedException;
 import de.hochschule.bremen.minerva.commons.exceptions.WrongPasswordException;
+import de.hochschule.bremen.minerva.commons.vo.AttackResult;
+import de.hochschule.bremen.minerva.commons.vo.Country;
+import de.hochschule.bremen.minerva.commons.vo.CountryCard;
 import de.hochschule.bremen.minerva.commons.vo.Mission;
 import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.World;
@@ -86,9 +93,32 @@ public interface ServerExecutables extends SimonRemote {
 	// Returns the game missions.
 	public Vector<Mission> getGameMissions() throws SimonRemoteException;
 
+	// Return the game winner.
+	public Player getGameWinner() throws SimonRemoteException;
+
 	// Game session finished?
 	public boolean isGameFinished() throws SimonRemoteException;
 
-	// Return the game winner.
-	public Player getGameWinner() throws SimonRemoteException;
+	// -- Game core subsystem --
+
+	// Release a country card.
+	public void releaseCard(CountryCard card) throws SimonRemoteException;
+
+	// Release a card stack.
+	public void releaseCards(Vector<CountryCard> cards) throws SimonRemoteException;
+
+	// Get the count for allocatable armies.
+	public int getAllocatableArmyCount() throws SimonRemoteException;
+
+	// Place one army on the given country.
+	public void allocateArmy(Country allocatable) throws SimonRemoteException, NotEnoughArmiesException, CountryOwnerException;
+
+	// The attack method.
+	public AttackResult attack(Country source, Country destination, int armyCount) throws SimonRemoteException, CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException;
+
+	// Move the specified army count from one country to another.
+	public void move(Country source, Country destination, int armyCount) throws SimonRemoteException, CountriesNotInRelationException, NotEnoughArmiesException, CountryOwnerException;
+
+	// Finish the current turn.
+	public void finishTurn() throws SimonRemoteException;
 }
