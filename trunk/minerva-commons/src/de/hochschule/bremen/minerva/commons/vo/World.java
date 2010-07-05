@@ -31,7 +31,12 @@
 package de.hochschule.bremen.minerva.commons.vo;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Vector;
+
+import javax.imageio.ImageIO;
 
 import de.hochschule.bremen.minerva.commons.util.ColorTool;
 import de.hochschule.bremen.minerva.commons.util.CountryGraph;
@@ -60,6 +65,10 @@ public class World extends ValueObject {
 
 	private String map = null;
 	private String mapUnderlay = null;
+	
+	private transient BufferedImage mapImage= null;
+	private transient BufferedImage mapUnderlayImage = null;
+	
 	private String thumbnail = null;
 
 	private Vector<Country> countries = new Vector<Country>();
@@ -464,5 +473,63 @@ public class World extends ValueObject {
 	 */
 	public String toString() {
 		return getClass().getName() + ": [id=" + this.getId() + ", token=" + this.getToken() + ", name=" + this.getName() + ", description=" + this.getDescription() + ", author=" + this.getAuthor() + ", version=" + this.getVersion() + ", map=" + this.getMap() + ", mapUnderlay=" + this.getMapUnderlay() + ", thumbnail=" + this.getThumbnail() + ", countries=" + this.getCountries() +"]";
+	}
+
+	/**
+	 * Sets the map image show to the player.
+	 * @param mapImage image of the map
+	 */
+	public void setMapImage(BufferedImage mapImage) {
+		this.mapImage = mapImage;
+	}
+	
+	/**
+	 * Generates a buffered image out of a byte array and
+	 * sets the map image show to the player.
+	 * @param mapImage image of the map
+	 */
+	public void setMapImage(byte[] mapImage) {
+		try {
+			this.mapImage = ImageIO.read(new ByteArrayInputStream(mapImage));
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * Gets the map image shown to the player.
+	 * @return image of the map
+	 */
+	public BufferedImage getMapImage() {
+		return mapImage;
+	}
+
+	/**
+	 * Sets the map image of the underlying map.
+	 * @param mapUnderlayImage image of map
+	 */
+	public void setMapUnderlayImage(BufferedImage mapUnderlayImage) {
+		this.mapUnderlayImage = mapUnderlayImage;
+	}
+	
+	/**
+	 * Generates a buffered image out of a byte array and
+	 * sets the map image of the underlying map.
+	 * @param mapUnderlayImage image of map
+	 */
+	public void setMapUnderlayImage(byte[] mapUnderlayImage) {
+		try {
+			this.mapUnderlayImage = ImageIO.read(new ByteArrayInputStream(mapUnderlayImage));
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * Gets the map image of the underlying map.
+	 * @return image of map
+	 */
+	public BufferedImage getMapUnderlayImage() {
+		return mapUnderlayImage;
 	}
 }
