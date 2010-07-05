@@ -37,6 +37,7 @@ package de.hochschule.bremen.minerva.commons.vo;
  * 
  */
 public enum PlayerState {
+	GAME_INIT,
 	IDLE,
 	RELEASE_CARDS,
 	ALLOCATE_ARMIES,
