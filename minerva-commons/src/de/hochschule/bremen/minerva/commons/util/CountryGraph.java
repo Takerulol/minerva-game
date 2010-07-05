@@ -32,6 +32,7 @@ package de.hochschule.bremen.minerva.commons.util;
 
 import de.hochschule.bremen.minerva.commons.vo.Country;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -43,8 +44,10 @@ import java.util.Vector;
  * @version $Id$
  * 
  */
-public class CountryGraph {
-	
+public class CountryGraph implements Serializable {
+
+	private static final long serialVersionUID = 800121527454876742L;
+
 	// HashMap for neighbour relations.
 	private HashMap<Integer, Vector<Integer>> neighbours = new HashMap<Integer, Vector<Integer>>();
 

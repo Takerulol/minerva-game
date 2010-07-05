@@ -86,17 +86,17 @@ public interface GameEngine {
 	// ----------------------------
 	// -- game core logic subsystem
 	// ----------------------------
-	public Vector<Player> getGamePlayers();
-
-	public Vector<Mission> getGameMissions();
-
-	public void startGame() throws NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException;
+	public void startGame() throws NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException, DataAccessException;
 
 	public void killGame(boolean createNewOne) throws DataAccessException ;
 
-	public void setGameWorld(World world);
+	public void setGameWorld(World world) throws DataAccessException;
 
-	public World getGameWorld();
+	public World getGameWorld() throws DataAccessException;
+
+	public Vector<Player> getGamePlayers();
+	
+	public Vector<Mission> getGameMissions();
 
 	public boolean isGameFinished();
 
