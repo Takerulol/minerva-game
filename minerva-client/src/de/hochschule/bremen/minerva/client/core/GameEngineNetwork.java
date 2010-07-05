@@ -146,9 +146,6 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 			this.serverEngine.login(player, GameEngineNetwork.getEngine());
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
-		} finally {
-			Simon.release(this.serverEngine);
-			System.out.println("release");
 		}
 	}
 
@@ -162,8 +159,6 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 			this.serverEngine.register(player);
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
-		} finally {
-			Simon.release(this.serverEngine);
 		}
 	}
 
@@ -173,39 +168,22 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	 */
 	@Override
 	public Vector<World> getWorldList() throws DataAccessException {
-		Vector<World> worlds = new Vector<World>();
-
 		try {
-			worlds = this.serverEngine.getWorlds(false);
-			
-			return worlds;
+			return this.serverEngine.getWorlds(false);
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e.getMessage());
-		} finally {
-			Simon.release(this.serverEngine);
 		}
 	}
 
 	@Override
-	public Vector<World> getWorldList(boolean flatView) throws DataAccessException {
-		Vector<World> worlds = new Vector<World>();
-
+	public Vector<World> getWorldList(boolean lite) throws DataAccessException {
 		try {
-			worlds = this.serverEngine.getWorlds(flatView);
-			
+			return this.serverEngine.getWorlds(lite);
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e.getMessage());
-		} finally {
-			Simon.release(this.serverEngine);
 		}
-
-		return worlds;
 	}
 
-	/**
-	 * DOCME
-	 *
-	 */
 	@Override
 	public void importWorld(File worldFile) throws WorldNotStorable, WorldFileNotFoundException, WorldFileExtensionException, WorldFileParseException, DataAccessException {
 		// Writing the world import file to the server.
@@ -234,8 +212,6 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			Simon.release(this.serverEngine);
 		}
 	}
 
@@ -249,8 +225,6 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 			this.serverEngine.startGame();
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
-		} finally {
-			Simon.release(this.serverEngine);
 		}
 	}
 
@@ -264,24 +238,16 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 			this.serverEngine.killGame(createNewOne);
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
-		} finally {
-			Simon.release(this.serverEngine);
 		}
 	}
 
 	@Override
 	public Vector<Player> getGamePlayers() throws DataAccessException {
-		Vector<Player> players = new Vector<Player>();
-		
 		try {
-			players = this.serverEngine.getGamePlayers();
+			return this.serverEngine.getGamePlayers();
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
-		} finally {
-			Simon.release(this.serverEngine);
 		}
-		
-		return players;
 	}
 
 	@Override
@@ -295,62 +261,39 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 
 	@Override
 	public World getGameWorld() throws DataAccessException {
-		World world = new World();
-
 		try {
-			world = this.serverEngine.getGameWorld();
+			return this.serverEngine.getGameWorld();
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
-		} finally {
-			Simon.release(this.clientPlayer);
 		}
-		
-		return world;
 	}
+
 
 	@Override
 	public Vector<Mission> getGameMissions() throws DataAccessException {
-		Vector<Mission> missions = new Vector<Mission>();
-
 		try {
-			missions = this.serverEngine.getGameMissions();
+			return this.serverEngine.getGameMissions();
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
-		} finally {
-			Simon.release(this.serverEngine);
 		}
-		
-		return missions;
 	}
 
 	@Override
 	public boolean isGameFinished() throws DataAccessException {
-		boolean isFinished = false;
-
 		try {
-			isFinished = this.serverEngine.isGameFinished();
+			return this.serverEngine.isGameFinished();
 		} catch (SimonRemoteException e) {
 			 throw new DataAccessException(e);
-		} finally {
-			Simon.release(this.serverEngine);
 		}
-
-		return isFinished;
 	}
 
 	@Override
 	public Player getGameWinner() throws DataAccessException {
-		Player champ = null;
-		
 		try {
-			champ = this.serverEngine.getGameWinner();
+			return this.serverEngine.getGameWinner();
 		} catch (SimonRemoteException e) {
 			 throw new DataAccessException(e);
-		} finally {
-			Simon.release(this.serverEngine);
 		}
-		
-		return champ;
 	}
 
 	@Override
@@ -359,8 +302,6 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 			this.serverEngine.releaseCard(card);
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
-		} finally {
-			Simon.release(this.serverEngine);
 		}
 	}
 
@@ -370,24 +311,16 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 			this.serverEngine.releaseCards(cards);
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
-		} finally {
-			Simon.release(this.serverEngine);
 		}
 	}
 
 	@Override
 	public int getAllocatableArmyCount() throws DataAccessException {
-		int allocatableCountries = 0;
-		
 		try {
-			allocatableCountries = this.serverEngine.getAllocatableArmyCount();
+			return this.serverEngine.getAllocatableArmyCount();
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
-		} finally {
-			Simon.release(this.serverEngine);
 		}
-
-		return allocatableCountries;
 	}
 
 	@Override
@@ -396,24 +329,16 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 			this.serverEngine.allocateArmy(allocatable);
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
-		} finally {
-			Simon.release(this.serverEngine);
 		}
 	}
 
 	@Override
 	public AttackResult attack(Country source, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException, DataAccessException {
-		AttackResult result = null;
-
 		try {
-			result = this.serverEngine.attack(source, destination, armyCount);
+			return this.serverEngine.attack(source, destination, armyCount);
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
-		} finally {
-			Simon.release(this.serverEngine);
 		}
-
-		return result;
 	}
 
 	@Override
@@ -422,8 +347,6 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 			this.serverEngine.move(source, destination, armyCount);
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
-		} finally {
-			Simon.release(this.serverEngine);
 		}
 	}
 
@@ -433,8 +356,6 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 			this.serverEngine.finishTurn();
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
-		} finally {
-			Simon.release(this.serverEngine);
 		}
 	}
 
@@ -480,16 +401,11 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	 */
 	@Override
 	public int[][] getGameMapImage() throws DataAccessException {
-		int[][] map = null;
 		try {
-			map = this.serverEngine.getGameMapImage();
+			return this.serverEngine.getGameMapImage();
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
-		} finally {
-			Simon.release(this.serverEngine);
 		}
-		
-		return map;
 	}
 
 	/**
@@ -498,15 +414,10 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	 */
 	@Override
 	public int[][] getGameMapUnderlayImage() throws DataAccessException {
-		int[][] mapUnderlay = null;
 		try {
-			mapUnderlay = this.serverEngine.getGameMapUnderlayImage();
+			return this.serverEngine.getGameMapUnderlayImage();
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
-		} finally {
-			Simon.release(this.serverEngine);
 		}
-		
-		return mapUnderlay;
 	}
 }
