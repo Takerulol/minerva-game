@@ -202,6 +202,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 		this.validate();
 		this.updateUI();
 		this.updatePanel();
+		MinervaGUI.getEngine().addObserver(this);
 	}
 
 	/**
