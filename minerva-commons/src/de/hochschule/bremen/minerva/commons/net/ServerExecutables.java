@@ -99,10 +99,10 @@ public interface ServerExecutables extends SimonRemote {
 	// Game session finished?
 	public boolean isGameFinished() throws SimonRemoteException;
 
-	// DOCME
+	// Gets the current game map image from the server.
 	public byte[] getGameMapImage() throws SimonRemoteException;
 
-	// DOCME
+	// Gets the current game map underlay image from the server.
 	public byte[] getGameMapUnderlayImage() throws SimonRemoteException;	
 	
 	// -- Game core subsystem --
