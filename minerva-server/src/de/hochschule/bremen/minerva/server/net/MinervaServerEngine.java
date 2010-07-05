@@ -96,12 +96,20 @@ public class MinervaServerEngine implements ServerExecutables {
 
 	private Game game = new Game();
 
+	// The clients with whose client executables. The client executable interface
+	// provides the methods, which the server is able to execute on the client.
 	private HashMap<Player, ClientExecutables> clients = new HashMap<Player, ClientExecutables>();
 
 	/**
-	 * DOCME
-	 * @throws DataAccessException 
+	 * Create the minerva server engine.
+	 * Uses the entries, which are configured in
+	 * the application configuration file.
 	 * 
+	 * @throws UnknownHostException
+	 * @throws NameBindingException
+	 * @throws IOException
+	 * @throws DataAccessException
+	 *
 	 */
 	public MinervaServerEngine(String name, int port) throws UnknownHostException, IOException, NameBindingException, DataAccessException {
 		Registry registry = Simon.createRegistry(port);
@@ -111,10 +119,20 @@ public class MinervaServerEngine implements ServerExecutables {
 		AccountManager.getInstance().logout();
 	}
 
-	/**
-	 * DOCME
-	 * 
-	 */
+    /**
+     * Login a player into the current game
+     *
+     * @param player The player value object.
+     * @param clientExecutables The methods, which the server is able to execute.
+     *
+     * @throws SimonRemoteException
+     * @throws GameAlreadyStartedException It is not possible to login a player if the game is already running. 
+     * @throws WrongPasswordException
+     * @throws PlayerDoesNotExistException
+     * @throws NoPlayerSlotAvailableException
+     * @throws DataAccessException
+     * 
+     */
 	@Override
 	public void login(Player player, ClientExecutables clientExecutables) throws SimonRemoteException, PlayerAlreadyLoggedInException, GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException {
 		LOGGER.log("login(): login this player: "+player.toString());
@@ -123,48 +141,65 @@ public class MinervaServerEngine implements ServerExecutables {
 		if (this.game.getPlayerCount() == 0) {
 			player.setMaster(true);
 		}
-		
+
 		player.setState(PlayerState.GAME_INIT);
-		
+
+		if (this.game == null) {
+			this.game = new Game();
+		}
+
 		this.game.addPlayer(player);
 
-		// Put the client in our central client map.
+		// Put the new client in our central client map.
 		this.clients.put(player, clientExecutables);
 
 		this.notifyClients();
 	}
 
-	/**
-	 * DOCME
-	 * 
-	 */
+    /**
+     * Registers a new player.
+     *
+     * @param player The player, which should be registered.
+     *
+     * @throws SimonRemoteException
+     * @throws PlayerExistsException
+     * @throws DataAccessException
+     *
+     */
 	public void register(Player player) throws SimonRemoteException, PlayerExistsException, DataAccessException {
 		LOGGER.log("register(): this player: "+player.toString());
 		AccountManager.getInstance().createPlayer(player);
 	}
-	
-	/**
-	 * Returns a vector with all available worlds.
-	 *
-	 * @param flatView Should each world provides the whole country dependency graph? 
-	 * @return A vector with all available worlds.
-	 *
-	 * @throws SimonRemoteException
-	 * @throws DataAccessException
-	 *
-	 */
+
+    /**
+     * Returns a list with all available worlds in a flat view.
+     * Flat view means, that each world doesn't hold the complete
+     * country dependencies (cool, for requesting an world overview).
+     *
+     * @param flatView Flat view = worlds without country dependencies (only meta data: name, description, etc.)
+     * 
+     * @return A vector with the available worlds.
+     *
+     * @throws SimonRemoteException
+     * @throws DataAccessException 
+     *
+     */
 	@Override
 	public Vector<World> getWorlds(boolean flatView) throws SimonRemoteException, DataAccessException {
 		LOGGER.log("getWorlds(): flatView:"+flatView);
 		return WorldManager.getInstance().getList(flatView);
 	}
 
-	/**
-	 * DOCME
-	 *
-	 * @return
-	 *
-	 */
+    /**
+     * Starts the game session. Please verify, that
+     * you have already defined all necessary data for starting a game.
+     *
+     * @throws SimonRemoteException
+     * @throws WorldNotDefinedException 
+     * @throws NoPlayerLoggedInException 
+     * @throws NotEnoughPlayersLoggedInException 
+     * 
+     */
 	@Override
 	public void startGame() throws SimonRemoteException, NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException, DataAccessException {
 		LOGGER.log("startGame(): THE GAME WAS STARTED!");
@@ -173,26 +208,35 @@ public class MinervaServerEngine implements ServerExecutables {
 		this.notifyClients();
 	}
 
-	/**
-	 * DOCME
-	 *
-	 * @return
-	 *
-	 */
+    /**
+     * Stops a game and logs out all players.
+     * After executing this method it is possible to login new
+     * players and start a new game session.
+     *
+     * @param createNewOne Create a new game object after killing the old one?
+     *
+     * @throws SimonRemoteException
+     * @throws DataAccessException
+     * 
+     */
 	@Override
 	public void killGame(boolean createNewOne) throws SimonRemoteException, DataAccessException {
-		LOGGER.log("killGame(): THE GAME WAS KILLED! :o");
 		AccountManager.getInstance().logout();
 		
 		if (createNewOne) {
 			this.game = new Game();
 		}
+		LOGGER.log("killGame(): THE GAME WAS KILLED! :o");
 	}
 
-	/**
-	 * DOCME
-	 *
-	 */
+    /**
+     * Sets the world on which the game should be played.
+     * Will only be defined if the game is not running.
+     *
+     * @throws SimonRemoteException
+     * @throws DataAccessException
+     *
+     */
 	@Override
 	public void setGameWorld(World world) throws SimonRemoteException, DataAccessException {
 		LOGGER.log("setGameWorld(): Gamemaster defined the following world to play on: '"+world.getName()+"'");
@@ -200,35 +244,49 @@ public class MinervaServerEngine implements ServerExecutables {
 		ApplicationConfiguration appConfig = ApplicationConfigurationManager.get();
 		String filepath = appConfig.getAssetsWorldDirectory();
 
-		world.setMapImage(this.loadMapImage(filepath + world.getMap()));
-		world.setMapUnderlayImage(this.loadMapImage(filepath + world.getMapUnderlay()));
+		world.setMapImage(this.convertMapImage(filepath + world.getMap()));
+		world.setMapUnderlayImage(this.convertMapImage(filepath + world.getMapUnderlay()));
 
 		this.game.setWorld(world);
 	}
 
-	/**
-	 * DOCME
-	 *
-	 */
+    /**
+     * Returns the world value object from
+     * the current game.
+     * 
+     * @return The world value object.
+     *
+     * @throws SimonRemoteException
+     * @throws DataAccessException
+     *
+     */
 	@Override
-	public World getGameWorld() throws SimonRemoteException, DataAccessException {
-		LOGGER.log("getGameWorld(): The game world was requested ...");
+	public World getGameWorld() throws SimonRemoteException {
+		LOGGER.log("getGameWorld(): The world was requested.");
 		return this.game.getWorld();
 	}
 
-	/**
-	 * DOCME
-	 *
-	 */
+    /**
+     * Returns the logged in players
+     * 
+     * @return A vector with all logged in players.
+     *
+     * @throws SimonRemoteException
+     *
+     */
 	@Override
 	public Vector<Player> getGamePlayers() throws SimonRemoteException {
-		LOGGER.log("getGamePlayers(): The game world players was requested ...");
+		LOGGER.log("getGamePlayers(): Requested logged in players.");
 		return this.game.getPlayers();
 	}
 
 	/**
-	 * DOCME
+	 * Returns all available missions.
 	 *
+	 * @return A vector with all available missions.
+	 *
+     * @throws SimonRemoteException
+     *
 	 */
 	@Override
 	public Vector<Mission> getGameMissions() throws SimonRemoteException {
@@ -236,10 +294,14 @@ public class MinervaServerEngine implements ServerExecutables {
 		return this.game.getMissions();
 	}
 	
-	/**
-	 * DOCME
-	 *
-	 */
+    /**
+     * Is the current game session over?
+     *
+     * @return boolean
+     *
+     * @throws SimonRemoteException
+     *
+     */
 	@Override
 	public boolean isGameFinished() throws SimonRemoteException {
 		LOGGER.log("isGameFinished(): Game finished? -> " + ((this.game.isFinished()) ? "Yes :(" : "No :)"));
@@ -247,8 +309,12 @@ public class MinervaServerEngine implements ServerExecutables {
 	}
 
 	/**
-	 * DOCME
+	 * Returns the map from the current game world.
 	 *
+	 * @return A byte array with the map image.
+	 *
+     * @throws SimonRemoteException
+     *
 	 */
 	@Override
 	public byte[] getGameMapImage() throws SimonRemoteException {
@@ -259,8 +325,12 @@ public class MinervaServerEngine implements ServerExecutables {
 	}
 
 	/**
-	 * DOCME
+	 * Returns the map underlay from the current game world.
 	 *
+	 * @return A byte array with the map underlay image.
+	 *
+     * @throws SimonRemoteException
+     *
 	 */
 	@Override
 	public byte[] getGameMapUnderlayImage() throws SimonRemoteException {
@@ -270,20 +340,28 @@ public class MinervaServerEngine implements ServerExecutables {
 		return ((DataBufferByte)raster.getDataBuffer()).getData();
 	}
 
-	/**
-	 * DOCME
-	 *
-	 */
+    /**
+     * Returns the game winner if the game is terminated.
+     *
+     * @return The game winner. null if the game is still running.
+     *
+     * @throws SimonRemoteException
+     *
+     */
 	@Override
 	public Player getGameWinner() throws SimonRemoteException {
 		LOGGER.log("getGameMissions(): AND THE WINNER IS: " + ((this.game.isFinished()) ? this.game.getWinner() : "nobody - Game is still running."));
 		return this.game.getWinner();
 	}
 
-	/**
-	 * DOCME
-	 * 
-	 */
+    /**
+     * Release a country card.
+     *
+     * @param The releasable country card.
+     *
+     * @throws SimonRemoteException
+     *
+     */
 	@Override
 	public void releaseCard(CountryCard card) throws SimonRemoteException {
 		LOGGER.log("releaseCard(): Release the card from country: '"+card.getReference().getName()+"'");
@@ -291,10 +369,14 @@ public class MinervaServerEngine implements ServerExecutables {
 		turn.releaseCard(card);
 	}
 
-	/**
-	 * DOCME
-	 * 
-	 */
+    /**
+     * Releases a country card series.
+     * 
+     * @param cards A vector with releasable country cards.
+     *
+     * @throws SimonRemoteException
+     *
+     */
 	@Override
 	public void releaseCards(Vector<CountryCard> cards) throws SimonRemoteException {
 		LOGGER.log("releaseCards(): Release a card stack.");
@@ -302,10 +384,14 @@ public class MinervaServerEngine implements ServerExecutables {
 		turn.releaseCardSeries(cards);
 	}
 
-	/**
-	 * DOCME
-	 * 
-	 */
+    /**
+     * Returns the current allocatable army count
+     * 
+     * @return army count
+     *
+     * @throws SimonRemoteException
+     *
+     */
 	@Override
 	public int getAllocatableArmyCount() throws SimonRemoteException {
 		int armyCount = this.game.getCurrentTurn().getAllocatableArmyCount();
@@ -313,10 +399,16 @@ public class MinervaServerEngine implements ServerExecutables {
 		return armyCount;
 	}
 
-	/**
-	 * DOCME
-	 * 
-	 */
+    /**
+     * Adds one army to the specified country.
+     *
+     * @param The country on which the army should be placed.
+     *
+     * @throws SimonRemoteException
+     * @throws NotEnoughArmiesException 
+     * @throws CountryOwnerException 
+     * 
+     */
 	@Override
 	public void allocateArmy(Country allocatable) throws SimonRemoteException, NotEnoughArmiesException, CountryOwnerException {
 		LOGGER.log("allocateArmy(): Allocate one army on country '"+ allocatable.getName() +"'");
@@ -324,10 +416,19 @@ public class MinervaServerEngine implements ServerExecutables {
         turn.allocateArmy(allocatable);
 	}
 
-	/**
-	 * DOCME
-	 * 
-	 */
+    /**
+     * Attacks a country with an specified army count.
+     * 
+     * @param source The country from which the attack will be started.
+     * @param destination The country which should be attacked.
+     * @param armyCount The attacking army units.
+     *
+     * @throws SimonRemoteException
+     * @throws CountriesNotInRelationException
+     * @throws NotEnoughArmiesException
+     * @throws IsOwnCountryException
+     * 
+     */
 	@Override
 	public AttackResult attack(Country source, Country destination, int armyCount) throws SimonRemoteException, CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException {
 		Turn turn = this.game.getCurrentTurn();
@@ -337,10 +438,19 @@ public class MinervaServerEngine implements ServerExecutables {
         return turn.attack(source, destination, armyCount);
 	}
 
-	/**
-	 * DOCME
-	 * 
-	 */
+    /**
+     * Moves armies from one country to another country.
+     * 
+     * @param from The country FROM which we will move the armies.
+     * @param to The country TO which we will move the armies.
+     * @param armyCount How many army units should be moved?
+     *
+     * @throws SimonRemoteException
+     * @throws CountriesNotInRelationException 
+     * @throws NotEnoughArmiesException 
+     * @throws CountryOwnerException 
+     * 
+     */
 	@Override
 	public void move(Country source, Country destination, int armyCount) throws SimonRemoteException, CountriesNotInRelationException, NotEnoughArmiesException, CountryOwnerException {
 		LOGGER.log("move(): Move "+armyCount+" army units from '"+source.getName()+"' to '"+destination.getName()+"'.");
@@ -349,17 +459,22 @@ public class MinervaServerEngine implements ServerExecutables {
         turn.moveArmies(source, destination, armyCount);
 	}
 
-	/**
-	 * DOCME
-	 * 
-	 */
+    /**
+     * Starts the next turn.
+     *
+     * @throws SimonRemoteException
+     *
+     */
 	@Override
 	public void finishTurn() throws SimonRemoteException {
         this.game.nextTurn();
 	}
 
 	/**
-	 * DOCME
+	 * Notifies all registered clients by invoking the
+	 * "refreshPlayer" method on the client side.
+	 * The client knows then, that something has changed.
+	 *
 	 * @throws SimonRemoteException 
 	 *
 	 */
@@ -375,12 +490,14 @@ public class MinervaServerEngine implements ServerExecutables {
 	}
 
 	/**
-	 * DOCME
+	 * Converts the map image to an {@link BufferedImage}.
 	 *
 	 * @param filepath
-	 * @return
+	 * 
+	 * @return The {@link BufferedImage} image object.
+	 *
 	 */
-	private BufferedImage loadMapImage(String filepath) {
+	private BufferedImage convertMapImage(String filepath) {
 		BufferedImage map = null; 
 		try {
 			map = ImageIO.read(new File(filepath));
