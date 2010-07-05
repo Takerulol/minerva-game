@@ -34,6 +34,7 @@ import java.net.UnknownHostException;
 
 import de.hochschule.bremen.minerva.commons.exceptions.AppConfigurationNotFoundException;
 import de.hochschule.bremen.minerva.commons.exceptions.AppConfigurationNotReadableException;
+import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.server.manager.ApplicationConfigurationManager;
 import de.hochschule.bremen.minerva.server.vo.ApplicationConfiguration;
 import de.root1.simon.exceptions.NameBindingException;
@@ -76,6 +77,8 @@ public class Bootstrapper {
 		} catch (IOException e) {
 			Bootstrapper.error(e.getMessage());
 		} catch (NameBindingException e) {
+			Bootstrapper.error(e.getMessage());
+		} catch (DataAccessException e) {
 			Bootstrapper.error(e.getMessage());
 		}
 	}
