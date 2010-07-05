@@ -57,7 +57,7 @@ public class PlayerInitPanel extends JPanel implements TextResources {
 	 * 
 	 */
 	public PlayerInitPanel() {
-		Vector<Player> players = MinervaGUI.getEngine().getPlayers();
+		Vector<Player> players = MinervaGUI.getEngine().getGamePlayers();
 		this.setOpaque(false);
 		this.setLayout(new MigLayout());
 

@@ -167,13 +167,13 @@ public class GameEngineNetwork implements GameEngine {
 	}
 
 	@Override
-	public Vector<Player> getPlayers() {
+	public Vector<Player> getGamePlayers() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Vector<Mission> getMissions() {
+	public Vector<Mission> getGameMissions() {
 		// TODO Auto-generated method stub
 		return null;
 	}

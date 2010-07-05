@@ -86,9 +86,9 @@ public interface GameEngine {
 	// ----------------------------
 	// -- game core logic subsystem
 	// ----------------------------
-	public Vector<Player> getPlayers();
+	public Vector<Player> getGamePlayers();
 
-	public Vector<Mission> getMissions();
+	public Vector<Mission> getGameMissions();
 
 	public void startGame() throws NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException;
 

@@ -96,7 +96,7 @@ public class GameInitPanel extends JLayeredPane implements TextResources {
 			Runtime.getRuntime().exit(ERROR);
 		}
 
-		Player gamemaster = MinervaGUI.getEngine().getPlayers().firstElement();
+		Player gamemaster = MinervaGUI.getEngine().getGamePlayers().firstElement();
 		this.worldInitPanel = new WorldInitPanel(gamemaster, worlds);
 		this.worldInitPanel.setOpaque(false);
 		this.worldInitPanel.setBounds(585, 140, 300, 350);
