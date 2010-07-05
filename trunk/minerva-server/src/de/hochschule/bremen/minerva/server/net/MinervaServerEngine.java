@@ -56,6 +56,7 @@ import de.hochschule.bremen.minerva.commons.exceptions.WorldNotDefinedException;
 import de.hochschule.bremen.minerva.commons.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.commons.net.ClientExecutables;
 import de.hochschule.bremen.minerva.commons.net.ServerExecutables;
+import de.hochschule.bremen.minerva.commons.util.MapTool;
 import de.hochschule.bremen.minerva.commons.vo.AttackResult;
 import de.hochschule.bremen.minerva.commons.vo.Country;
 import de.hochschule.bremen.minerva.commons.vo.CountryCard;
@@ -321,16 +322,8 @@ public class MinervaServerEngine implements ServerExecutables {
 	public int[][] getGameMapImage() throws SimonRemoteException {
 		LOGGER.log("getGameMapImage(): Load the map image (world = '" + this.game.getWorld().getName() + "').");
 		
-		// TODO: Use MapTool
 		BufferedImage mapImage = this.game.getWorld().getMapImage();
-		int[][] map = new int[mapImage.getWidth()][mapImage.getHeight()];
-		for (int x = 0; x < mapImage.getWidth(); x++) {
-			for (int y = 0; y < mapImage.getHeight(); y++) {
-				map[x][y] = mapImage.getRGB(x, y);
-			}
-		}
-		
-		return map;
+		return MapTool.createArrayFromMapImage(mapImage);
 	}
 
 	/**
@@ -345,16 +338,8 @@ public class MinervaServerEngine implements ServerExecutables {
 	public int[][] getGameMapUnderlayImage() throws SimonRemoteException {
 		LOGGER.log("getGameMapImage(): Load the map image underlay (world = '" + this.game.getWorld().getName() + "').");
 
-		// TODO: Use MapTool
 		BufferedImage mapImage = this.game.getWorld().getMapUnderlayImage();
-		int[][] map = new int[mapImage.getWidth()][mapImage.getHeight()];
-		for (int x = 0; x < mapImage.getWidth(); x++) {
-			for (int y = 0; y < mapImage.getHeight(); y++) {
-				map[x][y] = mapImage.getRGB(x, y);
-			}
-		}
-		
-		return map;
+		return MapTool.createArrayFromMapImage(mapImage);
 	}
 
     /**
