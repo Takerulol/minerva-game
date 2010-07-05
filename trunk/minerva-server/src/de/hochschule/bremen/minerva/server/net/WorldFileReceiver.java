@@ -48,8 +48,14 @@ import de.root1.simon.RawChannelDataListener;
 public class WorldFileReceiver implements RawChannelDataListener {
 
 	private FileChannel fileChannel;
-	
-	public WorldFileReceiver(String filename, String tempDirectory) {
+
+	/**
+	 * DOCME
+	 *
+	 * @param filename
+	 *
+	 */
+	public WorldFileReceiver(String filename) {
 		try {
 	        this.fileChannel = new FileOutputStream(new File(filename)).getChannel();
         } catch (FileNotFoundException ex) {

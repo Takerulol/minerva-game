@@ -55,7 +55,11 @@ import de.hochschule.bremen.minerva.commons.exceptions.NotEnoughPlayersLoggedInE
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerAlreadyLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerExistsException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldFileExtensionException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldFileNotFoundException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldFileParseException;
 import de.hochschule.bremen.minerva.commons.exceptions.WorldNotDefinedException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldNotStorable;
 import de.hochschule.bremen.minerva.commons.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.commons.net.ClientExecutables;
 import de.hochschule.bremen.minerva.commons.net.ServerExecutables;
@@ -171,6 +175,19 @@ public class MinervaServerEngine implements ServerExecutables {
 	public void register(Player player) throws SimonRemoteException, PlayerExistsException, DataAccessException {
 		LOGGER.log("register(): this player: "+player.toString());
 		AccountManager.getInstance().createPlayer(player);
+	}
+
+	/**
+	 * DOCME
+	 *
+	 */
+	public void importWorld(String filename) throws SimonRemoteException, WorldFileNotFoundException, WorldFileExtensionException, WorldFileParseException, WorldNotStorable, DataAccessException {
+		LOGGER.log("importWorld(): Importing the world: "+filename);
+
+		File worldFile = new File(filename);
+
+		WorldManager.getInstance().store(worldFile);
+		worldFile.delete();
 	}
 
     /**
@@ -527,11 +544,11 @@ public class MinervaServerEngine implements ServerExecutables {
 	 *
 	 */
 	@Override
-	public int prepareWorldFileTransfer(String worldFileName) throws SimonRemoteException {
+	public int prepareWorldFileImport(String worldFileName) throws SimonRemoteException {
 		LOGGER.log("prepareWorldFileTransfer(): Preparing a world file transfer.");
 
-		ApplicationConfiguration appConfig = ApplicationConfigurationManager.get();
-		return Simon.prepareRawChannel(new WorldFileReceiver(worldFileName, appConfig.getImporterWorkspaceDirectory()), this);
+		ApplicationConfiguration appConfig = ApplicationConfigurationManager.get();		
+		return Simon.prepareRawChannel(new WorldFileReceiver(worldFileName), this);
 	}
 
 	/**

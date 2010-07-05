@@ -113,7 +113,7 @@ public class WorldFile extends World {
 	 * Registers the world import file object.
 	 * 
 	 * @param worldFile The world import file object (*.world)
-	 * @see File
+	 * @param assetsDirectory The assets directory where to place the maps and so on.
 	 * 
 	 */
 	public WorldFile(File worldFile, String assetsDirectory) {

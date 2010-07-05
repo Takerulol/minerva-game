@@ -45,7 +45,11 @@ import de.hochschule.bremen.minerva.commons.exceptions.NotEnoughPlayersLoggedInE
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerAlreadyLoggedInException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerDoesNotExistException;
 import de.hochschule.bremen.minerva.commons.exceptions.PlayerExistsException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldFileExtensionException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldFileNotFoundException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldFileParseException;
 import de.hochschule.bremen.minerva.commons.exceptions.WorldNotDefinedException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldNotStorable;
 import de.hochschule.bremen.minerva.commons.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.commons.vo.AttackResult;
 import de.hochschule.bremen.minerva.commons.vo.Country;
@@ -72,6 +76,10 @@ public interface ServerExecutables extends SimonRemote {
 	// Registers a new player.
 	public void register(Player player) throws SimonRemoteException, PlayerExistsException, DataAccessException;
 
+	// Imports a world from the world import file. Note, that you have to upload the
+	// file via prepareWorldFileTransfer/getWorldFileBytes before.
+	public void importWorld(String filename) throws SimonRemoteException, WorldFileNotFoundException, WorldFileExtensionException, WorldFileParseException, WorldNotStorable, DataAccessException;
+	
 	// Returns all available world (flatView = no country dependencies)
 	public Vector<World> getWorlds(boolean flatView) throws SimonRemoteException, DataAccessException;
 
@@ -132,7 +140,7 @@ public interface ServerExecutables extends SimonRemote {
 
 	// Open a raw channel pipe for transferring the world file.
 	// Returns a token, with which it is possible to initialize the transfer.
-	public int prepareWorldFileTransfer(String worldFileName) throws SimonRemoteException;
+	public int prepareWorldFileImport(String worldFileName) throws SimonRemoteException;
 
 	// Returns the world file bytes.
 	public byte[] getWorldFileBytes(String worldFileName) throws SimonRemoteException;
