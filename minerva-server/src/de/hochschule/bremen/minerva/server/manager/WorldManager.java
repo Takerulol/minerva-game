@@ -54,6 +54,7 @@ import de.hochschule.bremen.minerva.server.persistence.service.CountryService;
 import de.hochschule.bremen.minerva.server.persistence.service.NeighbourService;
 import de.hochschule.bremen.minerva.server.persistence.service.WorldService;
 import de.hochschule.bremen.minerva.server.util.WorldFile;
+import de.hochschule.bremen.minerva.server.vo.ApplicationConfiguration;
 
 /**
  * The world manager is a singleton, which summarizes the functionality
@@ -216,8 +217,8 @@ public class WorldManager {
 	 * 
 	 */
 	public void store(File worldFile) throws WorldFileExtensionException, WorldFileNotFoundException, WorldFileParseException, WorldNotStorable, DataAccessException {
-		// TODO: CLIENT-SERVER
-		WorldFile world = new WorldFile(worldFile, "");// ApplicationConfigurationManager.get().getWorldsAssetsDirectory());
+		ApplicationConfiguration appConfig = ApplicationConfigurationManager.get();
+		WorldFile world = new WorldFile(worldFile, appConfig.getAssetsWorldDirectory());
 
 		world.parse();
 		this.store(world);

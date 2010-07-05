@@ -68,6 +68,7 @@ import de.hochschule.bremen.minerva.commons.vo.CountryCard;
 import de.hochschule.bremen.minerva.commons.vo.Mission;
 import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.World;
+
 import de.root1.simon.RawChannel;
 import de.root1.simon.Simon;
 import de.root1.simon.exceptions.EstablishConnectionFailed;
@@ -186,12 +187,13 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 
 	@Override
 	public void importWorld(File worldFile) throws WorldNotStorable, WorldFileNotFoundException, WorldFileExtensionException, WorldFileParseException, DataAccessException {
-		// Writing the world import file to the server.
 		try {
-			int pipeToken = this.serverEngine.prepareWorldFileTransfer(worldFile.getAbsolutePath());
+			// Uploading the file to the server.
+			int pipeToken = this.serverEngine.prepareWorldFileImport(worldFile.getName());
+
 			RawChannel rawChannel = Simon.openRawChannel(pipeToken, this.serverEngine);
 			FileChannel fileChannel = new FileInputStream(worldFile).getChannel();
-			
+
 			ByteBuffer data = ByteBuffer.allocate(512);
 			while (fileChannel.read(data) != -1) {
 				rawChannel.write(data);
@@ -200,6 +202,8 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 
 			fileChannel.close();
 			rawChannel.close();
+
+			this.serverEngine.importWorld(worldFile.getName());
 		} catch (SimonRemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
