@@ -54,6 +54,7 @@ import de.hochschule.bremen.minerva.client.ui.gui.controls.MPlayerIcon;
 import de.hochschule.bremen.minerva.client.ui.gui.controls.MSlidePanel;
 import de.hochschule.bremen.minerva.client.ui.gui.panels.GamePanel;
 import de.hochschule.bremen.minerva.client.ui.gui.resources.TextResources;
+import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
 import de.hochschule.bremen.minerva.commons.vo.CavalerieCard;
 import de.hochschule.bremen.minerva.commons.vo.CountryCard;
 import de.hochschule.bremen.minerva.commons.vo.Player;
@@ -357,7 +358,11 @@ public class GamePanelControlbar extends JPanel implements ActionListener,
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == this.finishTurnButton) {
-			MinervaGUI.getEngine().finishTurn();
+			try {
+				MinervaGUI.getEngine().finishTurn();
+			} catch (DataAccessException e1) {
+				MMessageBox.error(e1);
+			}
 			this.gamePanel.unmarkAll();
 		} else if (e.getSource() == this.allocateButton) {
 			this.gamePanel.getCurrentPlayer().setState(

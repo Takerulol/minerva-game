@@ -360,7 +360,7 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	 *
 	 */
 	@Override
-	public byte[] getGameMapImage() throws DataAccessException {
+	public int[][] getGameMapImage() throws DataAccessException {
 		try {
 			return this.serverEngine.getGameMapImage();
 		} catch (SimonRemoteException e) {
@@ -373,7 +373,7 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	 *
 	 */
 	@Override
-	public byte[] getGameMapUnderlayImage() throws DataAccessException {
+	public int[][] getGameMapUnderlayImage() throws DataAccessException {
 		try {
 			return this.serverEngine.getGameMapUnderlayImage();
 		} catch (SimonRemoteException e) {

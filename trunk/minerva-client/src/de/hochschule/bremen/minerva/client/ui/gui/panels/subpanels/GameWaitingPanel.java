@@ -1,7 +1,6 @@
 package de.hochschule.bremen.minerva.client.ui.gui.panels.subpanels;
 
 import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
 
 import de.hochschule.bremen.minerva.client.ui.gui.panels.Background;
 
