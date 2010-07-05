@@ -34,6 +34,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -112,7 +113,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		this.setPreferredSize(MinervaGUI.WINDOW_SIZE);
 		this.setOpaque(true);
 
-		String filepath;
+		BufferedImage mapImage = null;
 		
 		// the mission panel
 		JPanel missionPanel = new JPanel();
@@ -137,16 +138,16 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources {
 		//filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + this.engine.getGameWorld().getMapUnderlay();
 
 		// TODO: CLIENT-SERVER
-		filepath = null;
-		this.mapUnderlay = new MapPanel(filepath);
+		//mapImage = ImageIO.read(new ByteArrayInputStream(this.engine.getMapImage());
+		this.mapUnderlay = new MapPanel(mapImage);
 		this.mapUnderlay.setBounds(0,0,500,500);
 		
 		//upper map
 		//filepath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + this.engine.getGameWorld().getMap();
 
 		// TODO: CLIENT-SERVER
-		filepath = null;
-		this.mapOverlay = new MapPanel(filepath);
+		//mapImage = ImageIO.read(new ByteArrayInputStream(this.engine.getMapUnderlayImage());
+		this.mapOverlay = new MapPanel(mapImage);
 		this.mapOverlay.setBounds(0,0,500,500);
 		
 		//control bar
