@@ -339,6 +339,6 @@ public class Player extends ValueObject {
 	 * @return
 	 */
 	public String toString() {
-		return getClass().getName() + "[id=" + this.id + ",username=" + this.username + ",last_name=" + this.lastName + ",first_name=" + this.firstName + ",email=" + this.email + ",player_state=" + this.state + ", loggedIn=" + this.loggedIn + "]";
+		return getClass().getName() + "[id=" + this.id + ",username=" + this.username + ",last_name=" + this.lastName + ",first_name=" + this.firstName + ",email=" + this.email + ",player_state=" + this.state + ",loggedIn=" + this.loggedIn + "]";
 	}
 }
