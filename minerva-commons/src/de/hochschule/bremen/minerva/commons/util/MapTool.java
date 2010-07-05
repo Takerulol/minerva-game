@@ -84,16 +84,26 @@ public class MapTool {
 	
 	/**
 	 * Creates a map image out of a 2-dimensional integer array equivalent in aRGB
-	 * @param map map as integer array
+	 * @param integerArray map as integer array
 	 * @return map as buffered image
 	 */
-	public static BufferedImage createMapImage(int[][] map) {
-		BufferedImage image = new BufferedImage(map.length, map[0].length, BufferedImage.TYPE_INT_ARGB_PRE);
-		for(int x = 0; x < map.length; x++) {
-			for(int y = 0; y < map[0].length; y++) {
-				image.setRGB(x, y, map[x][y]);
+	public static BufferedImage createMapImageFromArray(int[][] integerArray) {
+		BufferedImage image = new BufferedImage(integerArray.length, integerArray[0].length, BufferedImage.TYPE_INT_ARGB_PRE);
+		for(int x = 0; x < integerArray.length; x++) {
+			for(int y = 0; y < integerArray[0].length; y++) {
+				image.setRGB(x, y, integerArray[x][y]);
 			}
 		}
 		return image;
+	}
+	
+	public static int[][] createArrayFromMapImage(BufferedImage mapImage) {
+		int[][] map = new int[mapImage.getWidth()][mapImage.getHeight()];
+		for (int x = 0; x < mapImage.getWidth(); x++) {
+			for (int y = 0; y < mapImage.getHeight(); y++) {
+				map[x][y] = mapImage.getRGB(x, y);
+			}
+		}
+		return map;
 	}
 }
