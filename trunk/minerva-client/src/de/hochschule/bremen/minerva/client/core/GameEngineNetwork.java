@@ -341,6 +341,13 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	public void addObserver(Observer o) {
 		super.addObserver(o);
 	}
+	
+	/**
+	 * DOCME
+	 */
+	public void deleteObserver(Observer o) {
+		super.deleteObserver(o);
+	}
 
 	/**
 	 * DOCME

@@ -122,6 +122,8 @@ public interface GameEngine {
 	public void move(Country source, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, CountryOwnerException, DataAccessException;
 
 	public void addObserver(Observer o);
+	
+	public void deleteObserver(Observer o);
 
 	public void finishTurn() throws DataAccessException;
 }

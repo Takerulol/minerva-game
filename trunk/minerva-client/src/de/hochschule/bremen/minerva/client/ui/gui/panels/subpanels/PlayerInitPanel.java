@@ -74,7 +74,6 @@ public class PlayerInitPanel extends JPanel implements TextResources, Observer {
 		for (Player player : this.currentPlayers) {
 			this.add(new MPlayerIcon(player), "wrap");
 		}
-		MinervaGUI.getEngine().addObserver(this);
 	}
 
 	@Override
