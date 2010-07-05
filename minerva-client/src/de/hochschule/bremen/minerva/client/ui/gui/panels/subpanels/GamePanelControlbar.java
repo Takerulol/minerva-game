@@ -362,45 +362,49 @@ public class GamePanelControlbar extends JPanel implements ActionListener,
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == this.finishTurnButton) {
-			try {
-				MinervaGUI.getEngine().finishTurn();
-			} catch (DataAccessException e1) {
-				MMessageBox.error(e1);
-			}
-			this.gamePanel.unmarkAll();
-		} else if (e.getSource() == this.allocateButton) {
-			MinervaGUI.getEngine().getClientPlayer().setState(
-					PlayerState.ALLOCATE_ARMIES);
-			this.gamePanel.unmarkAll();
-		} else if (e.getSource() == this.cardButton) {
-			MinervaGUI.getEngine().getClientPlayer().setState(
-					PlayerState.RELEASE_CARDS);
-			this.gamePanel.unmarkAll();
-		} else if (e.getSource() == this.attackButton) {
-			MinervaGUI.getEngine().getClientPlayer().setState(PlayerState.ATTACK);
-			this.gamePanel.unmarkAll();
-		} else if (e.getSource() == this.moveButton) {
-			MinervaGUI.getEngine().getClientPlayer().setState(PlayerState.MOVE);
-			this.gamePanel.unmarkAll();
-		} else if (e.getSource() == this.buttonTurnIn) {
-
-			if (this.cardList.getSelectedIndices().length == 1) {
-				this.gamePanel.TurnCardIn(MinervaGUI.getEngine().getClientPlayer()
-						.getCountryCards()
-						.get(this.cardList.getSelectedIndex()));
-			} else if (this.cardList.getSelectedIndices().length == 3) {
-				Vector<CountryCard> series = new Vector<CountryCard>();
-				for (int i = 0; i < 3; i++) {
-					series.add(MinervaGUI.getEngine().getClientPlayer()
+		try {
+			if (e.getSource() == this.finishTurnButton) {
+				
+					MinervaGUI.getEngine().finishTurn();
+				
+				this.gamePanel.unmarkAll();
+			} else if (e.getSource() == this.allocateButton) {
+				MinervaGUI.getEngine().setCurrentPlayerState(
+						PlayerState.ALLOCATE_ARMIES);
+				this.gamePanel.unmarkAll();
+			} else if (e.getSource() == this.cardButton) {
+				MinervaGUI.getEngine().setCurrentPlayerState(
+						PlayerState.RELEASE_CARDS);
+				this.gamePanel.unmarkAll();
+			} else if (e.getSource() == this.attackButton) {
+				MinervaGUI.getEngine().setCurrentPlayerState(
+						PlayerState.ATTACK);
+				this.gamePanel.unmarkAll();
+			} else if (e.getSource() == this.moveButton) {
+				MinervaGUI.getEngine().setCurrentPlayerState(
+						PlayerState.MOVE);
+				this.gamePanel.unmarkAll();
+			} else if (e.getSource() == this.buttonTurnIn) {
+	
+				if (this.cardList.getSelectedIndices().length == 1) {
+					this.gamePanel.TurnCardIn(MinervaGUI.getEngine().getClientPlayer()
 							.getCountryCards()
-							.get(this.cardList.getSelectedIndices()[i]));
+							.get(this.cardList.getSelectedIndex()));
+				} else if (this.cardList.getSelectedIndices().length == 3) {
+					Vector<CountryCard> series = new Vector<CountryCard>();
+					for (int i = 0; i < 3; i++) {
+						series.add(MinervaGUI.getEngine().getClientPlayer()
+								.getCountryCards()
+								.get(this.cardList.getSelectedIndices()[i]));
+					}
+					this.gamePanel.TurnSeriesIn(series);
+				} else {
+					// TODO: Better exception message!!!!
+					MMessageBox.error("Das geht nicht.");
 				}
-				this.gamePanel.TurnSeriesIn(series);
-			} else {
-				// TODO: Better exception message!!!!
-				MMessageBox.error("Das geht nicht.");
 			}
+		} catch (DataAccessException e1) {
+			MMessageBox.error(e1);
 		}
 		this.gamePanel.updatePanel();
 	}

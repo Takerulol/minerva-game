@@ -178,7 +178,11 @@ public class Turn {
 	public void allocateArmy(Country country) throws NotEnoughArmiesException, CountryOwnerException {
 		if (currentPlayer.hasCountry(country)) {
 			if (this.getAllocatableArmyCount() > 0) {
-				country.addArmy();
+				for (Country realCountry : this.getWorld().getCountries()) {
+					if (country.getId() == realCountry.getId()) {
+						realCountry.addArmy();
+					}
+				}
 				getAllocatableArmies().remove(getAllocatableArmies().size() - 1);				
 			} else {
 				throw new NotEnoughArmiesException(country, this.getAllocatableArmyCount(), true);
@@ -202,8 +206,20 @@ public class Turn {
 	 * @throws NotEnoughArmiesException Too little or too many armies used.
 	 *
 	 */
-	public AttackResult attack(Country attackerCountry, Country defenderCountry, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException {
+	public AttackResult attack(Country attacker, Country defender, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException {
 		AttackResult result = null;
+		
+		//ugly iteration due to reference problems with simon
+		Country attackerCountry = null;
+		Country defenderCountry = null;
+		for(Country country : this.getWorld().getCountries()) {
+			if (attacker.getId() == country.getId()) {
+				attackerCountry = country;
+			} 
+			if (defender.getId() == country.getId()) {
+				defenderCountry = country;
+			}
+		}
 
 		if (this.world.areNeighbours(attackerCountry, defenderCountry)) {
 			
@@ -314,7 +330,19 @@ public class Turn {
 	 * @throws CountryOwnerException
 	 * 
 	 */
-	public void moveArmies(Country from, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, CountryOwnerException {
+	public void moveArmies(Country source, Country dest, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, CountryOwnerException {
+		//ugly iteration due to reference problems with simon
+		Country from = null;
+		Country destination = null;
+		for(Country country : this.getWorld().getCountries()) {
+			if (source.getId() == country.getId()) {
+				from = country;
+			} 
+			if (dest.getId() == country.getId()) {
+				destination = country;
+			}
+		}
+		
 		if (currentPlayer.hasCountry(from)) {
 			
 			if (currentPlayer.hasCountry(destination)) {
@@ -349,10 +377,18 @@ public class Turn {
 	 *
 	 */
 	public void releaseCard(CountryCard countryCard) {
-		if (currentPlayer.hasCountry(countryCard.getReference())) {
+		//ugly iteration due to reference problems with simon
+		CountryCard realCard = null;
+		for (CountryCard card : this.currentPlayer.getCountryCards()) {
+			if (countryCard.getReference().getId() == card.getReference().getId()) {
+				realCard = card;
+			}
+		}
+		
+		if (currentPlayer.hasCountry(realCard.getReference())) {
 			this.addAllocatableArmy();
-			this.usedCountryCards.add(countryCard);
-			this.currentPlayer.getCountryCards().remove(countryCard);
+			this.usedCountryCards.add(realCard);
+			this.currentPlayer.getCountryCards().remove(realCard);
 		}
 	}
 
@@ -371,7 +407,17 @@ public class Turn {
 	 *
 	 */
 	public void releaseCardSeries(Vector<CountryCard> cardSeries) {
-		cardStackReleaser(cardSeries);
+		//ugly iteration due to reference problems with simon
+		Vector<CountryCard> realSeries = new Vector<CountryCard>();
+		for (CountryCard card : this.currentPlayer.getCountryCards()) {
+			for(CountryCard corruptedCard : cardSeries) {
+				if (corruptedCard.getReference().getId() == card.getReference().getId()) {
+					realSeries.add(card);
+				}
+			}
+		}
+		
+		cardStackReleaser(realSeries);
 	}
 	
 	/**

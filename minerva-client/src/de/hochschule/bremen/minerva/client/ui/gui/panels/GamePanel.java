@@ -95,6 +95,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 	private Player currentPlayer;
 
 	private World world = null;
+	private Vector<Player> players = null;
 	
 	private Country source = null;
 	private Country destination = null;
@@ -241,7 +242,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 			MMessageBox.error(e);
 		}
 		if (armyCount == 0) {
-			this.currentPlayer.setState(PlayerState.ATTACK);
+			this.engine.getClientPlayer().setState(PlayerState.ATTACK);
 		}
 		this.updatePanel();
 	}
@@ -295,10 +296,11 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 				//setting source country
 				if (country.getArmyCount() > 1) {
 					this.source = country;
-					this.armyIcons.get(this.source).mark(Color.GREEN);
+					this.realArmyIconGetter(this.source).mark(Color.GREEN);
 					for (Country c : GamePanel.this.world.getNeighbours(this.source)) {
-						if (!this.currentPlayer.hasCountry(c)) {
-							this.armyIcons.get(c).mark(Color.RED);
+						if (!this.engine.getClientPlayer().hasCountry(c)) {
+							System.out.println(c);
+							this.realArmyIconGetter(c).mark(Color.RED);
 						}
 					}
 				}
@@ -308,9 +310,9 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 				if (!(this.destination == this.source)) {
 					//setting destination country
 					
-					this.armyIcons.get(country).mark(Color.YELLOW);
+					this.realArmyIconGetter(country).mark(Color.YELLOW);
 					
-					this.armyIcons.get(this.source).mark(Color.YELLOW);
+					this.realArmyIconGetter(this.source).mark(Color.YELLOW);
 					this.updatePanel();
 					try {
 						//army count input
@@ -354,10 +356,10 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 			}	
 		} else {
 			if (this.source != null) {
-				this.armyIcons.get(this.source).mark(Color.GREEN);
+				this.realArmyIconGetter(country).mark(Color.GREEN);
 				for (Country c : GamePanel.this.world.getNeighbours(this.source)) {
-					if (!this.currentPlayer.hasCountry(c)) {
-						this.armyIcons.get(c).mark(Color.RED);
+					if (!this.engine.getClientPlayer().hasCountry(c)) {
+						this.realArmyIconGetter(c).mark(Color.RED);
 					}
 				}
 			}
@@ -408,10 +410,10 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 				//setting source country
 				if (country.getArmyCount() > 1) {
 					this.source = country;
-					this.armyIcons.get(this.source).mark(Color.GREEN);
+					this.realArmyIconGetter(this.source).mark(Color.GREEN);
 					for (Country c : GamePanel.this.world.getNeighbours(this.source)) {
-						if (this.currentPlayer.hasCountry(c)) {
-							this.armyIcons.get(c).mark(Color.RED);
+						if (this.engine.getClientPlayer().hasCountry(c)) {
+							this.realArmyIconGetter(c).mark(Color.RED);
 						}
 					}
 				}
@@ -420,10 +422,9 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 				//setting destination country
 				this.destination = country;
 				if (!(this.destination == this.source)) {
-					this.armyIcons.get(this.source).mark(Color.GREEN);
-					this.armyIcons.get(country).mark(Color.YELLOW);
+					this.realArmyIconGetter(country).mark(Color.YELLOW);
 					
-					this.armyIcons.get(this.source).mark(Color.YELLOW);
+					this.realArmyIconGetter(this.source).mark(Color.YELLOW);
 					this.updatePanel();
 					try {
 						//army count input
@@ -464,10 +465,10 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 			}
 		} else {
 			if (this.source != null) {
-				this.armyIcons.get(this.source).mark(Color.GREEN);
+				this.realArmyIconGetter(this.source).mark(Color.GREEN);
 				for (Country c : GamePanel.this.world.getNeighbours(this.source)) {
-					if (this.currentPlayer.hasCountry(c)) {
-						this.armyIcons.get(c).mark(Color.RED);
+					if (this.engine.getClientPlayer().hasCountry(c)) {
+						this.realArmyIconGetter(c).mark(Color.RED);
 					}
 				}
 			}
@@ -492,25 +493,25 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 		try {
 			
 			this.world = this.engine.getGameWorld();
+			this.players = this.engine.getGamePlayers();
 			
-			for (Player player : this.engine.getGamePlayers()) {
+			for (Player player : this.players) {
 				if (player.getState() != PlayerState.IDLE)
 				this.currentPlayer = player;
 			}
 		
 			
-			
 			//source and destination will be reset when player is in wrong state
-			if ((this.currentPlayer.getState() == PlayerState.RELEASE_CARDS) || 
-					(this.currentPlayer.getState() == PlayerState.ALLOCATE_ARMIES)) {
+			if ((this.engine.getClientPlayer().getState() == PlayerState.RELEASE_CARDS) || 
+					(this.engine.getClientPlayer().getState() == PlayerState.ALLOCATE_ARMIES)) {
 				this.unmarkAll();
 				this.source = null;
 				this.destination = null;
 			}
 	
 			//if current player has no cards, card release will be skipped
-			if ((this.currentPlayer.getState() == PlayerState.RELEASE_CARDS) && (GamePanel.this.currentPlayer.getCountryCards().isEmpty())) {
-				this.currentPlayer.setState(PlayerState.ALLOCATE_ARMIES);
+			if ((this.engine.getClientPlayer().getState() == PlayerState.RELEASE_CARDS) && (this.engine.getClientPlayer().getCountryCards().isEmpty())) {
+				this.engine.setCurrentPlayerState(PlayerState.ALLOCATE_ARMIES);
 			}		
 	
 			//refreshing army count icons
@@ -550,8 +551,14 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 		while (iter.hasNext()) {
 			@SuppressWarnings("rawtypes")
 			Map.Entry pairs = (Map.Entry)iter.next();
-			((MArmyCountIcon)pairs.getValue()).setPlayer(((Country)pairs.getKey()), this.getPlayer(((Country)pairs.getKey())));	
+			for (Country country : this.world.getCountries()) {
+				if (country.getId() == ((Country)pairs.getKey()).getId()) {
+					((MArmyCountIcon)pairs.getValue()).setPlayer(country, this.getPlayer(country));
+				}	
+			}
 		}
+		
+		
 	}
 
 	/**
@@ -594,14 +601,17 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 	 *
 	 */
 	public Player getPlayer(Country byCountry) {
-		try {
-			for (Player player : this.engine.getGamePlayers()) {
-				if (player.hasCountry(byCountry)) {
-					return player;
-				}
+		if (this.players == null) {
+			try {
+				this.players = this.engine.getGamePlayers();
+			} catch (DataAccessException e) {
+				MMessageBox.error(e);
 			}
-		} catch (DataAccessException e) {
-			MMessageBox.error(e.getMessage());
+		}
+		for (Player player : this.players) {
+			if (player.hasCountry(byCountry)) {
+				return player;
+			}
 		}
 		return null;
 	}
@@ -641,7 +651,27 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 			this.attack(country);
 		} else if (MinervaGUI.getEngine().getClientPlayer().getState() == PlayerState.MOVE) {
 			this.move(country);
+		} else if (MinervaGUI.getEngine().getClientPlayer().getState() == PlayerState.IDLE) {
+			this.updatePanel();
 		}
+	}
+	
+	/**
+	 * Ugly getter due to problems with references.
+	 * Client references and server references aren't the same.
+	 * @param country 
+	 * @return
+	 */
+	private MArmyCountIcon realArmyIconGetter(Country country) {
+		Iterator<?> iter = this.armyIcons.entrySet().iterator();
+		while (iter.hasNext()) {
+			@SuppressWarnings("rawtypes")
+			Map.Entry pairs = (Map.Entry)iter.next();
+				if (country.getId() == ((Country)pairs.getKey()).getId()) {
+					return (MArmyCountIcon)pairs.getValue();
+				}
+		}
+		return null;
 	}
 	
 	/**

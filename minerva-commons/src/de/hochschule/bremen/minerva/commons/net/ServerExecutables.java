@@ -56,6 +56,7 @@ import de.hochschule.bremen.minerva.commons.vo.Country;
 import de.hochschule.bremen.minerva.commons.vo.CountryCard;
 import de.hochschule.bremen.minerva.commons.vo.Mission;
 import de.hochschule.bremen.minerva.commons.vo.Player;
+import de.hochschule.bremen.minerva.commons.vo.PlayerState;
 import de.hochschule.bremen.minerva.commons.vo.World;
 
 /**
@@ -115,6 +116,9 @@ public interface ServerExecutables extends SimonRemote {
 	
 	// -- Game core subsystem --
 
+	// Change player state
+	public void setCurrentPlayerState(PlayerState state) throws SimonRemoteException;
+	
 	// Release a country card.
 	public void releaseCard(CountryCard card) throws SimonRemoteException;
 
