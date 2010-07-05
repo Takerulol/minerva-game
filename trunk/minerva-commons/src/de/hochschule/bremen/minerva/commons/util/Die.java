@@ -30,6 +30,7 @@
 
 package de.hochschule.bremen.minerva.commons.util;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 /**
@@ -39,8 +40,13 @@ import java.util.Vector;
  * @version $Id$
  *
  */
-public class Die {
+public class Die implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1400070982828639319L;
+	
 	private int number = 0;
 
 	/**

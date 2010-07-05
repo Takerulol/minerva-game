@@ -67,6 +67,7 @@ import de.hochschule.bremen.minerva.commons.vo.Country;
 import de.hochschule.bremen.minerva.commons.vo.CountryCard;
 import de.hochschule.bremen.minerva.commons.vo.Mission;
 import de.hochschule.bremen.minerva.commons.vo.Player;
+import de.hochschule.bremen.minerva.commons.vo.PlayerState;
 import de.hochschule.bremen.minerva.commons.vo.World;
 
 import de.root1.simon.RawChannel;
@@ -420,6 +421,18 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	public int[][] getGameMapUnderlayImage() throws DataAccessException {
 		try {
 			return this.serverEngine.getGameMapUnderlayImage();
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
+	}
+
+	/**
+	 * DOCME
+	 */
+	@Override
+	public void setCurrentPlayerState(PlayerState state) throws DataAccessException {
+		try {
+			this.serverEngine.setCurrentPlayerState(state);
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
 		}

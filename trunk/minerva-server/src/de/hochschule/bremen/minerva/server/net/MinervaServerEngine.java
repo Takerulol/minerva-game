@@ -225,6 +225,9 @@ public class MinervaServerEngine implements ServerExecutables {
 	@Override
 	public void startGame() throws SimonRemoteException, NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException, DataAccessException {
 		LOGGER.log("startGame(): THE GAME WAS STARTED!");
+		for (Player player :this.game.getPlayers()) {
+			player.setState(PlayerState.IDLE);
+		}
 		this.game.start();
 		
 		this.notifyClients();
@@ -379,6 +382,15 @@ public class MinervaServerEngine implements ServerExecutables {
 		return this.game.getWinner();
 	}
 
+	/**
+	 * Sets state of the current player
+	 * @param state player state
+	 */
+	public void setCurrentPlayerState(PlayerState state) throws SimonRemoteException {
+		this.game.getCurrentTurn().getCurrentPlayer().setState(state);
+		this.notifyClients();
+	}
+	
     /**
      * Release a country card.
      *
