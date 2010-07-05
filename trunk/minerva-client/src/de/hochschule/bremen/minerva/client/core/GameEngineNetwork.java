@@ -98,34 +98,26 @@ public class GameEngineNetwork implements GameEngine {
 
 		this.serverEngine = (ServerEngine)Simon.lookup(serverHost, serverPort, serverName);		
 	}
-	
+
 	/**
 	 * DOCME
 	 * 
 	 * @return
-	 *
-	 * @throws EstablishConnectionFailed
-	 * @throws SimonRemoteException
-	 * @throws IOException
-	 * @throws LookupFailedException
+	 * @throws DataAccessException 
 	 *
 	 */
-	public static GameEngineNetwork getEngine() {
+	public static GameEngineNetwork getEngine() throws DataAccessException {
 		if (GameEngineNetwork.instance == null) {
 			try {
 				GameEngineNetwork.instance = new GameEngineNetwork();
 			} catch (EstablishConnectionFailed e) {
-				// TODO: Handle exception
-				e.printStackTrace();
+				throw new DataAccessException(e);
 			} catch (SimonRemoteException e) {
-				// TODO: Handle exception
-				e.printStackTrace();
+				throw new DataAccessException(e);
 			} catch (IOException e) {
-				// TODO: Handle exception
-				e.printStackTrace();
+				throw new DataAccessException(e, true);
 			} catch (LookupFailedException e) {
-				// TODO: Handle exception
-				e.printStackTrace();
+				throw new DataAccessException(e, ApplicationConfigurationManager.get().getServerName());
 			}
 		}
 

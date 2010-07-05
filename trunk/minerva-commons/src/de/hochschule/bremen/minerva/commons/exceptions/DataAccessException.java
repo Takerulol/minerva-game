@@ -29,8 +29,11 @@
  */
 package de.hochschule.bremen.minerva.commons.exceptions;
 
+import java.io.IOException;
 import java.io.Serializable;
 
+import de.root1.simon.exceptions.EstablishConnectionFailed;
+import de.root1.simon.exceptions.LookupFailedException;
 import de.root1.simon.exceptions.SimonRemoteException;
 
 /**
@@ -53,11 +56,22 @@ public class DataAccessException extends Exception implements Serializable {
 	 * 
 	 */
 	public DataAccessException(String message) {
-		super("Beim Zugriff auf gespeicherte Daten ist ein schwerwiegender Fehler aufgetreten: \n\n"+message);
+		super("Beim Zugriff auf das Speichersystem des Servers ist ein schwerwiegender Fehler aufgetreten:\n\n"+message);
 	}
 
 	public DataAccessException(SimonRemoteException e) {
-		super("Bei der Kommunikation mit dem Server ist ein schwerwiegender Fehler aufgetreten: \n\n"+e.getMessage());
+		super("Bei der Kommunikation mit dem Server ist ein schwerwiegender Fehler aufgetreten:\n"+e.getMessage());
 	}
-	
+
+	public DataAccessException(EstablishConnectionFailed e) {
+		super("Es konnte keine Verbindung zu dem Server hergestellt werden.\nBitte die Angaben in der 'application.configuration' prüfen.\n\nTechnische Fehlermeldung:\n"+e.getMessage());
+	}
+
+	public DataAccessException(LookupFailedException e, String serverName) {
+		super("Unter '" + serverName + "' ist kein Server registriert.\nBitte 'server.name' in der 'application.configuration' prüfen.\n\nTechnische Fehlermeldung:\n"+e.getMessage());
+	}
+
+	public DataAccessException(IOException e, boolean simon) {
+		super("Der Server hat ein technisches Problem festgestellt. \n Bitte den Administrator informieren.");
+	}
 }
