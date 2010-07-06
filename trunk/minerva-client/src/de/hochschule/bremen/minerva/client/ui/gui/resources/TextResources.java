@@ -72,6 +72,8 @@ public interface TextResources {
 	public static final String WORLD_INIT_PANEL_SELECTION    = "Auswahl:";
 	public static final String WORLD_INIT_PANEL_VERSION      = "Version:";
 	public static final String WORLD_INIT_PANEL_AUTHOR       = "Autor(en):";
+	public static final String WORLD_IMPORT_BUTTON_TEXT		 = "+";
+	public static final String WORLD_IMPORT_SUCCESSFUL		 = "Die Welt wurde erfolgreich importiert.";
 	
 	// GamePanel
 	public static final String GAME_PANEL_YOUR_MISSION = "Deine Mission: ";

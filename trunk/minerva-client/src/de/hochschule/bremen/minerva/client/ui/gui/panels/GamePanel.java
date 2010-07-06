@@ -538,6 +538,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 				
 				MinervaGUI.getInstance().changePanel(new LoginPanel());
 			}
+			
 		} catch (DataAccessException e) {
 			MMessageBox.error(e);
 		}

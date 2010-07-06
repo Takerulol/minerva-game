@@ -31,21 +31,31 @@
 package de.hochschule.bremen.minerva.client.ui.gui.panels.subpanels;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
 import de.hochschule.bremen.minerva.client.ui.gui.MinervaGUI;
+import de.hochschule.bremen.minerva.client.ui.gui.controls.MButton;
 import de.hochschule.bremen.minerva.client.ui.gui.controls.MControl;
+import de.hochschule.bremen.minerva.client.ui.gui.controls.MMessageBox;
 import de.hochschule.bremen.minerva.client.ui.gui.resources.TextResources;
+import de.hochschule.bremen.minerva.commons.exceptions.DataAccessException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldFileExtensionException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldFileNotFoundException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldFileParseException;
+import de.hochschule.bremen.minerva.commons.exceptions.WorldNotStorable;
 import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.World;
 
@@ -63,7 +73,8 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 	private static final Color FONT_COLOR_DEFAULT = new Color(139, 140, 142);
 	
 	private JComboBox worldComboBox; 
-
+	private MButton worldImportButton;
+	
 	private Vector<World> worlds = new Vector<World>();
 	
 	// TODO: Implement thumbnails in release 1.1
@@ -72,6 +83,7 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 	private JLabel currentWorldDescription = new JLabel();
 	private JLabel currentWorldVersion = new JLabel();
 	private JLabel currentWorldAuthor = new JLabel();
+	
 
 	/**
 	 * Constructs WorldInitPanel after a given number of worlds.
@@ -85,7 +97,7 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 		
 		// - initialize miglayout manager
 		this.setBorder(BorderFactory.createEmptyBorder());
-		this.setLayout(new MigLayout("width 400!", "[]10[]"));
+		this.setLayout(new MigLayout("width 400!", "[]10[]10[]"));
 		this.setOpaque(false);
 		
 		// - introduction
@@ -107,11 +119,40 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 		for (World world : this.worlds) {
 			this.worldComboBox.addItem(world.getName());
 		}
-		this.add(this.worldComboBox, "wrap 30");
+		this.add(this.worldComboBox);
+		
+		this.worldImportButton = new MButton(WORLD_IMPORT_BUTTON_TEXT);
+		this.worldImportButton.setPreferredSize(new Dimension(25,25));
+		this.worldImportButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fc = new JFileChooser();
+				fc.showOpenDialog(WorldInitPanel.this);
+				if (fc.getSelectedFile() != null) {
+					File file = fc.getSelectedFile();
+					try {
+						MinervaGUI.getEngine().importWorld(file);
+						MMessageBox.show(WORLD_IMPORT_SUCCESSFUL);
+					} catch (WorldFileNotFoundException e1) {
+						MMessageBox.error(e1);
+					} catch (WorldNotStorable e1) {
+						MMessageBox.error(e1);
+					} catch (WorldFileExtensionException e1) {
+						MMessageBox.error(e1);
+					} catch (WorldFileParseException e1) {
+						MMessageBox.error(e1);
+					} catch (DataAccessException e1) {
+						MMessageBox.error(e1);
+					}
+				}
+			}
+		});
+		this.add(this.worldImportButton, "wrap");
+		
 		
 		// - world info
 		JPanel worldInfo = new JPanel();
-		worldInfo.setLayout(new MigLayout("fillx, insets 15", "[]10[]"));
+		worldInfo.setLayout(new MigLayout("fillx, insets 15", "[]10[][]"));
 
 		//this.currentWorldThumbnail.setText("thumb");
 		//worldInfo.add(this.currentWorldThumbnail, "span 1 5, gapright 10");
@@ -131,7 +172,7 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 
 		worldInfo.setBackground(new Color(14, 15, 17));
 		worldInfo.setBorder(BorderFactory.createLineBorder(new Color(35, 36, 40)));
-		this.add(worldInfo, "width 300!, span 2");
+		this.add(worldInfo, "gaptop 30, width 300!, span 3");
 
 		this.addListeners();
 
