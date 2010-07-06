@@ -76,7 +76,7 @@ public interface TextResources {
 	public static final String WORLD_IMPORT_SUCCESSFUL		 = "Die Welt wurde erfolgreich importiert.";
 	
 	// GamePanel
-	public static final String GAME_PANEL_YOUR_MISSION = "Deine Mission: ";
+	public static final String GAME_PANEL_YOUR_MISSION = "Hallo {player}, das ist deine Mission: ";
 
 	// GamePanelControlbar
 	public static final String GAME_PANEL_CARDS = "Karten";
