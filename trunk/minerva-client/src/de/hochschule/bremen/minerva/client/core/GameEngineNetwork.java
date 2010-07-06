@@ -40,6 +40,7 @@ import java.util.Observer;
 import java.util.Vector;
 
 import de.hochschule.bremen.minerva.client.manager.ApplicationConfigurationManager;
+import de.hochschule.bremen.minerva.client.ui.gui.controls.MMessageBox;
 import de.hochschule.bremen.minerva.client.vo.ApplicationConfiguration;
 import de.hochschule.bremen.minerva.commons.core.GameEngine;
 import de.hochschule.bremen.minerva.commons.exceptions.CountriesNotInRelationException;
@@ -79,6 +80,11 @@ import de.root1.simon.exceptions.SimonRemoteException;
 /**
  * The network game engine.
  *
+ * A facade, which provides access to the minerva subsystems. These subsystems are
+ * placed on the server side and will be called via the {@link ServerExecutables} (serverEngine) interface.
+ * Note, that the engine implements the {@link ClientExecutables} interface, too. This interface
+ * provides methods, which are invokable by the server side.
+ *
  * @see ApplicationConfigurationManager
  * @version $Id: ApplicationConfiguration.java 699 2010-07-04 17:07:33Z andre.koenig $
  * @since 1.0
@@ -95,7 +101,8 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	private Player clientPlayer = null;
 	
 	/**
-	 * DOCME
+	 * Creates the engine.
+	 * Establishes the server connection.
 	 *
 	 * @throws LookupFailedException 
 	 * @throws IOException 
@@ -114,9 +121,10 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	}
 
 	/**
-	 * DOCME
+	 * Returns the engine instance.
 	 * 
-	 * @return
+	 * @return The game engine.
+	 *
 	 * @throws DataAccessException 
 	 *
 	 */
@@ -138,10 +146,19 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		return GameEngineNetwork.instance;
 	}
 
-	/**
-	 * DOCME
-	 *
-	 */
+    /**
+     * Login a given player on the server and pass the {@link ClientExecutables} implementation.
+     * So that, the server is able to invoke methods on the client.
+     *
+     * @param player The player value object.
+     *
+     * @throws GameAlreadyStartedException It is not possible to login a player if the game is already running. 
+     * @throws WrongPasswordException
+     * @throws PlayerDoesNotExistException
+     * @throws NoPlayerSlotAvailableException
+     * @throws DataAccessException
+     * 
+     */
 	@Override
 	public void login(Player player) throws PlayerAlreadyLoggedInException, GameAlreadyStartedException, WrongPasswordException, PlayerDoesNotExistException, NoPlayerSlotAvailableException, DataAccessException {
 		try {
@@ -151,10 +168,15 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		}
 	}
 
-	/**
-	 * DOCME
-	 *
-	 */
+    /**
+     * Registers a new player on the server.
+     *
+     * @param player The player, which should be registered.
+     *
+     * @throws PlayerExistsException
+     * @throws DataAccessException
+     *
+     */
 	@Override
 	public void register(Player player) throws PlayerExistsException, DataAccessException{
 		try {
@@ -165,7 +187,11 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	}
 
 	/**
-	 * DOCME
+	 * Request a world list from the server.
+	 *
+	 * @return The vector with all available worlds.
+	 *
+	 * @throws DataAccessException
 	 *
 	 */
 	@Override
@@ -177,6 +203,16 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		}
 	}
 
+	/**
+	 * Request a world list from the server with the possibility
+	 * to decide to load a lite world list (worlds without country dependencies).
+	 *
+	 * @param lite Lite version with only world meta data?
+	 * @return A vector with all available worlds.
+	 *
+	 * @throws DataAccessException
+	 *
+	 */
 	@Override
 	public Vector<World> getWorldList(boolean lite) throws DataAccessException {
 		try {
@@ -186,6 +222,19 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		}
 	}
 
+	/**
+	 * Uploads a given world import file to the server and adds the new world to
+	 * the minerva system, so that everyone can play on this world.
+	 *
+	 * @param worldFile The local world file object.
+	 *
+	 * @throws WorldNotStorable
+	 * @throws WorldFileNotFoundException
+	 * @throws WorldFileExtensionException
+	 * @throws WorldFileParseException
+	 * @throws DataAccessException
+	 *
+	 */
 	@Override
 	public void importWorld(File worldFile) throws WorldNotStorable, WorldFileNotFoundException, WorldFileExtensionException, WorldFileParseException, DataAccessException {
 		try {
@@ -204,26 +253,30 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 			fileChannel.close();
 			rawChannel.close();
 
+			// Registering the new world.
 			this.serverEngine.importWorld(worldFile.getName());
 		} catch (SimonRemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new DataAccessException(e);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			MMessageBox.error(e.getMessage());
 		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			MMessageBox.error(e.getMessage());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			MMessageBox.error(e);
 		}
 	}
 
-	/**
-	 * DOCME
-	 *
-	 */
+    /**
+     * Starts the game session.
+     * The gamemaster is the one and only who can start
+     * a game session.
+     *
+     * @throws WorldNotDefinedException 
+     * @throws NoPlayerLoggedInException 
+     * @throws NotEnoughPlayersLoggedInException
+     * @throws DataAccessException
+     * 
+     */
 	@Override
 	public void startGame() throws NotEnoughPlayersLoggedInException, NoPlayerLoggedInException, WorldNotDefinedException, DataAccessException {
 		try {
@@ -233,10 +286,14 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		}
 	}
 
-	/**
-	 * DOCME
-	 *
-	 */
+    /**
+     * Stops a game and logs all players out.
+     * After executing this method it is possible to login new
+     * players and start a new game session.
+     *
+     * @throws DataAccessException If player logout fails.
+     * 
+     */
 	@Override
 	public void killGame(boolean createNewOne) throws DataAccessException {
 		try {
@@ -246,6 +303,15 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		}
 	}
 
+    /**
+     * Returns the players, which are logged in
+     * and assigned to the currently running game session.
+     *
+     * @return A vector with all logged in players, which are assigned to the current game.
+     *
+     * @throws DataAccessException
+     *
+     */
 	@Override
 	public Vector<Player> getGamePlayers() throws DataAccessException {
 		try {
@@ -255,6 +321,15 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		}
 	}
 
+    /**
+     * Sets the world on which the game should be played.
+     * Will only be defined if the game is not running.
+     * 
+     * @param The world to play on.
+     *
+     * @throws DataAccessException
+     *
+     */
 	@Override
 	public void setGameWorld(World world) throws DataAccessException {
 		try {
@@ -264,6 +339,15 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		}
 	}
 
+    /**
+     * Returns the world value object from
+     * the current game.
+     * 
+     * @return The world value object.
+     *
+     * @throws DataAccessException
+     *
+     */
 	@Override
 	public World getGameWorld() throws DataAccessException {
 		try {
@@ -273,7 +357,14 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		}
 	}
 
-
+    /**
+     * Returns all player missions.
+     * 
+     * @return A vector with all player missions.
+     *
+     * @throws DataAccessException
+     *
+     */
 	@Override
 	public Vector<Mission> getGameMissions() throws DataAccessException {
 		try {
@@ -283,6 +374,14 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		}
 	}
 
+    /**
+     * Is the current game session terminated?
+     *
+     * @return boolean
+     *
+     * @throws DataAccessException
+     *
+     */
 	@Override
 	public boolean isGameFinished() throws DataAccessException {
 		try {
@@ -292,6 +391,14 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		}
 	}
 
+    /**
+     * Returns the game winner if the game is terminated.
+     *
+     * @return The game winner. null if the game is still running.
+     *
+     * @throws DataAccessException
+     *
+     */
 	@Override
 	public Player getGameWinner() throws DataAccessException {
 		try {
@@ -301,6 +408,14 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		}
 	}
 
+    /**
+     * Release a country card.
+     *
+     * @param The releasable country card.
+     *
+     * @throws DataAccessException;
+     *
+     */
 	@Override
 	public void releaseCard(CountryCard card) throws DataAccessException {
 		try {
@@ -310,6 +425,14 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		}
 	}
 
+    /**
+     * Releases a country card series.
+     * 
+     * @param cards A vector with releasable country cards.
+     *
+     * @throws DataAccessException
+     *
+     */
 	@Override
 	public void releaseCards(Vector<CountryCard> cards) throws DataAccessException {
 		try {
@@ -319,6 +442,14 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		}
 	}
 
+    /**
+     * Returns the current allocatable army count from the server.
+     * 
+     * @return army count
+     *
+     * @throws DataAccessException
+     *
+     */
 	@Override
 	public int getAllocatableArmyCount() throws DataAccessException {
 		try {
@@ -328,6 +459,16 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		}
 	}
 
+    /**
+     * Adds one army to the specified country.
+     *
+     * @param The country on which the army should be placed.
+     *
+     * @throws CountryOwnerException 
+     * @throws NotEnoughArmiesException
+     * @throws DataAccessException 
+     * 
+     */
 	@Override
 	public void allocateArmy(Country allocatable) throws NotEnoughArmiesException, CountryOwnerException, DataAccessException {
 		try {
@@ -337,6 +478,19 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		}
 	}
 
+    /**
+     * Attacks a country with an specified army count.
+     * 
+     * @param source The country from which the attack will be started.
+     * @param destination The country which should be attacked.
+     * @param armyCount The attacking army units.
+     * 
+     * @throws CountriesNotInRelationException
+     * @throws NotEnoughArmiesException
+     * @throws IsOwnCountryException
+     * @throws DataAccessException
+     * 
+     */
 	@Override
 	public AttackResult attack(Country source, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException, DataAccessException {
 		try {
@@ -346,6 +500,19 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		}
 	}
 
+    /**
+     * Moves armies from one country to another country.
+     * 
+     * @param from The country FROM which we will move the armies.
+     * @param to The country TO which we will move the armies.
+     * @param armyCount How many army units should be moved?
+     *
+     * @throws CountryOwnerException 
+     * @throws NotEnoughArmiesException 
+     * @throws CountriesNotInRelationException
+     * @throws DataAccessException
+     * 
+     */
 	@Override
 	public void move(Country source, Country destination, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, CountryOwnerException, DataAccessException {
 		try {
@@ -355,6 +522,10 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 		}
 	}
 
+    /**
+     * Starts the next turn.
+     * 
+     */
 	@Override
 	public void finishTurn() throws DataAccessException {
 		try {
@@ -365,7 +536,26 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	}
 
 	/**
-	 * DOCME
+	 * Sets the clients player state.
+	 *
+	 * @param state The new player state.
+	 *
+	 * @throws DataAccessException
+	 *
+	 */
+	@Override
+	public void setCurrentPlayerState(PlayerState state) throws DataAccessException {
+		try {
+			this.serverEngine.setCurrentPlayerState(state);
+		} catch (SimonRemoteException e) {
+			throw new DataAccessException(e);
+		}
+	}
+
+	/**
+	 * Returns the player value object assigned to this client.
+	 * 
+	 * @return The clients player value object.
 	 *
 	 */
 	public Player getClientPlayer() {
@@ -373,7 +563,13 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	}
 
 	/**
-	 * DOCME
+	 * Add an observer.
+	 * The game engine is observable.
+	 * So an observer object can, well, observe the
+	 * engine and will be informed by some methods,
+	 * that something has changed.
+	 * 
+	 * @param The observer.
 	 *
 	 */
 	public void addObserver(Observer o) {
@@ -381,14 +577,24 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	}
 	
 	/**
-	 * DOCME
+	 * Remove an observer.
+	 *
+	 * @param The remove candidate.
+	 *
 	 */
 	public void deleteObserver(Observer o) {
 		super.deleteObserver(o);
 	}
 
 	/**
-	 * DOCME
+	 * Method, which can be invoked from the
+	 * server side. The server calls this method
+	 * and pushes the updated client player object.
+	 * 
+	 * The engine will then inform all observers that
+	 * an "change" occurred.
+	 *
+	 * @param player The 'fresh' player object.
 	 *
 	 */
 	@Override
@@ -400,7 +606,9 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	}
 
 	/**
-	 * DOCME
+	 * Requests the current games "world map image" from the server.
+	 * 
+	 * @return A array, which holds the rgb values from every pixel.
 	 *
 	 */
 	@Override
@@ -413,25 +621,15 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	}
 
 	/**
-	 * DOCME
+	 * Requests the current games "world map underlay image" from the server.
+	 * 
+	 * @return A array, which holds the rgb values from every pixel.
 	 *
 	 */
 	@Override
 	public int[][] getGameMapUnderlayImage() throws DataAccessException {
 		try {
 			return this.serverEngine.getGameMapUnderlayImage();
-		} catch (SimonRemoteException e) {
-			throw new DataAccessException(e);
-		}
-	}
-
-	/**
-	 * DOCME
-	 */
-	@Override
-	public void setCurrentPlayerState(PlayerState state) throws DataAccessException {
-		try {
-			this.serverEngine.setCurrentPlayerState(state);
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
 		}
