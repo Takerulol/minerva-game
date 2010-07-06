@@ -142,7 +142,10 @@ public class MinervaServerEngine implements ServerExecutables {
 		LOGGER.log("login(): login this player: "+player.toString());
 		AccountManager.getInstance().login(player);
 
+		// If the player count is 0
+		// We create a new game.
 		if (this.game.getPlayerCount() == 0) {
+			this.game = null;
 			player.setMaster(true);
 		}
 
@@ -250,14 +253,16 @@ public class MinervaServerEngine implements ServerExecutables {
      */
 	@Override
 	public void killGame(boolean createNewOne) throws SimonRemoteException, DataAccessException {
-		AccountManager.getInstance().logout();
+		// If there are players ...
+		if (this.game.getPlayerCount() > 0) {
+			AccountManager.getInstance().logout();
 		
-		if (createNewOne) {
-			this.game = new Game();
+			if (createNewOne) {
+				this.game = new Game();
+			}
+			LOGGER.log("killGame(): THE GAME WAS KILLED! :o");
+			this.notifyClients();
 		}
-		LOGGER.log("killGame(): THE GAME WAS KILLED! :o");
-		
-		this.notifyClients();
 	}
 
     /**
@@ -335,9 +340,15 @@ public class MinervaServerEngine implements ServerExecutables {
      */
 	@Override
 	public boolean isGameFinished() throws SimonRemoteException {
-		LOGGER.log("isGameFinished(): Game finished? -> " + ((this.game.isFinished()) ? "Yes :(" : "No :)"));
-
-		return this.game.isFinished();
+		// Turn count 0 means, that a new game object was created
+		// in the killGame().
+		if (this.game.getTurnCount() == 0) {
+			LOGGER.log("isGameFinished(): Game finished? -> Yes :(");
+			return true;
+		} else {
+			LOGGER.log("isGameFinished(): Game finished? -> " + ((this.game.isFinished()) ? "Yes :(" : "No :)"));			
+			return this.game.isFinished();
+		}
 	}
 
 	/**
@@ -382,7 +393,7 @@ public class MinervaServerEngine implements ServerExecutables {
      */
 	@Override
 	public Player getGameWinner() throws SimonRemoteException {
-		LOGGER.log("getGameMissions(): AND THE WINNER IS: " + ((this.game.isFinished()) ? this.game.getWinner() : "nobody - Game is still running."));
+		LOGGER.log("getGameWinner(): AND THE WINNER IS: " + ((this.game.isFinished()) ? this.game.getWinner().getUsername() : "nobody - Game is still running."));
 		return this.game.getWinner();
 	}
 
@@ -520,7 +531,7 @@ public class MinervaServerEngine implements ServerExecutables {
 
         this.notifyClients();
 	}
-
+	
 	/**
 	 * Notifies all registered clients by invoking the
 	 * "refreshPlayer" method on the client side.
