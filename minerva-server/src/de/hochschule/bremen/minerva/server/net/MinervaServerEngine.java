@@ -482,7 +482,7 @@ public class MinervaServerEngine implements ServerExecutables {
 		AttackResult result = turn.attack(source, destination, armyCount);
 		LOGGER.log("attack(): Attacking '"+destination.getName()+"' from '"+source.getName()+"' with " + armyCount + " army units. Result: "+result.toString());
 
-        return turn.attack(source, destination, armyCount);
+        return result;
 	}
 
     /**

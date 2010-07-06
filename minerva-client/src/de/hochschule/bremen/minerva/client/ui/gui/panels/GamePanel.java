@@ -73,6 +73,7 @@ import de.hochschule.bremen.minerva.commons.vo.CountryCard;
 import de.hochschule.bremen.minerva.commons.vo.Mission;
 import de.hochschule.bremen.minerva.commons.vo.Player;
 import de.hochschule.bremen.minerva.commons.vo.PlayerState;
+import de.hochschule.bremen.minerva.commons.vo.ValueObject;
 import de.hochschule.bremen.minerva.commons.vo.World;
 
 /**
@@ -83,6 +84,7 @@ import de.hochschule.bremen.minerva.commons.vo.World;
  *
  */
 public class GamePanel extends JLayeredPane implements MControl, TextResources, Observer {
+
 	public MapPanel mapOverlay;
 	public MapPanel mapUnderlay;
 	public MSlidePanel slidePanel;
@@ -99,11 +101,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 	
 	private Country source = null;
 	private Country destination = null;
-	
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -2906065533734117968L;
 	
 	/**
@@ -126,7 +124,8 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 		missionPanel.setBorder(BorderFactory.createMatteBorder (0, 0, 1, 0, new Color(71, 73, 75)));
 		this.add(missionPanel, 10000);
 
-		JLabel yourMissionLabel = new JLabel(GAME_PANEL_YOUR_MISSION);
+		Player clientPlayer = MinervaGUI.getEngine().getClientPlayer();
+		JLabel yourMissionLabel = new JLabel(GAME_PANEL_YOUR_MISSION.replace("{player}", clientPlayer.getFirstName()));
 		yourMissionLabel.setFont(new Font(FONT.getFamily(), Font.BOLD, 12));
 		yourMissionLabel.setForeground(new Color(1, 174, 253));
 		missionPanel.add(yourMissionLabel);
@@ -138,8 +137,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 		
 		//refreshing mission text
 		//this happens only in GameEngineLocal, otherwise current player doesn't change
-		try{
-		
+		try {
 			searchPlayerMission : for (Mission mission : this.engine.getGameMissions()) {
 				if (mission.getOwner().getId() == this.engine.getClientPlayer().getId()) {
 					this.missionLabel.setText(mission.getTitle());
@@ -148,8 +146,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 			}
 			
 			missionPanel.add(missionLabel);
-		
-		
+
 			//lower map
 			mapImage = MapTool.createMapImageFromArray(this.engine.getGameMapUnderlayImage());
 			this.mapUnderlay = new MapPanel(mapImage);
@@ -217,7 +214,9 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 				Color color = ColorTool.fromInteger(GamePanel.this.mapUnderlay.getMapImage().getRGB(e.getX(), e.getY()));
 				Country country = GamePanel.this.world.getCountry(color);
 
-				GamePanel.this.mapInteraction(country);
+				if (country.getId() != ValueObject.getDefaultId()) {
+					GamePanel.this.mapInteraction(country);
+				}
 			}
 		});
 	}
@@ -300,7 +299,6 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 					this.realArmyIconGetter(this.source).mark(Color.GREEN);
 					for (Country c : GamePanel.this.world.getNeighbours(this.source)) {
 						if (!this.engine.getClientPlayer().hasCountry(c)) {
-							System.out.println(c);
 							this.realArmyIconGetter(c).mark(Color.RED);
 						}
 					}
@@ -483,14 +481,6 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 	 *
 	 */
 	public void updatePanel() {
-		//setting of current player when GameEngineLocal is used
-		//otherwise stays the same as the owner of this client.
-		/*if (this.engine instanceof GameEngineLocal) {
-			for (Player player : this.engine.getPlayers()) {
-				if (player.getState() != PlayerState.IDLE)
-				this.currentPlayer = player;
-			}
-		}*/
 		try {
 			
 			this.world = this.engine.getGameWorld();
@@ -500,8 +490,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 				if (player.getState() != PlayerState.IDLE)
 				this.currentPlayer = player;
 			}
-		
-			
+
 			//source and destination will be reset when player is in wrong state
 			if ((this.engine.getClientPlayer().getState() == PlayerState.RELEASE_CARDS) || 
 					(this.engine.getClientPlayer().getState() == PlayerState.ALLOCATE_ARMIES)) {
@@ -509,7 +498,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 				this.source = null;
 				this.destination = null;
 			}
-	
+
 			//if current player has no cards, card release will be skipped
 			if ((this.engine.getClientPlayer().getState() == PlayerState.RELEASE_CARDS) && (this.engine.getClientPlayer().getCountryCards().isEmpty())) {
 				this.engine.setCurrentPlayerState(PlayerState.ALLOCATE_ARMIES);
@@ -517,14 +506,12 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 	
 			//refreshing army count icons
 			this.refreshArmyCounts();
-			
-		
+
 			//refreshing control bar
 			this.slidePanel.getControlBar().updateButtons();
 			this.slidePanel.getControlBar().setCurrentPlayerLabel(this.currentPlayer);
 			this.slidePanel.getControlBar().setAllocatableArmiesLabel(" "+this.engine.getAllocatableArmyCount()+" ");
-			this.slidePanel.getControlBar().updateCardList(this.currentPlayer.getCountryCards());			
-			
+			this.slidePanel.getControlBar().updateCardList(this.currentPlayer.getCountryCards());
 	
 			this.repaint();
 			this.updateUI();
@@ -539,7 +526,6 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 				MinervaGUI.getEngine().deleteObserver(this);
 				MinervaGUI.getInstance().changePanel(new LoginPanel());
 			}
-			
 		} catch (DataAccessException e) {
 			MMessageBox.error(e);
 		}
