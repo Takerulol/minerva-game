@@ -174,7 +174,8 @@ public class GameInitPanel extends JLayeredPane implements TextResources, Observ
 	}
 
 	/**
-	 * DOCME
+	 * Method, which will be called on notifyObservers()
+	 *
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
@@ -187,9 +188,7 @@ public class GameInitPanel extends JLayeredPane implements TextResources, Observ
 			}
 			
 		} catch (DataAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			MMessageBox.error(e);
 		}
-//		if(MinervaGUI.getEngine().getGamePlayers())
 	}
 }
