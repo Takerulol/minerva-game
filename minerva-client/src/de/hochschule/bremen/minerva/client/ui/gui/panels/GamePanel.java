@@ -124,8 +124,11 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 		missionPanel.setBorder(BorderFactory.createMatteBorder (0, 0, 1, 0, new Color(71, 73, 75)));
 		this.add(missionPanel, 10000);
 
+		JLabel yourMissionLabel = new JLabel();
+
 		Player clientPlayer = MinervaGUI.getEngine().getClientPlayer();
-		JLabel yourMissionLabel = new JLabel(GAME_PANEL_YOUR_MISSION.replace("{player}", clientPlayer.getFirstName()));
+		yourMissionLabel.setText(GAME_PANEL_YOUR_MISSION.replace("{player}", clientPlayer.getFirstName()));
+
 		yourMissionLabel.setFont(new Font(FONT.getFamily(), Font.BOLD, 12));
 		yourMissionLabel.setForeground(new Color(1, 174, 253));
 		missionPanel.add(yourMissionLabel);
@@ -390,7 +393,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 		message.append(attackResult.getLostAttackerArmies()).append(" und ").append(attackResult.getDefender().getUsername());
 		message.append(" hat ").append(attackResult.getLostDefenderArmies()).append(" Armeen verloren.\n");
 		message.append(attackResult.getAttacker().getUsername()).append(" hat das Land ");
-		message.append((attackResult.isWin() ? "erobert." : "nicht erobert."));
+		message.append((attackResult.isWin() ? "erobert." : "NICHT erobert."));
 
 		MMessageBox.show(message.toString());
 	}
@@ -482,49 +485,47 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 	 */
 	public void updatePanel() {
 		try {
-			
-			this.world = this.engine.getGameWorld();
-			this.players = this.engine.getGamePlayers();
-			
-			for (Player player : this.players) {
-				if (player.getState() != PlayerState.IDLE)
-				this.currentPlayer = player;
-			}
-
-			//source and destination will be reset when player is in wrong state
-			if ((this.engine.getClientPlayer().getState() == PlayerState.RELEASE_CARDS) || 
-					(this.engine.getClientPlayer().getState() == PlayerState.ALLOCATE_ARMIES)) {
-				this.unmarkAll();
-				this.source = null;
-				this.destination = null;
-			}
-
-			//if current player has no cards, card release will be skipped
-			if ((this.engine.getClientPlayer().getState() == PlayerState.RELEASE_CARDS) && (this.engine.getClientPlayer().getCountryCards().isEmpty())) {
-				this.engine.setCurrentPlayerState(PlayerState.ALLOCATE_ARMIES);
-			}		
-	
-			//refreshing army count icons
-			this.refreshArmyCounts();
-
-			//refreshing control bar
-			this.slidePanel.getControlBar().updateButtons();
-			this.slidePanel.getControlBar().setCurrentPlayerLabel(this.currentPlayer);
-			this.slidePanel.getControlBar().setAllocatableArmiesLabel(" "+this.engine.getAllocatableArmyCount()+" ");
-			this.slidePanel.getControlBar().updateCardList(this.currentPlayer.getCountryCards());
-	
-			this.repaint();
-			this.updateUI();
-			
 			//game finished?
 			if (this.engine.isGameFinished()) {
-				MMessageBox.show(GAME_FINISHED_ANNOUCEMENT+"\n"
-						+this.engine.getGameWinner().getUsername()
-						+GAME_FINISHED_WINNER);
-				this.engine.killGame(false);
-				
 				MinervaGUI.getEngine().deleteObserver(this);
+				
 				MinervaGUI.getInstance().changePanel(new LoginPanel());
+
+				MMessageBox.show(GAME_FINISHED_ANNOUCEMENT+"\n" + this.engine.getGameWinner().getUsername()
+						+GAME_FINISHED_WINNER);
+			} else {
+				this.world = this.engine.getGameWorld();
+				this.players = this.engine.getGamePlayers();
+				
+				for (Player player : this.players) {
+					if (player.getState() != PlayerState.IDLE)
+					this.currentPlayer = player;
+				}
+	
+				//source and destination will be reset when player is in wrong state
+				if ((this.engine.getClientPlayer().getState() == PlayerState.RELEASE_CARDS) || 
+						(this.engine.getClientPlayer().getState() == PlayerState.ALLOCATE_ARMIES)) {
+					this.unmarkAll();
+					this.source = null;
+					this.destination = null;
+				}
+	
+				//if current player has no cards, card release will be skipped
+				if ((this.engine.getClientPlayer().getState() == PlayerState.RELEASE_CARDS) && (this.engine.getClientPlayer().getCountryCards().isEmpty())) {
+					this.engine.setCurrentPlayerState(PlayerState.ALLOCATE_ARMIES);
+				}		
+		
+				//refreshing army count icons
+				this.refreshArmyCounts();
+	
+				//refreshing control bar
+				this.slidePanel.getControlBar().updateButtons();
+				this.slidePanel.getControlBar().setCurrentPlayerLabel(this.currentPlayer);
+				this.slidePanel.getControlBar().setAllocatableArmiesLabel(" "+this.engine.getAllocatableArmyCount()+" ");
+				this.slidePanel.getControlBar().updateCardList(this.currentPlayer.getCountryCards());
+		
+				this.repaint();
+				this.updateUI();
 			}
 		} catch (DataAccessException e) {
 			MMessageBox.error(e);
@@ -546,8 +547,6 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 				}	
 			}
 		}
-		
-		
 	}
 
 	/**
