@@ -209,7 +209,7 @@ public class Turn {
 	public AttackResult attack(Country attacker, Country defender, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, IsOwnCountryException {
 		AttackResult result = null;
 		
-		//ugly iteration due to reference problems with simon
+		//ugly iteration due to reference problems on client/server
 		Country attackerCountry = null;
 		Country defenderCountry = null;
 		for(Country country : this.getWorld().getCountries()) {
@@ -331,7 +331,7 @@ public class Turn {
 	 * 
 	 */
 	public void moveArmies(Country source, Country dest, int armyCount) throws CountriesNotInRelationException, NotEnoughArmiesException, CountryOwnerException {
-		//ugly iteration due to reference problems with simon
+		//ugly iteration due to reference problems on client/server
 		Country from = null;
 		Country destination = null;
 		for(Country country : this.getWorld().getCountries()) {
@@ -377,7 +377,7 @@ public class Turn {
 	 *
 	 */
 	public void releaseCard(CountryCard countryCard) {
-		//ugly iteration due to reference problems with simon
+		//ugly iteration due to reference problems on client/server
 		CountryCard realCard = null;
 		for (CountryCard card : this.currentPlayer.getCountryCards()) {
 			if (countryCard.getReference().getId() == card.getReference().getId()) {
@@ -407,7 +407,7 @@ public class Turn {
 	 *
 	 */
 	public void releaseCardSeries(Vector<CountryCard> cardSeries) {
-		//ugly iteration due to reference problems with simon
+		//ugly iteration due to reference problems on client/server
 		Vector<CountryCard> realSeries = new Vector<CountryCard>();
 		for (CountryCard card : this.currentPlayer.getCountryCards()) {
 			for(CountryCard corruptedCard : cardSeries) {

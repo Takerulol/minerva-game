@@ -42,9 +42,6 @@ import java.util.Vector;
  */
 public class Die implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1400070982828639319L;
 	
 	private int number = 0;
