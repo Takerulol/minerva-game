@@ -132,6 +132,14 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 					File file = fc.getSelectedFile();
 					try {
 						MinervaGUI.getEngine().importWorld(file);
+						
+						WorldInitPanel.this.worlds = MinervaGUI.getEngine().getWorldList(true);
+						WorldInitPanel.this.worldComboBox.removeAllItems();
+						for (World world : WorldInitPanel.this.worlds) {
+							WorldInitPanel.this.worldComboBox.addItem(world.getName());
+						}
+						
+						
 						MMessageBox.show(WORLD_IMPORT_SUCCESSFUL);
 					} catch (WorldFileNotFoundException e1) {
 						MMessageBox.error(e1);
@@ -187,7 +195,11 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 	 * 
 	 */
 	public World getSelectedWorld() {
-		return this.worlds.get(this.worldComboBox.getSelectedIndex());
+		if (this.worldComboBox.getItemCount() == 0) {
+			return null;
+		} else {
+			return this.worlds.get(this.worldComboBox.getSelectedIndex());
+		}
 	}
 	
 	/**
@@ -198,19 +210,12 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 	private void fillWorldInfo() {
 		World selectedWorld = this.getSelectedWorld();
 
-
-		/*String thumbnailPath = ApplicationConfigurationManager.get().getWorldsAssetsDirectory() + selectedWorld.getThumbnail();
-	 	try {
-	 		this.currentWorldThumbnail.setText("");
-			this.currentWorldThumbnail.getGraphics().drawImage(ImageIO.read(new File(thumbnailPath)), 0, 0, null);
-		} catch (IOException e) {
-			this.currentWorldThumbnail.setText("THUMB");
-		}*/
-		
-		this.currentWorldName.setText(selectedWorld.getName());
-		this.currentWorldDescription.setText("<html>"+selectedWorld.getDescription());
-		this.currentWorldVersion.setText("<html>"+WORLD_INIT_PANEL_VERSION + "<br />" + selectedWorld.getVersion());
-		this.currentWorldAuthor.setText("<html>"+WORLD_INIT_PANEL_AUTHOR + "<br />" + selectedWorld.getAuthor());
+		if (selectedWorld != null) {
+			this.currentWorldName.setText(selectedWorld.getName());
+			this.currentWorldDescription.setText("<html>"+selectedWorld.getDescription());
+			this.currentWorldVersion.setText("<html>"+WORLD_INIT_PANEL_VERSION + "<br />" + selectedWorld.getVersion());
+			this.currentWorldAuthor.setText("<html>"+WORLD_INIT_PANEL_AUTHOR + "<br />" + selectedWorld.getAuthor());
+		}
 	}
 
 	/**
