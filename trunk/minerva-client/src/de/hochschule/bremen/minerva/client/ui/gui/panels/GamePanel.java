@@ -536,6 +536,7 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 						+GAME_FINISHED_WINNER);
 				this.engine.killGame(false);
 				
+				MinervaGUI.getEngine().deleteObserver(this);
 				MinervaGUI.getInstance().changePanel(new LoginPanel());
 			}
 			
