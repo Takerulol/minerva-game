@@ -676,7 +676,9 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 	}
 	
 	/**
-	 * DOCME
+	 * Method, which will be called if the observed object
+	 * notifies the observers.
+	 *
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
