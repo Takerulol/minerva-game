@@ -190,7 +190,11 @@ public class MinervaServerEngine implements ServerExecutables {
 		File worldFile = new File(filename);
 
 		WorldManager.getInstance().store(worldFile);
+
+		// Was the import successful -> delete the import file.
 		worldFile.delete();
+
+		this.notifyClients();
 	}
 
     /**
