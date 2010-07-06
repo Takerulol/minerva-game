@@ -39,6 +39,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 import de.hochschule.bremen.minerva.client.manager.ApplicationConfigurationManager;
+import de.hochschule.bremen.minerva.client.ui.gui.controls.MMessageBox;
 import de.hochschule.bremen.minerva.client.vo.ApplicationConfiguration;
 
 /**
@@ -73,7 +74,7 @@ public class Background extends JPanel {
 		try {
 			this.image = ImageIO.read(file);
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			MMessageBox.error(e);
 		}
 		
 		//drawing the background
