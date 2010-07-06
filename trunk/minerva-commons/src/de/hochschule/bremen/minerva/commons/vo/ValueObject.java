@@ -31,6 +31,13 @@ package de.hochschule.bremen.minerva.commons.vo;
 
 import java.io.Serializable;
 
+/**
+ * A marker class for value objects.
+ * 
+ * @since 1.0
+ * @version $Id$
+ *
+ */
 public abstract class ValueObject implements Serializable {
 
 	private static final long serialVersionUID = -2766664536655536808L;
