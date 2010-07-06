@@ -2,7 +2,7 @@
 
 <world>
 	<meta>
-		<token>Bremer Stadtteile</token>
+		<token>bremen</token>
 		<name>Bremen - Die Stadtteile</name>
 		<author>Carina Strempel</author>
 		<description>Die Stadtteile von Bremen, die den Stadtbezirken zugeordnet sind.</description>
@@ -30,7 +30,7 @@
 		<country id="2" continent="1" color="F19CA0" token="oberv" name="Obervieland" neighbours="3, 8, 10, 15" />
 		<country id="3" continent="1" color="AB8CBC" token="neust" name="Neustadt" neighbours="0, 2, 4, 5" />
 		<country id="4" continent="1" color="8BAED7" token="hucht" name="Huchting" neighbours="3, 5, 7" />
-		<country id="5" continent="1" color="8ACBC6" token="woltmer" name="Woltmershausen" neighbours="1, 3, 4, 7 " />
+		<country id="5" continent="1" color="8ACBC6" token="woltmer" name="Woltmershausen" neighbours="1, 3, 4, 7" />
 		<country id="6" continent="1" color="F29A79" token="seeh" name="Seehausen" neighbours="1, 7, 20" />
 		<country id="7" continent="1" color="D0DF99" token="stro" name="Strom" neighbours="1, 4, 5, 6" />
 		
