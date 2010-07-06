@@ -72,8 +72,7 @@ import de.hochschule.bremen.minerva.commons.vo.SoldierCard;
  * @since 1.0
  * 
  */
-public class GamePanelControlbar extends JPanel implements ActionListener,
-		MControl, TextResources {
+public class GamePanelControlbar extends JPanel implements ActionListener, MControl, TextResources {
 
 	private int relativeHeight;
 	private MSlidePanel slidePanel;
@@ -399,8 +398,7 @@ public class GamePanelControlbar extends JPanel implements ActionListener,
 					}
 					this.gamePanel.TurnSeriesIn(series);
 				} else {
-					// TODO: Better exception message!!!!
-					MMessageBox.error("Das geht nicht.");
+					MMessageBox.error(GAME_PANEL_CARDS_SELECT_CARD);
 				}
 			}
 		} catch (DataAccessException e1) {
