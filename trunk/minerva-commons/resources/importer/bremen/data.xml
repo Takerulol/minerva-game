@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- 
-	Farben fehlen noch, weil die Karte noch in Arbeit ist.
- -->
-
 <world>
 	<meta>
 		<token>Bremer Stadtteile</token>
