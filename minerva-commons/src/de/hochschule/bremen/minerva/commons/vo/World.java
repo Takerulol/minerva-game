@@ -32,11 +32,7 @@ package de.hochschule.bremen.minerva.commons.vo;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.Vector;
-
-import javax.imageio.ImageIO;
 
 import de.hochschule.bremen.minerva.commons.util.ColorTool;
 import de.hochschule.bremen.minerva.commons.util.CountryGraph;
@@ -260,15 +256,13 @@ public class World extends ValueObject {
 	/**
 	 * Returns all continents of this world.
 	 * 
-	 * @return Vector of continents
+	 * @return Vector of continents.
+	 *
 	 */
 	public Vector<Continent> getContinents() {
 		Vector<Continent> continents = new Vector<Continent>();
 	
 		for (Country country : this.countries) {
-//			if (!(continents.contains(country.getContinent()))) {
-//				continents.add(country.getContinent());
-//			}
 			boolean check = true;
 			for (Continent continent : continents) {
 				if (continent.getId() == country.getContinent().getId()) {
@@ -285,8 +279,7 @@ public class World extends ValueObject {
 	/**
 	 * Add a country to this world.
 	 * 
-	 * @param country
-	 * @see Country
+	 * @param country The addable country.
 	 * 
 	 */
 	public void addCountry(Country country) {
@@ -296,8 +289,7 @@ public class World extends ValueObject {
 	/**
 	 * Sets the world countries.
 	 * 
-	 * @param countries
-	 * @see Vector
+	 * @param countries Adds these countries to the vector.
 	 * 
 	 */
 	public void setCountries(Vector<Country> countries) {
@@ -308,7 +300,6 @@ public class World extends ValueObject {
 	 * Returns the countries.
 	 * 
 	 * @return A vector with country objects.
-	 * @see Country
 	 * 
 	 */
 	public Vector<Country> getCountries() {
@@ -318,7 +309,7 @@ public class World extends ValueObject {
 	/**
 	 * Returns a country vector by an given continent
 	 * 
-	 * @param byContinent The @see continent that represents the filter parameter.
+	 * @param byContinent The continent that represents the filter parameter.
 	 * @return A country vector with countries. Each country belongs to the given continent.
 	 * 
 	 */
@@ -353,8 +344,9 @@ public class World extends ValueObject {
 	 * 
 	 * @param byCountry
 	 * @return The country object, which was searched for.
+	 *
 	 * @see Country
-	 * 
+	 *
 	 */
 	public Country getCountry(Country byCountry) {
 		Country searchedCountry = new Country();
@@ -371,9 +363,10 @@ public class World extends ValueObject {
 	/**
 	 * Returns a country by an given color.
 	 * 
-	 * @param byColor @see java.awt.Color
+	 * @param byColor
+	 *
 	 * @return The country reference. If no country was found with the given color, then the country is empty.
-	 * 
+	 *
 	 */
 	public Country getCountry(Color byColor) {
 		Country foundCountry = new Country();
@@ -393,6 +386,7 @@ public class World extends ValueObject {
 	 * 
 	 * @param source The source country. 
 	 * @param with The country which will be connected with the source
+	 *
 	 * @see Country
 	 * @see CountryGraph
 	 * 
@@ -420,25 +414,14 @@ public class World extends ValueObject {
 	 * Checks if a given country has neighboring countries.
 	 * 
 	 * @param country - Has this county neighbours?
+	 *
 	 * @return true/false
+	 *
 	 * @see Country
-	 * 
+	 *
 	 */
 	public boolean hasNeighbours(Country country) {
 		return this.countryGraph.hasNeighbours(country.getId());
-	}
-
-	/**
-	 * Wrapper method for hiding the country graph. Returns
-	 * a country by an given country object.
-	 * 
-	 * @param country
-	 * @return A vector with integers, which represents referenced country id's
-	 * @deprecated Use {@link World#getNeighbours(Country)} instead.
-	 * 
-	 */
-	public Vector<Integer> getNeighbours(int countryId) {
-		return this.countryGraph.getNeighbours(countryId);
 	}
 
 	/**
@@ -446,8 +429,10 @@ public class World extends ValueObject {
 	 * Returns a country vector which represents the neighbouring
 	 * countries by an given country.
 	 * 
-	 * @param country
-	 * @return
+	 * @param country The country whose neighbours we are searching for.
+	 *
+	 * @return A vector with all neighbours from an specific country.
+	 *
 	 */
 	public Vector<Country> getNeighbours(Country country) {
 		Vector<Integer> neighbours = this.countryGraph.getNeighbours(country.getId());
@@ -477,29 +462,19 @@ public class World extends ValueObject {
 
 	/**
 	 * Sets the map image show to the player.
+	 *
 	 * @param mapImage image of the map
+	 *
 	 */
 	public void setMapImage(BufferedImage mapImage) {
 		this.mapImage = mapImage;
 	}
-	
-	/**
-	 * Generates a buffered image out of a byte array and
-	 * sets the map image show to the player.
-	 * @param mapImage image of the map
-	 * @deprecated actually not in use
-	 */
-	public void setMapImage(byte[] mapImage) {
-		try {
-			this.mapImage = ImageIO.read(new ByteArrayInputStream(mapImage));
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
-	}
 
 	/**
 	 * Gets the map image shown to the player.
+	 *
 	 * @return image of the map
+	 *
 	 */
 	public BufferedImage getMapImage() {
 		return mapImage;
@@ -507,24 +482,12 @@ public class World extends ValueObject {
 
 	/**
 	 * Sets the map image of the underlying map.
+	 *
 	 * @param mapUnderlayImage image of map
+	 *
 	 */
 	public void setMapUnderlayImage(BufferedImage mapUnderlayImage) {
 		this.mapUnderlayImage = mapUnderlayImage;
-	}
-	
-	/**
-	 * Generates a buffered image out of a byte array and
-	 * sets the map image of the underlying map.
-	 * @param mapUnderlayImage image of map
-	 * @deprecated actually not in use
-	 */
-	public void setMapUnderlayImage(byte[] mapUnderlayImage) {
-		try {
-			this.mapUnderlayImage = ImageIO.read(new ByteArrayInputStream(mapUnderlayImage));
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
 	}
 
 	/**
