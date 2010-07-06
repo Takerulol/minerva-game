@@ -393,7 +393,6 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	 */
 	@Override
 	public void refreshPlayer(Player player) {
-		System.out.println("Server hat refreshPlayer aufgerufen: "+player);
 		this.clientPlayer = player;
 
 		this.setChanged();
