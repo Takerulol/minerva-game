@@ -152,7 +152,7 @@ public class GameInitPanel extends JLayeredPane implements TextResources, Observ
 					// from the engine.
 					selectedWorld = MinervaGUI.getEngine().getGameWorld();
 					nextPanel = new GamePanel(selectedWorld);
-
+					
 					MinervaGUI.getInstance().changePanel(nextPanel);
 				} catch (NotEnoughPlayersLoggedInException e) {
 					// Okay, back to the login panel
