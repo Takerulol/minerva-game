@@ -225,4 +225,5 @@ public class WorldInitPanel extends JPanel implements MControl, TextResources {
 			}
 		});
 	}
+
 }
