@@ -132,6 +132,8 @@ public class MPlayerIcon extends JPanel implements MControl, TextResources {
 		if (this.player.isMaster()) {
 			this.gamemaster.setText(MPLAYERICON_GAMEMASTER);
 			this.gamemaster.setVisible(true);
+		} else {
+			this.gamemaster.setVisible(false);
 		}
 		
 		this.username.setText(MPLAYERICON_USERNAME + " " + this.player.getUsername());
