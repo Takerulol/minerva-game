@@ -29,6 +29,7 @@
  */
 package de.hochschule.bremen.minerva.client.core;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -63,6 +64,7 @@ import de.hochschule.bremen.minerva.commons.exceptions.WorldNotStorable;
 import de.hochschule.bremen.minerva.commons.exceptions.WrongPasswordException;
 import de.hochschule.bremen.minerva.commons.net.ClientExecutables;
 import de.hochschule.bremen.minerva.commons.net.ServerExecutables;
+import de.hochschule.bremen.minerva.commons.util.MapTool;
 import de.hochschule.bremen.minerva.commons.vo.AttackResult;
 import de.hochschule.bremen.minerva.commons.vo.Country;
 import de.hochschule.bremen.minerva.commons.vo.CountryCard;
@@ -612,11 +614,13 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	 *
 	 */
 	@Override
-	public int[][] getGameMapImage() throws DataAccessException {
+	public BufferedImage getGameMapImage() throws DataAccessException {
 		try {
-			return this.serverEngine.getGameMapImage();
+			return MapTool.fromBase64(this.serverEngine.getGameMapImage());
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
+		} catch (IOException e) {
+			throw new DataAccessException(e, false);
 		}
 	}
 
@@ -627,11 +631,13 @@ public class GameEngineNetwork extends Observable implements GameEngine, ClientE
 	 *
 	 */
 	@Override
-	public int[][] getGameMapUnderlayImage() throws DataAccessException {
+	public BufferedImage getGameMapUnderlayImage() throws DataAccessException {
 		try {
-			return this.serverEngine.getGameMapUnderlayImage();
+			return MapTool.fromBase64(this.serverEngine.getGameMapUnderlayImage());
 		} catch (SimonRemoteException e) {
 			throw new DataAccessException(e);
+		} catch (IOException e) {
+			throw new DataAccessException(e, false);
 		}
 	}
 }

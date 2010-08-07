@@ -151,12 +151,12 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 			missionPanel.add(missionLabel);
 
 			//lower map
-			mapImage = MapTool.createMapImageFromArray(this.engine.getGameMapUnderlayImage());
+			mapImage = this.engine.getGameMapUnderlayImage();
 			this.mapUnderlay = new MapPanel(mapImage);
 			this.mapUnderlay.setBounds(0,0,500,500);
 			
 			//upper map
-			mapImage = MapTool.createMapImageFromArray(this.engine.getGameMapImage());
+			mapImage = this.engine.getGameMapImage();
 			this.mapOverlay = new MapPanel(mapImage);
 			this.mapOverlay.setBounds(0,0,500,500);
 			

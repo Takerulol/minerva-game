@@ -29,6 +29,7 @@
  */
 package de.hochschule.bremen.minerva.commons.core;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Observer;
 import java.util.Vector;
@@ -106,9 +107,9 @@ public interface GameEngine {
 
 	public Player getGameWinner() throws DataAccessException;
 
-	public int[][] getGameMapImage() throws DataAccessException;
+	public BufferedImage getGameMapImage() throws DataAccessException;
 
-	public int[][] getGameMapUnderlayImage() throws DataAccessException;
+	public BufferedImage getGameMapUnderlayImage() throws DataAccessException;
 
 	public void setCurrentPlayerState(PlayerState state) throws DataAccessException;
 	
