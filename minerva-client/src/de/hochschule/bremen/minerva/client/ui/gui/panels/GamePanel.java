@@ -536,10 +536,10 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 	 * Repaints all ArmyCountIcons with correct parameters
 	 *
 	 */
+	@SuppressWarnings("unchecked")
 	public void refreshArmyCounts() {
 		Iterator<?> iter = this.armyIcons.entrySet().iterator();
 		while (iter.hasNext()) {
-			@SuppressWarnings("rawtypes")
 			Map.Entry pairs = (Map.Entry)iter.next();
 			for (Country country : this.world.getCountries()) {
 				if (country.getId() == ((Country)pairs.getKey()).getId()) {
@@ -553,10 +553,10 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 	 * Removes markings of all countries.
 	 *
 	 */
+	@SuppressWarnings("unchecked")
 	public void unmarkAll() {
 		Iterator<?> iter = this.armyIcons.entrySet().iterator();
 		while (iter.hasNext()) {
-			@SuppressWarnings("rawtypes")
 			Map.Entry pairs = (Map.Entry)iter.next();
 			((MArmyCountIcon)pairs.getValue()).unmark();
 		}
@@ -623,7 +623,9 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 
 	/**
 	 * Interaction with the map when clicking on it.
+	 *
 	 * @param country country clicked on
+	 *
 	 */
 	private void mapInteraction(Country country) {
 		if (MinervaGUI.getEngine().getClientPlayer().getState() == PlayerState.ALLOCATE_ARMIES) {
@@ -647,13 +649,15 @@ public class GamePanel extends JLayeredPane implements MControl, TextResources, 
 	/**
 	 * Ugly getter due to problems with references.
 	 * Client references and server references aren't the same.
+	 *
 	 * @param country 
 	 * @return
+	 *
 	 */
+	@SuppressWarnings("unchecked")
 	private MArmyCountIcon realArmyIconGetter(Country country) {
 		Iterator<?> iter = this.armyIcons.entrySet().iterator();
 		while (iter.hasNext()) {
-			@SuppressWarnings("rawtypes")
 			Map.Entry pairs = (Map.Entry)iter.next();
 				if (country.getId() == ((Country)pairs.getKey()).getId()) {
 					return (MArmyCountIcon)pairs.getValue();
