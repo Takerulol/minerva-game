@@ -4,7 +4,7 @@ app.version=1.0
 
 -- Server configuration
 server.name=minerva
-server.port=50001
+server.port=50002
 server.welcome=Welcome, Master. Yes, i'm up and running ... :)
 
 -- Directory configuration (never forget the slash at the end of the path)
