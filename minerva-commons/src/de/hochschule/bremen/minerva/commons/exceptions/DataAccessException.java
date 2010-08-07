@@ -74,6 +74,6 @@ public class DataAccessException extends Exception implements Serializable {
 	}
 
 	public DataAccessException(IOException e, boolean simon) {
-		super("Der Server hat ein technisches Problem festgestellt. \n Bitte den Administrator informieren.");
+		super("Der Server hat ein technisches Problem festgestellt. \n Bitte den Administrator informieren. \n Meldung: "+e.getMessage());
 	}
 }

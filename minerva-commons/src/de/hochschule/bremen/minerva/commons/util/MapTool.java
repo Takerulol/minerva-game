@@ -32,7 +32,14 @@ package de.hochschule.bremen.minerva.commons.util;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
+
+import javax.imageio.ImageIO;
+
+import org.apache.mina.util.Base64;
 
 import de.hochschule.bremen.minerva.commons.vo.Country;
 import de.hochschule.bremen.minerva.commons.vo.ValueObject;
@@ -86,6 +93,9 @@ public class MapTool {
 	 * Creates a map image out of a 2-dimensional integer array equivalent in aRGB
 	 * @param integerArray map as integer array
 	 * @return map as buffered image
+	 * 
+	 * @deprecated
+	 * 
 	 */
 	public static BufferedImage createMapImageFromArray(int[][] integerArray) {
 		BufferedImage image = new BufferedImage(integerArray.length, integerArray[0].length, BufferedImage.TYPE_INT_ARGB_PRE);
@@ -102,6 +112,9 @@ public class MapTool {
 	 * a buffered image map.
 	 * @param mapImage buffered image of map
 	 * @return integer array of image
+	 * 
+	 * @deprecated
+	 * 
 	 */
 	public static int[][] createArrayFromMapImage(BufferedImage mapImage) {
 		int[][] map = new int[mapImage.getWidth()][mapImage.getHeight()];
@@ -111,5 +124,43 @@ public class MapTool {
 			}
 		}
 		return map;
+	}
+
+	/**
+	 * Converts a buffered image to an base64 encoded string.
+	 *
+	 * @param map The map, which should be converted.
+	 * @return The base64 string.
+	 *
+	 * @throws IOException
+	 *
+	 */
+	public static String toBase64(BufferedImage map) throws IOException {
+		
+		ByteArrayOutputStream baStream = new ByteArrayOutputStream();
+		
+		ImageIO.write(map, "PNG", baStream);
+		baStream.flush();
+
+		String base64Map = new String(Base64.encodeBase64(baStream.toByteArray()));
+		
+		baStream.close();
+
+		return base64Map;
+	}
+	
+	/**
+	 * Creates a buffered image from an base64 string.
+	 * 
+	 * @param base64 The map as base64 encoded string.
+	 * @return The map as an buffered image.
+	 *
+	 * @throws IOException
+	 *
+	 */
+	public static BufferedImage fromBase64(String base64) throws IOException {
+		byte[] mapData = Base64.decodeBase64(base64.getBytes());
+
+		return ImageIO.read(new ByteArrayInputStream(mapData));
 	}
 }

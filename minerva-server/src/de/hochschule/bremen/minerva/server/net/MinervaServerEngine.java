@@ -355,32 +355,32 @@ public class MinervaServerEngine implements ServerExecutables {
 	 * Returns the map from the current game world.
 	 *
 	 * @return A byte array with the map image.
-	 *
-     * @throws SimonRemoteException
+	 * @throws IOException 
      *
 	 */
 	@Override
-	public int[][] getGameMapImage() throws SimonRemoteException {
+	public String getGameMapImage() throws IOException {
 		LOGGER.log("getGameMapImage(): Load the map image (world = '" + this.game.getWorld().getName() + "').");
 		
 		BufferedImage mapImage = this.game.getWorld().getMapImage();
-		return MapTool.createArrayFromMapImage(mapImage);
+		return MapTool.toBase64(mapImage);
 	}
 
 	/**
 	 * Returns the map underlay from the current game world.
 	 *
 	 * @return A byte array with the map underlay image.
+	 * @throws IOException 
 	 *
      * @throws SimonRemoteException
      *
 	 */
 	@Override
-	public int[][] getGameMapUnderlayImage() throws SimonRemoteException {
+	public String getGameMapUnderlayImage() throws IOException {
 		LOGGER.log("getGameMapImage(): Load the map image underlay (world = '" + this.game.getWorld().getName() + "').");
 
 		BufferedImage mapImage = this.game.getWorld().getMapUnderlayImage();
-		return MapTool.createArrayFromMapImage(mapImage);
+		return MapTool.toBase64(mapImage);
 	}
 
     /**

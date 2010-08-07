@@ -29,6 +29,7 @@
  */
 package de.hochschule.bremen.minerva.commons.net;
 
+import java.io.IOException;
 import java.util.Vector;
 
 import de.root1.simon.SimonRemote;
@@ -108,11 +109,11 @@ public interface ServerExecutables extends SimonRemote {
 	// Game session finished?
 	public boolean isGameFinished() throws SimonRemoteException;
 
-	// Gets the current game map image from the server.
-	public int[][] getGameMapImage() throws SimonRemoteException;
+	// Gets the current game map image from the server (base64 encoded).
+	public String getGameMapImage() throws SimonRemoteException, IOException;
 
-	// Gets the current game map underlay image from the server.
-	public int[][] getGameMapUnderlayImage() throws SimonRemoteException;	
+	// Gets the current game map underlay image from the server (base64 encoded).
+	public String getGameMapUnderlayImage() throws SimonRemoteException, IOException;	
 	
 	// -- Game core subsystem --
 
